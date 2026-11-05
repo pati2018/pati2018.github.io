@@ -101,3 +101,4 @@ article.guide th, article.guide td { border: 1px solid var(--line); padding: 6px
 article.guide blockquote { margin: 1em 0; padding: .4em 1em; border-left: 4px solid var(--accent); color: var(--muted); }
 article.guide th, article.guide td { overflow-wrap: normal; }
 article.guide th:first-child, article.guide td:first-child { white-space: nowrap; }
+main.wrap { padding-bottom: 48px; }

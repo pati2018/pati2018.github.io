@@ -1,6 +1,6 @@
 ## Worum geht es?
 
-Die **Gitarre** ist eine Gitarre, die direkt im Browser läuft – am besten auf einem Tablet oder Handy mit Touchscreen, aber auch mit der Maus. Du kannst einzelne Töne auf dem Griffbrett spielen oder Akkorde anschlagen und dich von automatischen Rhythmen begleiten lassen. Die Klänge stammen von echten Gitarren-Aufnahmen.
+Die **Gitarre** läuft direkt im Browser – am besten auf einem Tablet oder Handy mit Touchscreen, aber auch mit der Maus. Du kannst einzelne Töne auf dem Griffbrett spielen oder Akkorde anschlagen und dich von automatischen Rhythmen begleiten lassen. Die Klänge stammen von echten Gitarren-Aufnahmen.
 
 ## Schnellstart
 

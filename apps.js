@@ -19,6 +19,16 @@
  */
 window.APPS = [
   {
+    id: "soundwhacker-spielen",
+    titel: "SoundWhacker Spielen",
+    kurz: "Mit den SoundWhackern (oder den Tasten 1–5) Akkorde, Töne, Melodien und Arpeggios spielen, improvisieren und Loops steuern – mit eingebauten Instrumenten.",
+    link: "https://pati2018.github.io/soundwhacker-looper/SoundWhacker_Spielen.html",
+    repo: "https://github.com/pati2018/soundwhacker-looper",
+    kategorie: "Musik",
+    symbol: "🥁",
+    datum: "2026-11-05"
+  },
+  {
     id: "miga",
     titel: "MIGA – SoundWhacker Kamera",
     kurz: "Musik machen mit Mimik, Gesten und Augen: Die Kamera erkennt Hände, Kopf, Gesicht, Augen oder den ganzen Körper und spielt dazu Akkorde, Töne oder Loops.",

@@ -19,6 +19,16 @@
  */
 window.APPS = [
   {
+    id: "gitarre",
+    titel: "Saitenzug – Gitarre",
+    kurz: "Eine Gitarre im Browser: frei auf dem Griffbrett spielen oder Akkorde mit automatischen Schlag- und Zupfmustern begleiten lassen.",
+    link: "https://pati2018.github.io/Gitarre/",
+    repo: "https://github.com/pati2018/Gitarre",
+    kategorie: "Musik",
+    symbol: "🎸",
+    datum: "2026-11-05"
+  },
+  {
     id: "midi-player",
     titel: "MIDI-Player",
     kurz: "Spielt MIDI-Dateien direkt im Browser ab – mit echten Instrumenten, Notenrolle, Mixer und Raumklang.",

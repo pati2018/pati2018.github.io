@@ -30,7 +30,7 @@ window.APPS = [
   },
   {
     id: "miga",
-    titel: "MIGA",
+    titel: "MIGA – Mimik, Gestik, Augensteuerung",
     kurz: "Musik machen mit Mimik, Gesten und Augen: Die Kamera erkennt Hände, Kopf, Gesicht, Augen oder den ganzen Körper und spielt dazu Akkorde, Töne oder Loops.",
     link: "https://pati2018.github.io/soundwhacker-looper/SoundWhacker_Kamera.html",
     repo: "https://github.com/pati2018/soundwhacker-looper",

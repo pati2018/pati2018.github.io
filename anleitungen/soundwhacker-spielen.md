@@ -1,6 +1,6 @@
 ## Worum geht es?
 
-**SoundWhacker Spielen** macht aus den SoundWhackern (SW) ein Musikinstrument. Jeder der fünf SWs spielt – je nach Einstellung – einen Akkord, einen Ton, eine Melodie, ein Arpeggio, improvisiert oder schaltet einen Loop. So können alle gemeinsam Musik machen, auch ohne Vorkenntnisse.
+**SoundWhacker Steuerung** macht aus den SoundWhackern (SW) ein Musikinstrument. Jeder der fünf SWs spielt – je nach Einstellung – einen Akkord, einen Ton, eine Melodie, ein Arpeggio, improvisiert oder schaltet einen Loop. So können alle gemeinsam Musik machen, auch ohne Vorkenntnisse.
 
 Ohne SoundWhacker geht es auch: Am Computer spielen die **Tasten 1–5** die fünf SWs.
 

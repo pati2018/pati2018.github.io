@@ -20,7 +20,7 @@
 window.APPS = [
   {
     id: "soundwhacker-spielen",
-    titel: "SoundWhacker Spielen",
+    titel: "SoundWhacker Steuerung",
     kurz: "Mit den SoundWhackern (oder den Tasten 1–5) Akkorde, Töne, Melodien und Arpeggios spielen, improvisieren und Loops steuern – mit eingebauten Instrumenten.",
     link: "https://pati2018.github.io/soundwhacker-looper/SoundWhacker_Spielen.html",
     repo: "https://github.com/pati2018/soundwhacker-looper",
@@ -30,7 +30,7 @@ window.APPS = [
   },
   {
     id: "miga",
-    titel: "MIGA – SoundWhacker Kamera",
+    titel: "MIGA",
     kurz: "Musik machen mit Mimik, Gesten und Augen: Die Kamera erkennt Hände, Kopf, Gesicht, Augen oder den ganzen Körper und spielt dazu Akkorde, Töne oder Loops.",
     link: "https://pati2018.github.io/soundwhacker-looper/SoundWhacker_Kamera.html",
     repo: "https://github.com/pati2018/soundwhacker-looper",
@@ -40,7 +40,7 @@ window.APPS = [
   },
   {
     id: "gitarre",
-    titel: "Saitenzug – Gitarre",
+    titel: "Gitarre",
     kurz: "Eine Gitarre im Browser: frei auf dem Griffbrett spielen oder Akkorde mit automatischen Schlag- und Zupfmustern begleiten lassen.",
     link: "https://pati2018.github.io/Gitarre/",
     repo: "https://github.com/pati2018/Gitarre",

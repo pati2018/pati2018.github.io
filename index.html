@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meine Web-Apps</title>
+  <meta name="description" content="Sammlung meiner Web-Apps mit Kurzbeschreibung und ausführlicher Anleitung.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧩</text></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site wrap">
+    <h1>Meine Web-Apps</h1>
+    <p>Kleine Anwendungen, die direkt im Browser laufen – ohne Installation. Zu jeder App gibt es eine kurze Beschreibung und eine ausführliche Anleitung.</p>
+  </header>
+
+  <main class="wrap">
+    <div class="toolbar">
+      <input id="suche" type="search" placeholder="App suchen …" aria-label="App suchen">
+      <div class="chips" id="kategorien"></div>
+    </div>
+    <div class="grid" id="liste"></div>
+    <p class="empty" id="leer" hidden>Keine App gefunden.</p>
+  </main>
+
+  <footer class="site wrap">
+    Alle Apps sind kostenlos und laufen im Browser. Quellcode auf <a href="https://github.com/pati2018">GitHub</a>.
+  </footer>
+
+  <script src="apps.js"></script>
+  <script>
+    const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const apps = [...(window.APPS || [])].sort((a, b) => String(b.datum).localeCompare(String(a.datum)));
+    const fmt = d => { const t = new Date(d); return isNaN(t) ? "" : t.toLocaleDateString("de-DE", { day: "numeric", month: "long", year: "numeric" }); };
+
+    let aktiv = "Alle";
+    const kategorien = ["Alle", ...new Set(apps.map(a => a.kategorie).filter(Boolean))];
+    const chipBox = document.getElementById("kategorien");
+    if (kategorien.length > 2) {
+      chipBox.innerHTML = kategorien.map(k => `<button class="chip" aria-pressed="${k === aktiv}" data-k="${esc(k)}">${esc(k)}</button>`).join("");
+      chipBox.addEventListener("click", e => {
+        const b = e.target.closest(".chip"); if (!b) return;
+        aktiv = b.dataset.k;
+        chipBox.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c.dataset.k === aktiv));
+        zeigen();
+      });
+    }
+
+    const suche = document.getElementById("suche");
+    suche.addEventListener("input", zeigen);
+
+    function zeigen() {
+      const q = suche.value.trim().toLowerCase();
+      const treffer = apps.filter(a =>
+        (aktiv === "Alle" || a.kategorie === aktiv) &&
+        (!q || [a.titel, a.kurz, a.kategorie].join(" ").toLowerCase().includes(q)));
+      document.getElementById("liste").innerHTML = treffer.map(a => `
+        <section class="card">
+          <div class="top">
+            <div class="icon" aria-hidden="true">${esc(a.symbol || "🧩")}</div>
+            <div>
+              <h2>${esc(a.titel)}</h2>
+              <div class="meta">${esc(a.kategorie || "")}${a.kategorie && a.datum ? " · " : ""}${esc(fmt(a.datum))}</div>
+            </div>
+          </div>
+          <p>${esc(a.kurz)}</p>
+          <div class="actions">
+            <a class="btn primary" href="${esc(a.link)}" target="_blank" rel="noopener">App öffnen ↗</a>
+            <a class="btn" href="app.html?id=${encodeURIComponent(a.id)}">Anleitung</a>
+          </div>
+        </section>`).join("");
+      document.getElementById("leer").hidden = treffer.length > 0;
+    }
+    zeigen();
+  </script>
+</body>
+</html>

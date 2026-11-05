@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Anleitung</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧩</text></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="wrap">
+    <a class="back" href="./">← Alle Apps</a>
+    <div id="inhalt"><p class="empty">Lade …</p></div>
+  </main>
+  <footer class="site wrap"><a href="./">Zurück zur Übersicht</a></footer>
+
+  <script src="lib/marked.min.js"></script>
+  <script src="lib/purify.min.js"></script>
+  <script src="apps.js"></script>
+  <script>
+    const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const id = new URLSearchParams(location.search).get("id");
+    const app = (window.APPS || []).find(a => a.id === id);
+    const box = document.getElementById("inhalt");
+
+    if (!app) {
+      box.innerHTML = `<p class="empty">Diese App gibt es nicht. <a href="./">Zur Übersicht</a></p>`;
+    } else {
+      document.title = `${app.titel} – Anleitung`;
+      box.innerHTML = `
+        <div class="app-head">
+          <div class="icon" aria-hidden="true">${esc(app.symbol || "🧩")}</div>
+          <h1>${esc(app.titel)}</h1>
+        </div>
+        <p class="lead">${esc(app.kurz)}</p>
+        <div class="actions">
+          <a class="btn primary" href="${esc(app.link)}" target="_blank" rel="noopener">App öffnen ↗</a>
+          ${app.repo ? `<a class="btn" href="${esc(app.repo)}" target="_blank" rel="noopener">Quellcode</a>` : ""}
+        </div>
+        <article class="guide" id="anleitung"><p class="empty">Lade Anleitung …</p></article>`;
+
+      fetch(`anleitungen/${encodeURIComponent(app.id)}.md`)
+        .then(r => r.ok ? r.text() : Promise.reject())
+        .then(md => {
+          const html = window.marked ? marked.parse(md) : `<pre>${esc(md)}</pre>`;
+          document.getElementById("anleitung").innerHTML = window.DOMPurify ? DOMPurify.sanitize(html) : html;
+        })
+        .catch(() => {
+          document.getElementById("anleitung").innerHTML = `<p>Für diese App gibt es noch keine ausführliche Anleitung.</p>`;
+        });
+    }
+  </script>
+</body>
+</html>

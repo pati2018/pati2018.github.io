@@ -1,0 +1,103 @@
+:root {
+  --bg: #f6f5f1;
+  --surface: #ffffff;
+  --text: #1c1b19;
+  --muted: #6b6860;
+  --line: #e3e0d8;
+  --accent: #2f5bd3;
+  --accent-soft: #e8eefc;
+  --shadow: 0 1px 2px rgba(0,0,0,.04), 0 4px 16px rgba(0,0,0,.05);
+  --radius: 14px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #141412;
+    --surface: #1d1d1a;
+    --text: #ecebe6;
+    --muted: #a19e95;
+    --line: #2f2e2a;
+    --accent: #7d9cf5;
+    --accent-soft: #232a3d;
+    --shadow: none;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.6 "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+a { color: var(--accent); }
+.wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+
+/* Kopf */
+header.site { padding-top: 56px; padding-bottom: 28px; }
+header.site h1 { font-size: clamp(28px, 5vw, 42px); line-height: 1.15; margin: 0 0 10px; letter-spacing: -.02em; }
+header.site p { margin: 0; color: var(--muted); max-width: 60ch; font-size: 17px; }
+
+/* Werkzeugleiste */
+.toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 8px 0 24px; }
+.toolbar input {
+  flex: 1 1 240px; min-width: 0;
+  padding: 11px 14px; border-radius: 10px;
+  border: 1px solid var(--line); background: var(--surface); color: var(--text); font: inherit;
+}
+.toolbar input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  border: 1px solid var(--line); background: var(--surface); color: var(--text);
+  padding: 7px 13px; border-radius: 999px; font: inherit; font-size: 14px; cursor: pointer;
+}
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* Karten */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 20px; display: flex; flex-direction: column; gap: 10px;
+}
+.card .top { display: flex; gap: 12px; align-items: center; }
+.card .icon {
+  width: 48px; height: 48px; flex: none; display: grid; place-items: center;
+  font-size: 26px; border-radius: 12px; background: var(--accent-soft);
+}
+.card h2 { font-size: 19px; margin: 0; line-height: 1.25; }
+.card .meta { font-size: 13px; color: var(--muted); }
+.card p { margin: 0; color: var(--muted); flex: 1; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 14px; border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 15px;
+  border: 1px solid var(--line); color: var(--text); background: transparent;
+}
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn:hover { filter: brightness(1.05); }
+.empty { color: var(--muted); padding: 40px 0; text-align: center; }
+
+footer.site { color: var(--muted); font-size: 14px; padding-top: 48px; padding-bottom: 40px; }
+
+/* Anleitungsseite */
+.back { display: inline-block; margin: 32px 0 8px; text-decoration: none; font-weight: 600; }
+.app-head { display: flex; gap: 16px; align-items: center; margin: 12px 0 8px; flex-wrap: wrap; }
+.app-head .icon { width: 64px; height: 64px; font-size: 34px; border-radius: 16px; background: var(--accent-soft); display: grid; place-items: center; }
+.app-head h1 { margin: 0; font-size: clamp(26px, 5vw, 36px); line-height: 1.15; }
+.lead { color: var(--muted); font-size: 18px; max-width: 65ch; }
+article.guide {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: clamp(18px, 4vw, 36px); margin-top: 24px; max-width: 760px; overflow-wrap: anywhere;
+}
+article.guide h1, article.guide h2, article.guide h3 { line-height: 1.25; margin: 1.6em 0 .5em; }
+article.guide > :first-child { margin-top: 0; }
+article.guide img { max-width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--line); }
+article.guide code { background: var(--accent-soft); padding: .1em .35em; border-radius: 5px; font-size: .92em; }
+article.guide pre { background: var(--accent-soft); padding: 14px; border-radius: 10px; overflow-x: auto; }
+article.guide pre code { background: none; padding: 0; }
+article.guide table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; }
+article.guide th, article.guide td { border: 1px solid var(--line); padding: 6px 10px; text-align: left; }
+article.guide blockquote { margin: 1em 0; padding: .4em 1em; border-left: 4px solid var(--accent); color: var(--muted); }
+article.guide th, article.guide td { overflow-wrap: normal; }
+article.guide th:first-child, article.guide td:first-child { white-space: nowrap; }

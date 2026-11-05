@@ -19,6 +19,16 @@
  */
 window.APPS = [
   {
+    id: "miga",
+    titel: "MIGA – SoundWhacker Kamera",
+    kurz: "Musik machen mit Mimik, Gesten und Augen: Die Kamera erkennt Hände, Kopf, Gesicht, Augen oder den ganzen Körper und spielt dazu Akkorde, Töne oder Loops.",
+    link: "https://pati2018.github.io/soundwhacker-looper/SoundWhacker_Kamera.html",
+    repo: "https://github.com/pati2018/soundwhacker-looper",
+    kategorie: "Musik",
+    symbol: "📷",
+    datum: "2026-11-05"
+  },
+  {
     id: "gitarre",
     titel: "Saitenzug – Gitarre",
     kurz: "Eine Gitarre im Browser: frei auf dem Griffbrett spielen oder Akkorde mit automatischen Schlag- und Zupfmustern begleiten lassen.",

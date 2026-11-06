@@ -21,7 +21,7 @@ window.APPS = [
   {
     id: "klavier",
     titel: "Smart-Klavier",
-    kurz: "Klavier, Schlagzeug, Flöte, Streicher und mehr im Browser: frei auf der Tastatur spielen oder Akkorde und Töne antippen – mit Rhythmus, Arpeggio, Akkordkreis und Kopfsteuerung.",
+    kurz: "Klavier, Schlagzeug, Flöte, Streicher und mehr im Browser: frei auf der Tastatur spielen oder Akkorde und Töne antippen – mit Arpeggio, Akkordkreis und Kopfsteuerung.",
     link: "https://pati2018.github.io/Gitarre/?klavier",
     repo: "https://github.com/pati2018/Gitarre",
     kategorie: "Musik",

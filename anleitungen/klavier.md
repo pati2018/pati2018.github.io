@@ -1,6 +1,6 @@
 ## Worum geht es?
 
-Das **Smart-Klavier** läuft direkt im Browser – am besten auf dem iPad. Du kannst frei auf einer **Klaviertastatur** spielen oder im Modus **Akkorde** die passenden Akkorde einer Tonart antippen. Dazu gibt es **Rhythmus- und Arpeggio-Muster**, die dich begleiten. Die Klänge stammen von echten Klavieraufnahmen.
+Das **Smart-Klavier** läuft direkt im Browser – am besten auf dem iPad. Du kannst frei auf einer **Klaviertastatur** spielen oder im Modus **Akkorde** die passenden Akkorde einer Tonart antippen. Dazu gibt es **Arpeggio-Muster**, die dich begleiten. Die Klänge stammen von echten Klavieraufnahmen.
 
 Das Smart-Klavier wohnt in derselben App wie die Gitarre: Oben links schaltest du mit **🎸 / 🎹** zwischen Gitarre und Klavier um.
 
@@ -14,8 +14,8 @@ Das Smart-Klavier wohnt in derselben App wie die Gitarre: Oben links schaltest d
 
 Oben in der Auswahlliste stehen:
 
-- **Klavier** (Konzertflügel) und **E-Piano** – mit Rhythmus und Arpeggio
-- **Flöte, Klarinette, Saxophon, Glockenspiel, Marimba, Violine, Cello, Streicher, Pizzicato** – zum Spielen von Tönen und Akkorden, **ohne** Rhythmus- und Arpeggio-Regler
+- **Klavier** (Konzertflügel) und **E-Piano** – mit Arpeggio
+- **Flöte, Klarinette, Saxophon, Glockenspiel, Marimba, Violine, Cello, Streicher, Pizzicato** – zum Spielen von Tönen und Akkorden, **ohne** Arpeggio-Regler
 - **Schlagzeug** – jede Taste ist ein Instrument des Schlagzeugs (Bass, Snare, HiHat, Toms, Becken, Bongos, Congas …), die Tasten sind beschriftet. Im Modus **Akkorde** liegen auf den 7 Feldern Bass, Snare, HiHat zu, HiHat offen, Tom tief, Tom hoch und Becken; über **✎ Akkorde/Töne** kannst du jedes Feld auf ein anderes Schlaginstrument stellen.
 
 **Wie lange klingt ein Ton?** Wie bei echten Instrumenten:
@@ -43,9 +43,8 @@ Die zusätzlichen Klänge werden beim ersten Auswählen geladen (Internet nötig
   - **Über die Tonreihen wischen** spielt den Akkord als **Arpeggio** – nach oben oder unten.
   - **Eine Reihe antippen** spielt einen einzelnen Ton.
 
-### Rhythmus und Arpeggio (Drehregler)
+### Arpeggio (Drehregler)
 
-- **Rhythmus** – 8 Begleitmuster mit ganzen Akkorden (z. B. Pop, Rock, Reggae, Shuffle, Bossa Nova, Funk)
 - **Arpeggio** – 8 gebrochene Akkorde (z. B. Travis, Country, Arpeggio, Ballade, Walzer ¾, Fingerpicking, Harfe, 6/8)
 
 **Antippen** dreht den Regler eine Stufe weiter, **Ziehen** dreht direkt. Dann einen Akkord antippen – das Muster startet; ein anderer Akkord wechselt auf dem nächsten Schlag, derselbe Akkord stoppt. Mit **− BPM +** stellst du das Tempo ein.

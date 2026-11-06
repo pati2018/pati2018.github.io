@@ -90,7 +90,9 @@ Einstellungen neben dem Kopf-Knopf:
 Tipp: Mit weniger Akkorden (**✎ Akkorde**, z. B. nur C, G, Am, F) werden die Felder breiter und sind mit dem Kopf leichter zu treffen. Die Gesichtserkennung läuft komplett auf dem Gerät – das Kamerabild wird nirgendwohin geschickt.
 
 
-**▮▮▮ Säulen:** Die Akkorde (bzw. Töne) stehen als **große Säulen nebeneinander** – wie bei einer Panflöte, nach rechts etwas kürzer. Säule antippen spielt, mit dem Finger **seitlich gleiten** wechselt von Säule zu Säule. Muster, SoundWhacker und Kopfsteuerung funktionieren genauso. Ein Tipp auf **◯ Kreis** oder nochmal auf **▮▮▮ Säulen** wechselt die Anordnung.
+**▮▮▮ Säulen:** Die Akkorde (bzw. Töne) stehen als **große Säulen nebeneinander** – wie bei einer Panflöte. Säule antippen spielt, mit dem Finger **seitlich gleiten** wechselt von Säule zu Säule. Muster, SoundWhacker und Kopfsteuerung funktionieren genauso. Ein Tipp auf **◯ Kreis** oder nochmal auf **▮▮▮ Säulen** wechselt die Anordnung.
+
+**🎨 Farben** (bei Kreis und Säulen): färbt die Felder in **Boomwhacker-Farben** nach dem Grundton – C rot, D orange, E gelb, F hellgrün, G türkis, A lila, H magenta (Halbtöne dazwischen). Nochmal antippen schaltet die Farben aus. Der gerade gespielte Akkord bekommt einen weißen Rand.
 
 ## Instrumente
 

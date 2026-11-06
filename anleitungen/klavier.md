@@ -71,6 +71,8 @@ Genau wie bei der Gitarre:
 
 **▮▮▮ Säulen:** Die Akkorde (bzw. Töne) stehen als **große Säulen nebeneinander** – wie bei einer Panflöte. Säule antippen spielt, mit dem Finger **seitlich gleiten** wechselt von Säule zu Säule. Muster, SoundWhacker und Kopfsteuerung funktionieren genauso. Ein Tipp auf **◯ Kreis** oder nochmal auf **▮▮▮ Säulen** wechselt die Anordnung.
 
+**♪ Einzeltöne** (bei Säulen): Jede Säule zeigt unter dem Akkordnamen die **einzelnen Töne** des Akkords (oben hoch, unten tief). **Name antippen** spielt den ganzen Akkord, **ein Ton-Feld** spielt nur diesen Ton, **senkrecht wischen** spielt ein Arpeggio, **seitlich gleiten** wechselt zur nächsten Säule.
+
 **🎨 Farben** (bei Kreis und Säulen): färbt die Felder in **Boomwhacker-Farben** nach dem Grundton – C rot, D orange, E gelb, F hellgrün, G türkis, A lila, H magenta (Halbtöne dazwischen). Nochmal antippen schaltet die Farben aus. Der gerade gespielte Akkord bekommt einen weißen Rand.
 
 ## Weitere Einstellungen

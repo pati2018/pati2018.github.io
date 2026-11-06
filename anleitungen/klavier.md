@@ -80,6 +80,7 @@ Genau wie bei der Gitarre:
 | Einstellung | Wofür |
 |---|---|
 | **Hall** (Drehregler) | Raumklang: Aus oder Stufe 1–10 |
+| **Spiegeln: an/aus** | Dreht die Anordnung um: Tastatur mit hohen Tönen links, in Akkord-Spalten und Säulen tiefe Töne oben. Standard: aus |
 | **Kamera** | Kamerabild hinter dem Klavier |
 | **● Aufnahme** | Video aufnehmen und speichern |
 

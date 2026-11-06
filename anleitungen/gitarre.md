@@ -105,7 +105,7 @@ Oben stehen fünf Klänge zur Auswahl: **Stahlsaiten** und **Nylon** (akustisch)
 | Button | Was er macht |
 |---|---|
 | **Hall** (Drehregler) | Wie viel Raumklang: Aus oder Stufe 1–10. Antippen = eine Stufe mehr, Ziehen = direkt einstellen |
-| **Spiegeln** | Dreht die Reihenfolge der Saiten um |
+| **Spiegeln: an/aus** | Dreht die Reihenfolge der Saiten um (auch in den Säulen). Standard: aus |
 | **Kamera** | Zeigt dein Kamerabild hinter dem durchsichtigen Griffbrett |
 | **Mikro** | Erscheint bei eingeschalteter Kamera: Mikrofon für die Aufnahme an/aus |
 | **● Aufnahme** | Nimmt ein Video auf (siehe unten) |

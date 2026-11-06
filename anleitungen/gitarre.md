@@ -38,15 +38,16 @@ In der zweiten Zeile findest du:
 
 #### Autoplay
 
-Mit Autoplay spielt die App den Rhythmus für dich:
+Mit Autoplay spielt die App den Rhythmus für dich. Dafür gibt es zwei Drehregler:
 
-- **Schlagen:** Folk, Pop, Rock, Reggae, Shuffle, Bossa Nova, Funk, Punk
-- **Zupfen:** Travis, Country, Arpeggio, Ballade, Walzer ¾
-- **Aus:** Autoplay ausschalten
+- **Schlagen** – Schlagmuster 1 bis 8 (z. B. Folk, Pop, Rock, Reggae, Shuffle, Bossa Nova, Funk, Punk)
+- **Zupfen** – Zupfmuster 1 bis 6 (z. B. Travis, Country, Arpeggio, Ballade, Walzer ¾)
+
+**Antippen** dreht den Regler eine Stufe weiter (Aus → 1 → 2 → … → Aus), **Ziehen** dreht ihn direkt auf die gewünschte Stufe. Einfach ausprobieren, welches Muster passt! Es läuft immer nur ein Muster – stellst du einen Regler ein, springt der andere auf „Aus“.
 
 So funktioniert es:
 
-1. Ein Muster auswählen.
+1. Einen Regler auf eine Zahl drehen.
 2. Einen Akkord antippen – das Muster startet.
 3. Einen **anderen Akkord** antippen – die App wechselt auf dem nächsten Schlag.
 4. **Denselben Akkord** noch einmal antippen – das Muster stoppt.
@@ -62,7 +63,6 @@ Oben stehen fünf Klänge zur Auswahl: **Stahlsaiten** und **Nylon** (akustisch)
 | Button | Was er macht |
 |---|---|
 | **Hall** | Raumklang an/aus |
-| **Tonnamen** | Zeigt die Namen der Töne auf dem Griffbrett – gut zum Lernen |
 | **Spiegeln** | Dreht die Reihenfolge der Saiten um |
 | **Kamera** | Zeigt dein Kamerabild hinter dem durchsichtigen Griffbrett |
 | **Mikro** | Erscheint bei eingeschalteter Kamera: Mikrofon für die Aufnahme an/aus |

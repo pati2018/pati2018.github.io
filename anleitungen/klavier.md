@@ -61,6 +61,7 @@ Genau wie bei der Gitarre:
 - **Oktave:** Auch bei Akkorden gibt es rechts das Rad **Oktave**. Standard ist **Oktave 4** (z. B. C: C4 E4 G4); Oktave 5 spielt denselben Akkord eine Oktave höher (C5 E5 G5), Oktave 3 tiefer.
 - **Einzelton:** Wählst du als Art **„Einzelton“**, erscheint ein drittes Rad für die **Oktave** (1–7). Der Platz spielt dann nur diesen einen Ton, z. B. **E5**. So kannst du Akkorde und einzelne Töne beliebig mischen – bis zu 7 Plätze.
 - **♪ Skala-Töne …** (Auswahlliste): belegt alle 7 Plätze mit den Tönen einer **Skala** – zum **Improvisieren**, besonders schön mit **Säulen** oder **Kreis** und Durchwischen. Zur Wahl: **Tonleiter der Tonart**, **Dur-Pentatonik**, **Moll-Pentatonik**, **Blues** und **Arabisch (Hijaz)**. Der Grundton ist der der eingestellten Tonart, los geht es bei Oktave 4 (z. B. A-Moll + Moll-Pentatonik: A4 C5 D5 E5 G5 A5 C6).
+- **Wie viele Töne?** Daneben stellst du die **Anzahl** ein (3–15 Töne, Standard 7). Die Skala läuft dann über mehrere Oktaven weiter – z. B. A-Moll-Pentatonik mit 10 Tönen: A3 C4 D4 E4 G4 A4 C5 D5 E5 G5. Änderst du die Anzahl, wird die zuletzt gewählte Skala sofort neu verteilt.
 - **Festhalten und ziehen** (oder **‹ ›**) ändert die Reihenfolge.
 - **sichtbar / aus** blendet Akkorde aus – z. B. nur C, G, Am, F.
 - **↺ Leitereigene Akkorde** stellt die leitereigenen Akkorde wieder her.

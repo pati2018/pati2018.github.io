@@ -135,7 +135,7 @@ Die 5 **SoundWhacker** steuern die **ersten fünf Felder** (beschriftet mit **SW
 
 ### 🎲 Zufall
 
-Im Fenster **🔔 SW** schaltet **🎲 Zufall** einen Spielmodus ein: Jeder Druck auf einen SoundWhacker spielt **einen zufälligen Ton der eingestellten Skala** (z. B. Dur-Pentatonik über „✎ Akkorde/Töne → Skala-Töne“) – mit dem Instrument dieses SW, solange er gehalten wird. Sind die Felder mit Akkorden belegt, kommen die Töne aus der Tonleiter der Tonart. Ideal zum gemeinsamen Improvisieren: Es klingt immer passend.
+Im Fenster **🔔 SW** schaltet **🎲 Zufall** einen Spielmodus ein: Jeder Druck auf einen SoundWhacker spielt **einen zufälligen Ton der eingestellten Skala** (z. B. Dur-Pentatonik über „✎ Akkorde/Töne → Skala-Töne“) – mit dem Instrument dieses SW, solange er gehalten wird. Sind die Felder mit **Akkorden** belegt, spielt jeder SW nur **Töne seines eigenen Akkords** (z. B. SW1 auf C: nur C, E, G). Derselbe Ton kommt nie zweimal hintereinander. Ideal zum gemeinsamen Improvisieren: Es klingt immer passend.
 
 ### 🎵 Melodie auf einen SoundWhacker legen
 

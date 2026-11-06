@@ -68,6 +68,9 @@ Genau wie bei der Gitarre:
 - **◯ Kreis** ordnet die Akkorde rund um eine Mitte an.
 - **👃 Kopf** startet die Kopfsteuerung: Die Nase führt einen Zeiger über die Akkorde, nach kurzem Verweilen erklingt der Akkord. Im Kreis zählt die Richtung aus der Mitte (oben, 3 Uhr, 10 Uhr …). **⌖ Mitte**, **Verweilen** und **Bewegung** lassen sich einstellen.
 
+
+**▮▮▮ Säulen:** Die Akkorde (bzw. Töne) stehen als **große Säulen nebeneinander** – wie bei einer Panflöte, nach rechts etwas kürzer. Säule antippen spielt, mit dem Finger **seitlich gleiten** wechselt von Säule zu Säule. Muster, SoundWhacker und Kopfsteuerung funktionieren genauso. Ein Tipp auf **◯ Kreis** oder nochmal auf **▮▮▮ Säulen** wechselt die Anordnung.
+
 ## Weitere Einstellungen
 
 | Einstellung | Wofür |

@@ -89,6 +89,9 @@ Einstellungen neben dem Kopf-Knopf:
 
 Tipp: Mit weniger Akkorden (**✎ Akkorde**, z. B. nur C, G, Am, F) werden die Felder breiter und sind mit dem Kopf leichter zu treffen. Die Gesichtserkennung läuft komplett auf dem Gerät – das Kamerabild wird nirgendwohin geschickt.
 
+
+**▮▮▮ Säulen:** Die Akkorde (bzw. Töne) stehen als **große Säulen nebeneinander** – wie bei einer Panflöte, nach rechts etwas kürzer. Säule antippen spielt, mit dem Finger **seitlich gleiten** wechselt von Säule zu Säule. Muster, SoundWhacker und Kopfsteuerung funktionieren genauso. Ein Tipp auf **◯ Kreis** oder nochmal auf **▮▮▮ Säulen** wechselt die Anordnung.
+
 ## Instrumente
 
 Oben stehen fünf Klänge zur Auswahl: **Stahlsaiten** und **Nylon** (akustisch) sowie **Clean**, **Crunch** und **Verzerrt** (E-Gitarre).

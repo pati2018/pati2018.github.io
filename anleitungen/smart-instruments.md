@@ -145,6 +145,8 @@ Im Fenster **🔔 SW** schaltet **🎲 Zufall** einen Spielmodus ein: Jeder Druc
 4. Ab jetzt spielt **jeder Druck auf diesen SW den nächsten Ton** der Melodie – mit dem Instrument des SW, solange gehalten. Am Ende geht es wieder von vorn los.
 5. **Verspielt? Von vorn:** Einfach die **Säule bzw. das Feld dieses SW antippen** (z. B. die Säule mit „SW2 🎵“) – die Melodie springt auf den ersten Ton zurück. Das Antippen spielt dabei keinen Ton.
 
+**Schlagzeug-Melodie:** Während der Aufnahme auf **🥁 Schlagzeug-Tasten** tippen – die Tastatur zeigt dann die Schlagzeug-Klänge mit Beschriftung (Bass, Snare, HiHat, Becken, Toms …). Z. B. Bass, Snare, Bass, Snare einspielen und speichern: Der SW spielt dann bei jedem Druck den nächsten Schlag – immer mit Schlagzeug-Klang. Mit **🎹 Klavier-Tasten** geht es zurück.
+
 Für SW2–SW5 genauso – jeder SW kann seine eigene Melodie haben. Auf den Feldern steht dann z. B. „SW1 🎵“. Mit **✕** neben der Melodie wird sie gelöscht und der SW spielt wieder sein Feld. Die Melodien bleiben gespeichert und kommen auch in die Presets.
 
 Am Computer gehen auch die Tasten **1–5**.

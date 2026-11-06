@@ -133,6 +133,16 @@ Die 5 **SoundWhacker** steuern die **ersten fünf Felder** (in der Leiste mit **
 
 Am Computer gehen auch die Tasten **1–5**.
 
+## Presets (alle Einstellungen speichern)
+
+Oben auf **💾 Presets** tippen. Es gibt **8 Plätze**.
+
+1. Einen **Platz** antippen (1–8), einen **Namen** eingeben.
+2. **Speichern** – gespeichert wird wirklich alles: Gitarre oder Klavier, Klang/Instrument, Modus, Tonart, alle Akkord- und Tonplätze (mit den gewählten Tönen), Schlag-/Zupf-/Arpeggio-Muster, Tempo, Hall, Pedal, Kreis, Spiegeln, Kopfsteuerung-Einstellungen, Oktave, Tonleiter und ob die Kamera an ist.
+3. **Laden** stellt alles wieder so ein (Doppeltipp auf einen Platz lädt direkt). **Löschen** leert den Platz.
+
+**Sichern und auf ein anderes Gerät bringen:** **⇓ Alle exportieren** speichert alle Presets in einer Datei (am iPad: im Teilen-Menü „In Dateien sichern“ wählen). **⇑ Importieren** spielt so eine Datei wieder ein – z. B. vom PC aufs iPad.
+
 ## Tipps & Probleme
 
 - **„Klänge nicht geladen“?** Einfach noch einmal tippen. Für den allerersten Start braucht die App eine Internetverbindung, danach läuft sie auch offline.

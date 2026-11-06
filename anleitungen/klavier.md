@@ -103,7 +103,7 @@ Am Computer gehen auch die Tasten **1–5**.
 
 ## Menü ausblenden
 
-Zum Spielen kannst du die grüne Leiste oben ausblenden: oben rechts auf **▲** tippen oder auf der Leiste **nach oben wischen**. Die Spielfläche wird dann größer. Mit dem kleinen Knopf **▼ Menü** oben in der Mitte kommt die Leiste zurück.
+Zum Spielen kannst du die grüne Leiste oben ausblenden: oben rechts auf **▲** tippen oder auf der Leiste **nach oben wischen**. Die Spielfläche wird dann größer. Mit dem kleinen Knopf **▼** ganz rechts oben kommt die Leiste zurück.
 
 ## Presets (alle Einstellungen speichern)
 

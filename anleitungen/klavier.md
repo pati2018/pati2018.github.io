@@ -12,7 +12,13 @@ Das Smart-Klavier wohnt in derselben App wie die Gitarre: Oben links schaltest d
 
 ## Klänge
 
-Oben stehen **Klavier** (Konzertflügel) und **E-Piano** zur Auswahl.
+Oben in der Auswahlliste stehen:
+
+- **Klavier** (Konzertflügel) und **E-Piano** – mit Rhythmus und Arpeggio
+- **Flöte, Klarinette, Saxophon, Glockenspiel, Marimba, Violine, Cello, Streicher, Pizzicato** – zum Spielen von Tönen und Akkorden, **ohne** Rhythmus- und Arpeggio-Regler
+- **Schlagzeug** – jede Taste ist ein Instrument des Schlagzeugs (Bass, Snare, HiHat, Toms, Becken, Bongos, Congas …), die Tasten sind beschriftet. Im Modus **Akkorde** liegen auf den 7 Feldern Bass, Snare, HiHat zu, HiHat offen, Tom tief, Tom hoch und Becken; über **✎ Akkorde/Töne** kannst du jedes Feld auf ein anderes Schlaginstrument stellen.
+
+Die zusätzlichen Klänge werden beim ersten Auswählen geladen (Internet nötig) und stehen danach auch offline zur Verfügung. Sie stammen aus der SoundFont von MIGA.
 
 ## Modus „Tastatur“ – frei spielen
 
@@ -74,4 +80,4 @@ Genau wie bei der Gitarre:
 - **Klingt alles zusammen?** Dann ist das **Pedal** an – zum Abdämpfen ausschalten.
 - **Kopfsteuerung trifft schlecht?** Weniger Akkorde einblenden oder **◯ Kreis** benutzen, **⌖ Mitte** neu setzen.
 
-*Klänge: Fluid R3 GM SoundFont von Frank Wen, CC BY 3.0.*
+*Klänge: Fluid R3 GM SoundFont von Frank Wen, CC BY 3.0 · weitere Instrumente: GeneralUser GS von S. Christian Collins.*

@@ -42,7 +42,9 @@ Oben stehen **Klavier** (Konzertflügel) und **E-Piano** zur Auswahl.
 
 Genau wie bei der Gitarre:
 
-- **Akkord antippen** öffnet zwei Drehräder: **Grundton** (C … H) und **Akkordart** (Dur, Moll, 7, m7, maj7, sus4, dim).
+- **Akkord antippen** öffnet die Drehräder: **Grundton** (C … H) und **Akkordart** (Dur, Moll, 7, m7, maj7, sus4, dim).
+- **Einzelton:** Wählst du als Art **„Einzelton“**, erscheint ein drittes Rad für die **Oktave** (1–7). Der Platz spielt dann nur diesen einen Ton, z. B. **E5**. So kannst du Akkorde und einzelne Töne beliebig mischen – bis zu 7 Plätze.
+- **♪ Tonleiter-Töne** belegt alle 7 Plätze mit den Tönen der Tonleiter (z. B. C-Dur: C4 D4 E4 F4 G4 A4 H4) – ideal, um mit Kopfsteuerung oder im Kreis Melodien zu spielen.
 - **Festhalten und ziehen** (oder **‹ ›**) ändert die Reihenfolge.
 - **sichtbar / aus** blendet Akkorde aus – z. B. nur C, G, Am, F.
 - **↺ Wie Tonart** stellt die leitereigenen Akkorde wieder her.

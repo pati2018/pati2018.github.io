@@ -42,7 +42,7 @@ In der zweiten Zeile findest du:
   - **Alle zeigen** blendet wieder alles ein, **↺ Leitereigene Akkorde** stellt die leitereigenen Akkorde wieder her.
   - Alles merkt sich die App für jede Tonart einzeln.
 - **Akkordnamen antippen** schlägt den Akkord an.
-- **Gleiten:** Finger auf einen Akkordnamen setzen und **ohne abzuheben** zum nächsten Akkord gleiten – jeder Akkord erklingt, sobald du ihn erreichst. Das geht auch im **Kreis** von Feld zu Feld.
+- **Gleiten:** Finger irgendwo in eine Akkordspalte setzen und **ohne abzuheben seitlich** zum nächsten Akkord gleiten – jeder Akkord erklingt, sobald du ihn erreichst. Das geht auch im **Kreis** von Feld zu Feld.
 - **Über die Saiten im Streifen wischen** schlägt wie mit der Hand, **eine Saite antippen** zupft sie einzeln.
 
 #### Autoplay

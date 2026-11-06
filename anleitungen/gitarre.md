@@ -40,7 +40,7 @@ In der zweiten Zeile findest du:
 
 Mit Autoplay spielt die App den Rhythmus für dich:
 
-- **Schlagen:** Folk, Pop, Rock, Reggae
+- **Schlagen:** Folk, Pop, Rock, Reggae, Shuffle, Bossa Nova, Funk, Punk
 - **Zupfen:** Travis, Country, Arpeggio, Ballade, Walzer ¾
 - **Aus:** Autoplay ausschalten
 

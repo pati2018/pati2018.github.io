@@ -38,7 +38,7 @@ Oben stehen **Klavier** (Konzertflügel) und **E-Piano** zur Auswahl.
 
 **Antippen** dreht den Regler eine Stufe weiter, **Ziehen** dreht direkt. Dann einen Akkord antippen – das Muster startet; ein anderer Akkord wechselt auf dem nächsten Schlag, derselbe Akkord stoppt. Mit **− BPM +** stellst du das Tempo ein.
 
-### Akkorde einstellen (✎ Akkorde)
+### Akkorde und Töne einstellen (✎ Akkorde/Töne)
 
 Genau wie bei der Gitarre:
 
@@ -47,7 +47,7 @@ Genau wie bei der Gitarre:
 - **♪ Tonleiter-Töne** belegt alle 7 Plätze mit den Tönen der Tonleiter (z. B. C-Dur: C4 D4 E4 F4 G4 A4 H4) – ideal, um mit Kopfsteuerung oder im Kreis Melodien zu spielen.
 - **Festhalten und ziehen** (oder **‹ ›**) ändert die Reihenfolge.
 - **sichtbar / aus** blendet Akkorde aus – z. B. nur C, G, Am, F.
-- **↺ Wie Tonart** stellt die leitereigenen Akkorde wieder her.
+- **↺ Leitereigene Akkorde** stellt die leitereigenen Akkorde wieder her.
 
 ### Akkorde im Kreis und Kopfsteuerung
 

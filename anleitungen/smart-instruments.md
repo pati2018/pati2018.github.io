@@ -131,7 +131,7 @@ Die 5 **SoundWhacker** steuern die **ersten fünf Felder** (beschriftet mit **SW
 
 ### Jedem SoundWhacker ein eigenes Instrument
 
-Über **🔔 SW** (Leiste unten, Modus Akkorde) bekommt jeder SoundWhacker sein eigenes Instrument – z. B. SW1 Klavier, SW2 Flöte, SW3 Nylon-Gitarre. Gespielt wird der Akkord bzw. Ton des jeweiligen Feldes, nur mit dem gewählten Klang. „wie oben“ = das oben eingestellte Instrument. Die Zuordnung gilt getrennt für Gitarre und Klavier und wird in den Presets mitgespeichert. Antippen der Felder mit dem Finger spielt weiter das oben gewählte Instrument.
+Über **🔔 SW** (Leiste unten, Modus Akkorde) bekommt jeder SoundWhacker sein eigenes Instrument – z. B. SW1 Klavier, SW2 Flöte, SW3 Nylon-Gitarre. Gespielt wird der Akkord bzw. Ton des jeweiligen Feldes, nur mit dem gewählten Klang. „wie oben“ = das oben eingestellte Instrument. Unter **🥁 Schlagzeug** gibt es außerdem einzelne Schlagzeug-Klänge (Bass, Snare, HiHat, Becken, Toms, Bongos, Triangel …): Ein SW mit z. B. „Schlagzeug: Snare“ spielt bei jedem Druck genau diesen Klang – so wird aus den SoundWhackern ein Schlagzeug für die Gruppe. Die Zuordnung gilt getrennt für Gitarre und Klavier und wird in den Presets mitgespeichert. Antippen der Felder mit dem Finger spielt weiter das oben gewählte Instrument.
 
 ### 🎲 Zufall
 

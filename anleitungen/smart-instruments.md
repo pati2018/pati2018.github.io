@@ -143,6 +143,7 @@ Im Fenster **🔔 SW** schaltet **🎲 Zufall** einen Spielmodus ein: Jeder Druc
 2. Die App schaltet auf die **Klaviertastatur**. Oben erscheint ein roter Balken „● Melodie für SW1“. Jetzt die Melodie **Ton für Ton** spielen (z. B. Ode an die Freude). Die Töne werden mitgeschrieben.
 3. Verspielt? **↶ Letzten Ton löschen**. Fertig? **✓ Speichern** – die App springt zurück, wo du warst.
 4. Ab jetzt spielt **jeder Druck auf diesen SW den nächsten Ton** der Melodie – mit dem Instrument des SW, solange gehalten. Am Ende geht es wieder von vorn los.
+5. **Verspielt? Von vorn:** Einfach die **Säule bzw. das Feld dieses SW antippen** (z. B. die Säule mit „SW2 🎵“) – die Melodie springt auf den ersten Ton zurück. Das Antippen spielt dabei keinen Ton.
 
 Für SW2–SW5 genauso – jeder SW kann seine eigene Melodie haben. Auf den Feldern steht dann z. B. „SW1 🎵“. Mit **✕** neben der Melodie wird sie gelöscht und der SW spielt wieder sein Feld. Die Melodien bleiben gespeichert und kommen auch in die Presets.
 

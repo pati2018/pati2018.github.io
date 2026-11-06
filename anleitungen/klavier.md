@@ -54,7 +54,7 @@ Die zusätzlichen Klänge werden beim ersten Auswählen geladen (Internet nötig
 Genau wie bei der Gitarre:
 
 - **Akkord antippen** öffnet die Drehräder: **Grundton** (C … H) und **Akkordart** (Dur, Moll, 7, m7, maj7, sus4, dim).
-- **Welche Töne sollen klingen?** Über den Drehrädern stehen die 6 Töne des Akkords (z. B. bei C: G4 E4 C4 G3 G2 C2). **Antippen** schaltet einen Ton an oder aus, **▶ Anhören** spielt nur die gewählten, **Übernehmen** speichert die Auswahl für diesen Platz. Abgewählte Töne sind in der Leiste gestrichelt und erklingen nicht – auch nicht im Arpeggio oder mit der Kopfsteuerung.
+- **Welche Töne sollen klingen?** Am einfachsten direkt in der Leiste: Auf **✎ Töne wählen** tippen (der Knopf wird gelb), dann in einer Akkordspalte die **Tonreihen antippen** – jeder Tipp schaltet den Ton an oder aus, abgewählte Töne sind **gestrichelt**. Gespeichert wird sofort. Mit **✓ Töne wählen: fertig** geht es zurück zum Spielen. Abgewählte Töne erklingen nicht – auch nicht im Arpeggio oder mit der Kopfsteuerung. (Dasselbe geht auch im Akkord-Fenster über die Ton-Knöpfe über den Drehrädern.)
 - **Einzelton:** Wählst du als Art **„Einzelton“**, erscheint ein drittes Rad für die **Oktave** (1–7). Der Platz spielt dann nur diesen einen Ton, z. B. **E5**. So kannst du Akkorde und einzelne Töne beliebig mischen – bis zu 7 Plätze.
 - **♪ Tonleiter-Töne** belegt alle 7 Plätze mit den Tönen der Tonleiter (z. B. C-Dur: C4 D4 E4 F4 G4 A4 H4) – ideal, um mit Kopfsteuerung oder im Kreis Melodien zu spielen.
 - **Festhalten und ziehen** (oder **‹ ›**) ändert die Reihenfolge.

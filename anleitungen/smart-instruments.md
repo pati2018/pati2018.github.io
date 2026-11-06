@@ -133,6 +133,10 @@ Die 5 **SoundWhacker** steuern die **ersten fünf Felder** (beschriftet mit **SW
 
 Über **🔔 SW** (Leiste unten, Modus Akkorde) bekommt jeder SoundWhacker sein eigenes Instrument – z. B. SW1 Klavier, SW2 Flöte, SW3 Nylon-Gitarre. Gespielt wird der Akkord bzw. Ton des jeweiligen Feldes, nur mit dem gewählten Klang. „wie oben“ = das oben eingestellte Instrument. Die Zuordnung gilt getrennt für Gitarre und Klavier und wird in den Presets mitgespeichert. Antippen der Felder mit dem Finger spielt weiter das oben gewählte Instrument.
 
+### 🎲 Zufall
+
+Im Fenster **🔔 SW** schaltet **🎲 Zufall** einen Spielmodus ein: Jeder Druck auf einen SoundWhacker spielt **einen zufälligen Ton der eingestellten Skala** (z. B. Dur-Pentatonik über „✎ Akkorde/Töne → Skala-Töne“) – mit dem Instrument dieses SW, solange er gehalten wird. Sind die Felder mit Akkorden belegt, kommen die Töne aus der Tonleiter der Tonart. Ideal zum gemeinsamen Improvisieren: Es klingt immer passend.
+
 Am Computer gehen auch die Tasten **1–5**.
 
 ## Einstellungen oben rechts

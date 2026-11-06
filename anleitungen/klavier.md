@@ -81,6 +81,17 @@ Genau wie bei der Gitarre:
 2. In Safari **„Teilen“ → „Zum Home-Bildschirm“**.
 3. Ab jetzt startet die App auch ohne Internet. Über **🎸 / 🎹** wechselst du zwischen Gitarre und Klavier.
 
+## Mit den SoundWhackern spielen
+
+Die 5 **SoundWhacker** steuern die **ersten fünf Felder** (in der Leiste mit **SW1–SW5** beschriftet) – genau wie im SoundWhacker-Programm über die Bluetooth-Tastatur des SW-HUB (Tasten 1–5).
+
+1. Am SW-HUB den Bluetooth-Modus **Tastatur** wählen und mit dem iPad koppeln (wie bei SoundWhacker Smart Control).
+2. App öffnen, **Losspielen** antippen, Modus **Akkorde**.
+3. **SW drücken = an, loslassen = aus.** Welche Akkorde oder Töne auf den Feldern liegen, stellst du unter **✎ Akkorde/Töne** ein. Flöte, Klarinette, Saxophon und Streicher klingen nur, solange der SW gedrückt ist; Klavier und E-Piano ebenso – außer das Pedal ist an.
+4. Mit **Muster** (Drehregler): SW drücken startet das Muster bzw. wechselt den Akkord, **derselbe SW nochmal** stoppt.
+
+Am Computer gehen auch die Tasten **1–5**.
+
 ## Tipps & Probleme
 
 - **Kein Ton?** Einmal auf den Bildschirm tippen, Lautstärke und Stummschalter prüfen.

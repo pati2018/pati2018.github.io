@@ -121,6 +121,17 @@ Im Video wird unten rechts der gerade gespielte Akkord mit Griffbild eingeblende
 
 Neue Versionen lädt die App automatisch, sobald wieder Internet da ist.
 
+## Mit den SoundWhackern spielen
+
+Die 5 **SoundWhacker** steuern die **ersten fünf Felder** (in der Leiste mit **SW1–SW5** beschriftet) – genau wie im SoundWhacker-Programm über die Bluetooth-Tastatur des SW-HUB (Tasten 1–5).
+
+1. Am SW-HUB den Bluetooth-Modus **Tastatur** wählen und mit dem iPad koppeln (wie bei SoundWhacker Smart Control).
+2. App öffnen, **Losspielen** antippen, Modus **Akkorde**.
+3. **SW drücken = an, loslassen = aus.** Welche Akkorde oder Töne auf den Feldern liegen, stellst du unter **✎ Akkorde** ein. Die Gitarre klingt wie beim Anschlagen von selbst aus.
+4. Mit **Muster** (Drehregler): SW drücken startet das Muster bzw. wechselt den Akkord, **derselbe SW nochmal** stoppt.
+
+Am Computer gehen auch die Tasten **1–5**.
+
 ## Tipps & Probleme
 
 - **„Klänge nicht geladen“?** Einfach noch einmal tippen. Für den allerersten Start braucht die App eine Internetverbindung, danach läuft sie auch offline.

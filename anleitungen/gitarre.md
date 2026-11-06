@@ -140,6 +140,10 @@ Die 5 **SoundWhacker** steuern die **ersten fünf Felder** (in der Leiste mit **
 
 Am Computer gehen auch die Tasten **1–5**.
 
+## Menü ausblenden
+
+Zum Spielen kannst du die grüne Leiste oben ausblenden: oben rechts auf **▲** tippen oder auf der Leiste **nach oben wischen**. Die Spielfläche wird dann größer. Mit dem kleinen Knopf **▼ Menü** oben in der Mitte kommt die Leiste zurück.
+
 ## Presets (alle Einstellungen speichern)
 
 Oben auf **💾 Presets** tippen. Es gibt **8 Plätze**.

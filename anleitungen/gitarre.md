@@ -33,6 +33,7 @@ In der zweiten Zeile findest du:
 ### Akkorde – begleiten
 
 - **Tonart wählen:** alle 12 Dur- und 12 Molltonarten. Oben erscheinen dann die **leitereigenen Akkorde** der Tonart – in Dur die Stufen I, ii, iii, IV, V, vi, vii° und dazu der Dominantseptakkord V7, in Moll i, ii°, III, iv, v, VI, VII und V7. Beispiel C-Dur: C, Dm, Em, F, G, Am, H°, G7.
+- **✎ Akkorde** – wähle aus, welche Akkorde der Tonart oben angezeigt werden. Antippen blendet einen Akkord ein oder aus; die übrigen werden breiter. Brauchst du nur vier Akkorde wie C, Am, F und G, blende die anderen einfach aus (oder tippe auf die Schnellwahl **C · Am · F · G**). **Alle** zeigt wieder alle Akkorde. Die Auswahl merkt sich die App für jede Tonart.
 - **Akkordnamen antippen** schlägt den Akkord an.
 - **Über die Saiten im Streifen wischen** schlägt wie mit der Hand, **eine Saite antippen** zupft sie einzeln.
 

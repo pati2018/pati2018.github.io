@@ -41,7 +41,7 @@ In der zweiten Zeile findest du:
 Mit Autoplay spielt die App den Rhythmus für dich. Dafür gibt es zwei Drehregler:
 
 - **Schlagen** – Schlagmuster 1 bis 8 (z. B. Folk, Pop, Rock, Reggae, Shuffle, Bossa Nova, Funk, Punk)
-- **Zupfen** – Zupfmuster 1 bis 6 (z. B. Travis, Country, Arpeggio, Ballade, Walzer ¾)
+- **Zupfen** – Zupfmuster 1 bis 8 (z. B. Travis, Country, Arpeggio, Ballade, Walzer ¾, Fingerpicking, Harfe, 6/8)
 
 **Antippen** dreht den Regler eine Stufe weiter (Aus → 1 → 2 → … → Aus), **Ziehen** dreht ihn direkt auf die gewünschte Stufe. Einfach ausprobieren, welches Muster passt! Es läuft immer nur ein Muster – stellst du einen Regler ein, springt der andere auf „Aus“.
 

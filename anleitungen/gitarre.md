@@ -39,7 +39,7 @@ In der zweiten Zeile findest du:
   - **Akkord antippen** öffnet zwei Drehräder: links den **Grundton** (C, Cis, D … H), rechts die **Akkordart** (Dur, Moll, 7, m7, maj7, sus4, dim). Mit **▶ Anhören** probieren, mit **Übernehmen** speichern.
   - **Verschieben:** Akkord mit dem Finger (oder der Maus) **festhalten und an die gewünschte Stelle ziehen** – oder mit den Pfeilen **‹ ›** schrittweise nach links oder rechts.
   - **sichtbar / aus** blendet den Platz ein oder aus – brauchst du nur 4 Akkorde, blende die übrigen aus. Die sichtbaren Akkorde werden breiter.
-  - **Alle zeigen** blendet wieder alles ein, **C · Am · F · G** ist eine Schnellwahl, **↺ Leitereigene Akkorde** stellt die leitereigenen Akkorde wieder her.
+  - **Alle zeigen** blendet wieder alles ein, **↺ Leitereigene Akkorde** stellt die leitereigenen Akkorde wieder her.
   - Alles merkt sich die App für jede Tonart einzeln.
 - **Akkordnamen antippen** schlägt den Akkord an.
 - **Über die Saiten im Streifen wischen** schlägt wie mit der Hand, **eine Saite antippen** zupft sie einzeln.

@@ -137,6 +137,15 @@ Die 5 **SoundWhacker** steuern die **ersten fünf Felder** (beschriftet mit **SW
 
 Im Fenster **🔔 SW** schaltet **🎲 Zufall** einen Spielmodus ein: Jeder Druck auf einen SoundWhacker spielt **einen zufälligen Ton der eingestellten Skala** (z. B. Dur-Pentatonik über „✎ Akkorde/Töne → Skala-Töne“) – mit dem Instrument dieses SW, solange er gehalten wird. Sind die Felder mit Akkorden belegt, kommen die Töne aus der Tonleiter der Tonart. Ideal zum gemeinsamen Improvisieren: Es klingt immer passend.
 
+### 🎵 Melodie auf einen SoundWhacker legen
+
+1. **🔔 SW** öffnen und beim gewünschten SW auf **🎵 Melodie** tippen.
+2. Die App schaltet auf die **Klaviertastatur**. Oben erscheint ein roter Balken „● Melodie für SW1“. Jetzt die Melodie **Ton für Ton** spielen (z. B. Ode an die Freude). Die Töne werden mitgeschrieben.
+3. Verspielt? **↶ Letzten Ton löschen**. Fertig? **✓ Speichern** – die App springt zurück, wo du warst.
+4. Ab jetzt spielt **jeder Druck auf diesen SW den nächsten Ton** der Melodie – mit dem Instrument des SW, solange gehalten. Am Ende geht es wieder von vorn los.
+
+Für SW2–SW5 genauso – jeder SW kann seine eigene Melodie haben. Auf den Feldern steht dann z. B. „SW1 🎵“. Mit **✕** neben der Melodie wird sie gelöscht und der SW spielt wieder sein Feld. Die Melodien bleiben gespeichert und kommen auch in die Presets.
+
 Am Computer gehen auch die Tasten **1–5**.
 
 ## Einstellungen oben rechts

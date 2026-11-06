@@ -85,9 +85,17 @@ Deine Einstellungen merkt sich die App für den nächsten Besuch.
 
 Im Video wird unten rechts der gerade gespielte Akkord mit Griffbild eingeblendet. Ohne Kamera werden nur Griffbrett und Klang aufgenommen.
 
+## Als App auf dem iPad / iPhone (auch offline)
+
+1. Die Gitarre einmal **mit Internet** in Safari öffnen – dabei speichert sie sich komplett auf dem Gerät.
+2. Auf **„Teilen“** (Viereck mit Pfeil) → **„Zum Home-Bildschirm“** tippen.
+3. Jetzt liegt die Gitarre mit eigenem Symbol auf dem Home-Bildschirm und startet im **Vollbild** – auch **ohne Internet**.
+
+Neue Versionen lädt die App automatisch, sobald wieder Internet da ist.
+
 ## Tipps & Probleme
 
-- **„Klänge nicht geladen“?** Einfach noch einmal tippen. Für den ersten Start braucht die App eine Internetverbindung.
+- **„Klänge nicht geladen“?** Einfach noch einmal tippen. Für den allerersten Start braucht die App eine Internetverbindung, danach läuft sie auch offline.
 - **Kamera funktioniert nicht?** Im Browser den Kamera-Zugriff für die Seite erlauben.
 - **Am besten** funktioniert die App in aktuellen Versionen von Chrome, Edge, Safari oder Firefox – auf dem Tablet im Querformat.
 

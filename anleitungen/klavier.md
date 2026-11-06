@@ -32,7 +32,7 @@ Die zusätzlichen Klänge werden beim ersten Auswählen geladen (Internet nötig
 - **Über die Tasten wischen** spielt ein Glissando.
 - **Weiter unten** auf der Taste anschlagen klingt **lauter**, weiter oben leiser.
 - **‹ ›** verschiebt die Tastatur um eine Oktave nach unten oder oben.
-- **Pedal** (nur Klavier und E-Piano) an: Die Töne klingen nach (wie das rechte Pedal am Klavier). Pedal aus: Der Ton hört beim Loslassen auf.
+- **Pedal: an / aus** (nur Klavier und E-Piano, antippen zum Umschalten): Bei „an“ klingen die Töne nach (wie das rechte Pedal am Klavier), bei „aus“ hört der Ton beim Loslassen auf. Den Knopf gibt es im Modus Tastatur und im Modus Akkorde.
 - **Grundton und Tonleiter** markieren die Töne einer Tonleiter mit Punkten (Grundton dunkler) – praktisch zum Improvisieren.
 
 ## Modus „Akkorde“ – begleiten

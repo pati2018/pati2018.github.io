@@ -7,7 +7,7 @@ Die **Gitarre** läuft direkt im Browser – am besten auf einem Tablet oder Han
 ## Schnellstart
 
 1. **App öffnen** – oben auf „App öffnen“ klicken.
-2. Warten, bis der Button **„Losspielen“** erscheint (vorher steht dort „Klänge laden …“), und darauf tippen.
+2. Kurz warten, solange oben „Klänge laden …“ steht.
 3. Auf die Saiten tippen – fertig.
 
 > Kein Ton? Lautstärke am Gerät prüfen. Auf dem iPad spielt die App auch bei eingeschaltetem Stummschalter.
@@ -127,7 +127,7 @@ Neue Versionen lädt die App automatisch, sobald wieder Internet da ist.
 Die 5 **SoundWhacker** steuern die **ersten fünf Felder** (in der Leiste mit **SW1–SW5** beschriftet) – genau wie im SoundWhacker-Programm über die Bluetooth-Tastatur des SW-HUB (Tasten 1–5).
 
 1. Am SW-HUB den Bluetooth-Modus **Tastatur** wählen und mit dem iPad koppeln (wie bei SoundWhacker Smart Control).
-2. App öffnen, **Losspielen** antippen, Modus **Akkorde**.
+2. App öffnen und den Modus **Akkorde** wählen.
 3. **SW drücken = an, loslassen = aus.** Welche Akkorde oder Töne auf den Feldern liegen, stellst du unter **✎ Akkorde** ein. Die Gitarre klingt wie beim Anschlagen von selbst aus.
 4. Mit **Muster** (Drehregler): SW drücken startet das Muster bzw. wechselt den Akkord, **derselbe SW nochmal** stoppt.
 

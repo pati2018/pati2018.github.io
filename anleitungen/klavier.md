@@ -7,7 +7,7 @@ Das Smart-Klavier wohnt in derselben App wie die Gitarre: Oben links schaltest d
 ## Schnellstart
 
 1. **App öffnen** – oben auf „App öffnen“ klicken.
-2. Warten, bis **„Losspielen“** erscheint, und darauf tippen.
+2. Kurz warten, solange oben „Klänge laden …“ steht.
 3. Spielen – auf der Tastatur oder im Modus **Akkorde**.
 
 ## Klänge
@@ -87,7 +87,7 @@ Genau wie bei der Gitarre:
 Die 5 **SoundWhacker** steuern die **ersten fünf Felder** (in der Leiste mit **SW1–SW5** beschriftet) – genau wie im SoundWhacker-Programm über die Bluetooth-Tastatur des SW-HUB (Tasten 1–5).
 
 1. Am SW-HUB den Bluetooth-Modus **Tastatur** wählen und mit dem iPad koppeln (wie bei SoundWhacker Smart Control).
-2. App öffnen, **Losspielen** antippen, Modus **Akkorde**.
+2. App öffnen und den Modus **Akkorde** wählen.
 3. **SW drücken = an, loslassen = aus.** Welche Akkorde oder Töne auf den Feldern liegen, stellst du unter **✎ Akkorde/Töne** ein. Flöte, Klarinette, Saxophon und Streicher klingen nur, solange der SW gedrückt ist; Klavier und E-Piano ebenso – außer das Pedal ist an.
 4. Mit **Muster** (Drehregler): SW drücken startet das Muster bzw. wechselt den Akkord, **derselbe SW nochmal** stoppt.
 

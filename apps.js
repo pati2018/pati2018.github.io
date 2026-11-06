@@ -19,6 +19,16 @@
  */
 window.APPS = [
   {
+    id: "klavier",
+    titel: "Smart-Klavier",
+    kurz: "Ein Klavier im Browser: frei auf der Tastatur spielen oder die Akkorde einer Tonart antippen – mit Rhythmus- und Arpeggio-Mustern, Akkordkreis und Kopfsteuerung.",
+    link: "https://pati2018.github.io/Gitarre/?klavier",
+    repo: "https://github.com/pati2018/Gitarre",
+    kategorie: "Musik",
+    symbol: "🎹",
+    datum: "2026-11-06"
+  },
+  {
     id: "soundwhacker-spielen",
     titel: "SoundWhacker Steuerung",
     kurz: "Mit den SoundWhackern (oder den Tasten 1–5) Akkorde, Töne, Melodien und Arpeggios spielen, improvisieren und Loops steuern – mit eingebauten Instrumenten.",
@@ -42,7 +52,7 @@ window.APPS = [
     id: "gitarre",
     titel: "Gitarre",
     kurz: "Eine Gitarre im Browser: frei auf dem Griffbrett spielen oder Akkorde mit automatischen Schlag- und Zupfmustern begleiten lassen.",
-    link: "https://pati2018.github.io/Gitarre/",
+    link: "https://pati2018.github.io/Gitarre/?gitarre",
     repo: "https://github.com/pati2018/Gitarre",
     kategorie: "Musik",
     symbol: "🎸",

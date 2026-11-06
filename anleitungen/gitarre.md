@@ -2,6 +2,8 @@
 
 Die **Gitarre** läuft direkt im Browser – am besten auf einem Tablet oder Handy mit Touchscreen, aber auch mit der Maus. Du kannst einzelne Töne auf dem Griffbrett spielen oder Akkorde anschlagen und dich von automatischen Rhythmen begleiten lassen. Die Klänge stammen von echten Gitarren-Aufnahmen.
 
+> In derselben App steckt auch das **Smart-Klavier**: oben links mit **🎸 / 🎹** umschalten.
+
 ## Schnellstart
 
 1. **App öffnen** – oben auf „App öffnen“ klicken.

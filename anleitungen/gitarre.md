@@ -35,7 +35,7 @@ In der zweiten Zeile findest du:
 - **Tonart wählen:** alle 12 Dur- und 12 Molltonarten. Oben erscheinen dann die **7 leitereigenen Akkorde** – in Dur die Stufen I, ii, iii, IV, V, vi, vii°, in Moll i, ii°, III, iv, v, VI, VII. Beispiel C-Dur: C, Dm, Em, F, G, Am, H°.
 - **✎ Akkorde** – wie in GarageBand jeden der 7 Akkordplätze selbst einstellen:
   - **Akkord antippen** öffnet zwei Drehräder: links den **Grundton** (C, Cis, D … H), rechts die **Akkordart** (Dur, Moll, 7, m7, maj7, sus4, dim). Mit **▶ Anhören** probieren, mit **Übernehmen** speichern.
-  - **‹ ›** verschiebt den Akkord nach links oder rechts.
+  - **Verschieben:** Akkord mit dem Finger (oder der Maus) **festhalten und an die gewünschte Stelle ziehen** – oder mit den Pfeilen **‹ ›** schrittweise nach links oder rechts.
   - **sichtbar / aus** blendet den Platz ein oder aus – brauchst du nur 4 Akkorde, blende die übrigen aus. Die sichtbaren Akkorde werden breiter.
   - **Alle zeigen** blendet wieder alles ein, **C · Am · F · G** ist eine Schnellwahl, **↺ Wie Tonart** stellt die leitereigenen Akkorde wieder her.
   - Alles merkt sich die App für jede Tonart einzeln.

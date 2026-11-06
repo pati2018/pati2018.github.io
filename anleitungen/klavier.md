@@ -60,7 +60,7 @@ Genau wie bei der Gitarre:
 - **Welche Töne sollen klingen?** Am einfachsten direkt in der Leiste: Auf **✎ Töne wählen** tippen (der Knopf wird gelb), dann in einer Akkordspalte die **Tonreihen antippen** – jeder Tipp schaltet den Ton an oder aus, abgewählte Töne sind **gestrichelt**. Gespeichert wird sofort. Mit **✓ Töne wählen: fertig** geht es zurück zum Spielen. Abgewählte Töne erklingen nicht – auch nicht im Arpeggio oder mit der Kopfsteuerung.
 - **Oktave:** Auch bei Akkorden gibt es rechts das Rad **Oktave**. Standard ist **Oktave 4** (z. B. C: C4 E4 G4); Oktave 5 spielt denselben Akkord eine Oktave höher (C5 E5 G5), Oktave 3 tiefer.
 - **Einzelton:** Wählst du als Art **„Einzelton“**, erscheint ein drittes Rad für die **Oktave** (1–7). Der Platz spielt dann nur diesen einen Ton, z. B. **E5**. So kannst du Akkorde und einzelne Töne beliebig mischen – bis zu 7 Plätze.
-- **♪ Tonleiter-Töne** belegt alle 7 Plätze mit den Tönen der Tonleiter (z. B. C-Dur: C4 D4 E4 F4 G4 A4 H4) – ideal, um mit Kopfsteuerung oder im Kreis Melodien zu spielen.
+- **♪ Skala-Töne …** (Auswahlliste): belegt alle 7 Plätze mit den Tönen einer **Skala** – zum **Improvisieren**, besonders schön mit **Säulen** oder **Kreis** und Durchwischen. Zur Wahl: Tonleiter der Tonart, Dur, Natürlich Moll, **Dur-Pentatonik**, **Moll-Pentatonik**, **Blues**, **Arabisch (Hijaz)**, Harmonisch Moll, Dorisch, Zigeuner-Moll. Der Grundton ist der der eingestellten Tonart, los geht es bei Oktave 4 (z. B. A-Moll + Moll-Pentatonik: A4 C5 D5 E5 G5 A5 C6).
 - **Festhalten und ziehen** (oder **‹ ›**) ändert die Reihenfolge.
 - **sichtbar / aus** blendet Akkorde aus – z. B. nur C, G, Am, F.
 - **↺ Leitereigene Akkorde** stellt die leitereigenen Akkorde wieder her.

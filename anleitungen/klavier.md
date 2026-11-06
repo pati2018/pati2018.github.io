@@ -18,6 +18,12 @@ Oben in der Auswahlliste stehen:
 - **Flöte, Klarinette, Saxophon, Glockenspiel, Marimba, Violine, Cello, Streicher, Pizzicato** – zum Spielen von Tönen und Akkorden, **ohne** Rhythmus- und Arpeggio-Regler
 - **Schlagzeug** – jede Taste ist ein Instrument des Schlagzeugs (Bass, Snare, HiHat, Toms, Becken, Bongos, Congas …), die Tasten sind beschriftet. Im Modus **Akkorde** liegen auf den 7 Feldern Bass, Snare, HiHat zu, HiHat offen, Tom tief, Tom hoch und Becken; über **✎ Akkorde/Töne** kannst du jedes Feld auf ein anderes Schlaginstrument stellen.
 
+**Wie lange klingt ein Ton?** Wie bei echten Instrumenten:
+
+- **Flöte, Klarinette, Saxophon, Violine, Cello, Streicher:** genau so lange, wie du die Taste oder das Feld gedrückt hältst – loslassen, Ton weg. (Bei der Kopfsteuerung: so lange der Zeiger auf dem Feld bleibt.)
+- **Klavier und E-Piano:** so lange wie gedrückt – außer das **Pedal** ist an, dann klingen die Töne nach. Das Pedal gibt es nur bei diesen beiden.
+- **Schlagzeug, Glockenspiel, Marimba, Pizzicato:** klingen wie beim echten Instrument von selbst aus.
+
 Die zusätzlichen Klänge werden beim ersten Auswählen geladen (Internet nötig) und stehen danach auch offline zur Verfügung. Sie stammen aus der SoundFont von MIGA.
 
 ## Modus „Tastatur“ – frei spielen
@@ -26,7 +32,7 @@ Die zusätzlichen Klänge werden beim ersten Auswählen geladen (Internet nötig
 - **Über die Tasten wischen** spielt ein Glissando.
 - **Weiter unten** auf der Taste anschlagen klingt **lauter**, weiter oben leiser.
 - **‹ ›** verschiebt die Tastatur um eine Oktave nach unten oder oben.
-- **Pedal** an: Die Töne klingen nach (wie das rechte Pedal am Klavier). Pedal aus: Der Ton hört beim Loslassen auf.
+- **Pedal** (nur Klavier und E-Piano) an: Die Töne klingen nach (wie das rechte Pedal am Klavier). Pedal aus: Der Ton hört beim Loslassen auf.
 - **Grundton und Tonleiter** markieren die Töne einer Tonleiter mit Punkten (Grundton dunkler) – praktisch zum Improvisieren.
 
 ## Modus „Akkorde“ – begleiten

@@ -33,6 +33,7 @@ Die zusätzlichen Klänge werden beim ersten Auswählen geladen (Internet nötig
 - **Weiter unten** auf der Taste anschlagen klingt **lauter**, weiter oben leiser.
 - **‹ ›** verschiebt die Tastatur um eine Oktave nach unten oder oben.
 - **Pedal: an / aus** (nur Klavier und E-Piano, antippen zum Umschalten): Bei „an“ klingen die Töne nach (wie das rechte Pedal am Klavier), bei „aus“ hört der Ton beim Loslassen auf. Den Knopf gibt es im Modus Tastatur und im Modus Akkorde.
+- **🎨 Farben** (ein/aus): färbt die Tasten in **Boomwhacker-Farben** – jede Taste in der Farbe ihres Tons (C rot, D orange, E gelb, F hellgrün, G türkis, A lila, H magenta; schwarze Tasten etwas dunkler).
 - **Grundton und Tonleiter** markieren die Töne einer Tonleiter mit Punkten (Grundton dunkler) – praktisch zum Improvisieren.
 
 ## Modus „Akkorde“ – begleiten

@@ -129,6 +129,10 @@ Die 5 **SoundWhacker** steuern die **ersten fünf Felder** (beschriftet mit **SW
 2. App öffnen, Modus **Akkorde**.
 3. **Nur solange du den SW hältst (bzw. den Body-Touch berührst), klingt es.** Loslassen = Akkord, Ton und Arpeggio sind sofort weg – auch mit Pedal. Hältst du zwei SW, wechselt es beim Loslassen zum anderen.
 
+### Jedem SoundWhacker ein eigenes Instrument
+
+Über **🔔 SW** (Leiste unten, Modus Akkorde) bekommt jeder SoundWhacker sein eigenes Instrument – z. B. SW1 Klavier, SW2 Flöte, SW3 Nylon-Gitarre. Gespielt wird der Akkord bzw. Ton des jeweiligen Feldes, nur mit dem gewählten Klang. „wie oben“ = das oben eingestellte Instrument. Die Zuordnung gilt getrennt für Gitarre und Klavier und wird in den Presets mitgespeichert. Antippen der Felder mit dem Finger spielt weiter das oben gewählte Instrument.
+
 Am Computer gehen auch die Tasten **1–5**.
 
 ## Einstellungen oben rechts

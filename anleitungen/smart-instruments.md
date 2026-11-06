@@ -3,7 +3,7 @@
 **Smart Instruments** ist eine App mit zwei Instrumenten, die direkt im Browser laufen – am besten auf dem iPad:
 
 - 🎸 **Gitarre** – frei auf dem Griffbrett spielen oder Akkorde anschlagen, mit Schlag- und Zupfmustern.
-- 🎹 **Smart-Klavier** – eine Klaviertastatur oder Akkorde und Töne antippen, mit Arpeggio-Mustern. Dazu viele weitere Klänge: E-Piano, Schlagzeug, Flöte, Klarinette, Saxophon, Glockenspiel, Marimba, Violine, Cello, Streicher und Pizzicato.
+- 🎹 **Smart-Klavier** – eine Klaviertastatur oder Akkorde und Töne antippen, mit Arpeggio-Mustern. Dazu viele weitere Klänge: E-Piano, Schlagzeug, Flöte, Klarinette, Saxophon, Glockenspiel, Marimba, Violine, Cello, Streicher, Pizzicato und E-Gitarren (Overdrive, Verzerrt, Clean).
 
 Oben links schaltest du jederzeit mit **🎸 / 🎹** zwischen Gitarre und Klavier um. Fast alles Weitere – Akkorde einstellen, Kreis, Säulen, Kopfsteuerung, SoundWhacker, Presets – funktioniert bei beiden gleich.
 
@@ -56,13 +56,14 @@ Oben in der Auswahlliste:
 
 - **Klavier** (Konzertflügel) und **E-Piano** – mit Arpeggio-Mustern und Pedal
 - **Flöte, Klarinette, Saxophon, Glockenspiel, Marimba, Violine, Cello, Streicher, Pizzicato** – für Töne und Akkorde (ohne Arpeggio)
+- **E-Gitarre Overdrive, E-Gitarre Verzerrt, E-Gitarre Clean** – zum Improvisieren, z. B. mit **♪ Skala-Töne** (Moll-Pentatonik, Blues)
 - **Schlagzeug** – jede Taste ist ein Schlaginstrument (Bass, Snare, HiHat, Toms, Becken, Bongos, Congas …), die Tasten sind beschriftet. Im Modus **Akkorde** liegen auf den Feldern Bass, Snare, HiHat zu/offen, Tom tief/hoch und Becken.
 
 **Wie lange klingt ein Ton?** Wie bei echten Instrumenten:
 
-- **Flöte, Klarinette, Saxophon, Violine, Cello, Streicher:** genau so lange, wie du drückst – loslassen, Ton weg.
+- **Flöte, Klarinette, Saxophon, Violine, Cello, Streicher, E-Gitarre Overdrive/Verzerrt:** genau so lange, wie du drückst – loslassen, Ton weg.
 - **Klavier und E-Piano:** so lange wie gedrückt – außer **Pedal: an**, dann klingen die Töne nach.
-- **Schlagzeug, Glockenspiel, Marimba, Pizzicato:** klingen von selbst aus.
+- **Schlagzeug, Glockenspiel, Marimba, Pizzicato, E-Gitarre Clean:** klingen von selbst aus.
 
 Die zusätzlichen Klänge werden beim ersten Auswählen geladen (Internet nötig) und stehen danach auch offline zur Verfügung.
 

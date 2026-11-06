@@ -22,7 +22,7 @@ window.APPS = [
   {
     id: "smart-instruments",
     titel: "Smart Instruments",
-    kurz: "Gitarre und Smart-Klavier in einer App: frei spielen oder Akkorde und Töne antippen – mit Mustern, Kreis, Säulen, Boomwhacker-Farben, Kopfsteuerung, SoundWhacker und vielen Klängen (Schlagzeug, Flöte, Streicher …).",
+    kurz: "Gitarre und Smart-Klavier in einer App: frei spielen oder Akkorde und Töne antippen – mit Mustern, Kreis, Säulen, Boomwhacker-Farben, Kopfsteuerung, SoundWhacker und vielen Klängen (Schlagzeug, Flöte, Streicher, verzerrte E-Gitarre …).",
     links: [
       { label: "🎸 Gitarre öffnen", url: "https://pati2018.github.io/Gitarre/?gitarre" },
       { label: "🎹 Klavier öffnen", url: "https://pati2018.github.io/Gitarre/?klavier" }

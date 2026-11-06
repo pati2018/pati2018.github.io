@@ -40,6 +40,7 @@ Die zusätzlichen Klänge werden beim ersten Auswählen geladen (Internet nötig
 - **Tonart wählen:** alle 12 Dur- und 12 Molltonarten. Oben stehen die **7 leitereigenen Akkorde**.
 - Jede Spalte zeigt die **sechs Töne** des Akkords: unten zwei Basstöne, darüber vier Töne in enger Lage.
   - **Akkordnamen antippen** spielt den ganzen Akkord.
+  - **Gleiten:** Finger auf einen Akkordnamen setzen und **ohne abzuheben** zum nächsten Akkord gleiten – jeder Akkord erklingt, sobald du ihn erreichst. Das geht auch im **Kreis** von Feld zu Feld.
   - **Über die Tonreihen wischen** spielt den Akkord als **Arpeggio** – nach oben oder unten.
   - **Eine Reihe antippen** spielt einen einzelnen Ton.
 

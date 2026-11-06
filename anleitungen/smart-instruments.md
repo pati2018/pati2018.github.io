@@ -78,7 +78,7 @@ Die zusätzlichen Klänge werden beim ersten Auswählen geladen (Internet nötig
 
 ## Akkorde – nur beim Klavier
 
-- Jede Spalte zeigt die Töne des Akkords: unten Basstöne, darüber Töne in enger Lage. **Standard ist der Dreiklang** – es klingen die oberen drei Töne (z. B. C: G4 E4 C4).
+- Jede Spalte zeigt die Töne des Akkords: unten Basstöne, darüber Töne in enger Lage. **Standard: alle Akkordtöne** – Bass, Quinte und die vier Töne darüber klingen zusammen. Einzelne Töne kannst du mit „Töne wählen“ abschalten.
 - **✎ Töne wählen:** Danach in einer Spalte die **Tonreihen antippen** – jeder Tipp schaltet einen Ton an oder aus (gestrichelt = aus). Mit **✓ fertig** zurück zum Spielen.
 - **Arpeggio** – Drehregler mit 8 Mustern (Klavier und E-Piano).
 - Im Fenster **✎ Akkorde/Töne** zusätzlich:
@@ -127,7 +127,7 @@ Die 5 **SoundWhacker** steuern die **ersten fünf Felder** (beschriftet mit **SW
 
 1. Am SW-HUB den Bluetooth-Modus **Tastatur** wählen und mit dem iPad koppeln.
 2. App öffnen, Modus **Akkorde**.
-3. **SW drücken = an, loslassen = aus.** Mit Muster: SW startet bzw. wechselt, derselbe SW nochmal stoppt.
+3. **Nur solange du den SW hältst (bzw. den Body-Touch berührst), klingt es.** Loslassen = Akkord, Ton und Arpeggio sind sofort weg – auch mit Pedal. Hältst du zwei SW, wechselt es beim Loslassen zum anderen.
 
 Am Computer gehen auch die Tasten **1–5**.
 

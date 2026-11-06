@@ -60,6 +60,26 @@ So funktioniert es:
 
 Mit **− 96 BPM +** stellst du das Tempo ein.
 
+### Kopfsteuerung (wie das Klang-Pad in MIGA)
+
+Im Modus **Akkorde** lassen sich die Akkordfelder auch **mit dem Kopf** spielen – ganz ohne Hände.
+
+1. Auf **👃 Kopf** tippen und den Kamera-Zugriff erlauben. Unten links erscheint ein kleines Kamerabild.
+2. **Gerade auf den Bildschirm schauen** – diese Haltung ist die Mitte.
+3. Den Kopf nach **links oder rechts drehen**: Ein gelber Zeiger wandert über die Akkordfelder, das Feld darunter wird gelb umrandet.
+4. Bleibt der Zeiger auf einem Feld, füllt sich ein Balken – dann **erklingt der Akkord**. Ist ein **Schlag- oder Zupfmuster** an, wechselt der Rhythmus auf diesen Akkord.
+5. Um denselben Akkord noch einmal anzuschlagen, kurz auf ein Nachbarfeld und zurück.
+
+Einstellungen neben dem Kopf-Knopf:
+
+| Einstellung | Wofür |
+|---|---|
+| **⌖ Mitte** | Die jetzige Kopfhaltung als Mitte nehmen (z. B. wenn man anders sitzt) |
+| **Verweilen** | Wie lange der Zeiger auf einem Feld bleiben muss: sofort bis 2 s |
+| **Bewegung** | Wie weit der Kopf sich drehen muss: groß, mittel, klein |
+
+Tipp: Mit weniger Akkorden (**✎ Akkorde**, z. B. nur C, G, Am, F) werden die Felder breiter und sind mit dem Kopf leichter zu treffen. Die Gesichtserkennung läuft komplett auf dem Gerät – das Kamerabild wird nirgendwohin geschickt.
+
 ## Instrumente
 
 Oben stehen fünf Klänge zur Auswahl: **Stahlsaiten** und **Nylon** (akustisch) sowie **Clean**, **Crunch** und **Verzerrt** (E-Gitarre).

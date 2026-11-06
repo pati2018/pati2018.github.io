@@ -9,6 +9,7 @@
  *  titel        – Name der App
  *  kurz         – ein bis zwei Sätze für die Karte auf der Startseite
  *  link         – Adresse der fertigen App (GitHub Pages)
+ *  links        – (optional) mehrere „öffnen“-Knöpfe: [{ label, url }, …]
  *  repo         – (optional) Link zum Quellcode auf GitHub
  *  kategorie    – z. B. "Musik", "Schule", "Werkzeug"
  *  symbol       – ein Emoji als Bild für die Karte
@@ -19,13 +20,17 @@
  */
 window.APPS = [
   {
-    id: "klavier",
-    titel: "Smart-Klavier",
-    kurz: "Klavier, Schlagzeug, Flöte, Streicher und mehr im Browser: frei auf der Tastatur spielen oder Akkorde und Töne antippen – mit Arpeggio, Akkordkreis und Kopfsteuerung.",
-    link: "https://pati2018.github.io/Gitarre/?klavier",
+    id: "smart-instruments",
+    titel: "Smart Instruments",
+    kurz: "Gitarre und Smart-Klavier in einer App: frei spielen oder Akkorde und Töne antippen – mit Mustern, Kreis, Säulen, Boomwhacker-Farben, Kopfsteuerung, SoundWhacker und vielen Klängen (Schlagzeug, Flöte, Streicher …).",
+    links: [
+      { label: "🎸 Gitarre öffnen", url: "https://pati2018.github.io/Gitarre/?gitarre" },
+      { label: "🎹 Klavier öffnen", url: "https://pati2018.github.io/Gitarre/?klavier" }
+    ],
+    link: "https://pati2018.github.io/Gitarre/?gitarre",
     repo: "https://github.com/pati2018/Gitarre",
     kategorie: "Musik",
-    symbol: "🎹",
+    symbol: "🎸🎹",
     datum: "2026-11-06"
   },
   {
@@ -46,16 +51,6 @@ window.APPS = [
     repo: "https://github.com/pati2018/soundwhacker-looper",
     kategorie: "Musik",
     symbol: "📷",
-    datum: "2026-11-05"
-  },
-  {
-    id: "gitarre",
-    titel: "Gitarre",
-    kurz: "Eine Gitarre im Browser: frei auf dem Griffbrett spielen oder Akkorde mit automatischen Schlag- und Zupfmustern begleiten lassen.",
-    link: "https://pati2018.github.io/Gitarre/?gitarre",
-    repo: "https://github.com/pati2018/Gitarre",
-    kategorie: "Musik",
-    symbol: "🎸",
     datum: "2026-11-05"
   }
 ];

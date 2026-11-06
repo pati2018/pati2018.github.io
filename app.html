@@ -4,7 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Anleitung</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧩</text></svg>">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#2f5bd3">
+  <meta name="apple-mobile-web-app-title" content="Web-Apps">
   <link rel="stylesheet" href="style.css">
   <script src="theme.js"></script>
 </head>
@@ -31,7 +35,7 @@
       document.title = `${app.titel} – Anleitung`;
       box.innerHTML = `
         <div class="app-head">
-          <div class="icon" aria-hidden="true"${[...(app.symbol || "")].length > 1 ? ' style="font-size:24px;letter-spacing:-2px"' : ""}>${esc(app.symbol || "🧩")}</div>
+          ${app.bild ? `<div class="icon" aria-hidden="true" style="background:none;overflow:hidden"><img src="${esc(app.bild)}" alt="" style="width:100%;height:100%;border-radius:inherit"></div>` : `<div class="icon" aria-hidden="true"${[...(app.symbol || "")].length > 1 ? ' style="font-size:24px;letter-spacing:-2px"' : ""}>${esc(app.symbol || "🧩")}</div>`}
           <h1>${esc(app.titel)}</h1>
         </div>
         <p class="lead">${esc(app.kurz)}</p>

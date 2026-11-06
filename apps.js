@@ -13,6 +13,7 @@
  *  repo         – (optional) Link zum Quellcode auf GitHub
  *  kategorie    – z. B. "Musik", "Schule", "Werkzeug"
  *  symbol       – ein Emoji als Bild für die Karte
+ *  bild         – (optional) Bilddatei statt Emoji, z. B. das App-Symbol
  *  datum        – Veröffentlichungsdatum, Format JJJJ-MM-TT
  *
  *  Neueste Apps stehen automatisch oben (sortiert nach Datum).
@@ -31,6 +32,7 @@ window.APPS = [
     repo: "https://github.com/pati2018/Gitarre",
     kategorie: "Musik",
     symbol: "🎸🎹",
+    bild: "icons/smart-instruments-192.png",
     datum: "2026-11-06"
   },
   {

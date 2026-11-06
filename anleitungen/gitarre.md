@@ -66,9 +66,15 @@ Im Modus **Akkorde** lassen sich die Akkordfelder auch **mit dem Kopf** spielen 
 
 1. Auf **👃 Kopf** tippen und den Kamera-Zugriff erlauben. Unten links erscheint ein kleines Kamerabild.
 2. **Gerade auf den Bildschirm schauen** – diese Haltung ist die Mitte.
-3. Den Kopf nach **links oder rechts drehen**: Ein gelber Zeiger wandert über die Akkordfelder, das Feld darunter wird gelb umrandet.
+3. Den Kopf nach **links oder rechts drehen** (im Kreis auch **nach oben oder unten nicken**): Ein gelber Zeiger wandert über die Akkordfelder, das Feld darunter wird gelb umrandet.
 4. Bleibt der Zeiger auf einem Feld, füllt sich ein Balken – dann **erklingt der Akkord**. Ist ein **Schlag- oder Zupfmuster** an, wechselt der Rhythmus auf diesen Akkord.
 5. Um denselben Akkord noch einmal anzuschlagen, kurz auf ein Nachbarfeld und zurück.
+
+#### Akkorde im Kreis (ideal für die Kopfsteuerung)
+
+Mit **◯ Kreis** stehen die Akkorde nicht mehr in einer Reihe, sondern **rund um eine Mitte** – der erste Akkord oben auf 12 Uhr, die anderen im Uhrzeigersinn. Antippen schlägt den Akkord an.
+
+Mit der Kopfsteuerung zählt dann nur die **Richtung**: Aus der Mitte nach oben schauen spielt den Akkord auf 12 Uhr, nach rechts den auf 3 Uhr, schräg links oben den auf 10–11 Uhr. In der **Mitte** (gestrichelter Kreis) erklingt nichts – so springst du schnell von einem Akkord zum nächsten, ohne an den anderen vorbeizumüssen. Ein Tipp auf **◯ Kreis** schaltet zurück zur Reihe.
 
 Einstellungen neben dem Kopf-Knopf:
 

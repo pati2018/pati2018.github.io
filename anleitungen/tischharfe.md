@@ -27,6 +27,22 @@ Oben rechts auf **▲ Menü einklappen** tippen: Alle Knöpfe verschwinden und *
 - Die App merkt sich, ob das Menü eingeklappt war.
 - Für echtes Vollbild ohne Safari-Leiste: In Safari **Teilen → Zum Home-Bildschirm** und die Tischharfe von dort starten.
 
+## Eigene Lieder einspielen
+
+Mit **＋ Eigenes Lied** (neben der Liedauswahl) öffnet sich eine **Klaviertastatur** von g bis g″ – genau der Tonumfang der 25-saitigen Harfe.
+
+1. Oben einen **Namen** eingeben, **Takt** (4/4 oder 3/4) und **Tempo** wählen.
+2. **Notenwert** wählen (½, 1, 1½, 2, 3 oder 4 Schläge – dieselben Zeichen wie auf dem Notenblatt) und dann die **Taste** antippen. Der Ton kommt ans Ende des Liedes. Der Notenwert bleibt, bis man einen anderen wählt.
+3. **Pause** fügt eine Pause mit dem gewählten Notenwert ein.
+4. **Verspielt?** Den Ton in der Reihe antippen – dann ändert die nächste Taste die Tonhöhe, ein Notenwert die Länge, **Pause** macht ihn zur Pause und **⌫ Löschen** entfernt ihn. Nochmal antippen = fertig. Ohne Auswahl löscht **⌫** den letzten Ton.
+5. Optional den **Liedtext** eingeben: eine Silbe pro Ton, mit Leerzeichen getrennt (z. B. *Al- le mei- ne Ent- chen*). Darunter steht, ob die Zahl der Silben passt.
+6. **▶ Anhören** spielt das Lied vor.
+7. **💾 Speichern und spielen** – das Lied steht jetzt in der Liedauswahl unter **Eigene Lieder** und lässt sich wie alle anderen spielen: mit den Fingern, den SoundWhackern, dem Kopf und auch als Video aufnehmen.
+
+- Ein eigenes Lied wählen und **✎ Bearbeiten** tippen, um es zu ändern oder zu **löschen**.
+- Eigene Lieder werden **auf dem Gerät gespeichert**, auf dem sie gemacht wurden. Mit **📤 Exportieren** werden alle eigenen Lieder zu einer Datei, die man mit **📥 Importieren** auf einem anderen iPad wieder einspielt.
+- Passt ein Lied nicht auf die 18-saitige Harfe, wird es automatisch verschoben – wie bei den anderen Liedern.
+
 ## Spielen
 
 - **Antippen**: eine Saite zupfen.

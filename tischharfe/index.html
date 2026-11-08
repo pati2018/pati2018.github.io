@@ -53,6 +53,43 @@
   #aufBtn.stop{background:#fff;color:#c0392b;box-shadow:inset 0 0 0 2px #c0392b}
   .pegel{display:inline-block;width:80px;height:9px;border-radius:5px;background:var(--line);overflow:hidden}
   .pegel[hidden]{display:none}
+  .bar button[hidden]{display:none}
+  /* ---------- Editor für eigene Lieder ---------- */
+  body.editorOffen{overflow:hidden}
+  .editor{position:fixed;inset:0;z-index:20;background:var(--bg);overflow:auto;padding:calc(env(safe-area-inset-top) + 14px) 16px 30px;-webkit-overflow-scrolling:touch}
+  .editor[hidden]{display:none}
+  .editor>*{max-width:980px;margin-left:auto;margin-right:auto}
+  .edKopf{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .edKopf h2{margin:0;font-family:Georgia,serif;font-weight:400;font-size:clamp(24px,4vw,32px)}
+  .edZeile{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-top:14px;color:var(--muted);font-size:15px}
+  .edZeile label{display:flex;align-items:center;gap:7px}
+  .editor input[type=text]{font:inherit;font-size:16px;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:7px 10px;min-width:0}
+  #edName{width:min(260px,60vw)}
+  .edDauern{display:inline-flex;flex-wrap:wrap;gap:6px}
+  .edDauer{display:inline-flex;align-items:center;gap:4px;background:var(--panel);color:var(--ink);border:1.5px solid var(--line);font-weight:600;padding:6px 12px}
+  .edDauer[aria-pressed=true]{background:var(--accent);color:#2a1d10;border-color:var(--accent)}
+  .klavier{position:relative;height:clamp(130px,24vh,200px);margin-top:16px;user-select:none;-webkit-user-select:none;touch-action:none}
+  .klavier .taste{position:absolute;top:0;display:flex;align-items:flex-end;justify-content:center;cursor:pointer;border-radius:0 0 8px 8px}
+  .klavier .weiss{bottom:0;background:#f7f2e8;border:1px solid #9b8a76;color:#3d2a1a;font-size:13px;font-weight:600}
+  .klavier .weiss span{border-bottom:4px solid;padding:0 2px 6px;margin-bottom:6px}
+  .klavier .schwarz{height:60%;background:#2a221c;border:1px solid #000;z-index:2;color:#bbb;font-size:10px;padding-bottom:5px}
+  .klavier .taste.an{filter:brightness(.8)}
+  .klavier .schwarz.an{background:#6b5a48}
+  .edHinweis{margin-top:10px;color:var(--muted);font-size:14px;line-height:1.45}
+  .edHinweis b{color:var(--ink)}
+  .edNoten{display:flex;gap:6px;overflow-x:auto;padding:10px 2px;margin-top:6px;min-height:58px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .edLeer{color:var(--muted);font-size:14px;align-self:center}
+  .edNote{flex:none;display:flex;flex-direction:column;align-items:center;gap:2px;background:var(--panel);color:var(--ink);border:2px solid var(--f);border-radius:10px;padding:5px 9px;font-weight:600;font-size:14px}
+  .edNote.pause{border-style:dashed;color:var(--muted)}
+  .edNote.gewaehlt{background:var(--accent);color:#2a1d10;box-shadow:0 0 0 3px rgba(224,168,79,.4)}
+  .edNote.jetzt{transform:translateY(-4px);box-shadow:0 0 12px var(--f)}
+  .edText{display:flex;flex-direction:column;gap:6px;margin-top:14px;color:var(--muted);font-size:14px}
+  .edText input{width:100%}
+  .edSilben{font-size:13px;color:#8fd19e}.edSilben.warn{color:#ffb199}
+  .edUnten{border-top:1px solid var(--line);padding-top:14px}
+  .edRechts{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+  .edImport{cursor:pointer;border:1.5px solid var(--line);border-radius:999px;padding:9px 18px;color:var(--ink);font-weight:500}
+  .edRot{color:#ffb199!important;border-color:#7a3b30!important}
   .klapp{font-size:14px;padding:7px 14px}
   .klappZu,.zuRec{display:none;position:absolute;top:8px;z-index:3;border-radius:999px;font-size:14px;padding:7px 14px;box-shadow:0 2px 10px rgba(0,0,0,.35)}
   .klappZu{right:8px;background:rgba(35,28,23,.85);color:var(--ink);border:1.5px solid rgba(255,255,255,.35);font-weight:600}
@@ -94,6 +131,8 @@
 
   <div class="bar">
     <label>Lied <select id="lied"></select></label>
+    <button id="eigenBtn" class="quiet">＋ Eigenes Lied</button>
+    <button id="bearbBtn" class="quiet" hidden>✎ Bearbeiten</button>
     <label>Harfe <select id="modell"></select></label>
     <div class="seg" role="group" aria-label="Modus">
       <button data-modus="ueben" aria-pressed="true">Üben</button>
@@ -152,7 +191,7 @@
   </details>
 </div>
 
-<script src="lieder.js?v=20"></script>
+<script src="lieder.js?v=21"></script>
 <script>
 const H=window.HARFE, $=id=>document.getElementById(id);
 const cv=$('harfe'), g=cv.getContext('2d');
@@ -490,6 +529,7 @@ cv.addEventListener('wheel',e=>{ if(st.modus!=='frei') return; e.preventDefault(
 // Leertaste im Übemodus spielt den nächsten Ton – praktisch mit einem einzelnen großen Taster
 addEventListener('keydown',e=>{
   if(e.metaKey||e.ctrlKey||e.altKey) return;
+  if(e.target.closest('input[type=text],textarea')) return;   // z. B. Liedname im Editor
   const sw=/^(Digit|Numpad)([1-5])$/.exec(e.code);
   if(sw||/^[1-5]$/.test(e.key)){ e.preventDefault(); if(!e.repeat) swSchlag((sw?+sw[2]:+e.key)-1); return }
   if(e.target.closest('select,input,button')||e.repeat) return;
@@ -497,7 +537,15 @@ addEventListener('keydown',e=>{
 });
 
 // ================= Bedienung =================
-H.GRUPPEN.forEach(gr=>{const og=document.createElement('optgroup'); og.label=gr; H.LIEDER.filter(l=>l.gruppe===gr).forEach(l=>og.appendChild(new Option(l.titel,l.id))); $('lied').appendChild(og)});
+// Liedauswahl (auch nach dem Speichern eigener Lieder neu aufbauen)
+function liedAuswahl(){
+  const sel=$('lied'); sel.innerHTML='';
+  H.GRUPPEN.forEach(gr=>{ const ls=H.LIEDER.filter(l=>l.gruppe===gr); if(!ls.length) return;
+    const og=document.createElement('optgroup'); og.label=gr; ls.forEach(l=>og.appendChild(new Option(l.titel,l.id))); sel.appendChild(og) });
+  if(!H.LIEDER.some(l=>l.id===st.liedId)) st.liedId=H.LIEDER[0].id;
+  sel.value=st.liedId;
+}
+liedAuswahl();
 for(const k in H.MODELLE) $('modell').add(new Option(H.MODELLE[k].name,k));
 // gespeicherte Auswahl
 try{const s=JSON.parse(localStorage.getItem('tischharfe')||'{}'); Object.assign(st,{liedId:s.liedId||st.liedId,modell:+s.modell||st.modell,klang:s.klang||st.klang,hall:s.hall??st.hall,namen:s.namen??st.namen,sw:['weiter','toene','aus'].includes(s.sw)?s.sw:st.sw})}catch(e){}
@@ -534,7 +582,8 @@ ladeLied(); layout(); neustart();
 addEventListener('resize',layout);
 requestAnimationFrame(schleife);
 </script>
-<script src="kopf.js?v=20"></script>
-<script src="aufnahme.js?v=20"></script>
+<script src="kopf.js?v=21"></script>
+<script src="aufnahme.js?v=21"></script>
+<script src="eigene.js?v=21"></script>
 </body>
 </html>

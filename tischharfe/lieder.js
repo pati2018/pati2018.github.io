@@ -76,7 +76,7 @@ window.HARFE = (function () {
       noten: "E5:.5 D#5:.5 E5:.5 D#5:.5 E5:.5 B4:.5 D5:.5 C5:.5 A4:1 r:.5 C4:.5 E4:.5 A4:.5 B4:1 r:.5 E4:.5 G#4:.5 B4:.5 C5:1 r:.5 E4:.5 E5:.5 D#5:.5 E5:.5 D#5:.5 E5:.5 B4:.5 D5:.5 C5:.5 A4:1 r:.5 C4:.5 E4:.5 A4:.5 B4:1 r:.5 E4:.5 C5:.5 B4:.5 A4:3" },
   ];
 
-  const GRUPPEN = ["Übungen", "Kinderlieder", "Feste", "Klassik"];
+  const GRUPPEN = ["Übungen", "Kinderlieder", "Feste", "Klassik", "Eigene Lieder"];
   LIEDER.sort((a, b) => GRUPPEN.indexOf(a.gruppe) - GRUPPEN.indexOf(b.gruppe));
   // Taktanfänge (berücksichtigt einen Auftakt)
   const taktStarts = l => { const a = l.auftakt || 0, out = []; for (let b = a; b < l.laenge; b += l.takt) out.push(b); return out; };
@@ -127,5 +127,20 @@ window.HARFE = (function () {
     [0.5, "½ Schlag"], [1, "1 Schlag"], [1.5, "1½ Schläge"], [2, "2 Schläge"], [3, "3 Schläge"], [4, "4 Schläge"],
   ];
 
-  return { MODELLE, SAITENABSTAND_MM, LIEDER, GRUPPEN, taktStarts, tonName, istHalbton, parse, fuer, zeichen, LEGENDE };
+  // Eigene Lieder (mit der Klaviertastatur eingespielt) liegen im Gerätespeicher
+  const EIGENE_KEY = "tischharfe-eigene";
+  function eigeneLaden() {
+    let liste = [];
+    try { liste = JSON.parse(localStorage.getItem(EIGENE_KEY) || "[]"); } catch (e) {}
+    return (Array.isArray(liste) ? liste : []).filter(l => {
+      if (!l || !l.id || !l.noten || !l.titel) return false;
+      try { parse(l); return true; } catch (e) { return false; }
+    }).map(l => ({ ...l, gruppe: "Eigene Lieder", eigen: true }));
+  }
+  function eigeneSpeichern(liste) {
+    localStorage.setItem(EIGENE_KEY, JSON.stringify(liste.map(({ id, titel, takt, tempo, noten, text, auftakt }) => ({ id, titel, takt, tempo, noten, text, auftakt }))));
+  }
+  eigeneLaden().forEach(l => LIEDER.push(l));
+
+  return { eigeneLaden, eigeneSpeichern, MODELLE, SAITENABSTAND_MM, LIEDER, GRUPPEN, taktStarts, tonName, istHalbton, parse, fuer, zeichen, LEGENDE };
 })();

@@ -35,6 +35,18 @@
   .msg{margin-top:16px;color:var(--muted);font-size:15px;line-height:1.5}
   .msg b{color:var(--ink)}
   kbd{border:1px solid var(--line);border-radius:4px;padding:0 5px;font-family:inherit;font-size:13px}
+  .fenster{position:fixed;inset:0;background:rgba(10,9,20,.82);display:flex;align-items:center;justify-content:center;padding:16px;z-index:10}
+  .fenster[hidden]{display:none}
+  .karte{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:20px 22px;max-width:520px;width:100%}
+  .karte h2{margin:0 0 8px;font-size:22px}
+  .karte p{color:var(--muted);line-height:1.5;margin:8px 0}
+  .karte p b{color:var(--ink)}
+  .countdown{font-size:56px;font-weight:800;text-align:center;min-height:68px;color:var(--accent)}
+  .pegel{height:12px;border-radius:6px;background:var(--bg);overflow:hidden}
+  .pegel b{display:block;height:100%;width:0;background:linear-gradient(90deg,#5ad1a0,var(--accent),#ff6b5a);transition:width .05s}
+  .ergebnis{min-height:1.5em;color:var(--ink)!important}
+  .knoepfe{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+  .bar label[hidden],.bar button[hidden],.knoepfe button[hidden]{display:none}
   @media (max-width:560px){.sws{gap:8px}.sw{border-radius:16px;border-width:3px}}
 </style>
 </head>
@@ -46,18 +58,37 @@
     <a href="../app.html?id=singen">Anleitung</a>
   </div>
   <div class="bar">
-    <label>Stimme <select id="stimme"><option value="kind">Kind</option><option value="frau" selected>Frau</option><option value="mann">Mann</option></select></label>
-    <label>Silbe <select id="silbe"><option value="la" selected>la</option><option value="lu">lu</option><option value="li">li</option><option value="na">na</option><option value="a">aah</option></select></label>
+    <label>Stimme <select id="stimme"><option value="meine" disabled>Meine Stimme</option><option value="kind">Kind (künstlich)</option><option value="frau" selected>Frau (künstlich)</option><option value="mann">Mann (künstlich)</option></select></label>
+    <button id="eigenBtn">🎤 Eigene Stimme</button>
+    <label id="silbeL">Silbe <select id="silbe"><option value="la" selected>la</option><option value="lu">lu</option><option value="li">li</option><option value="na">na</option><option value="a">aah</option></select></label>
     <label>Tonart <select id="tonart"><option value="0">C</option><option value="2">D</option><option value="4">E</option><option value="5">F</option><option value="7">G</option><option value="9">A</option></select></label>
-    <label>Vibrato <input id="vib" type="range" min="0" max="100" value="60"></label>
+    <label id="vibL">Vibrato <input id="vib" type="range" min="0" max="100" value="60"></label>
     <label>Hall <input id="hall" type="range" min="0" max="100" value="30"></label>
     <button id="probe" class="quiet">▶ Hörprobe</button>
   </div>
   <div class="sws" id="sws" role="group" aria-label="SoundWhacker 1 bis 5"></div>
-  <p class="msg">Auf einen <b>SoundWhacker</b> hauen (SW-HUB im Tastatur-Modus) oder <kbd>1</kbd>–<kbd>5</kbd> drücken bzw. die Felder antippen. <b>Gehalten singt die Stimme weiter</b>, losgelassen klingt sie aus. Mehrere zusammen ergeben einen Chor – die fünf Töne passen immer zusammen (Pentatonik).</p>
+  <p class="msg"><b>Tipp:</b> Mit <b>🎤 Eigene Stimme</b> singst du einmal „laaaa“ – dann singen die SoundWhacker mit deiner echten Stimme.<br>Auf einen <b>SoundWhacker</b> hauen (SW-HUB im Tastatur-Modus) oder <kbd>1</kbd>–<kbd>5</kbd> drücken bzw. die Felder antippen. <b>Gehalten singt die Stimme weiter</b>, losgelassen klingt sie aus. Mehrere zusammen ergeben einen Chor – die fünf Töne passen immer zusammen (Pentatonik).</p>
 </div>
 
-<script src="stimme.js?v=1"></script>
+<div class="fenster" id="aufFenster" hidden>
+  <div class="karte">
+    <h2>🎤 Eigene Stimme aufnehmen</h2>
+    <p>Sing ein <b>langes „laaaa“</b> – etwa 2 Sekunden, gleichmäßig auf <b>einem</b> bequemen Ton. Nah ans Mikrofon, aber nicht hineinpusten.</p>
+    <div class="countdown" id="count"></div>
+    <div class="pegel"><b id="pegel"></b></div>
+    <p class="ergebnis" id="ergebnis"></p>
+    <div class="knoepfe">
+      <button id="aufStart">● Aufnehmen</button>
+      <button id="aufHoeren" class="quiet" hidden>▶ Anhören</button>
+      <button id="aufOk" hidden>✓ Übernehmen</button>
+      <button id="aufWeg" class="quiet" hidden>🗑 Meine Stimme löschen</button>
+      <button id="aufZu" class="quiet">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<script src="stimme.js?v=2"></script>
+<script src="eigene-stimme.js?v=2"></script>
 <script>
 const $=id=>document.getElementById(id);
 const FARBEN=['#e5484d','#f08c2e','#f2cf3a','#46b37b','#3f8ee8'];
@@ -79,12 +110,19 @@ function initAudio(){
   bus.connect(dry); bus.connect(hall); hall.connect(wet); dry.connect(comp); wet.connect(comp); setHall();
 }
 function setHall(){ if(!ctx) return; wet.gain.setTargetAtTime(st.hall/100*.5,ctx.currentTime,.05); dry.gain.setTargetAtTime(1-st.hall/300,ctx.currentTime,.05) }
-const midiVon=k=>STIMME.STIMMEN[st.stimme].grund-4+st.tonart+STUFEN[k];
+// Grundton der fünf Töne: künstliche Stimmen fest, eigene Stimme rund um die aufgenommene Tonhöhe
+// (der Grundton liegt etwa eine Terz darunter, so wird die Stimme nur wenig verschoben und klingt natürlich)
+function grundton(){
+  if(st.stimme==='meine'&&EIGENE.daten){ const mitte=Math.round(EIGENE.midiVon(EIGENE.daten.f0))-4; let g=mitte-((mitte-st.tonart)%12+12)%12; if(mitte-g>6) g+=12; return g }
+  return STIMME.STIMMEN[st.stimme].grund-4+st.tonart;
+}
+const midiVon=k=>grundton()+STUFEN[k];
+const singeTon=(midi,t,pegel=.75)=>st.stimme==='meine'&&EIGENE.daten?EIGENE.spiele(ctx,bus,{midi,t,pegel:pegel*1.05}):STIMME.singe(ctx,bus,{midi,t,stimme:st.stimme,silbe:st.silbe,vibrato:st.vib/100,pegel});
 
 // SoundWhacker-Felder
 const klingt={};   // k → laufender Ton
 function baue(){
-  $('sws').innerHTML=FARBEN.map((c,k)=>{const m=midiVon(k); return `<div class="sw" data-k="${k}" style="--c:${c}" role="button" aria-label="SW${k+1}"><span class="nr">SW${k+1}</span><span class="ton">${NAMEN[m%12]}</span><span class="silbe">${st.silbe==='a'?'aah':st.silbe}</span></div>`}).join('');
+  $('sws').innerHTML=FARBEN.map((c,k)=>{const m=midiVon(k); return `<div class="sw" data-k="${k}" style="--c:${c}" role="button" aria-label="SW${k+1}"><span class="nr">SW${k+1}</span><span class="ton">${NAMEN[m%12]}</span><span class="silbe">${st.stimme==='meine'?'♪':st.silbe==='a'?'aah':st.silbe}</span></div>`}).join('');
   document.querySelectorAll('.sw').forEach(el=>{
     const k=+el.dataset.k;
     el.addEventListener('pointerdown',e=>{e.preventDefault(); el.setPointerCapture(e.pointerId); an(k)});
@@ -94,7 +132,7 @@ function baue(){
 function an(k){
   initAudio(); if(ctx.state!=='running') ctx.resume();
   aus(k);
-  klingt[k]=STIMME.singe(ctx,bus,{midi:midiVon(k),t:ctx.currentTime+.01,stimme:st.stimme,silbe:st.silbe,vibrato:st.vib/100,pegel:.75});
+  klingt[k]=singeTon(midiVon(k),ctx.currentTime+.01);
   const el=document.querySelector(`.sw[data-k="${k}"]`); if(el) el.classList.add('an');
 }
 function aus(k){
@@ -108,18 +146,45 @@ addEventListener('keyup',e=>{ const m=/^(Digit|Numpad)([1-5])$/.exec(e.code)||(/
 // Hörprobe: „Alle meine Entchen“ – Anfang
 $('probe').onclick=()=>{
   initAudio(); ctx.resume();
-  const g=STIMME.STIMMEN[st.stimme].grund-4+st.tonart, mel=[[0,1],[2,1],[4,1],[5,1],[7,2],[7,2]], spb=.42; let t=ctx.currentTime+.1;
-  for(const [s,d] of mel){ STIMME.singe(ctx,bus,{midi:g+s,t,stimme:st.stimme,silbe:st.silbe,vibrato:st.vib/100}).stop(t+d*spb*.85); t+=d*spb }
+  const g=grundton(), mel=[[0,1],[2,1],[4,1],[5,1],[7,2],[7,2]], spb=.42; let t=ctx.currentTime+.1;
+  for(const [s,d] of mel){ singeTon(g+s,t,.8).stop(t+d*spb*.85); t+=d*spb }
 };
 
 // Einstellungen
+// Eigene Stimme laden; ist eine da, ist sie wählbar
+function eigeneVerfuegbar(){ const da=!!EIGENE.daten; $('stimme').querySelector('option[value="meine"]').disabled=!da; if(!da&&st.stimme==='meine') st.stimme='frau';
+  $('silbeL').hidden=$('vibL').hidden=st.stimme==='meine'; }
+EIGENE.laden(); eigeneVerfuegbar();
 $('stimme').value=st.stimme; $('silbe').value=st.silbe; $('tonart').value=st.tonart; $('vib').value=st.vib; $('hall').value=st.hall;
-$('stimme').onchange=e=>{st.stimme=e.target.value; e.target.blur(); merke(); baue()};
+$('stimme').onchange=e=>{st.stimme=e.target.value; e.target.blur(); merke(); eigeneVerfuegbar(); baue()};
 $('silbe').onchange=e=>{st.silbe=e.target.value; e.target.blur(); merke(); baue()};
 $('tonart').onchange=e=>{st.tonart=+e.target.value; e.target.blur(); merke(); baue()};
 $('vib').oninput=e=>{st.vib=+e.target.value; merke()};
 $('hall').oninput=e=>{st.hall=+e.target.value; merke(); setHall()};
 document.addEventListener('visibilitychange',()=>{ if(document.hidden) Object.keys(klingt).forEach(k=>aus(+k)) });
+// ---------- Aufnahmefenster ----------
+let neu=null;
+const zeigeKnoepfe=()=>{ $('aufHoeren').hidden=$('aufOk').hidden=!neu; $('aufWeg').hidden=!EIGENE.daten||!!neu; $('aufStart').textContent=neu?'↺ Nochmal':'● Aufnehmen' };
+$('eigenBtn').onclick=()=>{ neu=null; $('ergebnis').textContent=EIGENE.daten?`Gespeichert: deine Stimme auf ${tonName(EIGENE.daten.f0)}.`:''; $('count').textContent=''; $('pegel').style.width='0'; zeigeKnoepfe(); $('aufFenster').hidden=false };
+$('aufZu').onclick=()=>{ $('aufFenster').hidden=true };
+const tonName=f=>{ const m=Math.round(EIGENE.midiVon(f)); return NAMEN[(m%12+12)%12]+' ('+Math.round(f)+' Hz)' };
+$('aufStart').onclick=async()=>{
+  initAudio(); await ctx.resume(); neu=null; zeigeKnoepfe(); $('aufStart').disabled=true; $('ergebnis').textContent='';
+  try{
+    for(const z of ['3','2','1']){ $('count').textContent=z; await new Promise(r=>setTimeout(r,700)) }
+    $('count').textContent='🎤 laaaa …';
+    const roh=await EIGENE.aufnehmen(ctx,2.6,p=>{ $('pegel').style.width=Math.min(100,Math.sqrt(p)*120)+'%' });
+    $('count').textContent=''; $('pegel').style.width='0';
+    const d=EIGENE.aufbereiten(roh);
+    if(d.fehler){ $('ergebnis').textContent=d.fehler }
+    else { neu=d; $('ergebnis').textContent=`Erkannt: ${tonName(d.f0)} ✓ – zum Prüfen anhören, dann übernehmen.` }
+  }catch(e){ $('count').textContent=''; $('ergebnis').textContent=e&&e.name==='NotAllowedError'?'Mikrofon nicht erlaubt – in Safari: aA → Website-Einstellungen → Mikrofon.':'Aufnahme nicht möglich ('+(e.name||e.message)+').' }
+  $('aufStart').disabled=false; zeigeKnoepfe();
+};
+$('aufHoeren').onclick=()=>{ if(!neu) return; initAudio(); const t=ctx.currentTime+.05, m=Math.round(EIGENE.midiVon(neu.f0));
+  [0,2,4,7,4,0].forEach((x,i)=>EIGENE.spiele(ctx,bus,{midi:m-4+x,t:t+i*.4,pegel:.8,d:neu}).stop(t+i*.4+.35)) };
+$('aufOk').onclick=()=>{ EIGENE.uebernehmen(neu); neu=null; st.stimme='meine'; merke(); eigeneVerfuegbar(); $('stimme').value='meine'; baue(); $('aufFenster').hidden=true };
+$('aufWeg').onclick=()=>{ if(!confirm('Deine aufgenommene Stimme löschen?')) return; EIGENE.loeschen(); eigeneVerfuegbar(); $('stimme').value=st.stimme; merke(); baue(); $('ergebnis').textContent='Gelöscht.'; zeigeKnoepfe() };
 baue();
 </script>
 </body>

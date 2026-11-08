@@ -2,7 +2,24 @@
 
 Bei **Singen mit SoundWhackern** singt jeder SoundWhacker einen Ton – mit einer **künstlichen Stimme auf „la“**. Wer draufhaut, „singt“; wer gedrückt hält, singt weiter. Mehrere SoundWhacker zusammen ergeben einen kleinen **Chor**. Die fünf Töne sind so gewählt (Pentatonik), dass **alles immer zusammenpasst** – falsche Töne gibt es nicht.
 
-Diese erste Version dient zum Ausprobieren der Stimme. Weitere Ideen (Lieder Schritt für Schritt, eigene Stimme aufnehmen) können folgen.
+Am schönsten klingt es mit der **eigenen Stimme**: einmal „laaaa“ singen – fertig.
+
+## Mit der eigenen Stimme singen
+
+Am natürlichsten klingt es mit einer **echten Stimme**:
+
+1. Auf **🎤 Eigene Stimme** tippen, dann **● Aufnehmen**.
+2. Nach dem Countdown **3 – 2 – 1** ein **langes „laaaa“** singen – etwa 2 Sekunden, gleichmäßig auf einem bequemen Ton. Nah ans Mikrofon, aber nicht hineinpusten.
+3. Die App zeigt den erkannten Ton (z. B. „E (330 Hz)“). Mit **▶ Anhören** prüfen, dann **✓ Übernehmen** – oder **↺ Nochmal**.
+
+Ab jetzt singen die SoundWhacker mit dieser Stimme („Meine Stimme“ unter *Stimme*):
+
+- Jeder Ton wird **automatisch genau gestimmt** – auch wenn man beim Aufnehmen nicht ganz getroffen hat.
+- Die fünf Töne liegen **rund um die aufgenommene Tonlage**, damit die Stimme natürlich bleibt.
+- **Gedrückt halten** = die Stimme singt weiter.
+- Die Aufnahme bleibt **auf dem Gerät gespeichert**. Neu aufnehmen oder **🗑 Meine Stimme löschen** geht jederzeit über **🎤 Eigene Stimme**.
+
+Die **künstlichen Stimmen** (Kind, Frau, Mann) gibt es weiterhin zur Auswahl.
 
 ## Schnellstart
 

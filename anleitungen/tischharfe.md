@@ -29,6 +29,23 @@ Alle Lieder gibt es auch als Notenblatt zum Ausdrucken (siehe unten).
 - Mehrere Finger gleichzeitig gehen auch (Akkorde).
 - **Leertaste** (im Modus Üben): spielt automatisch den richtigen nächsten Ton. Praktisch mit einem großen Taster oder für Kinder mit wenig Feinmotorik.
 
+## Mit den SoundWhackern spielen
+
+Die fünf **SoundWhacker** steuern die Tischharfe über den SW-HUB – genau wie in den anderen Apps.
+
+1. Am **SW-HUB** unter *Einstellungen → Bluetooth-Modus* **Tastatur** wählen und den HUB mit dem Zusatz **-KEY** am iPad koppeln.
+2. Tischharfe öffnen und unter **SoundWhacker** eine Spielweise wählen.
+3. Auf die SoundWhacker hauen. Unter der Harfe leuchten die Knöpfe **SW1–SW5** bei jedem Schlag mit. Zum Testen am Computer gehen die **Tasten 1–5**, am Tablet auch die Knöpfe selbst.
+
+| Spielweise | Was passiert |
+|---|---|
+| **Nächster Ton (alle SW)** | Jeder Schlag – egal auf welchen SW – spielt den nächsten Ton des Liedes. So spielt die ganze Gruppe gemeinsam ein Lied, auch ganz ohne Vorkenntnisse. Am Ende geht es mit dem nächsten Schlag von vorn los. |
+| **Jeder SW ein Ton** | Wie bei Boomwhackern: Jeder SW hat einen festen Ton. Die Farbe steht über der Saite und als Ring um jeden Punkt auf dem Notenblatt; der SW, der dran ist, leuchtet unten auf. Geht bei Liedern mit höchstens 5 verschiedenen Tönen: **Hänschen klein, Mary Had a Little Lamb, Old MacDonald, Jingle Bells**. |
+| **Akkorde begleiten** | Jeder SW streicht einen Akkord über die Harfe (SW1–SW5 = C, F, G, a, d – passend zur Tonart des Liedes). Damit kann eine Gruppe begleiten, während jemand die Melodie zupft. |
+| **Aus** | Die SoundWhacker sind abgeschaltet. |
+
+Den SW lange gedrückt halten spielt nur einen Ton – die Harfe klingt von selbst aus.
+
 ## Die drei Modi
 
 | Modus | Was passiert |

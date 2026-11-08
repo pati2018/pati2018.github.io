@@ -37,6 +37,14 @@
   summary{cursor:pointer;color:var(--ink)}
   .legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:8px}
   .legend span{display:flex;align-items:center;gap:6px}
+  .swbar{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px}
+  .swb{--c:#888;border-radius:14px;padding:9px 4px;background:var(--panel);color:var(--ink);border:2px solid var(--c);font-weight:700;transition:transform .08s,background .08s}
+  .swb small{display:block;font-weight:500;font-size:12.5px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .swb.dran{box-shadow:0 0 0 3px var(--c),0 0 16px var(--c)}
+  .swb.schlag{background:var(--c);color:#1a1a1a;transform:scale(.95)}
+  .swb.schlag small{color:#1a1a1a}
+  .swb:disabled{opacity:.35;cursor:default}
+  .swbar[hidden]{display:none}
   @media (max-width:560px){.bar{gap:8px 10px} .seg button{padding:7px 10px}}
 </style>
 </head>
@@ -66,10 +74,17 @@
     <label>Tempo <input id="tempo" type="range" min="40" max="160" value="100"> <span id="tempoVal">100</span></label>
     <label>Hall <input id="hall" type="range" min="0" max="100" value="35"></label>
     <label><input id="namen" type="checkbox" checked> Tonnamen</label>
+    <label>SoundWhacker <select id="sw">
+      <option value="weiter">Nächster Ton (alle SW)</option>
+      <option value="toene">Jeder SW ein Ton</option>
+      <option value="akkorde">Akkorde begleiten</option>
+      <option value="aus">Aus</option>
+    </select></label>
     <button id="druck" class="quiet">🖨 Notenblatt drucken</button>
   </div>
 
   <div class="stage"><canvas id="harfe" aria-label="Tischharfe – über die Saiten streichen oder einzelne Saiten antippen"></canvas></div>
+  <div class="swbar" id="swbar" role="group" aria-label="SoundWhacker 1 bis 5 (Tasten 1–5)"></div>
   <p class="msg" id="msg" aria-live="polite">Tippe auf die Saite mit dem leuchtenden Punkt.</p>
 
   <details>
@@ -87,7 +102,7 @@ const cv=$('harfe'), g=cv.getContext('2d');
 // ================= Zustand =================
 const st={
   liedId:'entchen', modell:25, modus:'ueben', klang:'harfe', tempo:100, hall:35, namen:true,
-  lied:null, pos:0, scroll:0, scrollZiel:0, fertig:false,
+  sw:'weiter', lied:null, pos:0, scroll:0, scrollZiel:0, fertig:false,
   spielt:false, t0:0, events:[], evIdx:0,
 };
 let saiten=[];          // {midi, x, amp, t, fehler, ok}
@@ -171,14 +186,17 @@ function ladeLied(){
   if(geo.w) layout();
   if(!st.lied){ meldung('Dieses Lied passt nicht auf diese Harfe.'); return }
   $('tempo').value=st.tempo=st.lied.tempo; $('tempoVal').textContent=st.tempo;
-  neustart();
+  swAufbau(); neustart();
 }
 function naechsteNote(i){ const n=st.lied.noten; while(i<n.length&&n[i].midi===null) i++; return i }
 function neustart(){
   stopVorspiel();
   st.pos=naechsteNote(0); st.fertig=false;
   st.scrollZiel=st.modus==='frei'?-0.5:zielScroll(); st.scroll=st.scrollZiel;
-  if(st.modus==='ueben') meldung(st.lied.shift?`Tippe auf die Saite mit dem leuchtenden Punkt. <span>(Für diese Harfe um ${Math.abs(st.lied.shift)} ${Math.abs(st.lied.shift)===1?'Halbton':'Halbtöne'} ${st.lied.shift>0?'höher':'tiefer'} gesetzt.)</span>`:'Tippe auf die Saite mit dem leuchtenden Punkt.');
+  if(st.modus==='ueben'&&st.sw==='weiter') meldung('Auf einen <b>SoundWhacker</b> hauen (oder Taste 1–5) – jeder Schlag spielt den nächsten Ton. Oder die leuchtende Saite antippen.');
+  else if(st.modus==='ueben'&&st.sw==='toene'&&!swBelegung.length) meldung(`„${st.lied.titel}“ hat ${new Set(st.lied.noten.filter(x=>x.midi!==null).map(x=>x.midi)).size} verschiedene Töne – für <b>Jeder SW ein Ton</b> ein Lied mit höchstens 5 Tönen wählen (z. B. Hänschen klein, Mary Had a Little Lamb, Old MacDonald, Jingle Bells).`);
+  else if(st.modus==='ueben'&&st.sw==='toene') meldung('Jeder <b>SoundWhacker</b> hat einen Ton (Farbe über der Saite). Der SW, der dran ist, leuchtet unten auf.');
+  else if(st.modus==='ueben') meldung(st.lied.shift?`Tippe auf die Saite mit dem leuchtenden Punkt. <span>(Für diese Harfe um ${Math.abs(st.lied.shift)} ${Math.abs(st.lied.shift)===1?'Halbton':'Halbtöne'} ${st.lied.shift>0?'höher':'tiefer'} gesetzt.)</span>`:'Tippe auf die Saite mit dem leuchtenden Punkt.');
   else if(st.modus==='vorspielen') meldung('Auf <b>Abspielen</b> drücken und zuhören.');
   else meldung('Frei spielen: antippen oder über die Saiten streichen. Mit dem Mausrad oder zwei Fingern das Blatt verschieben.');
   $('start').textContent=st.modus==='vorspielen'?'Abspielen':'Von vorn';
@@ -187,12 +205,12 @@ function zielScroll(){ const n=st.lied.noten[st.pos]; const b=n?n.beat:st.lied.l
 function meldung(html){ $('msg').innerHTML=html }
 
 // ================= Zupfen =================
-function zupf(i,vel=.8){
+function zupf(i,vel=.8,pruefen=true){
   const s=saiten[i]; if(!s) return;
   initAudio(); if(ctx.state!=='running') ctx.resume();
   ton(s.midi,ctx.currentTime+.005,vel,(i/(saiten.length-1)-.5)*.7);
   s.amp=Math.min(1,.55+vel*.5); s.t=performance.now();
-  if(st.modus==='ueben'&&!st.fertig&&st.lied){
+  if(pruefen&&st.modus==='ueben'&&!st.fertig&&st.lied){
     const ziel=st.lied.noten[st.pos];
     if(ziel&&ziel.midi===s.midi){
       s.ok=performance.now();
@@ -201,6 +219,56 @@ function zupf(i,vel=.8){
       st.scrollZiel=zielScroll();
     } else if(ziel){ s.fehler=performance.now(); }
   }
+}
+
+// ================= SoundWhacker (SW-HUB im Tastatur-Modus: Tasten 1–5) =================
+const SW_FARBEN=['#e5484d','#f08c2e','#f2cf3a','#46b37b','#3f8ee8'];
+let swBelegung=[];   // toene: MIDI-Ton je SW · akkorde: {name, pcs}
+const saiteVon=m=>saiten.findIndex(s=>s.midi===m);
+function swAufbau(){
+  swBelegung=[]; const L=st.lied;
+  if(st.sw==='toene'&&L){
+    const toene=[...new Set(L.noten.filter(n=>n.midi!==null).map(n=>n.midi))].sort((a,b)=>a-b);
+    if(toene.length<=5) swBelegung=toene;
+  } else if(st.sw==='akkorde'){
+    const t=(((L?L.shift:0)%12)+12)%12;   // Grundton (Lieder sind in C notiert)
+    swBelegung=[[0,4,7,'dur'],[5,9,0,'dur'],[7,11,2,'dur'],[9,0,4,'moll'],[2,5,9,'moll']].map(([a,b,c,art])=>{
+      const nm=H.tonName(48+(a+t)%12); return {name:art==='dur'?nm[0].toUpperCase()+nm.slice(1):nm, pcs:[a,b,c].map(x=>(x+t)%12)};
+    });
+  }
+  const bar=$('swbar'); bar.hidden=st.sw==='aus';
+  bar.innerHTML=SW_FARBEN.map((c,k)=>{
+    let unter='', aus=false;
+    if(st.sw==='weiter') unter='nächster Ton';
+    else if(st.sw==='toene'){ const m=swBelegung[k]; unter=m==null?'–':H.tonName(m); aus=m==null }
+    else if(st.sw==='akkorde') unter=swBelegung[k].name;
+    return `<button class="swb" data-sw="${k}" style="--c:${c}"${aus?' disabled':''}>SW${k+1}<small>${unter}</small></button>`;
+  }).join('');
+  bar.querySelectorAll('.swb').forEach(b=>b.onpointerdown=e=>{e.preventDefault(); swSchlag(+b.dataset.sw)});
+  swDran=-2;
+}
+function swSchlag(k){
+  const b=document.querySelector(`.swb[data-sw="${k}"]`);
+  if(b){ b.classList.add('schlag'); clearTimeout(b._t); b._t=setTimeout(()=>b.classList.remove('schlag'),160) }
+  if(st.sw==='aus'||!st.lied) return;
+  initAudio(); if(ctx.state!=='running') ctx.resume();
+  if(st.sw==='akkorde'){            // Akkord als Harfen-Arpeggio von unten nach oben
+    const ch=swBelegung[k]; const idx=saiten.map((s,i)=>i).filter(i=>ch.pcs.includes(saiten[i].midi%12));
+    idx.forEach((i,j)=>setTimeout(()=>zupf(i,.5,false),j*32));
+    return;
+  }
+  if(st.modus!=='ueben') setzeModus('ueben');
+  if(st.fertig) neustart();
+  if(st.sw==='weiter'){ const z=st.lied.noten[st.pos]; if(z) zupf(saiteVon(z.midi),.85) }
+  else if(st.sw==='toene'){ const m=swBelegung[k]; if(m!=null) zupf(saiteVon(m),.85) }
+}
+let swDran=-2;
+function swDranZeigen(){
+  let d=-1;
+  if(st.sw==='toene'&&st.modus==='ueben'&&!st.fertig&&st.lied){ const z=st.lied.noten[st.pos]; if(z) d=swBelegung.indexOf(z.midi) }
+  else if(st.sw==='weiter'&&st.modus==='ueben'&&!st.fertig) d=5;
+  if(d===swDran) return; swDran=d;
+  document.querySelectorAll('.swb').forEach(b=>b.classList.toggle('dran',d===5||+b.dataset.sw===d));
 }
 
 // ================= Vorspielen =================
@@ -294,6 +362,8 @@ function zeichne(now){
       if(y<papO-20||y>papU+20) return;
       const gespielt=st.modus==='ueben'&&k<st.pos, aktuell=st.modus==='ueben'&&k===st.pos&&!st.fertig;
       if(aktuell){ const p=.5+.5*Math.sin(now/180); g.beginPath(); g.arc(x,y,r*2+p*r*.6,0,Math.PI*2); g.fillStyle=`rgba(224,168,79,${.35+.25*p})`; g.fill() }
+      const swk=st.sw==='toene'?swBelegung.indexOf(n.midi):-1;
+      if(swk>=0){ g.globalAlpha=gespielt?.3:1; g.beginPath(); g.arc(x,y,r*H.zeichen(n.dur).groesse+r*.42,0,Math.PI*2); g.strokeStyle=SW_FARBEN[swk]; g.lineWidth=r*.42; g.stroke(); g.globalAlpha=1 }
       zeichneNote(x,y,n.dur,aktuell?'#b0611a':'#3d2a1a',r,gespielt?.3:1);
       if(zeigTxt&&n.silbe){ g.globalAlpha=gespielt?.35:.85; g.fillStyle='#6b4a2e'; g.font=`${Math.max(10,Math.min(14,sp*.42))}px system-ui`; g.fillText(n.silbe,x+r*1.5+(H.zeichen(n.dur).punkt?r*.9:0),y+r*.45); g.globalAlpha=1 }
     });
@@ -317,6 +387,10 @@ function zeichne(now){
     g.beginPath(); g.moveTo(s.x+1.5,oben); g.quadraticCurveTo(s.x+1.5+ausl2,(oben+unten)/2,s.x+1.5,unten); g.stroke();
     g.strokeStyle=H.istHalbton(s.midi)?'#8d8f93':'#d8d4cc'; g.lineWidth=dick;
     g.beginPath(); g.moveTo(s.x,oben); g.quadraticCurveTo(s.x+ausl2,(oben+unten)/2,s.x,unten); g.stroke();
+    // SoundWhacker-Farbe am Steg
+    const swk=st.sw==='toene'?swBelegung.indexOf(s.midi):-1;
+    if(swk>=0){ const th=Math.max(12,Math.min(16,sp*.5)); g.fillStyle=SW_FARBEN[swk]; rundRect(s.x-sp*.42,3,sp*.84,th,4); g.fill();
+      g.fillStyle='#1a1a1a'; g.font=`700 ${Math.max(8,Math.min(12,sp*.36))}px system-ui`; g.textAlign='center'; g.fillText(String(swk+1),s.x,3+th*.76); g.textAlign='left' }
     // Wirbel
     g.fillStyle='#c9c3b8'; g.beginPath(); g.arc(s.x,oben-20,Math.max(2.5,Math.min(5,sp*.18)),0,Math.PI*2); g.fill();
     // Tonname
@@ -334,7 +408,7 @@ function schleife(now){
   } else {
     st.scroll+=(st.scrollZiel-st.scroll)*.12;
   }
-  zeichne(now); requestAnimationFrame(schleife);
+  zeichne(now); swDranZeigen(); requestAnimationFrame(schleife);
 }
 
 // ================= Eingabe =================
@@ -364,7 +438,10 @@ cv.addEventListener('wheel',e=>{ if(st.modus!=='frei') return; e.preventDefault(
 
 // Leertaste im Übemodus spielt den nächsten Ton – praktisch mit einem einzelnen großen Taster
 addEventListener('keydown',e=>{
-  if(e.target.closest('select,input,button')||e.repeat||e.metaKey||e.ctrlKey) return;
+  if(e.metaKey||e.ctrlKey||e.altKey) return;
+  const sw=/^(Digit|Numpad)([1-5])$/.exec(e.code);
+  if(sw||/^[1-5]$/.test(e.key)){ e.preventDefault(); if(!e.repeat) swSchlag((sw?+sw[2]:+e.key)-1); return }
+  if(e.target.closest('select,input,button')||e.repeat) return;
   if(e.code==='Space'&&st.modus==='ueben'&&st.lied){ const z=st.lied.noten[st.pos]; if(z){ e.preventDefault(); zupf(saiten.findIndex(s=>s.midi===z.midi)) } }
 });
 
@@ -372,20 +449,20 @@ addEventListener('keydown',e=>{
 H.GRUPPEN.forEach(gr=>{const og=document.createElement('optgroup'); og.label=gr; H.LIEDER.filter(l=>l.gruppe===gr).forEach(l=>og.appendChild(new Option(l.titel,l.id))); $('lied').appendChild(og)});
 for(const k in H.MODELLE) $('modell').add(new Option(H.MODELLE[k].name,k));
 // gespeicherte Auswahl
-try{const s=JSON.parse(localStorage.getItem('tischharfe')||'{}'); Object.assign(st,{liedId:s.liedId||st.liedId,modell:+s.modell||st.modell,klang:s.klang||st.klang,hall:s.hall??st.hall,namen:s.namen??st.namen})}catch(e){}
+try{const s=JSON.parse(localStorage.getItem('tischharfe')||'{}'); Object.assign(st,{liedId:s.liedId||st.liedId,modell:+s.modell||st.modell,klang:s.klang||st.klang,hall:s.hall??st.hall,namen:s.namen??st.namen,sw:s.sw||st.sw})}catch(e){}
 const q=new URLSearchParams(location.search); if(q.get('lied')) st.liedId=q.get('lied'); if(H.MODELLE[q.get('modell')]) st.modell=+q.get('modell');
-function merke(){ try{localStorage.setItem('tischharfe',JSON.stringify({liedId:st.liedId,modell:st.modell,klang:st.klang,hall:st.hall,namen:st.namen}))}catch(e){} }
-$('lied').value=st.liedId; $('modell').value=st.modell; $('klang').value=st.klang; $('hall').value=st.hall; $('namen').checked=st.namen;
+function merke(){ try{localStorage.setItem('tischharfe',JSON.stringify({liedId:st.liedId,modell:st.modell,klang:st.klang,hall:st.hall,namen:st.namen,sw:st.sw}))}catch(e){} }
+$('lied').value=st.liedId; $('modell').value=st.modell; $('klang').value=st.klang; $('hall').value=st.hall; $('namen').checked=st.namen; $('sw').value=st.sw;
 
 $('lied').onchange=e=>{st.liedId=e.target.value; ladeLied(); merke()};
 $('modell').onchange=e=>{st.modell=+e.target.value; ladeLied(); merke()};
 $('klang').onchange=e=>{st.klang=e.target.value; merke(); if(ctx) zupf(Math.floor(saiten.length/2),.7)};
 $('hall').oninput=e=>{st.hall=+e.target.value; setHall(); merke()};
 $('namen').onchange=e=>{st.namen=e.target.checked; merke()};
+$('sw').onchange=e=>{st.sw=e.target.value; e.target.blur(); merke(); swAufbau(); if(st.sw!=='aus'&&st.sw!=='akkorde'&&st.modus!=='ueben') setzeModus('ueben'); else neustart()};
 $('tempo').oninput=e=>{st.tempo=+e.target.value; $('tempoVal').textContent=st.tempo; if(st.spielt){stopVorspiel(); startVorspiel()}};
-document.querySelectorAll('[data-modus]').forEach(b=>b.onclick=()=>{
-  st.modus=b.dataset.modus; document.querySelectorAll('[data-modus]').forEach(x=>x.setAttribute('aria-pressed',x===b)); neustart();
-});
+function setzeModus(m){ st.modus=m; document.querySelectorAll('[data-modus]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.modus===m)); neustart() }
+document.querySelectorAll('[data-modus]').forEach(b=>b.onclick=()=>setzeModus(b.dataset.modus));
 $('start').onclick=()=>{ if(st.modus==='vorspielen'){ st.spielt?stopVorspiel():(neustart(),startVorspiel()) } else neustart() };
 $('druck').onclick=()=>window.open(`druck.html?lied=${encodeURIComponent(st.liedId)}&modell=${st.modell}`,'_blank');
 

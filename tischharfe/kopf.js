@@ -82,12 +82,17 @@ function kopfSchleife() {
   }
   KOPF.verloren = 0;
   const nx = lm[1].x, ny = lm[1].y;   // Nasenspitze
-  if (KOPF.cx == null) { KOPF.cx = nx; KOPF.cy = ny; KOPF.px = .5; KOPF.py = .5; KOPF.bereit = true; }
+  const neig = kopfNeigung(lm, v);     // Nicken als Winkel (Grad), unabhängig davon, wo der Kopf im Bild ist
+  if (KOPF.cx == null) { KOPF.cx = nx; KOPF.cy = ny; KOPF.n0 = neig; KOPF.px = .5; KOPF.py = .5; KOPF.bereit = true; }
+  if (KOPF.n0 == null && neig != null) KOPF.n0 = neig;
   if (!KOPF.gefunden) kopfStatus(kopfHinweis());
   KOPF.gefunden = true;
-  // Kamerabild ist ungespiegelt: Kopf nach rechts = Nase im Bild nach links. Nicken bewegt die Nase weniger → ×1,4 (wie MIGA)
+  // Links/rechts: Nasenspitze (Kamerabild ungespiegelt: Kopf nach rechts = Nase im Bild nach links).
+  // Hoch/runter: Neigungswinkel – Auslösen bei 60°/Stufe (groß ≈ 20°, mittel ≈ 13°, klein ≈ 9°, ganz klein ≈ 6°, winzig ≈ 4°).
+  // Ohne Tiefeninformation ersatzweise die Nasenspitze (empfindlicher als links/rechts, weil Nicken sie weniger bewegt).
   const gain = KOPF.einst.gain;
-  const tx = Math.min(1, Math.max(0, .5 + (KOPF.cx - nx) * gain)), ty = Math.min(1, Math.max(0, .5 + (ny - KOPF.cy) * gain * 1.4));
+  const dy = neig != null && KOPF.n0 != null ? kopfWinkelDiff(neig, KOPF.n0) * gain / 300 : (ny - KOPF.cy) * gain * 2.2;
+  const tx = Math.min(1, Math.max(0, .5 + (KOPF.cx - nx) * gain)), ty = Math.min(1, Math.max(0, .5 + dy));
   KOPF.px += (tx - KOPF.px) * .5; KOPF.py += (ty - KOPF.py) * .5;
   const ri = KOPF.einst.richtung;
   const ax = ri === 'nicken' ? 0 : Math.abs(KOPF.px - .5), ay = ri === 'seite' ? 0 : Math.abs(KOPF.py - .5);
@@ -99,8 +104,16 @@ function kopfSchleife() {
     KOPF.bereit = true;
   }
   // In Ruhe die Mitte langsam nachführen, falls man sich mit der Zeit etwas verschiebt
-  if (KOPF.bereit && inMitte) { KOPF.cx += (nx - KOPF.cx) * .01; KOPF.cy += (ny - KOPF.cy) * .01; }
+  if (KOPF.bereit && inMitte) { KOPF.cx += (nx - KOPF.cx) * .01; KOPF.cy += (ny - KOPF.cy) * .01; if (neig != null && KOPF.n0 != null) KOPF.n0 += kopfWinkelDiff(neig, KOPF.n0) * .01; }
 }
+// Neigung (Nicken) aus Stirn (10) und Kinn (152) in 3D: Winkel der Linie Stirn→Kinn zur Bildebene
+function kopfNeigung(lm, v) {
+  const a = lm[10], b = lm[152];
+  if (!a || !b || typeof a.z !== 'number' || typeof b.z !== 'number') return null;
+  const s = (v.videoHeight || 480) / (v.videoWidth || 640);   // y ist auf die Bildhöhe bezogen, z (wie x) auf die Breite
+  return Math.atan2(b.z - a.z, (b.y - a.y) * s) * 180 / Math.PI;
+}
+const kopfWinkelDiff = (a, b) => ((a - b + 540) % 360) - 180;
 function kopfNaechsterTon() {
   if (!st.lied) return;
   if (st.modus !== 'ueben') setzeModus('ueben');

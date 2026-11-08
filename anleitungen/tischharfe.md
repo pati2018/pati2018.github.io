@@ -29,19 +29,19 @@ Oben rechts auf **▲ Menü einklappen** tippen: Alle Knöpfe verschwinden und *
 
 ## Eigene Lieder einspielen
 
-Mit **＋ Eigenes Lied** (neben der Liedauswahl) öffnet sich eine **Klaviertastatur** von g bis g″ – genau der Tonumfang der 25-saitigen Harfe.
+Neben der Liedauswahl auf **🎹 Lied einspielen** tippen – es öffnet sich eine **Klaviertastatur** (g bis g″, wie die 25-saitige Harfe).
 
-1. Oben einen **Namen** eingeben, **Takt** (4/4 oder 3/4) und **Tempo** wählen.
-2. **Notenwert** wählen (½, 1, 1½, 2, 3 oder 4 Schläge – dieselben Zeichen wie auf dem Notenblatt) und dann die **Taste** antippen. Der Ton kommt ans Ende des Liedes. Der Notenwert bleibt, bis man einen anderen wählt.
-3. **Pause** fügt eine Pause mit dem gewählten Notenwert ein.
-4. **Verspielt?** Den Ton in der Reihe antippen – dann ändert die nächste Taste die Tonhöhe, ein Notenwert die Länge, **Pause** macht ihn zur Pause und **⌫ Löschen** entfernt ihn. Nochmal antippen = fertig. Ohne Auswahl löscht **⌫** den letzten Ton.
-5. Optional den **Liedtext** eingeben: eine Silbe pro Ton, mit Leerzeichen getrennt (z. B. *Al- le mei- ne Ent- chen*). Darunter steht, ob die Zahl der Silben passt.
-6. **▶ Anhören** spielt das Lied vor.
-7. **💾 Speichern und spielen** – das Lied steht jetzt in der Liedauswahl unter **Eigene Lieder** und lässt sich wie alle anderen spielen: mit den Fingern, den SoundWhackern, dem Kopf und auch als Video aufnehmen.
+1. Auf **● Aufnahme** tippen.
+2. Die Melodie **einfach spielen – im Rhythmus, so wie sie klingen soll**. Die Aufnahme beginnt mit dem ersten Ton.
+3. **■ Fertig** tippen. Die App erkennt das Tempo und macht aus dem Gespielten saubere Notenwerte – und spielt das Ergebnis gleich vor.
+4. Klingt es richtig: **💾 Speichern**. Sonst **↺ Nochmal**.
 
-- Ein eigenes Lied wählen und **✎ Bearbeiten** tippen, um es zu ändern oder zu **löschen**.
-- Eigene Lieder werden **auf dem Gerät gespeichert**, auf dem sie gemacht wurden. Mit **📤 Exportieren** werden alle eigenen Lieder zu einer Datei, die man mit **📥 Importieren** auf einem anderen iPad wieder einspielt.
-- Passt ein Lied nicht auf die 18-saitige Harfe, wird es automatisch verschoben – wie bei den anderen Liedern.
+Das Lied steht dann in der Liedauswahl unter **Eigene Lieder** und lässt sich spielen wie alle anderen – mit Fingern, SoundWhackern, Kopf und als Video.
+
+**Tipps für eine gute Aufnahme:** gleichmäßig spielen, nicht zu schnell; lange Töne ruhig etwas länger gedrückt halten. Die App nimmt den häufigsten Abstand zwischen zwei Tönen als einen Schlag.
+
+- Unter **Meine Lieder** kann man eigene Lieder wieder **löschen**.
+- Eigene Lieder sind **auf dem Gerät gespeichert**, auf dem sie eingespielt wurden. Mit **📤 Exportieren** / **📥 Importieren** kommen sie auf ein anderes iPad.
 
 ## Spielen
 

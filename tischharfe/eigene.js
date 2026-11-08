@@ -1,226 +1,200 @@
 /*
- * Eigene Lieder: mit einer Klaviertastatur (g bis g″) einspielen, korrigieren, anhören und speichern.
- * Gespeichert wird im Gerätespeicher (lieder.js lädt sie beim Start in die Gruppe „Eigene Lieder“).
- * Nutzt aus index.html: st, H, ton, initAudio, ctx, ladeLied, liedAuswahl, setzeModus, merke.
+ * Eigene Lieder einspielen – im echten Rhythmus, ohne Bearbeiten:
+ * ● Aufnahme → Melodie auf der Klaviertastatur spielen → ■ Fertig.
+ * Die App misst die Abstände zwischen den Tönen, erkennt daraus das Tempo und rundet auf
+ * Notenwerte (½, 1, 1½, 2, 3, 4 Schläge). Gespeichert wird im Gerätespeicher (Gruppe „Eigene Lieder“).
+ * Nutzt aus index.html: st, H, ton, initAudio, ctx, dry, conv, ladeLied, liedAuswahl, setzeModus, merke, meldung.
  */
-const ED = { offen: false, id: null, noten: [], dauer: 1, wahl: -1, spielt: false, timer: [] };
-const ED_DAUERN = [[.5, '½'], [1, '1'], [1.5, '1½'], [2, '2'], [3, '3'], [4, '4']];
+const ED = { offen: false, rec: false, an: [], noten: null, tempo: 100, spielt: false, timer: [], bus: null };
 const ED_LO = 55, ED_HI = 79;   // g bis g″ – wie die 25-saitige Harfe
 const ED_NAMEN = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-const edName = m => ED_NAMEN[m % 12] + (Math.floor(m / 12) - 1);   // Schreibweise von lieder.js (C4 = c′, B4 = h′)
+const edName = m => ED_NAMEN[m % 12] + (Math.floor(m / 12) - 1);   // Schreibweise von lieder.js
 const edFarbe = m => ({ 0: '#ef5350', 2: '#ffa040', 4: '#ffe14d', 5: '#9ccc65', 7: '#4dd0e1', 9: '#b06bd6', 11: '#f06292' })[m % 12];
 const $e = id => document.getElementById(id);
-
-function edSymbol(d, gross = 10) {   // gleiches Zeichen wie auf dem Notenblatt
-  const z = H.zeichen(d), r = gross * .55 * z.groesse, c = gross + 2;
-  return `<svg width="${c * 2 + (z.punkt ? 8 : 0)}" height="${c * 2}" viewBox="0 0 ${c * 2 + (z.punkt ? 8 : 0)} ${c * 2}" aria-hidden="true">` +
-    `<circle cx="${c}" cy="${c}" r="${r}" fill="${z.gefuellt ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"/>` +
-    (z.punkt ? `<circle cx="${c + r + 4}" cy="${c}" r="2" fill="currentColor"/>` : '') + `</svg>`;
-}
 
 function edBauen() {
   const box = document.createElement('div');
   box.id = 'editor'; box.className = 'editor'; box.hidden = true;
-  box.setAttribute('role', 'dialog'); box.setAttribute('aria-label', 'Eigenes Lied');
+  box.setAttribute('role', 'dialog'); box.setAttribute('aria-label', 'Lied einspielen');
   box.innerHTML = `
   <div class="edKopf">
-    <h2 id="edTitel">Eigenes Lied</h2>
-    <button id="edZu" class="quiet" aria-label="Schließen">✕ Schließen</button>
+    <h2>Lied einspielen</h2>
+    <button id="edZu" class="quiet">✕ Schließen</button>
   </div>
   <div class="edZeile">
-    <label>Name <input id="edName" type="text" maxlength="60" placeholder="z. B. Mein Lied"></label>
-    <label>Takt <select id="edTakt"><option value="4">4/4</option><option value="3">3/4</option></select></label>
-    <label>Tempo <input id="edTempo" type="range" min="50" max="160" value="100"> <b id="edTempoVal">100</b></label>
+    <label>Name <input id="edName" type="text" maxlength="60"></label>
+    <button id="edRec" class="edRec">● Aufnahme</button>
+    <span id="edStatus" class="edStatus"></span>
   </div>
-  <div class="edZeile">
-    <span class="edLabel">Notenwert</span>
-    <span id="edDauern" class="edDauern"></span>
-    <button id="edPause" class="quiet">Pause</button>
-  </div>
-  <div class="klavier" id="edKlavier" aria-label="Klaviertastatur – Taste antippen fügt den Ton hinzu"></div>
-  <div class="edHinweis" id="edHinweis">Notenwert wählen, dann Taste antippen – der Ton kommt ans Ende des Liedes.</div>
-  <div class="edNoten" id="edNoten"></div>
-  <div class="edZeile">
+  <div class="klavier" id="edKlavier" aria-label="Klaviertastatur"></div>
+  <div class="edZeile" id="edErgebnis" hidden>
     <button id="edPlay">▶ Anhören</button>
-    <button id="edWeg" class="quiet">⌫ Löschen</button>
-    <button id="edLeer" class="quiet">✕ Alles löschen</button>
+    <button id="edSpeichern">💾 Speichern</button>
+    <button id="edNochmal" class="quiet">↺ Nochmal</button>
   </div>
-  <label class="edText">Liedtext (optional) – eine Silbe pro Ton, mit Leerzeichen getrennt, z. B. <i>Al- le mei- ne Ent- chen</i>
-    <input id="edText" type="text" placeholder="Al- le mei- ne Ent- chen …"><span id="edSilben" class="edSilben"></span></label>
-  <div class="edZeile edUnten">
-    <button id="edSpeichern">💾 Speichern und spielen</button>
-    <button id="edEntfernen" class="quiet edRot" hidden>🗑 Lied löschen</button>
-    <span class="edRechts">
-      <button id="edExport" class="quiet">📤 Exportieren</button>
-      <label class="quiet edImport">📥 Importieren<input id="edImport" type="file" accept=".json,application/json" hidden></label>
-    </span>
-  </div>
-  <div class="edHinweis">Eigene Lieder sind auf diesem Gerät gespeichert. Mit <b>Exportieren</b> kommen sie als Datei auf ein anderes iPad.</div>`;
+  <div class="edHinweis">Auf <b>● Aufnahme</b> tippen und die Melodie einfach spielen – so, wie sie klingen soll. Die Aufnahme beginnt mit dem ersten Ton. Dann <b>■ Fertig</b>: die App macht daraus das Lied.</div>
+  <div class="edMeine" id="edMeine"></div>`;
   document.body.appendChild(box);
 
-  // Notenwerte
-  $e('edDauern').innerHTML = ED_DAUERN.map(([d, t]) => `<button class="edDauer" data-d="${d}" aria-pressed="${d === ED.dauer}" title="${t} Schlag">${edSymbol(d)}<span>${t}</span></button>`).join('');
-  $e('edDauern').querySelectorAll('.edDauer').forEach(b => b.onclick = () => {
-    const d = +b.dataset.d;
-    if (ED.wahl >= 0) { ED.noten[ED.wahl].dur = d; edNotenZeigen(); }
-    else { ED.dauer = d; edDauerZeigen(); }
-  });
-  $e('edPause').onclick = () => {
-    if (ED.wahl >= 0) { ED.noten[ED.wahl].midi = null; edNotenZeigen(); return; }
-    ED.noten.push({ midi: null, dur: ED.dauer }); edNotenZeigen(true);
-  };
-
-  // Klavier
+  // Klavier g … g″
   const kl = $e('edKlavier'), weiss = [];
   for (let m = ED_LO; m <= ED_HI; m++) if (!H.istHalbton(m)) weiss.push(m);
-  const bw = 100 / weiss.length;
-  let html = '';
+  const bw = 100 / weiss.length; let html = '';
   weiss.forEach((m, i) => { html += `<div class="taste weiss" data-m="${m}" style="left:${i * bw}%;width:${bw}%"><span style="border-color:${edFarbe(m)}">${H.tonName(m)}</span></div>`; });
   for (let m = ED_LO; m <= ED_HI; m++) if (H.istHalbton(m)) {
     const i = weiss.indexOf(m - 1);
     html += `<div class="taste schwarz" data-m="${m}" style="left:${(i + 1) * bw - bw * .32}%;width:${bw * .64}%"><span>${H.tonName(m)}</span></div>`;
   }
   kl.innerHTML = html;
-  kl.querySelectorAll('.taste').forEach(t => t.addEventListener('pointerdown', e => {
-    e.preventDefault(); const m = +t.dataset.m;
-    t.classList.add('an'); setTimeout(() => t.classList.remove('an'), 180);
-    edTon(m);
-    if (ED.wahl >= 0) { ED.noten[ED.wahl].midi = m; edNotenZeigen(); }
-    else { ED.noten.push({ midi: m, dur: ED.dauer }); edNotenZeigen(true); }
-  }));
+  kl.querySelectorAll('.taste').forEach(t => {
+    t.addEventListener('pointerdown', e => {
+      e.preventDefault(); t.setPointerCapture(e.pointerId);
+      const m = +t.dataset.m, jetzt = performance.now();
+      t.classList.add('an'); edTon(m);
+      if (ED.rec) { ED.an.push({ m, t: jetzt, los: null }); t._idx = ED.an.length - 1; edStatus(); }
+    });
+    const los = () => { t.classList.remove('an'); if (ED.rec && t._idx != null && ED.an[t._idx]) ED.an[t._idx].los = performance.now(); t._idx = null; };
+    t.addEventListener('pointerup', los); t.addEventListener('pointercancel', los);
+  });
 
   $e('edZu').onclick = edSchliessen;
-  $e('edTempo').oninput = e => { $e('edTempoVal').textContent = e.target.value; };
+  $e('edRec').onclick = () => (ED.rec ? edFertig() : edAufnahme());
   $e('edPlay').onclick = () => (ED.spielt ? edStopp() : edAnhoeren());
-  $e('edWeg').onclick = () => {
-    if (!ED.noten.length) return;
-    ED.noten.splice(ED.wahl >= 0 ? ED.wahl : ED.noten.length - 1, 1); ED.wahl = -1; edNotenZeigen();
-  };
-  $e('edLeer').onclick = () => { if (ED.noten.length && confirm('Alle Töne löschen?')) { ED.noten = []; ED.wahl = -1; edNotenZeigen(); } };
-  $e('edText').oninput = edSilbenZeigen;
   $e('edSpeichern').onclick = edSpeichern;
-  $e('edEntfernen').onclick = edEntfernen;
-  $e('edExport').onclick = edExport;
-  $e('edImport').onchange = edImport;
+  $e('edNochmal').onclick = edAufnahme;
   document.addEventListener('keydown', e => { if (ED.offen && e.key === 'Escape') edSchliessen(); });
 }
 
 function edTon(m) { initAudio(); if (ctx.state !== 'running') ctx.resume(); ton(m, ctx.currentTime + .005, .8, 0); }
-function edDauerZeigen() { document.querySelectorAll('.edDauer').forEach(b => b.setAttribute('aria-pressed', +b.dataset.d === (ED.wahl >= 0 ? ED.noten[ED.wahl].dur : ED.dauer))); }
-function edNotenZeigen(ansEnde) {
-  const box = $e('edNoten');
-  if (!ED.noten.length) box.innerHTML = '<span class="edLeer">Noch keine Töne – Taste antippen.</span>';
-  else box.innerHTML = ED.noten.map((n, i) => {
-    const name = n.midi == null ? 'Pause' : H.tonName(n.midi), f = n.midi == null ? '#888' : edFarbe(n.midi) || '#bbb';
-    return `<button class="edNote${i === ED.wahl ? ' gewaehlt' : ''}${n.midi == null ? ' pause' : ''}" data-i="${i}" style="--f:${f}">${edSymbol(n.dur, 8)}<b>${name}</b></button>`;
-  }).join('');
-  box.querySelectorAll('.edNote').forEach(b => b.onclick = () => {
-    const i = +b.dataset.i; ED.wahl = ED.wahl === i ? -1 : i;
-    if (ED.wahl >= 0 && ED.noten[i].midi != null) edTon(ED.noten[i].midi);
-    edNotenZeigen();
-  });
-  $e('edHinweis').innerHTML = ED.wahl >= 0
-    ? `<b>Ton ${ED.wahl + 1} gewählt:</b> Taste antippen = Tonhöhe ändern · Notenwert = Länge ändern · Pause = zur Pause machen · ⌫ = löschen · nochmal antippen = fertig.`
-    : 'Notenwert wählen, dann Taste antippen – der Ton kommt ans Ende des Liedes. Einen Ton in der Reihe antippen, um ihn zu ändern.';
-  edDauerZeigen(); edSilbenZeigen();
-  if (ansEnde) box.scrollLeft = box.scrollWidth;
+function edStatus() {
+  const s = $e('edStatus');
+  if (ED.rec) s.textContent = ED.an.length ? `● ${ED.an.length} ${ED.an.length === 1 ? 'Ton' : 'Töne'} …` : '● Bereit – spiel los!';
+  else if (ED.noten) s.textContent = `${ED.noten.filter(n => n.midi != null).length} Töne · Tempo ${ED.tempo}`;
+  else s.textContent = '';
 }
-function edSilbenZeigen() {
-  const t = $e('edText').value.trim(), n = ED.noten.filter(x => x.midi != null).length, s = t ? t.split(/\s+/).length : 0;
-  $e('edSilben').textContent = t ? `${s} Silben für ${n} Töne${s === n ? ' ✓' : s < n ? ' – es fehlen noch Silben' : ' – zu viele Silben'}` : '';
-  $e('edSilben').className = 'edSilben' + (t && s !== n ? ' warn' : '');
+
+function edAufnahme() {
+  edStopp(); initAudio(); ctx.resume();
+  ED.rec = true; ED.an = []; ED.noten = null;
+  const b = $e('edRec'); b.textContent = '■ Fertig'; b.classList.add('laeuft');
+  $e('edErgebnis').hidden = true; edStatus();
+}
+function edFertig() {
+  ED.rec = false;
+  const b = $e('edRec'); b.textContent = '● Aufnahme'; b.classList.remove('laeuft');
+  if (ED.an.length < 2) { ED.noten = null; $e('edStatus').textContent = 'Zu wenige Töne – bitte noch einmal.'; return; }
+  const r = edRhythmus(ED.an); ED.noten = r.noten; ED.tempo = r.tempo;
+  $e('edErgebnis').hidden = false; edStatus();
+  edAnhoeren();   // gleich vorspielen, damit man hört, ob es passt
+}
+
+// Rhythmus erkennen (wie „Quantisieren“ in Musikprogrammen):
+// Der häufigste Abstand zwischen zwei Tönen ist ein Schlag. Jeder Ton wird auf ein Raster aus halben Schlägen gelegt –
+// so macht ein zu früh oder zu spät gespielter Ton nicht gleich zwei Notenwerte falsch. Das Tempo wird laufend
+// nachgeführt, falls man beim Spielen schneller oder langsamer wird.
+// Wer überwiegend Achtel spielt, bekommt die Achtel als Schlag – der Rhythmus bleibt gleich, nur doppelt so lang notiert.
+const ED_WERTE = [.5, 1, 1.5, 2, 3, 4, 6, 8];
+function edRhythmus(an) {
+  const ioi = []; for (let i = 0; i < an.length - 1; i++) ioi.push(an[i + 1].t - an[i].t);
+  const sort = ioi.filter(x => x > 120).sort((a, b) => a - b);   // Doppelanschläge nicht mitzählen
+  let schlag = Math.min(1500, Math.max(180, sort.length ? sort[Math.floor(sort.length / 2)] : 500));
+  const start = schlag;
+  // Rasterplätze der Töne
+  // Gemessen wird vom IDEALEN Zeitpunkt des vorigen Tons aus (nicht vom tatsächlich gespielten),
+  // damit sich kleine Ungenauigkeiten nicht weitertragen; der ideale Takt folgt dem Spiel nur langsam.
+  // Ist der Schlag kurz (ein Achtel), nur auf ganze Schläge einrasten – sonst wäre das Raster ein Sechzehntel und zu fein
+  const fein = start >= 330 ? .5 : 1, rasten = x => Math.max(fein, Math.round(x / fein) * fein);
+  const pos = [0]; let ideal = an[0].t;
+  for (let i = 1; i < an.length; i++) {
+    const schritt = rasten((an[i].t - ideal) / schlag);
+    pos.push(pos[i - 1] + schritt);
+    const erwartet = ideal + schritt * schlag, abw = an[i].t - erwartet;   // zu früh (−) oder zu spät (+)
+    schlag = Math.min(start * 1.5, Math.max(start / 1.5, schlag + abw / schritt * .15));   // Tempo langsam nachführen
+    ideal = erwartet + abw * .3;
+  }
+  const noten = [];
+  an.forEach((n, i) => {
+    if (i === an.length - 1) {   // letzter Ton: so lange wie gehalten (man lässt meist etwas früh los), mindestens 1 Schlag
+      const halten = ((n.los || n.t + schlag) - n.t) / schlag;
+      noten.push({ midi: n.m, dur: Math.max(1, ED_WERTE.reduce((a, b) => Math.abs(b - halten * 1.35) < Math.abs(a - halten * 1.35) ? b : a)) }); return;
+    }
+    const d = pos[i + 1] - pos[i];
+    // Pause nur bei deutlichem Loslassen: Ton kürzer als die Hälfte des Abstands und mindestens 1 Schlag Lücke
+    if (n.los && n.los - n.t < ioi[i] * .5) {
+      const halten = rasten((n.los - n.t) / ioi[i] * d), rest = d - halten;
+      if (rest >= 1) { noten.push({ midi: n.m, dur: halten }); noten.push({ midi: null, dur: rest }); return; }
+    }
+    noten.push({ midi: n.m, dur: d });
+  });
+  return { noten, tempo: Math.round(Math.min(240, Math.max(40, 60000 / start))) };
 }
 
 function edAnhoeren() {
-  if (!ED.noten.length) return;
+  if (!ED.noten) return;
   edStopp(); initAudio(); ctx.resume();
-  const spb = 60 / +$e('edTempo').value, t0 = ctx.currentTime + .1; let b = 0;
+  const spb = 60 / ED.tempo, t0 = ctx.currentTime + .1; let b = 0;
   ED.spielt = true; $e('edPlay').textContent = '■ Stopp';
   ED.bus = ctx.createGain(); ED.bus.connect(dry); ED.bus.connect(conv);
-  ED.noten.forEach((n, i) => {
-    if (n.midi != null) ton(n.midi, t0 + b * spb, .8, 0, ED.bus);
-    ED.timer.push(setTimeout(() => { document.querySelectorAll('.edNote').forEach((el, k) => el.classList.toggle('jetzt', k === i)); }, (b * spb + .1) * 1000));
+  ED.noten.forEach(n => {
+    if (n.midi != null) {
+      ton(n.midi, t0 + b * spb, .8, 0, ED.bus);
+      const m = n.midi; ED.timer.push(setTimeout(() => { const t = document.querySelector(`.klavier .taste[data-m="${m}"]`); if (t) { t.classList.add('an'); setTimeout(() => t.classList.remove('an'), 200); } }, (b * spb + .1) * 1000));
+    }
     b += n.dur;
   });
-  ED.timer.push(setTimeout(edStopp, (b * spb + .4) * 1000));
+  ED.timer.push(setTimeout(edStopp, (b * spb + .5) * 1000));
 }
 function edStopp() {
   ED.timer.forEach(clearTimeout); ED.timer = [];
   if (ED.bus) { const bus = ED.bus; ED.bus = null; bus.gain.setTargetAtTime(0, ctx.currentTime, .05); setTimeout(() => bus.disconnect(), 500); }
   ED.spielt = false; const p = $e('edPlay'); if (p) p.textContent = '▶ Anhören';
-  document.querySelectorAll('.edNote.jetzt').forEach(el => el.classList.remove('jetzt'));
 }
 
-function edOeffnen(lied) {
-  if (!$e('editor')) edBauen();
-  ED.offen = true; ED.wahl = -1; ED.id = lied ? lied.id : null;
-  if (lied) {
-    const p = H.parse(lied);
-    ED.noten = p.noten.map(n => ({ midi: n.midi, dur: n.dur }));
-    $e('edName').value = lied.titel; $e('edTakt').value = String(lied.takt || 4); $e('edTempo').value = lied.tempo || 100;
-    $e('edText').value = lied.text || '';
-  } else {
-    ED.noten = []; $e('edName').value = ''; $e('edTakt').value = '4'; $e('edTempo').value = 100; $e('edText').value = '';
-  }
-  $e('edTempoVal').textContent = $e('edTempo').value;
-  $e('edTitel').textContent = lied ? 'Lied bearbeiten' : 'Eigenes Lied';
-  $e('edEntfernen').hidden = !lied;
-  edNotenZeigen();
-  $e('editor').hidden = false; document.body.classList.add('editorOffen');
-  scrollTo(0, 0);
-}
-function edSchliessen() {
-  if (ED.spielt) edStopp();
-  ED.offen = false; $e('editor').hidden = true; document.body.classList.remove('editorOffen');
-}
-
-function edAlsLied() {
-  const titel = $e('edName').value.trim() || 'Mein Lied';
-  const noten = ED.noten.map(n => (n.midi == null ? 'r' : edName(n.midi)) + ':' + n.dur).join(' ');
-  const text = $e('edText').value.trim();
-  const l = { id: ED.id || ('eigen-' + Date.now().toString(36)), titel, takt: +$e('edTakt').value, tempo: +$e('edTempo').value, noten };
-  if (text) l.text = text;
-  return l;
-}
 function edAlleEigenen() { return H.LIEDER.filter(l => l.eigen); }
 function edUebernehmen(liste) {
   for (let i = H.LIEDER.length - 1; i >= 0; i--) if (H.LIEDER[i].eigen) H.LIEDER.splice(i, 1);
   liste.forEach(l => H.LIEDER.push({ ...l, gruppe: 'Eigene Lieder', eigen: true }));
   H.eigeneSpeichern(liste);
 }
+function edNeuerName() { let n = 1; const namen = new Set(edAlleEigenen().map(l => l.titel)); while (namen.has('Mein Lied ' + n)) n++; return 'Mein Lied ' + n; }
 function edSpeichern() {
-  if (!ED.noten.some(n => n.midi != null)) { alert('Das Lied hat noch keine Töne.'); return; }
-  const neu = edAlsLied();
-  try { H.parse(neu); } catch (e) { alert('Das Lied konnte nicht gespeichert werden: ' + e.message); return; }
-  const liste = edAlleEigenen().filter(l => l.id !== neu.id);
-  const alt = edAlleEigenen().findIndex(l => l.id === neu.id);
-  if (alt >= 0) liste.splice(alt, 0, neu); else liste.push(neu);
-  try { edUebernehmen(liste); } catch (e) { alert('Speichern nicht möglich (Gerätespeicher voll oder privates Surfen?).'); return; }
+  if (!ED.noten) return;
+  const l = { id: 'eigen-' + Date.now().toString(36), titel: $e('edName').value.trim() || edNeuerName(), takt: 4, tempo: ED.tempo,
+    noten: ED.noten.map(n => (n.midi == null ? 'r' : edName(n.midi)) + ':' + n.dur).join(' ') };
+  try { H.parse(l); edUebernehmen([...edAlleEigenen(), l]); }
+  catch (e) { alert('Speichern nicht möglich (Gerätespeicher voll oder privates Surfen?).'); return; }
   edSchliessen();
-  st.liedId = neu.id; liedAuswahl(); ladeLied(); merke();
+  st.liedId = l.id; liedAuswahl(); ladeLied(); merke();
   if (st.modus !== 'ueben') setzeModus('ueben');
-  meldung(`„${neu.titel}“ gespeichert – los geht's!`);
+  meldung(`„${l.titel}“ gespeichert – los geht's!`);
 }
-function edEntfernen() {
-  if (!ED.id || !confirm('Dieses Lied wirklich löschen?')) return;
-  edUebernehmen(edAlleEigenen().filter(l => l.id !== ED.id));
-  edSchliessen(); st.liedId = H.LIEDER[0].id; liedAuswahl(); ladeLied(); merke();
+
+// Liste „Meine Lieder“ zum Löschen (und Mitnehmen auf ein anderes Gerät)
+function edMeineZeigen() {
+  const ls = edAlleEigenen(), box = $e('edMeine');
+  box.innerHTML = ls.length ? `<h3>Meine Lieder</h3>` + ls.map(l => `<div class="edMein"><span>${l.titel.replace(/[<>&]/g, '')}</span><button class="quiet" data-id="${l.id}">🗑 Löschen</button></div>`).join('') +
+    `<div class="edZeile"><button id="edExport" class="quiet">📤 Exportieren</button><label class="quiet edImport">📥 Importieren<input id="edImport" type="file" accept=".json,application/json" hidden></label></div>`
+    : `<div class="edZeile"><label class="quiet edImport">📥 Lieder importieren<input id="edImport" type="file" accept=".json,application/json" hidden></label></div>`;
+  box.querySelectorAll('[data-id]').forEach(b => b.onclick = () => {
+    const l = ls.find(x => x.id === b.dataset.id); if (!l || !confirm(`„${l.titel}“ löschen?`)) return;
+    edUebernehmen(edAlleEigenen().filter(x => x.id !== l.id));
+    if (st.liedId === l.id) { st.liedId = H.LIEDER[0].id; ladeLied(); merke(); }
+    liedAuswahl(); edMeineZeigen();
+  });
+  if ($e('edExport')) $e('edExport').onclick = edExport;
+  $e('edImport').onchange = edImport;
 }
 async function edExport() {
   const liste = edAlleEigenen().map(({ id, titel, takt, tempo, noten, text }) => ({ id, titel, takt, tempo, noten, text }));
-  if (!liste.length) { alert('Es gibt noch keine eigenen Lieder.'); return; }
-  const blob = new Blob([JSON.stringify({ tischharfe: 1, lieder: liste }, null, 1)], { type: 'application/json' });
-  const name = 'Tischharfe_Eigene_Lieder.json';
-  try {
-    const files = [new File([blob], name, { type: 'application/json' })];
-    if (!window.showDirectoryPicker && navigator.canShare && navigator.canShare({ files })) { await navigator.share({ files }); return; }
-  } catch (e) { if (e && e.name === 'AbortError') return; }
+  const blob = new Blob([JSON.stringify({ tischharfe: 1, lieder: liste }, null, 1)], { type: 'application/json' }), name = 'Tischharfe_Eigene_Lieder.json';
+  try { const files = [new File([blob], name, { type: 'application/json' })];
+    if (!window.showDirectoryPicker && navigator.canShare && navigator.canShare({ files })) { await navigator.share({ files }); return; } }
+  catch (e) { if (e && e.name === 'AbortError') return; }
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(a.href), 60000);
 }
 async function edImport(e) {
-  const f = e.target.files && e.target.files[0]; e.target.value = '';
-  if (!f) return;
+  const f = e.target.files && e.target.files[0]; e.target.value = ''; if (!f) return;
   let neu = [];
   try { const d = JSON.parse(await f.text()); neu = (d.lieder || (Array.isArray(d) ? d : [])).filter(l => { try { H.parse(l); return l.titel; } catch (x) { return false; } }); }
   catch (x) { alert('Die Datei ist keine Lieder-Datei der Tischharfe.'); return; }
@@ -228,17 +202,20 @@ async function edImport(e) {
   const liste = edAlleEigenen(), ids = new Set(liste.map(l => l.id));
   neu.forEach(l => { const k = { id: l.id, titel: l.titel, takt: +l.takt || 4, tempo: +l.tempo || 100, noten: l.noten, text: l.text };
     if (ids.has(k.id)) k.id = 'eigen-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5); liste.push(k); ids.add(k.id); });
-  edUebernehmen(liste); liedAuswahl();
-  alert(neu.length + (neu.length === 1 ? ' Lied' : ' Lieder') + ' importiert – zu finden unter „Eigene Lieder“.');
+  edUebernehmen(liste); liedAuswahl(); edMeineZeigen();
 }
 
-// Knöpfe neben der Liedauswahl: „＋ Eigenes Lied“ (neu) und „✎ Bearbeiten“ (nur bei eigenen Liedern)
-(function () {
-  const neu = $e('eigenBtn'), bearb = $e('bearbBtn');
-  const zeigen = () => { const l = H.LIEDER.find(x => x.id === st.liedId); bearb.hidden = !(l && l.eigen); };
-  neu.onclick = () => edOeffnen(null);
-  bearb.onclick = () => { const l = H.LIEDER.find(x => x.id === st.liedId); if (l && l.eigen) edOeffnen(l); };
-  $e('lied').addEventListener('change', zeigen);
-  const alt = window.liedAuswahl; window.liedAuswahl = function () { alt(); zeigen(); };
-  zeigen();
-})();
+function edOeffnen() {
+  if (!$e('editor')) edBauen();
+  ED.offen = true; ED.rec = false; ED.an = []; ED.noten = null;
+  $e('edName').value = edNeuerName(); $e('edErgebnis').hidden = true;
+  const b = $e('edRec'); b.textContent = '● Aufnahme'; b.classList.remove('laeuft');
+  edStatus(); edMeineZeigen();
+  $e('editor').hidden = false; document.body.classList.add('editorOffen'); scrollTo(0, 0);
+}
+function edSchliessen() {
+  edStopp(); ED.rec = false; ED.offen = false;
+  $e('editor').hidden = true; document.body.classList.remove('editorOffen');
+}
+
+$e('eigenBtn').onclick = edOeffnen;

@@ -64,11 +64,7 @@
   .edZeile{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-top:14px;color:var(--muted);font-size:15px}
   .edZeile label{display:flex;align-items:center;gap:7px}
   .editor input[type=text]{font:inherit;font-size:16px;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:7px 10px;min-width:0}
-  #edName{width:min(260px,60vw)}
-  .edDauern{display:inline-flex;flex-wrap:wrap;gap:6px}
-  .edDauer{display:inline-flex;align-items:center;gap:4px;background:var(--panel);color:var(--ink);border:1.5px solid var(--line);font-weight:600;padding:6px 12px}
-  .edDauer[aria-pressed=true]{background:var(--accent);color:#2a1d10;border-color:var(--accent)}
-  .klavier{position:relative;height:clamp(130px,24vh,200px);margin-top:16px;user-select:none;-webkit-user-select:none;touch-action:none}
+  .klavier{position:relative;height:clamp(170px,42vh,360px);margin-top:16px;user-select:none;-webkit-user-select:none;touch-action:none}
   .klavier .taste{position:absolute;top:0;display:flex;align-items:flex-end;justify-content:center;cursor:pointer;border-radius:0 0 8px 8px}
   .klavier .weiss{bottom:0;background:#f7f2e8;border:1px solid #9b8a76;color:#3d2a1a;font-size:13px;font-weight:600}
   .klavier .weiss span{border-bottom:4px solid;padding:0 2px 6px;margin-bottom:6px}
@@ -77,19 +73,16 @@
   .klavier .schwarz.an{background:#6b5a48}
   .edHinweis{margin-top:10px;color:var(--muted);font-size:14px;line-height:1.45}
   .edHinweis b{color:var(--ink)}
-  .edNoten{display:flex;gap:6px;overflow-x:auto;padding:10px 2px;margin-top:6px;min-height:58px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-  .edLeer{color:var(--muted);font-size:14px;align-self:center}
-  .edNote{flex:none;display:flex;flex-direction:column;align-items:center;gap:2px;background:var(--panel);color:var(--ink);border:2px solid var(--f);border-radius:10px;padding:5px 9px;font-weight:600;font-size:14px}
-  .edNote.pause{border-style:dashed;color:var(--muted)}
-  .edNote.gewaehlt{background:var(--accent);color:#2a1d10;box-shadow:0 0 0 3px rgba(224,168,79,.4)}
-  .edNote.jetzt{transform:translateY(-4px);box-shadow:0 0 12px var(--f)}
-  .edText{display:flex;flex-direction:column;gap:6px;margin-top:14px;color:var(--muted);font-size:14px}
-  .edText input{width:100%}
-  .edSilben{font-size:13px;color:#8fd19e}.edSilben.warn{color:#ffb199}
-  .edUnten{border-top:1px solid var(--line);padding-top:14px}
-  .edRechts{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+  #edName{width:min(240px,55vw)}
+  .edRec{background:#c0392b;color:#fff;font-size:17px;padding:11px 24px}
+  .edRec.laeuft{background:#fff;color:#c0392b;box-shadow:inset 0 0 0 2px #c0392b;animation:puls 1.2s infinite}
+  @keyframes puls{50%{box-shadow:inset 0 0 0 2px #c0392b,0 0 0 6px rgba(192,57,43,.25)}}
+  .edStatus{color:var(--ink);font-variant-numeric:tabular-nums}
+  .edMeine{margin-top:22px;border-top:1px solid var(--line);padding-top:12px}
+  .edMeine h3{margin:0 0 8px;font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  .edMein{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--line)}
+  .edMein button{font-size:13px;padding:5px 12px}
   .edImport{cursor:pointer;border:1.5px solid var(--line);border-radius:999px;padding:9px 18px;color:var(--ink);font-weight:500}
-  .edRot{color:#ffb199!important;border-color:#7a3b30!important}
   .klapp{font-size:14px;padding:7px 14px}
   .klappZu,.zuRec{display:none;position:absolute;top:8px;z-index:3;border-radius:999px;font-size:14px;padding:7px 14px;box-shadow:0 2px 10px rgba(0,0,0,.35)}
   .klappZu{right:8px;background:rgba(35,28,23,.85);color:var(--ink);border:1.5px solid rgba(255,255,255,.35);font-weight:600}
@@ -131,8 +124,7 @@
 
   <div class="bar">
     <label>Lied <select id="lied"></select></label>
-    <button id="eigenBtn" class="quiet">＋ Eigenes Lied</button>
-    <button id="bearbBtn" class="quiet" hidden>✎ Bearbeiten</button>
+    <button id="eigenBtn" class="quiet">🎹 Lied einspielen</button>
     <label>Harfe <select id="modell"></select></label>
     <div class="seg" role="group" aria-label="Modus">
       <button data-modus="ueben" aria-pressed="true">Üben</button>
@@ -191,7 +183,7 @@
   </details>
 </div>
 
-<script src="lieder.js?v=21"></script>
+<script src="lieder.js?v=23"></script>
 <script>
 const H=window.HARFE, $=id=>document.getElementById(id);
 const cv=$('harfe'), g=cv.getContext('2d');
@@ -582,8 +574,8 @@ ladeLied(); layout(); neustart();
 addEventListener('resize',layout);
 requestAnimationFrame(schleife);
 </script>
-<script src="kopf.js?v=21"></script>
-<script src="aufnahme.js?v=21"></script>
-<script src="eigene.js?v=21"></script>
+<script src="kopf.js?v=23"></script>
+<script src="aufnahme.js?v=23"></script>
+<script src="eigene.js?v=23"></script>
 </body>
 </html>

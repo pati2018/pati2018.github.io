@@ -1,0 +1,16 @@
+{
+  "name": "Tischharfe",
+  "short_name": "Tischharfe",
+  "description": "Tischharfe im Browser – der Punktlinie nach zupfen, mit Fingern, SoundWhackern oder dem Kopf.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#231c17",
+  "theme_color": "#231c17",
+  "lang": "de",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

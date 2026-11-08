@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <radialGradient id="hg" cx="50%" cy="38%" r="75%">
+      <stop offset="0" stop-color="#3d2a1c"/><stop offset="1" stop-color="#1c140f"/>
+    </radialGradient>
+    <linearGradient id="holz" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#b57a43"/><stop offset=".5" stop-color="#9a6234"/><stop offset="1" stop-color="#7a4a26"/>
+    </linearGradient>
+    <linearGradient id="papier" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fdf8ec"/><stop offset="1" stop-color="#f1e6cf"/>
+    </linearGradient>
+    <linearGradient id="saite" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#9aa0a8"/><stop offset=".5" stop-color="#f4f4f2"/><stop offset="1" stop-color="#9aa0a8"/>
+    </linearGradient>
+    <filter id="schatten" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#000" flood-opacity=".45"/>
+    </filter>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#hg)"/>
+  <g transform="translate(512 548) scale(1.12) translate(-524 -560)">
+  <!-- Harfenkörper: oben geschwungen, unten gerade (wie eine Tischharfe) -->
+  <path filter="url(#schatten)" fill="url(#holz)"
+        d="M196 900 L196 330 C196 250 260 196 352 176 C470 150 600 132 760 140 C826 144 852 176 852 236 L852 900 C852 930 830 948 800 948 L248 948 C218 948 196 930 196 900 Z"/>
+  <!-- Holzmaserung -->
+  <g fill="none" stroke="#5a3418" stroke-opacity=".18" stroke-width="5">
+    <path d="M220 420 C380 400 600 440 830 410"/><path d="M220 640 C420 610 620 660 830 630"/><path d="M220 860 C400 840 640 880 830 850"/>
+  </g>
+  <!-- Notenblatt unter den Saiten -->
+  <path fill="url(#papier)" d="M262 352 C262 300 300 270 360 258 C470 236 600 222 744 228 C776 230 790 248 790 280 L790 872 L262 872 Z"/>
+  <!-- Melodie: rote Punkte mit Linie (wie das Notenblatt in der App) -->
+  <g>
+    <polyline fill="none" stroke="#c0261c" stroke-width="13" stroke-linejoin="round" stroke-linecap="round" points="330,370 430,470 530,420 630,560 530,690 690,780"/>
+    <g fill="#e5332a">
+      <circle cx="330" cy="370" r="34"/><circle cx="430" cy="470" r="34"/><circle cx="530" cy="420" r="34"/>
+      <circle cx="630" cy="560" r="34"/><circle cx="530" cy="690" r="34"/>
+    </g>
+    <circle cx="690" cy="780" r="30" fill="#fff8ec" stroke="#e5332a" stroke-width="14"/>
+  </g>
+  <!-- Saiten -->
+  <g stroke="#3a2414" stroke-opacity=".35" stroke-width="8" stroke-linecap="round"><line x1="285" y1="300" x2="285" y2="900"/><line x1="335" y1="270" x2="335" y2="900"/><line x1="385" y1="252" x2="385" y2="900"/><line x1="435" y1="240" x2="435" y2="900"/><line x1="485" y1="232" x2="485" y2="900"/><line x1="535" y1="226" x2="535" y2="900"/><line x1="585" y1="222" x2="585" y2="900"/><line x1="635" y1="220" x2="635" y2="900"/><line x1="685" y1="220" x2="685" y2="900"/><line x1="735" y1="222" x2="735" y2="900"/><line x1="777" y1="228" x2="777" y2="900"/></g>
+  <g stroke="#dfe2e6" stroke-width="9" stroke-linecap="round"><line x1="280" y1="300" x2="280" y2="900"/><line x1="330" y1="270" x2="330" y2="900"/><line x1="380" y1="252" x2="380" y2="900"/><line x1="430" y1="240" x2="430" y2="900"/><line x1="480" y1="232" x2="480" y2="900"/><line x1="530" y1="226" x2="530" y2="900"/><line x1="580" y1="222" x2="580" y2="900"/><line x1="630" y1="220" x2="630" y2="900"/><line x1="680" y1="220" x2="680" y2="900"/><line x1="730" y1="222" x2="730" y2="900"/><line x1="772" y1="228" x2="772" y2="900"/></g>
+  <!-- Stimmwirbel und Stege -->
+  <g fill="#e9e4da" stroke="#6b4a2e" stroke-width="4">
+    <circle cx="280" cy="296" r="13"/><circle cx="330" cy="266" r="13"/><circle cx="380" cy="248" r="13"/><circle cx="430" cy="236" r="13"/>
+    <circle cx="480" cy="228" r="13"/><circle cx="530" cy="222" r="13"/><circle cx="580" cy="218" r="13"/><circle cx="630" cy="216" r="13"/>
+    <circle cx="680" cy="216" r="13"/><circle cx="730" cy="218" r="13"/><circle cx="772" cy="224" r="13"/>
+  </g>
+  <rect x="250" y="884" width="552" height="22" rx="11" fill="#3e2412"/>
+  </g>
+</svg>

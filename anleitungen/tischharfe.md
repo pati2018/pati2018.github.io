@@ -39,7 +39,7 @@ Oben rechts auf **▲ Menü einklappen** tippen: Alle Knöpfe verschwinden und *
 - SoundWhacker, Kopfsteuerung und Finger funktionieren auch eingeklappt.
 - Oben links steht ein roter Knopf **● Video aufnehmen**: Damit startest du die Video-Aufnahme auch im Vollbild (mit den vorher eingestellten Optionen Kamerabild/Mikrofon). Während der Aufnahme zeigt er **■ und die Zeit** – antippen beendet sie. Danach erscheint kurz **✓ Aufnahme fertig**; die Aufnahme zum Speichern findest du unter **▼ Menü**.
 - Die App merkt sich, ob das Menü eingeklappt war.
-- Für echtes Vollbild ohne Safari-Leiste: In Safari **Teilen → Zum Home-Bildschirm** und die Tischharfe von dort starten.
+- Für echtes Vollbild ohne Safari-Leiste: In Safari **Teilen → Zum Home-Bildschirm**. Die Tischharfe bekommt dort ihr eigenes Symbol (eine Holzharfe mit roter Melodielinie) und startet wie eine App.
 
 ## Eigene Lieder einspielen
 

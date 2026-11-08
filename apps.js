@@ -41,6 +41,7 @@ window.APPS = [
     repo: "https://github.com/pati2018/pati2018.github.io/tree/main/tischharfe",
     kategorie: "Musik",
     symbol: "🎼",
+    bild: "tischharfe/icons/icon-192.png",
     datum: "2026-11-08"
   },
   {

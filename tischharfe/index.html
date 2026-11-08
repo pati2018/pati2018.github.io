@@ -84,14 +84,18 @@
   .edMein button{font-size:13px;padding:5px 12px}
   .edImport{cursor:pointer;border:1.5px solid var(--line);border-radius:999px;padding:9px 18px;color:var(--ink);font-weight:500}
   .klapp{font-size:14px;padding:7px 14px}
-  .klappZu,.zuRec{display:none;position:absolute;top:8px;z-index:3;border-radius:999px;font-size:14px;padding:7px 14px;box-shadow:0 2px 10px rgba(0,0,0,.35)}
-  .klappZu{right:8px;background:rgba(35,28,23,.85);color:var(--ink);border:1.5px solid rgba(255,255,255,.35);font-weight:600}
+  .klappLeiste{display:none;position:absolute;top:8px;right:8px;z-index:3;gap:8px}
+  .klappZu{border-radius:999px;font-size:14px;padding:7px 14px;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+  .zuRec{display:none;position:absolute;top:8px;z-index:3;border-radius:999px;font-size:14px;padding:7px 14px;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+  .klappZu{background:rgba(35,28,23,.85);color:var(--ink);border:1.5px solid rgba(255,255,255,.35);font-weight:600}
   .zuRec{left:8px;background:#c0392b;color:#fff;font-variant-numeric:tabular-nums}
   body.zu{padding:6px}
   body.zu .wrap{max-width:none}
   body.zu .top,body.zu .bar,body.zu .swbar,body.zu #msg,body.zu details,body.zu .takes{display:none!important}
   body.zu .stage{margin-top:0}
-  body.zu .klappZu{display:block}
+  body.zu .klappLeiste{display:flex}
+  body.zu.modusAuf .bar.modusbar{display:flex!important;margin:0 0 6px}
+  #modusKnopf[aria-expanded=true]{background:var(--accent);color:#2a1d10;border-color:var(--accent)}
   body.zu.rec .zuRec{display:block}
   body.zu .vorschau{top:50px}
   .pegel b{display:block;height:100%;width:0;background:#5ad18a;transition:width .08s}
@@ -126,6 +130,8 @@
     <label>Lied <select id="lied"></select></label>
     <button id="eigenBtn" class="quiet">🎹 Lied einspielen</button>
     <label>Harfe <select id="modell"></select></label>
+  </div>
+  <div class="bar modusbar" id="modusbar">
     <div class="seg" role="group" aria-label="Modus">
       <button data-modus="ueben" aria-pressed="true">Üben</button>
       <button data-modus="vorspielen" aria-pressed="false">Vorspielen</button>
@@ -169,7 +175,10 @@
   </div>
   <div class="stage"><canvas id="harfe" aria-label="Tischharfe – über die Saiten streichen oder einzelne Saiten antippen"></canvas>
     <div class="vorschau" id="kopfVorschau" hidden><video id="kopfVideo" playsinline muted autoplay></video></div>
-    <button id="ausklappen" class="klappZu" title="Menü wieder anzeigen">▼ Menü</button>
+    <div class="klappLeiste">
+      <button id="modusKnopf" class="klappZu" aria-expanded="false" title="Üben · Vorspielen · Frei · Von vorn ein- oder ausblenden">▼ Modus</button>
+      <button id="ausklappen" class="klappZu" title="Ganzes Menü wieder anzeigen">▼ Menü</button>
+    </div>
     <button id="zuRec" class="zuRec" title="Aufnahme beenden">■ <span id="zuRecZeit">0:00</span></button>
     <div class="vorschau" id="aufVorschau" hidden><video id="aufVideo" playsinline muted autoplay></video></div></div>
   <div class="swbar" id="swbar" role="group" aria-label="SoundWhacker 1 bis 5 (Tasten 1–5)"></div>
@@ -183,7 +192,7 @@
   </details>
 </div>
 
-<script src="lieder.js?v=23"></script>
+<script src="lieder.js?v=24"></script>
 <script>
 const H=window.HARFE, $=id=>document.getElementById(id);
 const cv=$('harfe'), g=cv.getContext('2d');
@@ -373,7 +382,8 @@ function stopVorspiel(){
 // ================= Zeichnen =================
 function layout(){
   const zu=document.body.classList.contains('zu');
-  const w=cv.clientWidth, h=zu?Math.max(260,innerHeight-12):Math.round(Math.min(Math.max(innerHeight*.66,380),760));
+  const mb=zu&&document.body.classList.contains('modusAuf')?$('modusbar').offsetHeight+6:0;
+  const w=cv.clientWidth, h=zu?Math.max(240,innerHeight-12-mb):Math.round(Math.min(Math.max(innerHeight*.66,380),760));
   const dpr=Math.min(devicePixelRatio||1,2.5);
   cv.style.height=h+'px'; cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr);
   g.setTransform(dpr,0,0,dpr,0,0);
@@ -567,6 +577,15 @@ function klappe(zu){
   layout(); scrollTo(0,0);
 }
 $('einklappen').onclick=()=>klappe(true);
+// Eigenes kleines Menü „Modus“ (Üben · Vorspielen · Frei · Von vorn), auch wenn alles andere eingeklappt ist
+function modusLeiste(auf){
+  document.body.classList.toggle('modusAuf',auf);
+  $('modusKnopf').setAttribute('aria-expanded',auf); $('modusKnopf').textContent=auf?'▲ Modus':'▼ Modus';
+  try{localStorage.setItem('tischharfe-modusleiste',auf?'1':'0')}catch(e){}
+  layout();
+}
+$('modusKnopf').onclick=()=>modusLeiste(!document.body.classList.contains('modusAuf'));
+try{ if(localStorage.getItem('tischharfe-modusleiste')==='1'){ document.body.classList.add('modusAuf'); $('modusKnopf').setAttribute('aria-expanded',true); $('modusKnopf').textContent='▲ Modus' } }catch(e){}
 $('ausklappen').onclick=()=>klappe(false);
 try{ if(localStorage.getItem('tischharfe-zu')==='1') document.body.classList.add('zu') }catch(e){}
 
@@ -574,8 +593,8 @@ ladeLied(); layout(); neustart();
 addEventListener('resize',layout);
 requestAnimationFrame(schleife);
 </script>
-<script src="kopf.js?v=23"></script>
-<script src="aufnahme.js?v=23"></script>
-<script src="eigene.js?v=23"></script>
+<script src="kopf.js?v=24"></script>
+<script src="aufnahme.js?v=24"></script>
+<script src="eigene.js?v=24"></script>
 </body>
 </html>

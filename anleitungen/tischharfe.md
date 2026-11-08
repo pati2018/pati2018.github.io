@@ -22,6 +22,7 @@ Die **Tischharfe** funktioniert wie die bekannten Tischharfen zum Unterlegen von
 
 Oben rechts auf **▲ Menü einklappen** tippen: Alle Knöpfe verschwinden und **die Harfe füllt den ganzen Bildschirm**. Mit **▼ Menü** (oben rechts auf der Harfe) kommt alles zurück.
 
+- Mit **▼ Modus** (neben „▼ Menü“) klappst du nur die Leiste **Üben · Vorspielen · Frei · Von vorn** über der Harfe auf – alles andere bleibt eingeklappt. **▲ Modus** klappt sie wieder zu.
 - SoundWhacker, Kopfsteuerung und Finger funktionieren auch eingeklappt.
 - Läuft eine Video-Aufnahme, bleibt oben links ein roter Knopf **■ mit der Zeit** zum Beenden. Danach klappt das Menü auf, damit man die neue Aufnahme gleich sieht.
 - Die App merkt sich, ob das Menü eingeklappt war.

@@ -8,7 +8,7 @@
 const AUF = { rec: null, start: 0, timer: 0, n: 0, loop: 0, cv: null, g: null, stream: null, vid: null, mic: null };
 const AUF_MAX = 300;   // Sekunden
 const istIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-const aufZeit = t => { document.getElementById('aufZeit').textContent = t; const z = document.getElementById('zuRecZeit'); if (z && t.startsWith('●')) z.textContent = t.slice(2, t.indexOf(' /')); };
+const aufZeit = t => { document.getElementById('aufZeit').textContent = t; const z = document.getElementById('zuRec'); if (z && AUF.rec && t.startsWith('●')) z.textContent = '■ ' + t.slice(2, t.indexOf(' /')); };
 const aufHinweis = t => { document.getElementById('aufHinweis').textContent = t || ''; };
 
 function aufMime() {
@@ -149,7 +149,7 @@ async function aufStart() {
   AUF.rec = r; aufZeichne();
   r.start(500); AUF.start = Date.now();
   const b = document.getElementById('aufBtn'); b.classList.add('stop'); b.textContent = '■ Aufnahme beenden';
-  document.body.classList.add('rec'); document.getElementById('zuRecZeit').textContent = '0:00';
+  document.body.classList.add('rec'); const z = document.getElementById('zuRec'); clearTimeout(z._t); z.classList.remove('fertig'); z.textContent = '■ 0:00';
   const max = Math.floor(AUF_MAX / 60) + ':' + String(AUF_MAX % 60).padStart(2, '0');
   AUF.timer = setInterval(() => {
     const s = Math.floor((Date.now() - AUF.start) / 1000);
@@ -164,7 +164,10 @@ function aufStop() {
   setTimeout(() => { if (!AUF.rec) { aufKameraStop(); aufMikroStop(); } }, 600);
   const b = document.getElementById('aufBtn'); b.classList.remove('stop'); b.textContent = '● Video aufnehmen';
   document.body.classList.remove('rec');
-  if (document.body.classList.contains('zu') && typeof klappe === 'function') klappe(false);   // damit man die neue Aufnahme gleich sieht
+  // Eingeklappt bleibt die Harfe im Vollbild – kurz zeigen, dass die Aufnahme fertig ist (zu finden unter „▼ Menü“)
+  const z = document.getElementById('zuRec'); clearTimeout(z._t);
+  if (document.body.classList.contains('zu')) { z.textContent = '✓ Aufnahme fertig'; z.classList.add('fertig'); z._t = setTimeout(() => { z.textContent = '● Video'; z.classList.remove('fertig'); }, 3500); }
+  else z.textContent = '● Video';
   aufZeit('max. ' + Math.floor(AUF_MAX / 60) + ':' + String(AUF_MAX % 60).padStart(2, '0'));
 }
 
@@ -203,7 +206,7 @@ function aufNeueAufnahme(blob) {
 
 (function () {
   document.getElementById('aufBtn').onclick = () => (AUF.rec ? aufStop() : aufStart());
-  document.getElementById('zuRec').onclick = () => aufStop();
+  document.getElementById('zuRec').onclick = () => (AUF.rec ? aufStop() : aufStart());
   try { const e = JSON.parse(localStorage.getItem('tischharfe-aufnahme') || '{}');
     if (e.kamera === false) document.getElementById('aufKamera').checked = false;
     if (e.mikro) document.getElementById('aufMikro').checked = true; } catch (e) {}

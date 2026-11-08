@@ -250,7 +250,7 @@
   </details>
 </div>
 
-<script src="lieder.js?v=34"></script>
+<script src="lieder.js?v=35"></script>
 <script>
 const H=window.HARFE, $=id=>document.getElementById(id);
 const cv=$('harfe'), g=cv.getContext('2d');
@@ -258,7 +258,7 @@ const cv=$('harfe'), g=cv.getContext('2d');
 // ================= Zustand =================
 const st={
   liedId:'entchen', modell:25, modus:'ueben', klang:'harfe', tempo:100, hall:35, namen:true,
-  sw:'weiter', lied:null, pos:0, scroll:0, scrollZiel:0, fertig:false,
+  sw:'aus', lied:null, pos:0, scroll:0, scrollZiel:0, fertig:false,
   spielt:false, t0:0, events:[], evIdx:0,
 };
 let saiten=[];          // {midi, x, amp, t, fehler, ok}
@@ -620,7 +620,7 @@ function liedAuswahl(){
 liedAuswahl();
 for(const k in H.MODELLE) $('modell').add(new Option(H.MODELLE[k].name,k));
 // gespeicherte Auswahl
-try{const s=JSON.parse(localStorage.getItem('tischharfe')||'{}'); Object.assign(st,{liedId:s.liedId||st.liedId,modell:+s.modell||st.modell,klang:(s.klang&&(s.klang==='zither'||s.klang in KLAENGE))?s.klang:st.klang,hall:s.hall??st.hall,namen:s.namen??st.namen,sw:['weiter','toene','aus'].includes(s.sw)?s.sw:st.sw})}catch(e){}
+try{const s=JSON.parse(localStorage.getItem('tischharfe')||'{}'); Object.assign(st,{liedId:s.liedId||st.liedId,modell:+s.modell||st.modell,klang:(s.klang&&(s.klang==='zither'||s.klang in KLAENGE))?s.klang:st.klang,hall:s.hall??st.hall,namen:s.namen??st.namen})}catch(e){}   // SoundWhacker beim Öffnen immer aus
 const q=new URLSearchParams(location.search); if(q.get('lied')) st.liedId=q.get('lied'); if(H.MODELLE[q.get('modell')]) st.modell=+q.get('modell');
 function merke(){ try{localStorage.setItem('tischharfe',JSON.stringify({liedId:st.liedId,modell:st.modell,klang:st.klang,hall:st.hall,namen:st.namen,sw:st.sw}))}catch(e){} }
 $('lied').value=st.liedId; $('modell').value=st.modell; $('klang').value=st.klang; $('hall').value=st.hall; $('namen').checked=st.namen; $('sw').value=st.sw;
@@ -681,8 +681,8 @@ ladeLied(); layout(); neustart();
 addEventListener('resize',layout);
 requestAnimationFrame(schleife);
 </script>
-<script src="kopf.js?v=34"></script>
-<script src="aufnahme.js?v=34"></script>
-<script src="eigene.js?v=34"></script>
+<script src="kopf.js?v=35"></script>
+<script src="aufnahme.js?v=35"></script>
+<script src="eigene.js?v=35"></script>
 </body>
 </html>

@@ -71,7 +71,7 @@ Das Lied steht dann in der Liedauswahl unter **Eigene Lieder** und lässt sich s
 Die fünf **SoundWhacker** steuern die Tischharfe über den SW-HUB – genau wie in den anderen Apps.
 
 1. Am **SW-HUB** unter *Einstellungen → Bluetooth-Modus* **Tastatur** wählen und den HUB mit dem Zusatz **-KEY** am iPad koppeln.
-2. Tischharfe öffnen und unter **SoundWhacker** eine Spielweise wählen.
+2. Tischharfe öffnen und im Menü **🥁 SoundWhacker & Kopf** eine Spielweise wählen. Beim Öffnen der App sind die SoundWhacker immer **aus**.
 3. Auf die SoundWhacker hauen. Unter der Harfe leuchten die Knöpfe **SW1–SW5** bei jedem Schlag mit. Zum Testen am Computer gehen die **Tasten 1–5**, am Tablet auch die Knöpfe selbst.
 
 | Spielweise | Was passiert |

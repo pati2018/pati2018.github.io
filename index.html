@@ -31,6 +31,7 @@
 
   <script>document.write('<script src="apps.js?v=' + Date.now() + '"><\/script>');</script>
   <script>
+    const alsApp = navigator.standalone === true || matchMedia("(display-mode: standalone)").matches;
     const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
     const apps = [...(window.APPS || [])].sort((a, b) => Number(a.ganzUnten || 0) - Number(b.ganzUnten || 0) || String(b.datum).localeCompare(String(a.datum)));
     const fmt = d => { const t = new Date(d); return isNaN(t) ? "" : t.toLocaleDateString("de-DE", { day: "numeric", month: "long", year: "numeric" }); };
@@ -69,11 +70,36 @@
           <div class="actions">
             ${(a.links || [{ label: "App öffnen", url: a.link }]).map(l => `<a class="btn primary" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>`).join("")}
             <a class="btn" href="app.html?id=${encodeURIComponent(a.id)}">Anleitung</a>
+            ${alsApp ? `<button class="btn" data-home="${esc(a.link)}">📲 Auf Home-Bildschirm</button>` : ""}
           </div>
         </section>`).join("");
       document.getElementById("leer").hidden = treffer.length > 0;
     }
     zeigen();
+
+    // Läuft die Übersicht selbst als Home-Bildschirm-App, öffnen sich die Apps darin ohne Safari-Leiste –
+    // dann gibt es kein „Teilen“. Darum: Link kopieren und in Safari einfügen.
+    document.getElementById("liste").addEventListener("click", async e => {
+      const b = e.target.closest("[data-home]"); if (!b) return;
+      const url = b.dataset.home;
+      let kopiert = false;
+      try { await navigator.clipboard.writeText(url); kopiert = true; } catch (err) {}
+      const d = document.getElementById("homeHilfe");
+      d.querySelector("[data-url]").textContent = url;
+      d.querySelector("[data-kopiert]").hidden = !kopiert;
+      d.showModal();
+    });
   </script>
+  <dialog id="homeHilfe" style="max-width:420px;border:none;border-radius:16px;padding:20px 22px;line-height:1.5">
+    <h2 style="margin:0 0 8px;font-size:20px">📲 Auf den Home-Bildschirm</h2>
+    <p data-kopiert style="margin:0 0 8px"><b>✓ Link ist kopiert.</b></p>
+    <p style="margin:0 0 6px">Du bist gerade in der Home-Bildschirm-App „Web-Apps“ – hier gibt es kein „Teilen“. So geht es:</p>
+    <ol style="margin:0 0 10px;padding-left:22px">
+      <li><b>Safari</b> öffnen.</li>
+      <li>Oben in die Adresszeile tippen und den Link <b>einfügen</b>:<br><code data-url style="word-break:break-all"></code></li>
+      <li>Auf <b>Teilen</b> <span aria-hidden="true">(□↑)</span> → <b>Zum Home-Bildschirm</b>.</li>
+    </ol>
+    <form method="dialog" style="text-align:right"><button class="btn primary">OK</button></form>
+  </dialog>
 </body>
 </html>

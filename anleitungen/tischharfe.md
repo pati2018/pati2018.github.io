@@ -45,6 +45,25 @@ Die fünf **SoundWhacker** steuern die Tischharfe über den SW-HUB – genau wie
 
 Den SW lange gedrückt halten spielt nur einen Ton – die Harfe klingt von selbst aus.
 
+## Mit dem Kopf spielen
+
+Wie beim Klang-Pad in MIGA: Die Kamera erkennt deine **Nasenspitze**, und ein Zeiger 👃 fährt über die Saiten. Die Erkennung läuft komplett auf dem Gerät – das Kamerabild wird nicht ins Internet geschickt.
+
+1. Auf **😶 Kopf** tippen und die Kamera erlauben.
+2. **Gerade auf den Bildschirm schauen** – diese Haltung ist die Mitte. Mit **⌖ Mitte** lässt sie sich jederzeit neu setzen.
+3. Den Kopf nach **links und rechts** bewegen – der Zeiger folgt.
+
+| Spielweise | So geht's |
+|---|---|
+| **Zeigen & verweilen** | Zeiger auf eine Saite führen und kurz dort bleiben – sie wird gezupft. Der Ring im Zeiger füllt sich bis zum Zupfen. Im Modus **Üben** wird die richtige Saite beim Weiterverweilen noch einmal gezupft – so klappen auch Tonwiederholungen wie „A A A A“. |
+| **Streichen** | Mit dem Kopf über die Saiten fahren: jede Saite, über die der Zeiger fährt, klingt – ein Glissando mit dem Kopf. |
+| **Nicken = nächster Ton** | Jedes Nicken spielt den nächsten Ton des Liedes. Ideal, wenn nur kleine Bewegungen möglich sind. |
+
+- **Verweilen**: wie lange der Zeiger auf einer Saite bleiben muss (sofort bis 2 s).
+- **Bewegung**: wie groß die Kopfbewegung sein muss – *groß*, *mittel* oder *klein* (bei „klein“ reicht schon eine kleine Drehung).
+- Oben rechts zeigt ein kleines Bild, was die Kamera sieht.
+- Kopfsteuerung, SoundWhacker und Finger gehen gleichzeitig.
+
 ## Die drei Modi
 
 | Modus | Was passiert |
@@ -97,6 +116,7 @@ Die Blätter sind für den üblichen **Saitenabstand von 11,5 mm** gemacht. Für
 - **Kein Ton?** Einmal auf die Harfe tippen – Browser erlauben Klang erst nach einer Berührung. Am iPad den Stummschalter prüfen.
 - **Am Handy zu eng?** Das Gerät quer halten oder das 18-Saiten-Modell wählen.
 - **Ausdruck zu klein?** Im Druckdialog war „An Seite anpassen“ eingestellt – auf 100 % stellen.
+- **Kopfsteuerung reagiert nicht?** Gesicht gut beleuchtet und ganz im Bild? **⌖ Mitte** tippen. In Safari die Kamera erlauben: **aA → Website-Einstellungen → Kamera**.
 - **Eigene Lieder** lassen sich in der Datei `tischharfe/lieder.js` ergänzen (Anleitung steht oben in der Datei).
 
 *Harfenklang: Aufnahmen aus „tonejs-instruments“ (MIT-Lizenz).*

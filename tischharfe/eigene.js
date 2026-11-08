@@ -24,6 +24,7 @@ function edBauen() {
   <div class="edZeile">
     <label>Name <input id="edName" type="text" maxlength="60"></label>
     <button id="edRec" class="edRec">● Aufnahme</button>
+    <button id="edLetzten" class="quiet" disabled>⌫ Letzten Ton löschen</button>
     <span id="edStatus" class="edStatus"></span>
   </div>
   <div class="klavier" id="edKlavier" aria-label="Klaviertastatur"></div>
@@ -31,7 +32,6 @@ function edBauen() {
     <button id="edPlay">▶ Anhören</button>
     <button id="edSpeichern">💾 Speichern</button>
     <button id="edNochmal" class="quiet">↺ Nochmal</button>
-    <button id="edLetzten" class="quiet">⌫ Letzten Ton löschen</button>
   </div>
   <div class="edHinweis">Auf <b>● Aufnahme</b> tippen und die Melodie einfach spielen – so, wie sie klingen soll. Die Aufnahme beginnt mit dem ersten Ton. Dann <b>■ Fertig</b>: die App macht daraus das Lied.</div>
   <div class="edMeine" id="edMeine"></div>`;
@@ -52,9 +52,13 @@ function edBauen() {
       e.preventDefault(); t.setPointerCapture(e.pointerId);
       const m = +t.dataset.m, jetzt = performance.now();
       t.classList.add('an'); edTon(m);
-      if (ED.rec) { ED.an.push({ m, t: jetzt, los: null }); t._idx = ED.an.length - 1; edStatus(); }
+      if (ED.rec) {
+        // Nach „Letzten Ton löschen“ rückt der nächste Ton auf den Platz des gelöschten – die Zeit fürs Korrigieren zählt nicht
+        if (ED.luecke != null) { ED.versatz += (jetzt - ED.versatz) - ED.luecke; ED.luecke = null; }
+        ED.an.push({ m, t: jetzt - ED.versatz, los: null }); t._idx = ED.an.length - 1; edStatus(); edLetztenKnopf();
+      }
     });
-    const los = () => { t.classList.remove('an'); if (ED.rec && t._idx != null && ED.an[t._idx]) ED.an[t._idx].los = performance.now(); t._idx = null; };
+    const los = () => { t.classList.remove('an'); if (ED.rec && t._idx != null && ED.an[t._idx]) ED.an[t._idx].los = performance.now() - ED.versatz; t._idx = null; };
     t.addEventListener('pointerup', los); t.addEventListener('pointercancel', los);
   });
 
@@ -63,7 +67,14 @@ function edBauen() {
   $e('edPlay').onclick = () => (ED.spielt ? edStopp() : edAnhoeren());
   $e('edSpeichern').onclick = edSpeichern;
   $e('edNochmal').onclick = edAufnahme;
-  $e('edLetzten').onclick = () => {   // letzten Ton (und eine Pause davor) entfernen
+  $e('edLetzten').onclick = () => {   // letzten Ton entfernen – während der Aufnahme oder danach
+    if (ED.rec) {
+      if (!ED.an.length) return;
+      ED.luecke = ED.an.pop().t;   // hier geht es gleich weiter
+      edStatus(); edLetztenKnopf();
+      $e('edStatus').textContent += ' (letzter gelöscht – weiterspielen)';
+      return;
+    }
     if (!ED.noten) return;
     edStopp();
     ED.noten.pop(); while (ED.noten.length && ED.noten[ED.noten.length - 1].midi == null) ED.noten.pop();
@@ -74,7 +85,7 @@ function edBauen() {
 }
 
 function edTon(m) { initAudio(); if (ctx.state !== 'running') ctx.resume(); ton(m, ctx.currentTime + .005, .8, 0); }
-function edLetztenKnopf() { const b = $e('edLetzten'); if (b) b.disabled = !ED.noten || ED.noten.filter(n => n.midi != null).length < 2; }
+function edLetztenKnopf() { const b = $e('edLetzten'); if (b) b.disabled = ED.rec ? !ED.an.length : (!ED.noten || ED.noten.filter(n => n.midi != null).length < 2); }
 function edStatus() {
   const s = $e('edStatus');
   if (ED.rec) s.textContent = ED.an.length ? `● ${ED.an.length} ${ED.an.length === 1 ? 'Ton' : 'Töne'} …` : '● Bereit – spiel los!';
@@ -84,14 +95,14 @@ function edStatus() {
 
 function edAufnahme() {
   edStopp(); initAudio(); ctx.resume();
-  ED.rec = true; ED.an = []; ED.noten = null;
+  ED.rec = true; ED.an = []; ED.noten = null; ED.versatz = 0; ED.luecke = null;
   const b = $e('edRec'); b.textContent = '■ Fertig'; b.classList.add('laeuft');
-  $e('edErgebnis').hidden = true; edStatus();
+  $e('edErgebnis').hidden = true; edStatus(); edLetztenKnopf();
 }
 function edFertig() {
   ED.rec = false;
   const b = $e('edRec'); b.textContent = '● Aufnahme'; b.classList.remove('laeuft');
-  if (ED.an.length < 2) { ED.noten = null; $e('edStatus').textContent = 'Zu wenige Töne – bitte noch einmal.'; return; }
+  if (ED.an.length < 2) { ED.noten = null; $e('edStatus').textContent = 'Zu wenige Töne – bitte noch einmal.'; edLetztenKnopf(); return; }
   const r = edRhythmus(ED.an); ED.noten = r.noten; ED.tempo = r.tempo;
   $e('edErgebnis').hidden = false; edStatus(); edLetztenKnopf();
   edAnhoeren();   // gleich vorspielen, damit man hört, ob es passt

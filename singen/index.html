@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Singen mit SoundWhackern</title>
+<meta name="description" content="Jeder SoundWhacker singt einen Ton auf „la“ – mit künstlicher Kinder-, Frauen- oder Männerstimme.">
+<meta name="theme-color" content="#1d1b2b">
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<style>
+  :root{--bg:#1d1b2b;--panel:#2a2740;--ink:#f1effa;--muted:#a9a4c4;--accent:#f2b84b;--line:#3d3959}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  body{min-height:100vh;padding:calc(env(safe-area-inset-top) + 14px) 16px 28px;display:flex;flex-direction:column;align-items:center}
+  .wrap{width:100%;max-width:980px}
+  .top{display:flex;align-items:baseline;gap:8px 16px;flex-wrap:wrap}
+  .top a{color:var(--muted);text-decoration:none;font-size:14px}
+  h1{margin:0 auto 0 0;font-family:Georgia,serif;font-weight:400;font-size:clamp(26px,4.5vw,38px)}
+  .bar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin-top:14px;font-size:15px;color:var(--muted)}
+  .bar label{display:flex;align-items:center;gap:7px}
+  select,button{font:inherit;font-size:15px}
+  select{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:6px 8px}
+  input[type=range]{accent-color:var(--accent);width:110px}
+  button{border:0;border-radius:999px;padding:9px 18px;cursor:pointer;background:var(--accent);color:#2a1d05;font-weight:600}
+  button.quiet{background:transparent;color:var(--ink);border:1.5px solid var(--line);font-weight:500}
+  .sws{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:20px;touch-action:none;user-select:none;-webkit-user-select:none}
+  .sw{--c:#888;aspect-ratio:3/4;min-width:0;overflow:hidden;border-radius:22px;background:var(--panel);border:4px solid var(--c);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+      color:var(--ink);font-weight:800;transition:transform .06s,background .06s,box-shadow .1s;padding:8px}
+  .sw .nr{font-size:clamp(14px,2.2vw,18px);color:var(--muted);font-weight:700}
+  .sw .ton{font-size:clamp(30px,6vw,56px);line-height:1}
+  .sw .silbe{font-size:clamp(14px,2.4vw,20px);font-weight:600;font-style:italic;color:var(--muted)}
+  .sw.an{background:var(--c);color:#1a1a1a;transform:scale(.96);box-shadow:0 0 30px var(--c)}
+  .sw.an .nr,.sw.an .silbe{color:#1a1a1a}
+  .msg{margin-top:16px;color:var(--muted);font-size:15px;line-height:1.5}
+  .msg b{color:var(--ink)}
+  kbd{border:1px solid var(--line);border-radius:4px;padding:0 5px;font-family:inherit;font-size:13px}
+  @media (max-width:560px){.sws{gap:8px}.sw{border-radius:16px;border-width:3px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <h1>Singen mit SoundWhackern</h1>
+    <a href="../">← Alle Apps</a>
+    <a href="../app.html?id=singen">Anleitung</a>
+  </div>
+  <div class="bar">
+    <label>Stimme <select id="stimme"><option value="kind">Kind</option><option value="frau" selected>Frau</option><option value="mann">Mann</option></select></label>
+    <label>Silbe <select id="silbe"><option value="la" selected>la</option><option value="lu">lu</option><option value="li">li</option><option value="na">na</option><option value="a">aah</option></select></label>
+    <label>Tonart <select id="tonart"><option value="0">C</option><option value="2">D</option><option value="4">E</option><option value="5">F</option><option value="7">G</option><option value="9">A</option></select></label>
+    <label>Vibrato <input id="vib" type="range" min="0" max="100" value="60"></label>
+    <label>Hall <input id="hall" type="range" min="0" max="100" value="30"></label>
+    <button id="probe" class="quiet">▶ Hörprobe</button>
+  </div>
+  <div class="sws" id="sws" role="group" aria-label="SoundWhacker 1 bis 5"></div>
+  <p class="msg">Auf einen <b>SoundWhacker</b> hauen (SW-HUB im Tastatur-Modus) oder <kbd>1</kbd>–<kbd>5</kbd> drücken bzw. die Felder antippen. <b>Gehalten singt die Stimme weiter</b>, losgelassen klingt sie aus. Mehrere zusammen ergeben einen Chor – die fünf Töne passen immer zusammen (Pentatonik).</p>
+</div>
+
+<script src="stimme.js?v=1"></script>
+<script>
+const $=id=>document.getElementById(id);
+const FARBEN=['#e5484d','#f08c2e','#f2cf3a','#46b37b','#3f8ee8'];
+const STUFEN=[0,2,4,7,9];          // Pentatonik: do re mi so la
+const NAMEN=['C','Cis','D','Es','E','F','Fis','G','As','A','B','H'];
+const st={stimme:'frau',silbe:'la',tonart:0,vib:60,hall:30};
+try{Object.assign(st,JSON.parse(localStorage.getItem('singen')||'{}'))}catch(e){}
+const merke=()=>{try{localStorage.setItem('singen',JSON.stringify(st))}catch(e){}};
+
+// Audio
+let ctx=null, bus, dry, wet;
+function initAudio(){
+  if(ctx) return;
+  ctx=new (window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'});
+  const comp=ctx.createDynamicsCompressor(); comp.threshold.value=-12; comp.ratio.value=3; comp.connect(ctx.destination);
+  bus=ctx.createGain(); dry=ctx.createGain(); wet=ctx.createGain();
+  const hall=ctx.createConvolver(), n=ctx.sampleRate*2, ir=ctx.createBuffer(2,n,ctx.sampleRate);
+  for(let c=0;c<2;c++){const d=ir.getChannelData(c); for(let i=0;i<n;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/n,3)} hall.buffer=ir;
+  bus.connect(dry); bus.connect(hall); hall.connect(wet); dry.connect(comp); wet.connect(comp); setHall();
+}
+function setHall(){ if(!ctx) return; wet.gain.setTargetAtTime(st.hall/100*.5,ctx.currentTime,.05); dry.gain.setTargetAtTime(1-st.hall/300,ctx.currentTime,.05) }
+const midiVon=k=>STIMME.STIMMEN[st.stimme].grund-4+st.tonart+STUFEN[k];
+
+// SoundWhacker-Felder
+const klingt={};   // k → laufender Ton
+function baue(){
+  $('sws').innerHTML=FARBEN.map((c,k)=>{const m=midiVon(k); return `<div class="sw" data-k="${k}" style="--c:${c}" role="button" aria-label="SW${k+1}"><span class="nr">SW${k+1}</span><span class="ton">${NAMEN[m%12]}</span><span class="silbe">${st.silbe==='a'?'aah':st.silbe}</span></div>`}).join('');
+  document.querySelectorAll('.sw').forEach(el=>{
+    const k=+el.dataset.k;
+    el.addEventListener('pointerdown',e=>{e.preventDefault(); el.setPointerCapture(e.pointerId); an(k)});
+    ['pointerup','pointercancel'].forEach(t=>el.addEventListener(t,()=>aus(k)));
+  });
+}
+function an(k){
+  initAudio(); if(ctx.state!=='running') ctx.resume();
+  aus(k);
+  klingt[k]=STIMME.singe(ctx,bus,{midi:midiVon(k),t:ctx.currentTime+.01,stimme:st.stimme,silbe:st.silbe,vibrato:st.vib/100,pegel:.75});
+  const el=document.querySelector(`.sw[data-k="${k}"]`); if(el) el.classList.add('an');
+}
+function aus(k){
+  if(klingt[k]){ klingt[k].stop(ctx.currentTime); delete klingt[k]; }
+  const el=document.querySelector(`.sw[data-k="${k}"]`); if(el) el.classList.remove('an');
+}
+// Tasten 1–5 (SW-HUB im Tastatur-Modus): gedrückt = singen, losgelassen = aus
+addEventListener('keydown',e=>{ const m=/^(Digit|Numpad)([1-5])$/.exec(e.code)||(/^[1-5]$/.test(e.key)?[0,0,e.key]:null); if(!m) return; e.preventDefault(); if(!e.repeat) an(+m[2]-1) });
+addEventListener('keyup',e=>{ const m=/^(Digit|Numpad)([1-5])$/.exec(e.code)||(/^[1-5]$/.test(e.key)?[0,0,e.key]:null); if(m) aus(+m[2]-1) });
+
+// Hörprobe: „Alle meine Entchen“ – Anfang
+$('probe').onclick=()=>{
+  initAudio(); ctx.resume();
+  const g=STIMME.STIMMEN[st.stimme].grund-4+st.tonart, mel=[[0,1],[2,1],[4,1],[5,1],[7,2],[7,2]], spb=.42; let t=ctx.currentTime+.1;
+  for(const [s,d] of mel){ STIMME.singe(ctx,bus,{midi:g+s,t,stimme:st.stimme,silbe:st.silbe,vibrato:st.vib/100}).stop(t+d*spb*.85); t+=d*spb }
+};
+
+// Einstellungen
+$('stimme').value=st.stimme; $('silbe').value=st.silbe; $('tonart').value=st.tonart; $('vib').value=st.vib; $('hall').value=st.hall;
+$('stimme').onchange=e=>{st.stimme=e.target.value; e.target.blur(); merke(); baue()};
+$('silbe').onchange=e=>{st.silbe=e.target.value; e.target.blur(); merke(); baue()};
+$('tonart').onchange=e=>{st.tonart=+e.target.value; e.target.blur(); merke(); baue()};
+$('vib').oninput=e=>{st.vib=+e.target.value; merke()};
+$('hall').oninput=e=>{st.hall=+e.target.value; merke(); setHall()};
+document.addEventListener('visibilitychange',()=>{ if(document.hidden) Object.keys(klingt).forEach(k=>aus(+k)) });
+baue();
+</script>
+</body>
+</html>

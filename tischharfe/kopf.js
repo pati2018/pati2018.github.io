@@ -159,6 +159,7 @@ function kopfUi() {
   const b = document.getElementById('kopfBtn');
   b.setAttribute('aria-pressed', KOPF.an); b.textContent = KOPF.an ? '😶 Kopf: an' : '😶 Kopf';
   document.getElementById('kopfOpt').hidden = !KOPF.an;
+  const mk = document.querySelector('.menuKnopf[data-menu="steuerung"]'); if (mk) mk.classList.toggle('aktiv', KOPF.an);
 }
 (function () {
   const $ = id => document.getElementById(id);

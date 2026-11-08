@@ -8,7 +8,7 @@
 const AUF = { rec: null, start: 0, timer: 0, n: 0, loop: 0, cv: null, g: null, stream: null, vid: null, mic: null };
 const AUF_MAX = 300;   // Sekunden
 const istIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-const aufZeit = t => { document.getElementById('aufZeit').textContent = t; const z = document.getElementById('zuRec'); if (z && AUF.rec && t.startsWith('●')) z.textContent = '■ ' + t.slice(2, t.indexOf(' /')); };
+const aufZeit = t => { document.getElementById('aufZeit').textContent = t; const mz = document.getElementById('menuVideoZeit'); if (mz) { mz.textContent = AUF.rec && t.startsWith('●') ? t.slice(2, t.indexOf(' /')) : ''; mz.parentElement.classList.toggle('rec', !!AUF.rec); } const z = document.getElementById('zuRec'); if (z && AUF.rec && t.startsWith('●')) z.textContent = '■ ' + t.slice(2, t.indexOf(' /')); };
 const aufHinweis = t => { document.getElementById('aufHinweis').textContent = t || ''; };
 
 function aufMime() {

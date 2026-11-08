@@ -18,6 +18,19 @@ Die **Tischharfe** funktioniert wie die bekannten Tischharfen zum Unterlegen von
 | **Feste** | Zum Geburtstag viel Glück · Morgen kommt der Weihnachtsmann · Jingle Bells · Stille Nacht |
 | **Klassik** | Ode an die Freude · Für Elise (Thema) |
 
+## Die Menüs
+
+Über der Harfe stehen vier Knöpfe – jeder klappt sein eigenes Menü auf und wieder zu (es dürfen auch mehrere offen sein):
+
+| Menü | Inhalt |
+|---|---|
+| **🎵 (Liedname)** | Liedauswahl und **🎹 Lied einspielen** |
+| **🎚 Klang** | Klang, Harfe (25 oder 18 Saiten), Tempo, Hall, Tonnamen |
+| **🥁 SoundWhacker & Kopf** | SoundWhacker-Spielweise und Kopfsteuerung (Knopf ist blau umrandet, solange die Kopfsteuerung läuft) |
+| **● Video** | Video aufnehmen, Kamerabild, Mikrofon, Lautstärke (während der Aufnahme wird der Knopf rot und zeigt die Zeit) |
+
+**Üben · Vorspielen · Frei · Von vorn** stehen immer direkt über der Harfe. Die App merkt sich, welche Menüs offen waren.
+
 ## Ganzer Bildschirm
 
 Oben rechts auf **▲ Menü einklappen** tippen: Alle Knöpfe verschwinden und **die Harfe füllt den ganzen Bildschirm**. Mit **▼ Menü** (oben rechts auf der Harfe) kommt alles zurück.

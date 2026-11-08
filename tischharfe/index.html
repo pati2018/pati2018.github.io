@@ -143,8 +143,24 @@
   </div>
   <div class="bar">
     <label>Klang <select id="klang">
-      <option value="harfe">Konzertharfe (Aufnahmen)</option>
-      <option value="zither">Tischharfe (Zither-Klang)</option>
+      <optgroup label="Harfen">
+        <option value="harfe">Konzertharfe</option>
+        <option value="zither">Tischharfe (Zither)</option>
+      </optgroup>
+      <optgroup label="Tasten &amp; Schlägel">
+        <option value="klavier">Klavier</option>
+        <option value="epiano">E-Piano</option>
+        <option value="marimba">Marimba</option>
+        <option value="vibraphon">Vibraphon</option>
+        <option value="xylophon">Xylophon</option>
+        <option value="spieluhr">Spieluhr</option>
+      </optgroup>
+      <optgroup label="Saiten &amp; mehr">
+        <option value="gitarre">Gitarre</option>
+        <option value="koto">Koto</option>
+        <option value="kalimba">Kalimba</option>
+        <option value="steeldrums">Steel Drums</option>
+      </optgroup>
     </select></label>
     <label>Tempo <input id="tempo" type="range" min="40" max="160" value="100"> <span id="tempoVal">100</span></label>
     <label>Hall <input id="hall" type="range" min="0" max="100" value="35"></label>
@@ -194,7 +210,7 @@
   </details>
 </div>
 
-<script src="lieder.js?v=26"></script>
+<script src="lieder.js?v=27"></script>
 <script>
 const H=window.HARFE, $=id=>document.getElementById(id);
 const cv=$('harfe'), g=cv.getContext('2d');
@@ -209,9 +225,18 @@ let saiten=[];          // {midi, x, amp, t, fehler, ok}
 let geo={};
 
 // ================= Audio =================
-let ctx=null, master, dry, wet, conv, samples={}, ladeStatus='aus';
+let ctx=null, master, dry, wet, conv;
 let recDest=null;   // Harfenklang für Video-Aufnahmen
-const SAMPLE_TOENE={E3:52,G3:55,B3:59,D4:62,F4:65,A4:69,C5:72,E5:76,G5:79,B5:83};
+// Klänge: Konzertharfe (Aufnahmen) und Instrumente aus der SoundWhacker-SoundFont (GeneralUser GS), je 10 Einzeltöne.
+// pegel gleicht die Lautstärke an die Harfe an. Geladen wird ein Klang erst, wenn man ihn wählt.
+const ST_TOENE=[54,57,60,63,66,69,72,75,78,81];
+const KLAENGE={
+  harfe:{pfad:'samples/',toene:{E3:52,G3:55,B3:59,D4:62,F4:65,A4:69,C5:72,E5:76,G5:79,B5:83},pegel:1.05},
+  klavier:{pegel:.84}, epiano:{pegel:.4}, marimba:{pegel:.96}, vibraphon:{pegel:.68}, xylophon:{pegel:2.18}, spieluhr:{pegel:1.12},
+  gitarre:{pegel:1.36}, koto:{pegel:2.2}, kalimba:{pegel:1.31}, steeldrums:{pegel:1.34},
+};
+for(const id in KLAENGE) if(!KLAENGE[id].pfad){ KLAENGE[id].pfad=`klaenge/${id}/`; KLAENGE[id].toene=Object.fromEntries(ST_TOENE.map(m=>[m,m])) }
+const puffer={}, ladeZustand={};   // je Klang: {midi: AudioBuffer} und 'laedt' | 'fertig' | 'fehler'
 function initAudio(){
   if(ctx) return;
   ctx=new (window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'});
@@ -220,7 +245,7 @@ function initAudio(){
   try{ recDest=ctx.createMediaStreamDestination(); comp.connect(recDest) }catch(e){ recDest=null }
   dry=ctx.createGain(); wet=ctx.createGain(); dry.connect(master); wet.connect(master);
   conv=ctx.createConvolver(); conv.buffer=hallImpuls(2.6); conv.connect(wet);
-  setHall(); ladeSamples();
+  setHall(); ladeKlang('harfe'); ladeKlang(st.klang);
 }
 function hallImpuls(sek){
   const sr=ctx.sampleRate, n=Math.floor(sr*sek), b=ctx.createBuffer(2,n,sr);
@@ -228,18 +253,19 @@ function hallImpuls(sek){
   return b;
 }
 function setHall(){ if(!ctx) return; const h=st.hall/100; wet.gain.setTargetAtTime(h*.55,ctx.currentTime,.05); dry.gain.setTargetAtTime(1-h*.35,ctx.currentTime,.05) }
-async function ladeSamples(){
-  if(ladeStatus!=='aus') return; ladeStatus='laedt';
+async function ladeKlang(id){
+  const K=KLAENGE[id]; if(!K||!ctx||ladeZustand[id]) return;
+  ladeZustand[id]='laedt'; const b={};
   try{
-    await Promise.all(Object.entries(SAMPLE_TOENE).map(async([name,midi])=>{
-      const r=await fetch(`samples/${name}.mp3`); if(!r.ok) throw new Error(name);
+    await Promise.all(Object.entries(K.toene).map(async([name,midi])=>{
+      const r=await fetch(K.pfad+name+'.mp3'); if(!r.ok) throw new Error(name);
       const ab=await r.arrayBuffer();
-      samples[midi]=await new Promise((ok,err)=>ctx.decodeAudioData(ab,ok,err));
+      b[midi]=await new Promise((ok,err)=>ctx.decodeAudioData(ab,ok,err));
     }));
-    ladeStatus='fertig';
+    puffer[id]=b; ladeZustand[id]='fertig';
   }catch(e){
-    ladeStatus='fehler';
-    if(st.klang==='harfe') meldung('Die Harfen-Aufnahmen konnten nicht geladen werden – es klingt die Zither.');
+    ladeZustand[id]='fehler';
+    if(st.klang===id) meldung('Dieser Klang konnte nicht geladen werden – es klingt die Harfe bzw. die Zither.');
   }
 }
 // Zither: Karplus-Strong-Saite, pro Ton einmal berechnet
@@ -267,9 +293,11 @@ function ton(midi,t,vel,pan,bus=null){
   if(!ctx) return;
   const src=ctx.createBufferSource(), g1=ctx.createGain();
   let rate=1, buf=null, pegel=vel;
-  if(st.klang==='harfe'&&ladeStatus==='fertig'){
-    let best=null; for(const k in samples){ if(best===null||Math.abs(k-midi)<Math.abs(best-midi)) best=+k }
-    buf=samples[best]; rate=2**((midi-best)/12); pegel=vel*1.05;
+  // gewählter Klang – solange er noch lädt, die Harfe; ist die auch nicht da, die Zither
+  const id=st.klang!=='zither'&&ladeZustand[st.klang]==='fertig'?st.klang:(st.klang!=='zither'&&ladeZustand.harfe==='fertig'?'harfe':null);
+  if(id){
+    const b=puffer[id]; let best=null; for(const k in b){ if(best===null||Math.abs(k-midi)<Math.abs(best-midi)) best=+k }
+    buf=b[best]; rate=2**((midi-best)/12); pegel=vel*KLAENGE[id].pegel;
   } else { buf=zitherPuffer(midi); pegel=vel*.42 }
   src.buffer=buf; src.playbackRate.value=rate;
   g1.gain.setValueAtTime(pegel,t);
@@ -552,14 +580,16 @@ function liedAuswahl(){
 liedAuswahl();
 for(const k in H.MODELLE) $('modell').add(new Option(H.MODELLE[k].name,k));
 // gespeicherte Auswahl
-try{const s=JSON.parse(localStorage.getItem('tischharfe')||'{}'); Object.assign(st,{liedId:s.liedId||st.liedId,modell:+s.modell||st.modell,klang:s.klang||st.klang,hall:s.hall??st.hall,namen:s.namen??st.namen,sw:['weiter','toene','aus'].includes(s.sw)?s.sw:st.sw})}catch(e){}
+try{const s=JSON.parse(localStorage.getItem('tischharfe')||'{}'); Object.assign(st,{liedId:s.liedId||st.liedId,modell:+s.modell||st.modell,klang:(s.klang&&(s.klang==='zither'||s.klang in KLAENGE))?s.klang:st.klang,hall:s.hall??st.hall,namen:s.namen??st.namen,sw:['weiter','toene','aus'].includes(s.sw)?s.sw:st.sw})}catch(e){}
 const q=new URLSearchParams(location.search); if(q.get('lied')) st.liedId=q.get('lied'); if(H.MODELLE[q.get('modell')]) st.modell=+q.get('modell');
 function merke(){ try{localStorage.setItem('tischharfe',JSON.stringify({liedId:st.liedId,modell:st.modell,klang:st.klang,hall:st.hall,namen:st.namen,sw:st.sw}))}catch(e){} }
 $('lied').value=st.liedId; $('modell').value=st.modell; $('klang').value=st.klang; $('hall').value=st.hall; $('namen').checked=st.namen; $('sw').value=st.sw;
 
 $('lied').onchange=e=>{st.liedId=e.target.value; ladeLied(); merke()};
 $('modell').onchange=e=>{st.modell=+e.target.value; ladeLied(); merke()};
-$('klang').onchange=e=>{st.klang=e.target.value; merke(); if(ctx) zupf(Math.floor(saiten.length/2),.7)};
+$('klang').onchange=async e=>{st.klang=e.target.value; merke(); e.target.blur(); if(!ctx) return;
+  if(KLAENGE[st.klang]&&ladeZustand[st.klang]!=='fertig'){ ladeKlang(st.klang); for(let i=0;i<40&&ladeZustand[st.klang]==='laedt';i++) await new Promise(r=>setTimeout(r,100)) }
+  zupf(Math.floor(saiten.length/2),.7)};
 $('hall').oninput=e=>{st.hall=+e.target.value; setHall(); merke()};
 $('namen').onchange=e=>{st.namen=e.target.checked; merke()};
 $('sw').onchange=e=>{st.sw=e.target.value; e.target.blur(); merke(); swAufbau(); if(st.sw!=='aus'&&st.modus!=='ueben') setzeModus('ueben'); else neustart()};
@@ -595,8 +625,8 @@ ladeLied(); layout(); neustart();
 addEventListener('resize',layout);
 requestAnimationFrame(schleife);
 </script>
-<script src="kopf.js?v=26"></script>
-<script src="aufnahme.js?v=26"></script>
-<script src="eigene.js?v=26"></script>
+<script src="kopf.js?v=27"></script>
+<script src="aufnahme.js?v=27"></script>
+<script src="eigene.js?v=27"></script>
 </body>
 </html>

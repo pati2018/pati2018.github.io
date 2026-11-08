@@ -33,7 +33,7 @@ window.APPS = [
   {
     id: "tischharfe",
     titel: "Tischharfe",
-    kurz: "Eine Tischharfe im Browser: Das Notenblatt liegt unter den Saiten, man zupft einfach der Punktlinie nach – ganz ohne Notenkenntnisse. Mit echtem Harfenklang, Übe- und Vorspielmodus, 18 oder 25 Saiten und Video-Aufnahme – spielbar auch mit den SoundWhackern oder mit dem Kopf.",
+    kurz: "Eine Tischharfe im Browser: Das Notenblatt liegt unter den Saiten, man zupft einfach der Punktlinie nach – ganz ohne Notenkenntnisse. Mit echtem Harfenklang und zehn weiteren Instrumenten (Klavier, E-Piano, Marimba …), Übe- und Vorspielmodus, 18 oder 25 Saiten und Video-Aufnahme – spielbar auch mit den SoundWhackern oder mit dem Kopf.",
     links: [
       { label: "🎼 Tischharfe öffnen", url: "https://pati2018.github.io/tischharfe/" }
     ],

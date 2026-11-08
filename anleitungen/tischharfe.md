@@ -127,7 +127,12 @@ Der Abstand zwischen den Punkten zeigt zusätzlich, wie lange ein Ton klingt. Di
 ## Einstellungen
 
 - **Harfe**: *25 Saiten (g – g″)* oder *18 Saiten (h – e″)*, beide chromatisch – wie die üblichen Tischharfen. Passt ein Lied nicht in den Tonumfang, wird es automatisch verschoben.
-- **Klang**: *Konzertharfe* (echte Aufnahmen einer Harfe) oder *Tischharfe* (heller, metallischer Zither-Klang).
+- **Klang**: zwölf Klänge zur Auswahl:
+  - **Harfen**: *Konzertharfe* (echte Aufnahmen) und *Tischharfe* (heller Zither-Klang)
+  - **Tasten & Schlägel**: *Klavier, E-Piano, Marimba, Vibraphon, Xylophon, Spieluhr*
+  - **Saiten & mehr**: *Gitarre, Koto, Kalimba, Steel Drums*
+
+  Die Instrumente stammen aus derselben SoundFont wie in den SoundWhacker-Apps und MIGA (GeneralUser GS). Ein Klang wird beim ersten Auswählen kurz geladen – solange klingt die Harfe.
 - **Tempo** für das Vorspielen, **Hall**, und **Tonnamen** unter den Saiten ein- oder ausblenden. Die dunkleren Saiten sind die Halbtöne (cis, dis, fis …).
 
 ## Tipps & Probleme

@@ -2,17 +2,17 @@
  * Kopfsteuerung für die Tischharfe (Gesichtserkennung wie in MIGA, läuft auf dem Gerät):
  * Jede Kopfbewegung nach links, rechts, oben oder unten (Nicken) spielt den nächsten Ton des Liedes –
  * wie ein Tippen. Danach erst zurück zur Mitte, dann zählt die nächste Bewegung.
- * Richtung: 'alle' | 'seite' (nur links/rechts) | 'nicken' (nur hoch/runter)
+ * Richtung: 'seite' (links/rechts) | 'nicken' (hoch/runter)
  * Nutzt aus index.html: st, saiten, geo, g, zupf, setzeModus, neustart, initAudio, ctx.
  */
 const KOPF = {
   an: false, stream: null, vid: null, face: null, loop: 0, lastT: -1,
   cx: null, cy: null, px: .5, py: .5, gefunden: false, verloren: 0,
   bereit: true, seite: 0, zuletzt: 0, blitz: 0,
-  einst: { gain: 9, nick: 2.5, richtung: 'alle' },   // gain: Stufe links/rechts · nick: Nickwinkel in Grad
+  einst: { gain: 9, nick: 2.5, richtung: 'seite' },   // gain: Stufe links/rechts · nick: Nickwinkel in Grad
   verlauf: [],                             // letzte Rohwerte für den Median (gegen Zittern)
 };
-try { const e = JSON.parse(localStorage.getItem('tischharfe-kopf') || '{}'); if (e.gain) KOPF.einst.gain = e.gain; if (e.nick) KOPF.einst.nick = e.nick; if (['alle', 'seite', 'nicken'].includes(e.richtung)) KOPF.einst.richtung = e.richtung; } catch (e) {}
+try { const e = JSON.parse(localStorage.getItem('tischharfe-kopf') || '{}'); if (e.gain) KOPF.einst.gain = e.gain; if (e.nick) KOPF.einst.nick = e.nick; if (['seite', 'nicken'].includes(e.richtung)) KOPF.einst.richtung = e.richtung; } catch (e) {}
 const kopfMerke = () => { try { localStorage.setItem('tischharfe-kopf', JSON.stringify(KOPF.einst)) } catch (e) {} };
 const KOPF_BASIS = new URL('kopf/', location.href).href;
 
@@ -128,7 +128,7 @@ function kopfNaechsterTon() {
   if (z) zupf(saiten.findIndex(s => s.midi === z.midi), .85);
 }
 function kopfHinweis() {
-  return { alle: 'Kopf nach links, rechts, hoch oder runter = nächster Ton. Danach kurz zurück zur Mitte.',
+  return {
            seite: 'Kopf nach links oder rechts drehen = nächster Ton. Danach kurz zurück zur Mitte.',
            nicken: 'Nicken (Kopf hoch oder runter) = nächster Ton. Danach kurz zurück zur Mitte.' }[KOPF.einst.richtung];
 }

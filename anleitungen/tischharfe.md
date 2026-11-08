@@ -51,12 +51,12 @@ Die Kamera erkennt deine **Nasenspitze** (wie in MIGA). Die Erkennung läuft kom
 
 1. Auf **😶 Kopf** tippen und die Kamera erlauben.
 2. **Gerade auf den Bildschirm schauen** – diese Haltung ist die Mitte.
-3. **Kopf nach links, rechts, hoch oder runter = nächster Ton** – wie ein Tippen. Egal in welche Richtung: Es klingt immer der Ton, der im Lied als Nächstes dran ist.
+3. Unter **Richtung** wählen: **Links/rechts** (Kopf drehen) oder **Hoch/runter** (nicken). Jede Bewegung spielt den **nächsten Ton** – wie ein Tippen. Es klingt immer der Ton, der im Lied als Nächstes dran ist.
 4. **Kurz zurück zur Mitte**, dann zählt die nächste Bewegung. So spielt eine einzige Drehung nie mehrere Töne.
 
 Unter dem Kamerabild zeigt ein kleines Feld, wo dein Kopf gerade steht: grün = Mitte, orange Rand = hier löst es aus. Der Punkt ist **blau**, wenn die nächste Bewegung bereit ist, und **orange**, solange du erst zur Mitte zurückmusst.
 
-- **Richtung**: *Alle Richtungen*, *Nur links/rechts* oder *Nur Nicken (hoch/runter)* – je nachdem, welche Bewegung am besten klappt. Fürs Nicken misst die App den **Neigungswinkel** des Kopfes.
+- **Richtung**: *Links/rechts* oder *Hoch/runter (Nicken)* – je nachdem, welche Bewegung am besten klappt. Fürs Nicken misst die App den **Neigungswinkel** des Kopfes.
 - **Links/rechts** (Schieberegler): wie weit du den Kopf drehen musst. Links = **grob** (große Drehung), rechts = **fein** (kleine Drehung). Daneben steht die Stufe 0–100 – praktisch, um sich den passenden Wert für jedes Kind zu merken.
 - **Nicken** (Schieberegler): wie weit du nicken musst – von **8°** (grob) bis **0,65°** (fein). Der Winkel steht daneben. Voreingestellt sind 2,5°.
 - Der feine Bereich hat auf den Reglern mehr Platz, damit man dort genau einstellen kann. Je weiter Richtung **fein**, desto weiter wandert der Nasen-Punkt im Feld unter dem Kamerabild schon bei einer kleinen Bewegung – so sieht man sofort, ob es reicht.

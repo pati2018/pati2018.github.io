@@ -62,6 +62,8 @@
   .menuKnopf[aria-expanded=true] .pfeil{transform:rotate(180deg);color:#2a1d10}
   .menuKnopf.aktiv:not([aria-expanded=true]){border-color:#3f6fd0;box-shadow:inset 0 0 0 1px #3f6fd0}
   .menuKnopf.rec{background:#c0392b;color:#fff;border-color:#c0392b}
+  .liedNote{width:1.35em;height:1.35em;fill:#ff3b30;vertical-align:-.3em;filter:drop-shadow(0 0 2px rgba(255,59,48,.45))}
+  .menuKnopf[aria-expanded=true] .liedNote{fill:#c0261c;filter:none}
   #menuLiedName{display:inline-block;max-width:min(46vw,320px);overflow:hidden;text-overflow:ellipsis;vertical-align:bottom}
   .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:2px 14px 14px;margin-top:10px}
   .panel[hidden]{display:none}
@@ -142,7 +144,7 @@
   </div>
 
   <div class="menues" role="group" aria-label="Menüs">
-    <button class="menuKnopf" data-menu="lied" aria-expanded="false">🎵 <span id="menuLiedName">Lied</span> <span class="pfeil">▾</span></button>
+    <button class="menuKnopf" data-menu="lied" aria-expanded="false"><svg class="liedNote" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4.5 21 2v13.2a3.3 3.3 0 1 1-2.4-3.2V6.6L10.4 8.2v9.5A3.3 3.3 0 1 1 8 14.5Z"/></svg> <span id="menuLiedName">Lied</span> <span class="pfeil">▾</span></button>
     <button class="menuKnopf" data-menu="klang" aria-expanded="false">🎚 Klang <span class="pfeil">▾</span></button>
     <button class="menuKnopf" data-menu="steuerung" aria-expanded="false">🥁 SoundWhacker &amp; Kopf <span class="pfeil">▾</span></button>
     <button class="menuKnopf" data-menu="video" aria-expanded="false">● Video <span id="menuVideoZeit"></span> <span class="pfeil">▾</span></button>
@@ -238,7 +240,7 @@
   </details>
 </div>
 
-<script src="lieder.js?v=28"></script>
+<script src="lieder.js?v=29"></script>
 <script>
 const H=window.HARFE, $=id=>document.getElementById(id);
 const cv=$('harfe'), g=cv.getContext('2d');
@@ -669,8 +671,8 @@ ladeLied(); layout(); neustart();
 addEventListener('resize',layout);
 requestAnimationFrame(schleife);
 </script>
-<script src="kopf.js?v=28"></script>
-<script src="aufnahme.js?v=28"></script>
-<script src="eigene.js?v=28"></script>
+<script src="kopf.js?v=29"></script>
+<script src="aufnahme.js?v=29"></script>
+<script src="eigene.js?v=29"></script>
 </body>
 </html>

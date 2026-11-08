@@ -106,6 +106,7 @@
   .edMeine h3{margin:0 0 8px;font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
   .edMein{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--line)}
   .edMein button{font-size:13px;padding:5px 12px}
+  .editor button:disabled{opacity:.4;cursor:default}
   .edImport{cursor:pointer;border:1.5px solid var(--line);border-radius:999px;padding:9px 18px;color:var(--ink);font-weight:500}
   .klapp{font-size:14px;padding:7px 14px}
   .klappLeiste{display:none;position:absolute;top:8px;right:8px;z-index:3;gap:8px}
@@ -249,7 +250,7 @@
   </details>
 </div>
 
-<script src="lieder.js?v=32"></script>
+<script src="lieder.js?v=33"></script>
 <script>
 const H=window.HARFE, $=id=>document.getElementById(id);
 const cv=$('harfe'), g=cv.getContext('2d');
@@ -680,8 +681,8 @@ ladeLied(); layout(); neustart();
 addEventListener('resize',layout);
 requestAnimationFrame(schleife);
 </script>
-<script src="kopf.js?v=32"></script>
-<script src="aufnahme.js?v=32"></script>
-<script src="eigene.js?v=32"></script>
+<script src="kopf.js?v=33"></script>
+<script src="aufnahme.js?v=33"></script>
+<script src="eigene.js?v=33"></script>
 </body>
 </html>

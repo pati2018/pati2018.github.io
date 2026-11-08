@@ -48,7 +48,7 @@ Neben der Liedauswahl auf **🎹 Lied einspielen** tippen – es öffnet sich ei
 1. Auf **● Aufnahme** tippen.
 2. Die Melodie **einfach spielen – im Rhythmus, so wie sie klingen soll**. Die Aufnahme beginnt mit dem ersten Ton.
 3. **■ Fertig** tippen. Die App erkennt das Tempo und macht aus dem Gespielten saubere Notenwerte – und spielt das Ergebnis gleich vor.
-4. Klingt es richtig: **💾 Speichern**. Sonst **↺ Nochmal**.
+4. Klingt es richtig: **💾 Speichern**. Sonst **↺ Nochmal**. Nur der letzte Ton war falsch? **⌫ Letzten Ton löschen** (geht auch mehrmals).
 
 Das Lied steht dann in der Liedauswahl unter **Eigene Lieder** und lässt sich spielen wie alle anderen – mit Fingern, SoundWhackern, Kopf und als Video.
 

@@ -31,6 +31,7 @@ function edBauen() {
     <button id="edPlay">▶ Anhören</button>
     <button id="edSpeichern">💾 Speichern</button>
     <button id="edNochmal" class="quiet">↺ Nochmal</button>
+    <button id="edLetzten" class="quiet">⌫ Letzten Ton löschen</button>
   </div>
   <div class="edHinweis">Auf <b>● Aufnahme</b> tippen und die Melodie einfach spielen – so, wie sie klingen soll. Die Aufnahme beginnt mit dem ersten Ton. Dann <b>■ Fertig</b>: die App macht daraus das Lied.</div>
   <div class="edMeine" id="edMeine"></div>`;
@@ -62,10 +63,18 @@ function edBauen() {
   $e('edPlay').onclick = () => (ED.spielt ? edStopp() : edAnhoeren());
   $e('edSpeichern').onclick = edSpeichern;
   $e('edNochmal').onclick = edAufnahme;
+  $e('edLetzten').onclick = () => {   // letzten Ton (und eine Pause davor) entfernen
+    if (!ED.noten) return;
+    edStopp();
+    ED.noten.pop(); while (ED.noten.length && ED.noten[ED.noten.length - 1].midi == null) ED.noten.pop();
+    if (!ED.noten.some(n => n.midi != null)) { ED.noten = null; $e('edErgebnis').hidden = true; $e('edStatus').textContent = 'Keine Töne mehr – bitte neu aufnehmen.'; return; }
+    edStatus(); edLetztenKnopf();
+  };
   document.addEventListener('keydown', e => { if (ED.offen && e.key === 'Escape') edSchliessen(); });
 }
 
 function edTon(m) { initAudio(); if (ctx.state !== 'running') ctx.resume(); ton(m, ctx.currentTime + .005, .8, 0); }
+function edLetztenKnopf() { const b = $e('edLetzten'); if (b) b.disabled = !ED.noten || ED.noten.filter(n => n.midi != null).length < 2; }
 function edStatus() {
   const s = $e('edStatus');
   if (ED.rec) s.textContent = ED.an.length ? `● ${ED.an.length} ${ED.an.length === 1 ? 'Ton' : 'Töne'} …` : '● Bereit – spiel los!';
@@ -84,7 +93,7 @@ function edFertig() {
   const b = $e('edRec'); b.textContent = '● Aufnahme'; b.classList.remove('laeuft');
   if (ED.an.length < 2) { ED.noten = null; $e('edStatus').textContent = 'Zu wenige Töne – bitte noch einmal.'; return; }
   const r = edRhythmus(ED.an); ED.noten = r.noten; ED.tempo = r.tempo;
-  $e('edErgebnis').hidden = false; edStatus();
+  $e('edErgebnis').hidden = false; edStatus(); edLetztenKnopf();
   edAnhoeren();   // gleich vorspielen, damit man hört, ob es passt
 }
 

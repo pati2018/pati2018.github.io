@@ -120,7 +120,7 @@ const FARBEN=['#e5484d','#f08c2e','#f2cf3a','#46b37b','#3f8ee8'];
 const LEITERN={dur:[0,2,4,5,7,9,11],moll:[0,2,3,5,7,8,10]};
 const KREUZ=['c','cis','d','dis','e','f','fis','g','gis','a','ais','h'], BE=['c','des','d','es','e','f','ges','g','as','a','b','h'];
 const DUR_NAMEN=['C','Des','D','Es','E','F','Fis','G','As','A','B','H'], MOLL_NAMEN=['c','cis','d','es','e','f','fis','g','gis','a','b','h'];
-const STUFE_MIN=-3, STUFE_MAX=10;
+const STUFE_MIN=-3, STUFE_MAX=13;
 // Schreibweise je Tonart (Kreuz- oder B-Tonart, bei Moll nach der parallelen Dur-Tonart)
 // B-Tonarten: Dur F, B, Es, As, Des – Moll d, g, c, f, b, es; alle anderen mit Kreuz
 function namenListe(){ return (st.geschlecht==='moll'?[2,7,0,5,10,3]:[5,10,3,8,1]).includes(st.tonart)?BE:KREUZ }

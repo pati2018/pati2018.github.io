@@ -44,7 +44,7 @@ Die Einstellungen werden gemerkt.
 
 ## Töne zuordnen
 
-Unter **🎹 Töne zuordnen** legst du fest, welcher SoundWhacker welchen Ton singt. Zur Auswahl stehen die **leitereigenen Töne** der gewählten Tonart – von der Quinte darunter bis zur Terz über der Oktave, jeweils mit Tonname und Stufe (z. B. *g – Stufe 5*, *c′ – Stufe 8*).
+Unter **🎹 Töne zuordnen** legst du fest, welcher SoundWhacker welchen Ton singt. Zur Auswahl stehen die **leitereigenen Töne** der gewählten Tonart – von der Quinte darunter bis Stufe 14 (die Septime über der Oktave), jeweils mit Tonname und Stufe (z. B. *g – Stufe 5*, *c′ – Stufe 8*).
 
 **Schnellwahl:**
 

@@ -18,6 +18,15 @@ Die **Tischharfe** funktioniert wie die bekannten Tischharfen zum Unterlegen von
 | **Feste** | Zum Geburtstag viel Glück · Morgen kommt der Weihnachtsmann · Jingle Bells · Stille Nacht |
 | **Klassik** | Ode an die Freude · Für Elise (Thema) |
 
+## Ganzer Bildschirm
+
+Oben rechts auf **▲ Menü einklappen** tippen: Alle Knöpfe verschwinden und **die Harfe füllt den ganzen Bildschirm**. Mit **▼ Menü** (oben rechts auf der Harfe) kommt alles zurück.
+
+- SoundWhacker, Kopfsteuerung und Finger funktionieren auch eingeklappt.
+- Läuft eine Video-Aufnahme, bleibt oben links ein roter Knopf **■ mit der Zeit** zum Beenden. Danach klappt das Menü auf, damit man die neue Aufnahme gleich sieht.
+- Die App merkt sich, ob das Menü eingeklappt war.
+- Für echtes Vollbild ohne Safari-Leiste: In Safari **Teilen → Zum Home-Bildschirm** und die Tischharfe von dort starten.
+
 ## Spielen
 
 - **Antippen**: eine Saite zupfen.

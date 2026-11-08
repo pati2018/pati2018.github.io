@@ -53,6 +53,17 @@
   #aufBtn.stop{background:#fff;color:#c0392b;box-shadow:inset 0 0 0 2px #c0392b}
   .pegel{display:inline-block;width:80px;height:9px;border-radius:5px;background:var(--line);overflow:hidden}
   .pegel[hidden]{display:none}
+  .klapp{font-size:14px;padding:7px 14px}
+  .klappZu,.zuRec{display:none;position:absolute;top:8px;z-index:3;border-radius:999px;font-size:14px;padding:7px 14px;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+  .klappZu{right:8px;background:rgba(35,28,23,.85);color:var(--ink);border:1.5px solid rgba(255,255,255,.35);font-weight:600}
+  .zuRec{left:8px;background:#c0392b;color:#fff;font-variant-numeric:tabular-nums}
+  body.zu{padding:6px}
+  body.zu .wrap{max-width:none}
+  body.zu .top,body.zu .bar,body.zu .swbar,body.zu #msg,body.zu details,body.zu .takes{display:none!important}
+  body.zu .stage{margin-top:0}
+  body.zu .klappZu{display:block}
+  body.zu.rec .zuRec{display:block}
+  body.zu .vorschau{top:50px}
   .pegel b{display:block;height:100%;width:0;background:#5ad18a;transition:width .08s}
   .aufzeit{font-variant-numeric:tabular-nums;color:var(--ink)}
   .aufhinweis{font-size:14px;color:#ffb199}
@@ -78,6 +89,7 @@
     <h1>Tischharfe</h1>
     <a href="../">← Alle Apps</a>
     <a href="../app.html?id=tischharfe">Anleitung</a>
+    <button id="einklappen" class="quiet klapp" aria-expanded="true" title="Menü einklappen – die Harfe füllt den ganzen Bildschirm">▲ Menü einklappen</button>
   </div>
 
   <div class="bar">
@@ -126,6 +138,8 @@
   </div>
   <div class="stage"><canvas id="harfe" aria-label="Tischharfe – über die Saiten streichen oder einzelne Saiten antippen"></canvas>
     <div class="vorschau" id="kopfVorschau" hidden><video id="kopfVideo" playsinline muted autoplay></video></div>
+    <button id="ausklappen" class="klappZu" title="Menü wieder anzeigen">▼ Menü</button>
+    <button id="zuRec" class="zuRec" title="Aufnahme beenden">■ <span id="zuRecZeit">0:00</span></button>
     <div class="vorschau" id="aufVorschau" hidden><video id="aufVideo" playsinline muted autoplay></video></div></div>
   <div class="swbar" id="swbar" role="group" aria-label="SoundWhacker 1 bis 5 (Tasten 1–5)"></div>
   <div id="takes" class="takes"></div>
@@ -138,7 +152,7 @@
   </details>
 </div>
 
-<script src="lieder.js?v=18"></script>
+<script src="lieder.js?v=20"></script>
 <script>
 const H=window.HARFE, $=id=>document.getElementById(id);
 const cv=$('harfe'), g=cv.getContext('2d');
@@ -327,7 +341,8 @@ function stopVorspiel(){
 
 // ================= Zeichnen =================
 function layout(){
-  const w=cv.clientWidth, h=Math.round(Math.min(Math.max(innerHeight*.66,380),760));
+  const zu=document.body.classList.contains('zu');
+  const w=cv.clientWidth, h=zu?Math.max(260,innerHeight-12):Math.round(Math.min(Math.max(innerHeight*.66,380),760));
   const dpr=Math.min(devicePixelRatio||1,2.5);
   cv.style.height=h+'px'; cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr);
   g.setTransform(dpr,0,0,dpr,0,0);
@@ -505,11 +520,21 @@ $('legende').innerHTML=H.LEGENDE.map(([d,t])=>{const z=H.zeichen(d), r=7*z.groes
   return `<span><svg width="30" height="20" viewBox="0 0 30 20" aria-hidden="true"><circle cx="10" cy="10" r="${r}" fill="${z.gefuellt?'#f3eadc':'none'}" stroke="#f3eadc" stroke-width="2"/>${z.punkt?'<circle cx="'+(12+r)+'" cy="10" r="2.2" fill="#f3eadc"/>':''}</svg>${t}</span>`}).join('')
   +`<span><svg width="30" height="20" aria-hidden="true"><rect x="3" y="7" width="22" height="6" rx="3" fill="#b8a894"/></svg>Pause</span>`;
 
+// Menü ein-/ausklappen: eingeklappt füllt die Harfe den ganzen Bildschirm
+function klappe(zu){
+  document.body.classList.toggle('zu',zu); $('einklappen').setAttribute('aria-expanded',!zu);
+  try{localStorage.setItem('tischharfe-zu',zu?'1':'0')}catch(e){}
+  layout(); scrollTo(0,0);
+}
+$('einklappen').onclick=()=>klappe(true);
+$('ausklappen').onclick=()=>klappe(false);
+try{ if(localStorage.getItem('tischharfe-zu')==='1') document.body.classList.add('zu') }catch(e){}
+
 ladeLied(); layout(); neustart();
 addEventListener('resize',layout);
 requestAnimationFrame(schleife);
 </script>
-<script src="kopf.js?v=18"></script>
-<script src="aufnahme.js?v=18"></script>
+<script src="kopf.js?v=20"></script>
+<script src="aufnahme.js?v=20"></script>
 </body>
 </html>

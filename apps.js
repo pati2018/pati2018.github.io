@@ -24,7 +24,7 @@ window.APPS = [
   {
     id: "singen",
     titel: "Singen mit SoundWhackern",
-    kurz: "Jeder SoundWhacker singt einen Ton auf „la“ – mit der eigenen Stimme (einmal „laaaa“ ins Mikrofon singen) oder einer künstlichen Kinder-, Frauen- oder Männerstimme. Jeder Schlag singt einen Ton, der natürlich ausklingt; mehrere zusammen ergeben einen Chor. Die Töne passen immer zusammen.",
+    kurz: "Jeder SoundWhacker singt einen Ton auf „la“ – mit der eigenen Stimme (einmal „laaaa“ ins Mikrofon singen) , einem echten Chor „Aah“ oder einer künstlichen Frauen- oder Männerstimme. Jeder Schlag singt einen Ton, der natürlich ausklingt. Die Töne passen immer zusammen.",
     link: "https://pati2018.github.io/singen/",
     repo: "https://github.com/pati2018/pati2018.github.io/tree/main/singen",
     kategorie: "Musik",

@@ -24,7 +24,7 @@ Ab jetzt singen die SoundWhacker mit dieser Stimme („Meine Stimme“ unter *St
 
 Unter *Stimme* gibt es außerdem einen **echten Chor**, der „Aah“ singt – aufgenommene Chorstimmen (Concert Choir aus *GeneralUser GS* von S. Christian Collins). Mehrere SoundWhacker zusammen klingen damit besonders voll.
 
-Die **künstlichen Stimmen** (Kind, Frau, Mann) gibt es weiterhin zur Auswahl.
+Die **künstlichen Stimmen** (Frau, Mann) gibt es weiterhin zur Auswahl.
 
 ## Schnellstart
 
@@ -36,7 +36,7 @@ Die **künstlichen Stimmen** (Kind, Frau, Mann) gibt es weiterhin zur Auswahl.
 
 | Einstellung | Was sie macht |
 |---|---|
-| **Stimme** | *Meine Stimme*, *Chor „Aah“*, *Kind*, *Frau* oder *Mann* |
+| **Stimme** | *Meine Stimme*, *Chor „Aah“*, *Frau* oder *Mann* |
 | **Silbe** | *la*, *lu*, *li*, *na* oder *aah* |
 | **Tonart** | alle 12 Tonarten, wahlweise **Dur** oder **Moll** |
 | **Vibrato** | wie stark die Stimme bei langen Tönen „schwingt“ |

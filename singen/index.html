@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Singen mit SoundWhackern</title>
-<meta name="description" content="Jeder SoundWhacker singt einen Ton auf „la“ – mit künstlicher Kinder-, Frauen- oder Männerstimme.">
+<meta name="description" content="Jeder SoundWhacker singt einen Ton auf „la“ – mit der eigenen Stimme, einem Chor oder einer künstlichen Stimme.">
 <meta name="theme-color" content="#1d1b2b">
 <link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32.png">
 <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
@@ -69,7 +69,7 @@
     <a href="../app.html?id=singen">Anleitung</a>
   </div>
   <div class="bar">
-    <label>Stimme <select id="stimme"><option value="meine" disabled>Meine Stimme</option><option value="chor">Chor „Aah“</option><option value="kind">Kind (künstlich)</option><option value="frau" selected>Frau (künstlich)</option><option value="mann">Mann (künstlich)</option></select></label>
+    <label>Stimme <select id="stimme"><option value="meine" disabled>Meine Stimme</option><option value="chor">Chor „Aah“</option><option value="frau" selected>Frau (künstlich)</option><option value="mann">Mann (künstlich)</option></select></label>
     <button id="eigenBtn">🎤 Eigene Stimme</button>
     <label id="silbeL">Silbe <select id="silbe"><option value="la" selected>la</option><option value="lu">lu</option><option value="li">li</option><option value="na">na</option><option value="a">aah</option></select></label>
     <label>Tonart <select id="tonart"></select></label>
@@ -129,6 +129,7 @@ const tonNameVon=m=>namenListe()[((m%12)+12)%12];
 const NAMEN=['C','Cis','D','Es','E','F','Fis','G','As','A','B','H'];
 const st={stimme:'frau',silbe:'la',tonart:0,geschlecht:'dur',zuordnung:[0,1,2,4,5],vib:60,hall:30,laut:75};
 try{Object.assign(st,JSON.parse(localStorage.getItem('singen')||'{}'))}catch(e){}
+if(st.stimme==='kind') st.stimme='frau';   // Kinderstimme gibt es nicht mehr
 const merke=()=>{try{localStorage.setItem('singen',JSON.stringify(st))}catch(e){}};
 
 // Audio

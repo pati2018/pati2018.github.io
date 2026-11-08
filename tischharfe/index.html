@@ -190,8 +190,6 @@
       <option value="toene">Jeder SW ein Ton</option>
       <option value="aus">Aus</option>
     </select></label>
-    </div>
-    <div class="bar">
     <button id="kopfBtn" class="quiet" aria-pressed="false">😶 Kopf</button>
     <span id="kopfOpt" hidden>
       <label>Richtung <select id="kopfRichtung"><option value="seite">Links/rechts</option><option value="nicken">Hoch/runter (Nicken)</option></select></label>
@@ -240,7 +238,7 @@
   </details>
 </div>
 
-<script src="lieder.js?v=29"></script>
+<script src="lieder.js?v=30"></script>
 <script>
 const H=window.HARFE, $=id=>document.getElementById(id);
 const cv=$('harfe'), g=cv.getContext('2d');
@@ -671,8 +669,8 @@ ladeLied(); layout(); neustart();
 addEventListener('resize',layout);
 requestAnimationFrame(schleife);
 </script>
-<script src="kopf.js?v=29"></script>
-<script src="aufnahme.js?v=29"></script>
-<script src="eigene.js?v=29"></script>
+<script src="kopf.js?v=30"></script>
+<script src="aufnahme.js?v=30"></script>
+<script src="eigene.js?v=30"></script>
 </body>
 </html>

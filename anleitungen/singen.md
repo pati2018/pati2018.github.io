@@ -20,6 +20,10 @@ Ab jetzt singen die SoundWhacker mit dieser Stimme („Meine Stimme“ unter *St
 - **Ein Schlag = ein Ton**, der natürlich ausklingt – auch wenn der SoundWhacker gehalten wird, wird nichts wiederholt. Früher loslassen = schneller verklungen.
 - Die Aufnahme bleibt **auf dem Gerät gespeichert**. Neu aufnehmen oder **🗑 Meine Stimme löschen** geht jederzeit über **🎤 Eigene Stimme**.
 
+## Chor „Aah“
+
+Unter *Stimme* gibt es außerdem einen **echten Chor**, der „Aah“ singt – aufgenommene Chorstimmen (Concert Choir aus *GeneralUser GS* von S. Christian Collins). Mehrere SoundWhacker zusammen klingen damit besonders voll.
+
 Die **künstlichen Stimmen** (Kind, Frau, Mann) gibt es weiterhin zur Auswahl.
 
 ## Schnellstart
@@ -32,7 +36,7 @@ Die **künstlichen Stimmen** (Kind, Frau, Mann) gibt es weiterhin zur Auswahl.
 
 | Einstellung | Was sie macht |
 |---|---|
-| **Stimme** | *Kind*, *Frau* oder *Mann* – andere Tonlage und Stimmfarbe |
+| **Stimme** | *Meine Stimme*, *Chor „Aah“*, *Kind*, *Frau* oder *Mann* |
 | **Silbe** | *la*, *lu*, *li*, *na* oder *aah* |
 | **Tonart** | alle 12 Tonarten, wahlweise **Dur** oder **Moll** |
 | **Vibrato** | wie stark die Stimme bei langen Tönen „schwingt“ |
@@ -59,7 +63,7 @@ Die Zuordnung gilt in Stufen: Wechselst du die Tonart, wandern die Töne mit. Da
 
 ## Wie entsteht die Stimme?
 
-Die Stimme wird live berechnet: ein obertonreicher „Stimmband“-Ton mit leichtem Ansingen, Vibrato und etwas Atemhauch, darüber fünf **Formant-Filter** – die Klangfarben von Mund und Rachen, die aus einem Ton einen Vokal machen. Bei jedem Ton gleitet die Stimme in ca. 70 ms vom **„l“** zum **„a“**. Es werden keine Aufnahmen geladen – die App funktioniert sofort und offline.
+Die Stimme wird live berechnet: ein obertonreicher „Stimmband“-Ton mit leichtem Ansingen, Vibrato und etwas Atemhauch, darüber fünf **Formant-Filter** – die Klangfarben von Mund und Rachen, die aus einem Ton einen Vokal machen. Bei jedem Ton gleitet die Stimme in ca. 70 ms vom **„l“** zum **„a“**. Für die künstlichen Stimmen werden keine Aufnahmen geladen. Der Chor lädt beim ersten Auswählen einmal seine Töne (knapp 1 MB).
 
 ## Tipps & Probleme
 

@@ -69,7 +69,7 @@
     <a href="../app.html?id=singen">Anleitung</a>
   </div>
   <div class="bar">
-    <label>Stimme <select id="stimme"><option value="meine" disabled>Meine Stimme</option><option value="kind">Kind (künstlich)</option><option value="frau" selected>Frau (künstlich)</option><option value="mann">Mann (künstlich)</option></select></label>
+    <label>Stimme <select id="stimme"><option value="meine" disabled>Meine Stimme</option><option value="chor">Chor „Aah“</option><option value="kind">Kind (künstlich)</option><option value="frau" selected>Frau (künstlich)</option><option value="mann">Mann (künstlich)</option></select></label>
     <button id="eigenBtn">🎤 Eigene Stimme</button>
     <label id="silbeL">Silbe <select id="silbe"><option value="la" selected>la</option><option value="lu">lu</option><option value="li">li</option><option value="na">na</option><option value="a">aah</option></select></label>
     <label>Tonart <select id="tonart"></select></label>
@@ -113,6 +113,7 @@
 
 <script src="stimme.js?v=2"></script>
 <script src="eigene-stimme.js?v=7"></script>
+<script src="chor.js?v=1"></script>
 <script>
 const $=id=>document.getElementById(id);
 const FARBEN=['#e5484d','#f08c2e','#f2cf3a','#46b37b','#3f8ee8'];
@@ -150,7 +151,7 @@ function setHall(){ if(!ctx) return; wet.gain.setTargetAtTime(st.hall/100*.5,ctx
 // (der Grundton liegt etwa eine Terz darunter, so wird die Stimme nur wenig verschoben und klingt natürlich)
 function grundton(){
   if(st.stimme==='meine'&&EIGENE.daten){ const mitte=Math.round(EIGENE.midiVon(EIGENE.daten.f0))-4; let g=mitte-((mitte-st.tonart)%12+12)%12; if(mitte-g>6) g+=12; return g }
-  return STIMME.STIMMEN[st.stimme].grund-4+st.tonart;
+  return (st.stimme==='chor'?64:STIMME.STIMMEN[st.stimme].grund)-4+st.tonart;
 }
 function stufeZuHalbton(s){ const L=LEITERN[st.geschlecht]; return L[((s%7)+7)%7]+12*Math.floor(s/7) }
 const midiVon=k=>grundton()+stufeZuHalbton(st.zuordnung[k]);
@@ -161,7 +162,7 @@ function singeTon(midi,t,pegel=.75){
   // nach ~½ s langsam leiser; bei der eigenen Stimme so, dass der Ton bis zum Ende der Aufnahme ganz verklungen ist
   const eigen=st.stimme==='meine'&&EIGENE.daten, dauer=eigen?EIGENE.daten.pcm.length/EIGENE.daten.sr:3.5;
   aus.gain.setValueAtTime(1,t); aus.gain.setTargetAtTime(0,t+.45,Math.max(.2,(dauer-.5)/4.5));
-  const v=eigen?EIGENE.spiele(ctx,aus,{midi,t,pegel:pegel*.5}):STIMME.singe(ctx,aus,{midi,t,stimme:st.stimme,silbe:st.silbe,vibrato:st.vib/100,pegel});
+  const v=eigen?EIGENE.spiele(ctx,aus,{midi,t,pegel:pegel*.5}):st.stimme==='chor'?CHOR.spiele(ctx,aus,{midi,t,pegel:pegel*.9}):STIMME.singe(ctx,aus,{midi,t,stimme:st.stimme,silbe:st.silbe,vibrato:st.vib/100,pegel});
   v.stop(t+4); setTimeout(()=>aus.disconnect(),5000);
   return v;
 }
@@ -170,7 +171,7 @@ function singeTon(midi,t,pegel=.75){
 const klingt={};   // k → laufender Ton
 function baue(){
   if(st.stimme==='meine'&&EIGENE.daten) EIGENE.vorbereiten(FARBEN.map((_,k)=>midiVon(k)));   // Töne in der eigenen Stimme vorausberechnen
-  $('sws').innerHTML=FARBEN.map((c,k)=>{const m=midiVon(k); return `<div class="sw" data-k="${k}" style="--c:${c}" role="button" aria-label="SW${k+1}"><span class="nr">SW${k+1}</span><span class="ton">${tonNameVon(m).replace(/^./,c=>c.toUpperCase())}</span><span class="stufe">Stufe ${stufenText(st.zuordnung[k])}</span><span class="silbe">${st.stimme==='meine'?'♪':st.silbe==='a'?'aah':st.silbe}</span></div>`}).join('');
+  $('sws').innerHTML=FARBEN.map((c,k)=>{const m=midiVon(k); return `<div class="sw" data-k="${k}" style="--c:${c}" role="button" aria-label="SW${k+1}"><span class="nr">SW${k+1}</span><span class="ton">${tonNameVon(m).replace(/^./,c=>c.toUpperCase())}</span><span class="stufe">Stufe ${stufenText(st.zuordnung[k])}</span><span class="silbe">${st.stimme==='meine'?'♪':st.stimme==='chor'||st.silbe==='a'?'aah':st.silbe}</span></div>`}).join('');
   document.querySelectorAll('.sw').forEach(el=>{
     const k=+el.dataset.k;
     el.addEventListener('pointerdown',e=>{e.preventDefault(); el.setPointerCapture(e.pointerId); an(k)});
@@ -202,7 +203,8 @@ $('probe').onclick=()=>{
 // Einstellungen
 // Eigene Stimme laden; ist eine da, ist sie wählbar
 function eigeneVerfuegbar(){ const da=!!EIGENE.daten; $('stimme').querySelector('option[value="meine"]').disabled=!da; if(!da&&st.stimme==='meine') st.stimme='frau';
-  $('silbeL').hidden=$('vibL').hidden=st.stimme==='meine'; }
+  $('silbeL').hidden=$('vibL').hidden=st.stimme==='meine'||st.stimme==='chor';
+  if(st.stimme==='chor'){ initAudio(); CHOR.vorbereiten(ctx) } }
 EIGENE.laden(); eigeneVerfuegbar();
 function tonartListe(){ const sel=$('tonart'); sel.innerHTML=(st.geschlecht==='moll'?MOLL_NAMEN:DUR_NAMEN).map((n,i)=>`<option value="${i}">${n}</option>`).join(''); sel.value=st.tonart; }
 function zuordnungBauen(){

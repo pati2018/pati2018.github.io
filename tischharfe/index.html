@@ -60,8 +60,12 @@
   .pegel[hidden]{display:none}
   .bar button[hidden]{display:none}
   /* ---------- Aufklappmenüs über der Harfe ---------- */
-  .menues{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-  .menuKnopf{background:var(--panel);color:var(--ink);border:1.5px solid var(--line);font-weight:600;font-size:15px;padding:9px 16px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .zeile1{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-top:14px}
+  .menues{display:flex;flex-wrap:wrap;gap:8px}
+  .zeile1 .modusbar{margin-top:0;gap:8px}
+  .zeile1 .modusbar .seg button{padding:7px 13px}
+  .zeile1 #start{padding:8px 16px;font-size:15px}
+  .menuKnopf{background:var(--panel);color:var(--ink);border:1.5px solid var(--line);font-weight:600;font-size:15px;padding:8px 13px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .menuKnopf .pfeil{display:inline-block;transition:transform .15s;color:var(--muted)}
   .menuKnopf[aria-expanded=true]{background:var(--accent);color:#2a1d10;border-color:var(--accent)}
   .menuKnopf[aria-expanded=true] .pfeil{transform:rotate(180deg);color:#2a1d10}
@@ -69,7 +73,7 @@
   .menuKnopf.rec{background:#c0392b;color:#fff;border-color:#c0392b}
   .liedNote{width:1.35em;height:1.35em;fill:#ff3b30;vertical-align:-.3em;filter:drop-shadow(0 0 2px rgba(255,59,48,.45))}
   .menuKnopf[aria-expanded=true] .liedNote{fill:#c0261c;filter:none}
-  #menuLiedName{display:inline-block;max-width:min(46vw,320px);overflow:hidden;text-overflow:ellipsis;vertical-align:bottom}
+  #menuLiedName{display:inline-block;max-width:min(36vw,150px);overflow:hidden;text-overflow:ellipsis;vertical-align:bottom}
   .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:2px 14px 14px;margin-top:10px}
   .panel[hidden]{display:none}
   .panel .bar{margin-top:12px}
@@ -115,6 +119,7 @@
   body.zu .stage{margin-top:0}
   body.zu .klappLeiste{display:flex}
   body.zu.modusAuf .bar.modusbar{display:flex!important;margin:0 0 6px}
+  body.zu .zeile1{margin-top:0;display:block}
   #modusKnopf[aria-expanded=true]{background:var(--accent);color:#2a1d10;border-color:var(--accent)}
   body.zu .zuRec{display:block}
   body.rec .zuRec{background:#fff;color:#c0392b;box-shadow:inset 0 0 0 2px #c0392b,0 2px 10px rgba(0,0,0,.35)}
@@ -148,11 +153,20 @@
     <button id="einklappen" class="quiet klapp" aria-expanded="true" title="Menü einklappen – die Harfe füllt den ganzen Bildschirm">▲ Menü einklappen</button>
   </div>
 
+  <div class="zeile1">
   <div class="menues" role="group" aria-label="Menüs">
     <button class="menuKnopf" data-menu="lied" aria-expanded="false"><svg class="liedNote" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4.5 21 2v13.2a3.3 3.3 0 1 1-2.4-3.2V6.6L10.4 8.2v9.5A3.3 3.3 0 1 1 8 14.5Z"/></svg> <span id="menuLiedName">Lied</span> <span class="pfeil">▾</span></button>
     <button class="menuKnopf" data-menu="klang" aria-expanded="false">🎚 Klang <span class="pfeil">▾</span></button>
     <button class="menuKnopf" data-menu="steuerung" aria-expanded="false">🥁 SoundWhacker &amp; Kopf <span class="pfeil">▾</span></button>
     <button class="menuKnopf" data-menu="video" aria-expanded="false">● Video <span id="menuVideoZeit"></span> <span class="pfeil">▾</span></button>
+  </div>
+  <div class="bar modusbar" id="modusbar">
+    <div class="seg" role="group" aria-label="Modus">
+      <button data-modus="ueben" aria-pressed="true">Üben</button>
+      <button data-modus="vorspielen" aria-pressed="false">Vorspielen</button>
+    </div>
+    <button id="start">Von vorn</button>
+  </div>
   </div>
   <div class="panel" id="menu-lied" hidden>
     <div class="bar">
@@ -216,18 +230,10 @@
     <span id="aufHinweis" class="aufhinweis"></span>
     </div>
   </div>
-  <div class="bar modusbar" id="modusbar">
-    <div class="seg" role="group" aria-label="Modus">
-      <button data-modus="ueben" aria-pressed="true">Üben</button>
-      <button data-modus="vorspielen" aria-pressed="false">Vorspielen</button>
-      <button data-modus="frei" aria-pressed="false">Frei</button>
-    </div>
-    <button id="start">Von vorn</button>
-  </div>
   <div class="stage"><canvas id="harfe" aria-label="Tischharfe – über die Saiten streichen oder einzelne Saiten antippen"></canvas>
     <div class="vorschau" id="kopfVorschau" hidden><video id="kopfVideo" playsinline muted autoplay></video></div>
     <div class="klappLeiste">
-      <button id="modusKnopf" class="klappZu" aria-expanded="false" title="Üben · Vorspielen · Frei · Von vorn ein- oder ausblenden">▼ Modus</button>
+      <button id="modusKnopf" class="klappZu" aria-expanded="false" title="Üben · Vorspielen · Von vorn ein- oder ausblenden">▼ Modus</button>
       <button id="ausklappen" class="klappZu" title="Ganzes Menü wieder anzeigen">▼ Menü</button>
     </div>
     <button id="zuRec" class="zuRec" title="Video-Aufnahme starten oder beenden">● Video aufnehmen</button>
@@ -243,7 +249,7 @@
   </details>
 </div>
 
-<script src="lieder.js?v=30"></script>
+<script src="lieder.js?v=32"></script>
 <script>
 const H=window.HARFE, $=id=>document.getElementById(id);
 const cv=$('harfe'), g=cv.getContext('2d');
@@ -658,7 +664,7 @@ function klappe(zu){
   layout(); scrollTo(0,0);
 }
 $('einklappen').onclick=()=>klappe(true);
-// Eigenes kleines Menü „Modus“ (Üben · Vorspielen · Frei · Von vorn), auch wenn alles andere eingeklappt ist
+// Eigenes kleines Menü „Modus“ (Üben · Vorspielen · Von vorn), auch wenn alles andere eingeklappt ist
 function modusLeiste(auf){
   document.body.classList.toggle('modusAuf',auf);
   $('modusKnopf').setAttribute('aria-expanded',auf); $('modusKnopf').textContent=auf?'▲ Modus':'▼ Modus';
@@ -674,8 +680,8 @@ ladeLied(); layout(); neustart();
 addEventListener('resize',layout);
 requestAnimationFrame(schleife);
 </script>
-<script src="kopf.js?v=30"></script>
-<script src="aufnahme.js?v=30"></script>
-<script src="eigene.js?v=30"></script>
+<script src="kopf.js?v=32"></script>
+<script src="aufnahme.js?v=32"></script>
+<script src="eigene.js?v=32"></script>
 </body>
 </html>

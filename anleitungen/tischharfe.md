@@ -29,13 +29,13 @@ Die **Tischharfe** funktioniert wie die bekannten Tischharfen zum Unterlegen von
 | **🥁 SoundWhacker & Kopf** | SoundWhacker-Spielweise und Kopfsteuerung (Knopf ist blau umrandet, solange die Kopfsteuerung läuft) |
 | **● Video** | Video aufnehmen, Kamerabild, Mikrofon, Lautstärke (während der Aufnahme wird der Knopf rot und zeigt die Zeit) |
 
-**Üben · Vorspielen · Frei · Von vorn** stehen immer direkt über der Harfe. Die App merkt sich, welche Menüs offen waren.
+**Üben · Vorspielen · Von vorn** stehen immer in derselben Zeile rechts neben den Menüknöpfen. Die App merkt sich, welche Menüs offen waren.
 
 ## Ganzer Bildschirm
 
 Oben rechts auf **▲ Menü einklappen** tippen: Alle Knöpfe verschwinden und **die Harfe füllt den ganzen Bildschirm**. Mit **▼ Menü** (oben rechts auf der Harfe) kommt alles zurück.
 
-- Mit **▼ Modus** (neben „▼ Menü“) klappst du nur die Leiste **Üben · Vorspielen · Frei · Von vorn** über der Harfe auf – alles andere bleibt eingeklappt. **▲ Modus** klappt sie wieder zu.
+- Mit **▼ Modus** (neben „▼ Menü“) klappst du nur die Leiste **Üben · Vorspielen · Von vorn** über der Harfe auf – alles andere bleibt eingeklappt. **▲ Modus** klappt sie wieder zu.
 - SoundWhacker, Kopfsteuerung und Finger funktionieren auch eingeklappt.
 - Oben links steht ein roter Knopf **● Video aufnehmen**: Damit startest du die Video-Aufnahme auch im Vollbild (mit den vorher eingestellten Optionen Kamerabild/Mikrofon). Während der Aufnahme zeigt er **■ und die Zeit** – antippen beendet sie. Danach erscheint kurz **✓ Aufnahme fertig**; die Aufnahme zum Speichern findest du unter **▼ Menü**.
 - Die App merkt sich, ob das Menü eingeklappt war.
@@ -115,13 +115,14 @@ Wie in MIGA kann man das Spielen als Video aufnehmen – zum Anschauen, Vorführ
 - Gespeichert wird als **MP4** (auf iPad/iPhone und in aktuellen Browsern), sonst als WebM. Höchstens **5 Minuten** pro Aufnahme.
 - Aufnahmen, die nicht gespeichert wurden, sind nach dem Neuladen weg.
 
-## Die drei Modi
+## Die Modi
 
 | Modus | Was passiert |
 |---|---|
 | **Üben** | Der nächste Ton leuchtet. Richtig getroffen → grün, es geht weiter. Daneben → die Saite blinkt kurz rot, man versucht es einfach noch einmal. |
 | **Vorspielen** | Die App spielt das Lied im eingestellten Tempo, die Saiten schwingen mit. |
-| **Frei** | Einfach spielen. Das Blatt verschiebt man mit dem Mausrad oder mit zwei Fingern. |
+
+**Von vorn** startet das Lied neu. Die Knöpfe stehen in derselben Zeile wie die Menüs, direkt über der Harfe.
 
 ## Die Zeichen auf dem Notenblatt
 

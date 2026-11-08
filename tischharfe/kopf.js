@@ -1,20 +1,16 @@
 /*
- * Kopfsteuerung für die Tischharfe – wie das Klang-Pad in MIGA:
- * Die Nasenspitze führt einen Zeiger über die Saiten (MediaPipe-Gesichtserkennung, läuft auf dem Gerät).
- *   verweilen – Zeiger bleibt kurz auf einer Saite → sie wird gezupft
- *   streichen – jede Saite, über die der Zeiger fährt, klingt (Glissando)
- *   nicken    – jedes Nicken spielt den nächsten Ton des Liedes
- * Nutzt aus index.html: st, saiten, geo, zupf, meldung, setzeModus, neustart.
+ * Kopfsteuerung für die Tischharfe (Gesichtserkennung wie in MIGA, läuft auf dem Gerät):
+ * Jede Kopfbewegung nach links oder rechts spielt den nächsten Ton des Liedes – wie ein Tippen.
+ * Danach erst zurück zur Mitte, dann zählt die nächste Bewegung.
+ * Nutzt aus index.html: st, saiten, geo, g, zupf, setzeModus, neustart, initAudio, ctx.
  */
 const KOPF = {
   an: false, stream: null, vid: null, face: null, loop: 0, lastT: -1,
   cx: null, cy: null, px: .5, py: .5, gefunden: false, verloren: 0,
-  ziel: -1, seit: 0, gezupft: 0,          // verweilen
-  altX: null,                              // streichen
-  nickUnten: false,                        // nicken
-  einst: { art: 'verweilen', dwell: 500, gain: 4.5 },
+  bereit: true, seite: 0, zuletzt: 0, blitz: 0,
+  einst: { gain: 4.5 },
 };
-try { Object.assign(KOPF.einst, JSON.parse(localStorage.getItem('tischharfe-kopf') || '{}')) } catch (e) {}
+try { const e = JSON.parse(localStorage.getItem('tischharfe-kopf') || '{}'); if (e.gain) KOPF.einst.gain = e.gain; } catch (e) {}
 const kopfMerke = () => { try { localStorage.setItem('tischharfe-kopf', JSON.stringify(KOPF.einst)) } catch (e) {} };
 const KOPF_BASIS = new URL('kopf/', location.href).href;
 
@@ -65,15 +61,10 @@ function kopfStop() {
   if (KOPF.stream) { KOPF.stream.getTracks().forEach(t => t.stop()); KOPF.stream = null; }
   if (KOPF.vid) KOPF.vid.srcObject = null;
   document.getElementById('kopfVorschau').hidden = true;
-  KOPF.gefunden = false; KOPF.ziel = -1; KOPF.altX = null; kopfUi(); kopfStatus('');
+  KOPF.gefunden = false; KOPF.bereit = true; kopfUi(); kopfStatus('');
 }
 
-// x-Position des Zeigers (0…1) → Pixel über den Saiten
-function kopfZeigerX() {
-  const a = saiten[0].x - geo.sp * .6, b = saiten[saiten.length - 1].x + geo.sp * .6;
-  return a + KOPF.px * (b - a);
-}
-function kopfSaite(x) { let best = -1, d = 1e9; saiten.forEach((s, i) => { const dd = Math.abs(s.x - x); if (dd < d) { d = dd; best = i } }); return d <= geo.sp * .5 ? best : -1; }
+const KOPF_AUS = .2, KOPF_MITTE = .08;   // Auslöseschwelle und Rückkehrzone (Anteil der halben Bildbreite)
 
 function kopfSchleife() {
   if (!KOPF.an) return;
@@ -85,49 +76,26 @@ function kopfSchleife() {
   const lm = r && r.faceLandmarks && r.faceLandmarks[0], now = performance.now();
   if (!lm) {
     if (!KOPF.verloren) KOPF.verloren = now;
-    if (now - KOPF.verloren > 600) { KOPF.gefunden = false; KOPF.ziel = -1; KOPF.altX = null; kopfStatus('Kein Gesicht erkannt'); }
+    if (now - KOPF.verloren > 600) { KOPF.gefunden = false; kopfStatus('Kein Gesicht erkannt'); }
     return;
   }
   KOPF.verloren = 0;
-  const nx = lm[1].x, ny = lm[1].y;   // Nasenspitze
-  if (KOPF.cx == null) { KOPF.cx = nx; KOPF.cy = ny; KOPF.px = .5; KOPF.py = .5; }
+  const nx = lm[1].x;   // Nasenspitze
+  if (KOPF.cx == null) { KOPF.cx = nx; KOPF.px = .5; KOPF.bereit = true; }
   if (!KOPF.gefunden) kopfStatus(kopfHinweis());
   KOPF.gefunden = true;
-  // Kamerabild ist ungespiegelt: Kopf nach rechts = Nase im Bild nach links = Zeiger nach rechts
-  const g = KOPF.einst.gain;
-  const tx = Math.min(1, Math.max(0, .5 + (KOPF.cx - nx) * g)), ty = Math.min(1, Math.max(0, .5 + (ny - KOPF.cy) * g * 1.4));
-  KOPF.px += (tx - KOPF.px) * .35; KOPF.py += (ty - KOPF.py) * .35;   // glätten
-
-  const art = KOPF.einst.art;
-  if (art === 'nicken') {
-    // Nicken: Kopf deutlich nach unten → Ton; erst wieder oben ist das nächste Nicken bereit
-    if (!KOPF.nickUnten && KOPF.py > .5 + .2) { KOPF.nickUnten = true; kopfNaechsterTon(); }
-    else if (KOPF.nickUnten && KOPF.py < .5 + .08) KOPF.nickUnten = false;
-    return;
+  // Kamerabild ist ungespiegelt: Kopf nach rechts = Nase im Bild nach links
+  const tx = Math.min(1, Math.max(0, .5 + (KOPF.cx - nx) * KOPF.einst.gain));
+  KOPF.px += (tx - KOPF.px) * .5;
+  const aus = KOPF.px - .5;
+  if (KOPF.bereit && Math.abs(aus) > KOPF_AUS && now - KOPF.zuletzt > 150) {
+    KOPF.bereit = false; KOPF.seite = Math.sign(aus); KOPF.zuletzt = now; KOPF.blitz = now;
+    kopfNaechsterTon();
+  } else if (!KOPF.bereit && Math.abs(aus) < KOPF_MITTE) {
+    KOPF.bereit = true; KOPF.seite = 0;
   }
-  const x = kopfZeigerX();
-  if (art === 'streichen') {
-    if (KOPF.altX == null) { KOPF.altX = x; return; }
-    if (Math.abs(x - KOPF.altX) < 1.5) return;     // kleines Zittern ignorieren
-    const a = Math.min(KOPF.altX, x), b = Math.max(KOPF.altX, x), getroffen = [];
-    saiten.forEach((s, i) => { if (s.x > a && s.x <= b) getroffen.push(i) });
-    if (x < KOPF.altX) getroffen.reverse();
-    const vel = Math.max(.45, Math.min(.95, .5 + (b - a) / geo.sp * .08));
-    getroffen.forEach(i => zupf(i, vel));
-    KOPF.altX = x;
-    return;
-  }
-  // verweilen (wie das Klang-Pad): kurz auf der Saite bleiben → zupfen
-  const i = kopfSaite(x);
-  if (i !== KOPF.ziel) { KOPF.ziel = i; KOPF.seit = now; KOPF.gezupft = 0; }
-  if (i < 0) return;
-  const dwell = KOPF.einst.dwell;
-  if (!KOPF.gezupft && now - KOPF.seit >= dwell) { zupf(i, .8); KOPF.gezupft = now; return; }
-  // Im Übemodus: bleibt der Zeiger auf der richtigen Saite, wird sie wieder gezupft (Tonwiederholungen wie „A A A A“)
-  if (KOPF.gezupft && st.modus === 'ueben' && !st.fertig && st.lied) {
-    const z = st.lied.noten[st.pos];
-    if (z && z.midi === saiten[i].midi && now - KOPF.gezupft >= Math.max(dwell, 650)) { zupf(i, .8); KOPF.gezupft = now; }
-  }
+  // In Ruhe die Mitte langsam nachführen, falls man sich mit der Zeit etwas verschiebt
+  if (KOPF.bereit && Math.abs(aus) < KOPF_MITTE) KOPF.cx += (nx - KOPF.cx) * .01;
 }
 function kopfNaechsterTon() {
   if (!st.lied) return;
@@ -136,25 +104,24 @@ function kopfNaechsterTon() {
   const z = st.lied.noten[st.pos];
   if (z) zupf(saiten.findIndex(s => s.midi === z.midi), .85);
 }
-function kopfHinweis() {
-  return { verweilen: 'Kopf nach links/rechts bewegen – kurz auf einer Saite bleiben zupft sie.',
-           streichen: 'Mit dem Kopf über die Saiten fahren – jede Saite klingt.',
-           nicken: 'Nicken spielt den nächsten Ton des Liedes.' }[KOPF.einst.art];
-}
+function kopfHinweis() { return 'Kopf nach links oder rechts drehen = nächster Ton. Danach kurz zurück zur Mitte.'; }
 
-// Zeiger auf die Harfe zeichnen (wird aus zeichne() aufgerufen)
+// Anzeige unten auf der Harfe: wo steht der Kopf, ab wo löst es aus (wird aus zeichne() aufgerufen)
 function kopfZeichnen(now) {
-  if (!KOPF.an || !KOPF.gefunden || KOPF.einst.art === 'nicken' || !saiten.length) return;
-  const x = kopfZeigerX(), y = geo.oben + (geo.unten - geo.oben) * .78, r = Math.max(12, Math.min(22, geo.sp * .7));
+  if (!KOPF.an || !KOPF.gefunden || !saiten.length) return;
+  // direkt unter dem Kamerabild oben rechts
+  const vb = document.getElementById('kopfVorschau'), w = vb.offsetWidth, cx = vb.offsetLeft + w / 2, y = vb.offsetTop + vb.offsetHeight + 16, h = 12;
+  const xv = f => cx + (f - .5) * w;
   g.save();
-  g.strokeStyle = 'rgba(80,140,230,.35)'; g.lineWidth = 2; g.setLineDash([5, 6]);
-  g.beginPath(); g.moveTo(x, geo.oben); g.lineTo(x, geo.unten); g.stroke(); g.setLineDash([]);
-  let prog = 0;
-  if (KOPF.einst.art === 'verweilen' && KOPF.ziel >= 0) prog = KOPF.gezupft ? 1 : KOPF.einst.dwell > 0 ? Math.min(1, (now - KOPF.seit) / KOPF.einst.dwell) : 1;
-  g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fillStyle = 'rgba(255,255,255,.55)'; g.fill();
-  g.lineWidth = 3; g.strokeStyle = 'rgba(40,90,180,.9)'; g.stroke();
-  if (prog > 0) { g.beginPath(); g.moveTo(x, y); g.arc(x, y, r - 3, -Math.PI / 2, -Math.PI / 2 + prog * Math.PI * 2); g.closePath(); g.fillStyle = 'rgba(224,168,79,.85)'; g.fill(); }
-  g.font = `${Math.round(r)}px system-ui`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('👃', x, y + 1);
+  g.fillStyle = 'rgba(40,30,20,.18)'; rundRect(cx - w / 2, y - h / 2, w, h, h / 2); g.fill();
+  g.fillStyle = 'rgba(224,168,79,.35)';                       // Auslösebereiche links und rechts
+  rundRect(cx - w / 2, y - h / 2, w * (.5 - KOPF_AUS), h, h / 2); g.fill();
+  rundRect(xv(.5 + KOPF_AUS), y - h / 2, w * (.5 - KOPF_AUS), h, h / 2); g.fill();
+  g.fillStyle = 'rgba(120,190,110,.45)'; g.fillRect(xv(.5 - KOPF_MITTE), y - h / 2, w * KOPF_MITTE * 2, h);   // Mitte
+  const blitz = Math.max(0, 1 - (now - KOPF.blitz) / 350);
+  g.beginPath(); g.arc(xv(KOPF.px), y, h * .9 + blitz * 6, 0, Math.PI * 2);
+  g.fillStyle = KOPF.bereit ? '#3f6fd0' : '#b0611a'; g.fill(); g.lineWidth = 2; g.strokeStyle = '#fff'; g.stroke();
+  g.font = `${Math.round(h * 1.1)}px system-ui`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('👃', xv(KOPF.px), y + 1);
   g.restore(); g.textBaseline = 'alphabetic';
 }
 
@@ -166,13 +133,10 @@ function kopfUi() {
 }
 (function () {
   const $ = id => document.getElementById(id);
-  $('kopfArt').value = KOPF.einst.art; $('kopfDwell').value = String(KOPF.einst.dwell); $('kopfGain').value = String(KOPF.einst.gain);
+  $('kopfGain').value = String(KOPF.einst.gain);
   $('kopfBtn').onclick = () => (KOPF.an ? kopfStop() : kopfStart());
   $('kopfMitte').onclick = () => { KOPF.cx = null; kopfStatus('Mitte neu gesetzt. ' + kopfHinweis()); };
-  $('kopfArt').onchange = e => { KOPF.einst.art = e.target.value; e.target.blur(); kopfMerke(); KOPF.ziel = -1; KOPF.altX = null; $('kopfDwellL').hidden = KOPF.einst.art !== 'verweilen'; if (KOPF.gefunden) kopfStatus(kopfHinweis()); };
-  $('kopfDwell').onchange = e => { KOPF.einst.dwell = +e.target.value; e.target.blur(); kopfMerke(); };
   $('kopfGain').onchange = e => { KOPF.einst.gain = +e.target.value; e.target.blur(); kopfMerke(); };
-  $('kopfDwellL').hidden = KOPF.einst.art !== 'verweilen';
   document.addEventListener('visibilitychange', () => { if (document.hidden && KOPF.an) kopfStop(); });
   kopfUi();
 })();

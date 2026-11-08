@@ -47,22 +47,19 @@ Den SW lange gedrückt halten spielt nur einen Ton – die Harfe klingt von selb
 
 ## Mit dem Kopf spielen
 
-Wie beim Klang-Pad in MIGA: Die Kamera erkennt deine **Nasenspitze**, und ein Zeiger 👃 fährt über die Saiten. Die Erkennung läuft komplett auf dem Gerät – das Kamerabild wird nicht ins Internet geschickt.
+Die Kamera erkennt deine **Nasenspitze** (wie in MIGA). Die Erkennung läuft komplett auf dem Gerät – das Kamerabild wird nicht ins Internet geschickt.
 
 1. Auf **😶 Kopf** tippen und die Kamera erlauben.
-2. **Gerade auf den Bildschirm schauen** – diese Haltung ist die Mitte. Mit **⌖ Mitte** lässt sie sich jederzeit neu setzen.
-3. Den Kopf nach **links und rechts** bewegen – der Zeiger folgt.
+2. **Gerade auf den Bildschirm schauen** – diese Haltung ist die Mitte.
+3. **Kopf nach links oder rechts drehen = nächster Ton** – wie ein Tippen. Egal ob links oder rechts: Es klingt immer der Ton, der im Lied als Nächstes dran ist.
+4. **Kurz zurück zur Mitte**, dann zählt die nächste Bewegung. So spielt eine einzige Drehung nie mehrere Töne.
 
-| Spielweise | So geht's |
-|---|---|
-| **Zeigen & verweilen** | Zeiger auf eine Saite führen und kurz dort bleiben – sie wird gezupft. Der Ring im Zeiger füllt sich bis zum Zupfen. Im Modus **Üben** wird die richtige Saite beim Weiterverweilen noch einmal gezupft – so klappen auch Tonwiederholungen wie „A A A A“. |
-| **Streichen** | Mit dem Kopf über die Saiten fahren: jede Saite, über die der Zeiger fährt, klingt – ein Glissando mit dem Kopf. |
-| **Nicken = nächster Ton** | Jedes Nicken spielt den nächsten Ton des Liedes. Ideal, wenn nur kleine Bewegungen möglich sind. |
+Unten auf der Harfe zeigt eine kleine Anzeige, wo dein Kopf gerade steht: grün = Mitte, orange = hier löst es aus. Der Punkt ist **blau**, wenn die nächste Bewegung bereit ist, und **orange**, solange du erst zur Mitte zurückmusst.
 
-- **Verweilen**: wie lange der Zeiger auf einer Saite bleiben muss (sofort bis 2 s).
-- **Bewegung**: wie groß die Kopfbewegung sein muss – *groß*, *mittel* oder *klein* (bei „klein“ reicht schon eine kleine Drehung).
+- **Bewegung**: wie weit du den Kopf drehen musst – *groß*, *mittel* oder *klein* (bei „klein“ reicht schon eine kleine Drehung).
+- **⌖ Mitte**: die jetzige Kopfhaltung als Mitte nehmen. Kleine Verschiebungen gleicht die App mit der Zeit selbst aus.
 - Oben rechts zeigt ein kleines Bild, was die Kamera sieht.
-- Kopfsteuerung, SoundWhacker und Finger gehen gleichzeitig.
+- Kopf, SoundWhacker und Finger gehen gleichzeitig.
 
 ## Die drei Modi
 

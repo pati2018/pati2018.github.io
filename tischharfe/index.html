@@ -269,9 +269,9 @@ function zeichne(now){
     const L=st.lied, xs=m=>{const i=m-H.MODELLE[st.modell].lo; return saiten[i]?saiten[i].x:-99};
     // Hilfslinien je Saite und Taktmarken
     g.strokeStyle='rgba(120,90,60,.12)'; g.lineWidth=1;
-    for(let b=0;b<=L.laenge;b+=L.takt){const y=yVon(b)-geo.r*1.4; if(y<papO-5||y>papU+5) continue;
+    H.taktStarts(L).forEach((b,k)=>{const y=yVon(b)-geo.r*1.4; if(y<papO-5||y>papU+5) return;
       g.setLineDash([3,4]); g.beginPath(); g.moveTo(papL,y); g.lineTo(papR,y); g.stroke(); g.setLineDash([]);
-      g.fillStyle='rgba(120,90,60,.45)'; g.font=`${Math.max(9,r*.9)}px system-ui`; g.fillText(String(b/L.takt+1),papL+3,y-3)}
+      g.fillStyle='rgba(120,90,60,.45)'; g.font=`${Math.max(9,r*.9)}px system-ui`; g.fillText(String(k+1),papL+3,y-3)});
     // Titel
     const ty=yVon(0)-geo.ppb*.9;
     if(ty>papO-30){ g.fillStyle='#5b3f27'; g.font=`600 ${Math.max(13,Math.min(20,sp*.7))}px Georgia,serif`; g.textAlign='center'; g.fillText(L.titel,(papL+papR)/2,ty); g.textAlign='left' }
@@ -369,7 +369,7 @@ addEventListener('keydown',e=>{
 });
 
 // ================= Bedienung =================
-H.LIEDER.forEach(l=>$('lied').add(new Option(l.titel,l.id)));
+H.GRUPPEN.forEach(gr=>{const og=document.createElement('optgroup'); og.label=gr; H.LIEDER.filter(l=>l.gruppe===gr).forEach(l=>og.appendChild(new Option(l.titel,l.id))); $('lied').appendChild(og)});
 for(const k in H.MODELLE) $('modell').add(new Option(H.MODELLE[k].name,k));
 // gespeicherte Auswahl
 try{const s=JSON.parse(localStorage.getItem('tischharfe')||'{}'); Object.assign(st,{liedId:s.liedId||st.liedId,modell:+s.modell||st.modell,klang:s.klang||st.klang,hall:s.hall??st.hall,namen:s.namen??st.namen})}catch(e){}

@@ -68,11 +68,11 @@ function blaetterFuer(roh,modell,fmt,beatMm){
   const M=H.MODELLE[modell], F=FORMATE[fmt], n=M.hi-M.lo+1, A=H.SAITENABSTAND_MM;
   const x0=(F.w-(n-1)*A)/2, xs=m=>+(x0+(m-M.lo)*A).toFixed(2);
   const oben=27, unten=F.h-24, platz=unten-oben-8;
-  const takteProSeite=Math.max(1,Math.floor(platz/beatMm/L.takt)), proSeite=takteProSeite*L.takt;
-  const seiten=Math.ceil(L.laenge/proSeite);
+  const auf=L.auftakt||0, takteProSeite=Math.max(1,Math.floor((platz/beatMm-auf)/L.takt)), proSeite=takteProSeite*L.takt;
+  const seiten=Math.max(1,Math.ceil((L.laenge-auf)/proSeite)), starts=H.taktStarts(L);
   const out=[];
   for(let p=0;p<seiten;p++){
-    const b0=p*proSeite, b1=b0+proSeite, y=b=>+(oben+6+(b-b0)*beatMm).toFixed(2);
+    const b0=p===0?0:auf+p*proSeite, b1=auf+(p+1)*proSeite, y=b=>+(oben+6+(b-b0)*beatMm).toFixed(2);
     let s='';
     // Kopf
     s+=`<text x="${x0}" y="15" font-family="${FONT}" font-size="7.5" fill="#000">${esc(L.titel)}</text>`;
@@ -87,14 +87,14 @@ function blaetterFuer(roh,modell,fmt,beatMm){
       s+=`<text x="${x}" y="${unten+4}" font-family="${FONT}" font-size="${fs}" text-anchor="middle" fill="${col}">${nm}</text>`;
     }
     // Taktnummern
-    for(let b=b0;b<Math.min(b1,L.laenge);b+=L.takt) s+=`<text x="${x0-6}" y="${y(b)+1}" font-family="${FONT}" font-size="2.6" text-anchor="end" fill="#aaa">${b/L.takt+1}</text>`;
+    starts.forEach((b,k)=>{ if(b>=b0&&b<b1) s+=`<text x="${x0-6}" y="${y(b)+1}" font-family="${FONT}" font-size="2.6" text-anchor="end" fill="#aaa">${k+1}</text>` });
     // Noten dieser Seite
-    const auf=L.noten.map((nt,k)=>({...nt,k})).filter(nt=>nt.beat>=b0&&nt.beat<b1);
-    const tone=auf.filter(nt=>nt.midi!==null);
+    const hier=L.noten.map((nt,k)=>({...nt,k})).filter(nt=>nt.beat>=b0&&nt.beat<b1);
+    const tone=hier.filter(nt=>nt.midi!==null);
     // Linien
     for(let j=1;j<tone.length;j++) s+=`<line x1="${xs(tone[j-1].midi)}" y1="${y(tone[j-1].beat)}" x2="${xs(tone[j].midi)}" y2="${y(tone[j].beat)}" stroke="#000" stroke-width="0.45" stroke-linecap="round"/>`;
     // Pausen: kleiner Balken zwischen den Nachbartönen
-    auf.forEach(nt=>{ if(nt.midi!==null) return;
+    hier.forEach(nt=>{ if(nt.midi!==null) return;
       const vor=[...L.noten.slice(0,nt.k)].reverse().find(q=>q.midi!==null), nach=L.noten.slice(nt.k+1).find(q=>q.midi!==null);
       const x=vor&&nach?(xs(vor.midi)+xs(nach.midi))/2:(vor||nach)?xs((vor||nach).midi):F.w/2;
       s+=`<rect x="${x-4}" y="${y(nt.beat+nt.dur/2)-1}" width="8" height="2" rx="1" fill="#999"/>`; });
@@ -126,7 +126,7 @@ function zeigen(){
   $('blaetter').innerHTML=liste.flatMap(l=>blaetterFuer(l,modell,fmt,abst)).join('');
   history.replaceState(null,'',`?lied=${lied}&modell=${modell}&format=${fmt}&abstand=${abst}`);
 }
-H.LIEDER.forEach(l=>$('lied').add(new Option(l.titel,l.id)));
+H.GRUPPEN.forEach(gr=>{const og=document.createElement('optgroup'); og.label=gr; H.LIEDER.filter(l=>l.gruppe===gr).forEach(l=>og.appendChild(new Option(l.titel,l.id))); $('lied').appendChild(og)});
 for(const k in H.MODELLE) $('modell').add(new Option(H.MODELLE[k].name,k));
 const q=new URLSearchParams(location.search);
 if(q.get('lied')) $('lied').value=q.get('lied');

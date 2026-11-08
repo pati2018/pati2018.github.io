@@ -11,6 +11,17 @@ Dazu gibt es **Notenblätter zum Ausdrucken**, die genau unter die Saiten einer 
 3. Im Modus **Üben** leuchtet der nächste Punkt und seine Saite. Diese Saite antippen – schon springt die App zum nächsten Ton.
 4. Mit **Vorspielen** spielt die App das Lied selbst vor.
 
+## Die Lieder
+
+| Gruppe | Lieder |
+|---|---|
+| **Übungen** | Tonleiter auf und ab |
+| **Kinderlieder** | Alle meine Entchen · Hänschen klein · Bruder Jakob · Old MacDonald Had a Farm · Mary Had a Little Lamb · Row, Row, Row Your Boat · London Bridge Is Falling Down · Yankee Doodle |
+| **Feste** | Zum Geburtstag viel Glück · Morgen kommt der Weihnachtsmann · Jingle Bells · Stille Nacht |
+| **Klassik** | Ode an die Freude · Für Elise (Thema) |
+
+Alle Lieder gibt es auch als Notenblatt zum Ausdrucken (siehe unten).
+
 ## Spielen
 
 - **Antippen**: eine Saite zupfen.

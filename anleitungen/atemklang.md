@@ -30,7 +30,8 @@ Die Farben der Tasten sind die Boomwhacker-Farben (C rot, D orange, E gelb, F he
 
 - **Instrument**: Saxophon, Querflöte, Klarinette, Trompete, Panflöte.
 - **Tonart** (C, D, Es, F, G, A, B) und **Tonleiter** (Dur, Moll, Pentatonik, Blues), **Oktave** tiefer/höher.
-- **Empfindlichkeit**: weiter rechts = schon zartes Blasen wird lauter.
+- **Empfindlichkeit**: ganz rechts (**sehr**) reicht schon ein Hauch. Voreingestellt ist sie hoch. Weiter links muss man kräftiger blasen.
+- **Mikrofon hört**: Live-Anzeige, was das Mikrofon gerade hört. Der rote Strich ist die Schwelle – kommt der Balken beim Blasen darüber, klingt der Ton. Bleibt er darunter: Empfindlichkeit nach rechts oder **🎤 Neu kalibrieren** (in Ruhe).
 - **Hall** und **Vibrato**.
 - **Tasten tauschen**: linke und rechte Spalte vertauschen (z. B. für Linkshänder).
 - **Ohne Mikrofon**: Das Feld unten wird zum Atem – gedrückt halten, nach oben ziehen = kräftiger.
@@ -43,7 +44,7 @@ Am Computer: Tasten **A S D F** (links) und **J K L Ö** (rechts), **Leertaste**
 
 - **Kein Ton?** Erst eine Taste halten (Griff „Einfach“), dann blasen. Den Stummschalter am iPhone prüfen und die Lautstärke hochdrehen.
 - **Ton klingt von allein weiter?** Das iPhone hört seinen eigenen Lautsprecher. **🎤 Neu kalibrieren**, leiser stellen, **Kopfhörer** benutzen oder **Echo-Unterdrückung** einschalten.
-- **Reagiert zu schwach?** Empfindlichkeit nach rechts schieben oder näher an die Unterkante.
+- **Reagiert zu schwach?** Empfindlichkeit nach rechts schieben und in den Einstellungen auf die Anzeige **Mikrofon hört** schauen. Die App hört sowohl das tiefe „Wind-Rumpeln“ als auch das feine Atemrauschen – sanft über die Unterkante blasen reicht.
 - **Mikrofon blockiert?** In Safari: **aA → Website-Einstellungen → Mikrofon → Erlauben**.
 - **Wie eine App:** In Safari **Teilen → Zum Home-Bildschirm** – dann startet Atemklang im Vollbild.
 - Die App lernt mit: Wer einmal kräftig bläst, legt damit fest, was „ganz laut“ ist.

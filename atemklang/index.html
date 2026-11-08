@@ -72,6 +72,12 @@
   .feld{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:15px}
   .feld select{background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:7px 9px;max-width:60%}
   .feld input[type=range]{accent-color:var(--accent);width:52%}
+  .regel{display:flex;align-items:center;gap:6px;width:60%}.regel input[type=range]{width:100%}.regel small{color:var(--muted);font-size:12px}
+  .feld.spalte{flex-wrap:wrap}
+  .mikroAnz{position:relative;flex:1;min-width:140px;height:12px;border-radius:6px;background:var(--bg);overflow:hidden}
+  .mikroAnz i{position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,#5ad1a0,var(--accent))}
+  .mikroAnz b{position:absolute;top:-2px;bottom:-2px;width:2px;background:#ff6b5a;left:0}
+  .leiseTxt{width:100%;color:var(--muted);font-size:12px}
   .feld input[type=checkbox]{width:22px;height:22px;accent-color:var(--accent)}
   .knoepfe{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
   .knoepfe button{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:9px 16px}
@@ -128,7 +134,9 @@
   <div class="feld">Tonart <select id="tonart"></select></div>
   <div class="feld">Tonleiter <select id="skala"></select></div>
   <div class="feld">Oktave <select id="oktave"><option value="-1">tiefer</option><option value="0" selected>normal</option><option value="1">höher</option></select></div>
-  <div class="feld">Empfindlichkeit <input id="sens" type="range" min="0" max="100" value="55"></div>
+  <div class="feld">Empfindlichkeit <span class="regel"><small>wenig</small><input id="sens" type="range" min="0" max="100" value="80"><small>sehr</small></span></div>
+  <div class="feld spalte">Mikrofon hört <span class="mikroAnz" aria-hidden="true"><i id="mikroRoh"></i><b id="mikroSchwelle"></b></span>
+    <small id="mikroTxt" class="leiseTxt">Blasen – der Balken muss über den Strich kommen.</small></div>
   <div class="feld">Hall <input id="hall" type="range" min="0" max="100" value="30"></div>
   <div class="feld">Vibrato <input id="vib" type="range" min="0" max="100" value="50"></div>
   <div class="feld">Tasten tauschen (links ↔ rechts) <input id="tausch" type="checkbox"></div>
@@ -162,8 +170,8 @@ const SILBEN=['do','re','mi','fa','so','la','ti'];
 const FARBEN={0:'#ef5350',2:'#ffa040',4:'#ffe14d',5:'#9ccc65',7:'#4dd0e1',9:'#b06bd6',11:'#f06292'};
 const farbe=m=>{const pc=((m%12)+12)%12; return FARBEN[pc]||FARBEN[(pc+11)%12]};
 
-const st={instr:'saxophon',griff:'einfach',tonart:'C',skala:'dur',oktave:0,sens:55,hall:30,vib:50,tausch:false,touch:false,aec:false};
-try{Object.assign(st,JSON.parse(localStorage.getItem('atemklang')||'{}'))}catch(e){}
+const st={v:2,instr:'saxophon',griff:'einfach',tonart:'C',skala:'dur',oktave:0,sens:80,hall:30,vib:50,tausch:false,touch:false,aec:false};
+try{const g=JSON.parse(localStorage.getItem('atemklang')||'{}'); if(!g.v){ g.sens=80; g.v=2 } Object.assign(st,g)}catch(e){}
 const merke=()=>{try{localStorage.setItem('atemklang',JSON.stringify(st))}catch(e){}};
 
 // ================= Audio =================
@@ -269,20 +277,27 @@ function griffTabelle(){
 }
 
 // ================= Mikrofon & Atem =================
-let an=null, abuf=null, stream=null;
-let ruhe=.004, leck=0, spitze=.12, atem=0, handAtem=0, ausgang=0;
+let an=null, abuf=null, anH=null, hbuf=null, stream=null, roherPegel=0;
+let ruhe=.0015, leck=0, atem=0, handAtem=0, ausgang=0;
 async function mikroStart(){
   if(navigator.audioSession) try{ navigator.audioSession.type='play-and-record' }catch(e){}
   stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:st.aec,noiseSuppression:false,autoGainControl:false}});
   const src=ctx.createMediaStreamSource(stream);
-  // Blasen ins Mikrofon erzeugt vor allem tiefes Rauschen (Wind) – nur das werten wir aus,
-  // damit der eigene Ton aus dem Lautsprecher möglichst wenig mitzählt.
-  const lp1=ctx.createBiquadFilter(), lp2=ctx.createBiquadFilter(); lp1.type=lp2.type='lowpass'; lp1.frequency.value=lp2.frequency.value=190; lp1.Q.value=lp2.Q.value=.7;
+  // Atem erkennen in zwei Bereichen:
+  //  tief (< 250 Hz): das „Wind-Rumpeln“, wenn man kräftig ins Mikrofon bläst
+  //  hoch (> 5 kHz):  das feine Rauschen eines zarten Atems – dort spielt die App selbst kaum (Synth-Töne sind tiefer)
+  const bq=(typ,f)=>{const b=ctx.createBiquadFilter(); b.type=typ; b.frequency.value=f; b.Q.value=.7; return b};
+  const lp1=bq('lowpass',250), lp2=bq('lowpass',250), hp1=bq('highpass',5000), hp2=bq('highpass',5000);
   an=ctx.createAnalyser(); an.fftSize=512; abuf=new Float32Array(an.fftSize);
+  anH=ctx.createAnalyser(); anH.fftSize=512; hbuf=new Float32Array(anH.fftSize);
   const stumm=ctx.createGain(); stumm.gain.value=0;
-  src.connect(lp1); lp1.connect(lp2); lp2.connect(an); an.connect(stumm); stumm.connect(ctx.destination);
+  src.connect(lp1); lp1.connect(lp2); lp2.connect(an); an.connect(stumm);
+  src.connect(hp1); hp1.connect(hp2); hp2.connect(anH); anH.connect(stumm);
+  stumm.connect(ctx.destination);
 }
-function mikroPegel(){ if(!an) return 0; an.getFloatTimeDomainData(abuf); let s=0; for(let i=0;i<abuf.length;i++) s+=abuf[i]*abuf[i]; return Math.sqrt(s/abuf.length) }
+const rms=(a,b)=>{ a.getFloatTimeDomainData(b); let s=0; for(let i=0;i<b.length;i++) s+=b[i]*b[i]; return Math.sqrt(s/b.length) };
+// Atem-Pegel: der stärkere der beiden Bereiche (das hohe Atemrauschen ist von Natur aus leiser, daher ×4)
+function mikroPegel(){ if(!an) return 0; return Math.max(rms(an,abuf), anH?rms(anH,hbuf)*4:0) }
 const warte=ms=>new Promise(r=>setTimeout(r,ms));
 async function kalibrieren(){
   $('kal').hidden=false; $('kalTxt').textContent='Ich messe die Umgebung und wie laut das iPhone sich selbst hört. Gleich ertönt kurz ein Ton.';
@@ -293,16 +308,19 @@ async function kalibrieren(){
   // Testton: wie stark landet der eigene Klang im Mikrofon?
   const alt=tonMidi; const testG=.45;
   osc.frequency.setValueAtTime(440*2**((grundton()-69)/12),ctx.currentTime);
-  amp.gain.setTargetAtTime(testG,ctx.currentTime,.02); filt.frequency.setValueAtTime(3000,ctx.currentTime);
+  // ungünstigster Fall: Klang ganz hell und mit Atemgeräusch – so wird nichts vom eigenen Lautsprecher für Atem gehalten
+  const I=INSTR[st.instr]; nbp.frequency.setValueAtTime(Math.min(9000,440*2**((grundton()-69)/12)*I.rf),ctx.currentTime);
+  amp.gain.setTargetAtTime(testG,ctx.currentTime,.02); filt.frequency.setValueAtTime(Math.min(16000,I.cut+I.cutK),ctx.currentTime);
+  ngain.gain.setTargetAtTime(I.rausch*.5*testG/.62,ctx.currentTime,.02);
   await warte(150); const testW=[]; for(let i=0;i<25;i++){ testW.push(mikroPegel()); await warte(20) }
-  amp.gain.setTargetAtTime(0,ctx.currentTime,.02);
+  amp.gain.setTargetAtTime(0,ctx.currentTime,.02); ngain.gain.setTargetAtTime(0,ctx.currentTime,.02);
   testW.sort((a,b)=>a-b); const mitTon=testW[Math.floor(testW.length*.5)];
-  ruhe=Math.max(.003,boden*2.2); leck=Math.max(0,(mitTon-boden)/testG);
+  ruhe=Math.max(.0012,boden*1.6); leck=Math.max(0,(mitTon-boden)/testG);
   tonMidi=alt; aktualisiereTon(true);
   await warte(150); $('kal').hidden=true; kalibriert=true; kalLaeuft=false;
   info(leck>ruhe*8?'Das iPhone hört sich selbst recht laut – mit Kopfhörern klappt es am besten.':'Bereit! Blase sanft über die Unterkante.');
 }
-let kalibriert=false, kalLaeuft=false;
+let kalibriert=false, kalLaeuft=false, schwelleJetzt=0;
 function info(t){ $('info').textContent=t }
 
 // ================= Hauptschleife =================
@@ -311,17 +329,18 @@ function schleife(){
   if(!ctx||kalLaeuft) return;
   let ziel=0;
   if(an&&kalibriert&&!st.touch){
-    const p=mikroPegel();
-    const schwelle=ruhe+leck*ausgang*1.35;
-    const roh=Math.max(0,p-schwelle);
-    spitze=roh>spitze?roh:Math.max(.035,spitze*.9994);
-    const bereich=spitze*.85*(1.6-st.sens/100*1.1);
-    ziel=Math.min(1,roh/Math.max(.004,bereich));
+    const p=roherPegel=mikroPegel();
+    const schwelle=ruhe+leck*ausgang*1.35; schwelleJetzt=schwelle;
+    // Lautstärke in Dezibel über der Ruheschwelle – wie das Ohr: ein Hauch knapp darüber = leise, kräftig = laut.
+    // Empfindlichkeit legt fest, wie viele dB bis „ganz laut“ nötig sind (rechts: sehr wenige).
+    const db=p>schwelle?20*Math.log10(p/schwelle):0;
+    const spanne=44-st.sens*.3;            // Empfindlichkeit 0 → 44 dB … 80 → 20 dB … 100 → 14 dB
+    ziel=Math.min(1,db/spanne);
   }
   ziel=Math.max(ziel,handAtem);
-  atem+=(ziel-atem)*(ziel>atem?.5:.28); if(atem<.015) atem=0;
+  atem+=(ziel-atem)*(ziel>atem?.5:.28); if(atem<.01) atem=0;
   const I=INSTR[st.instr], t=ctx.currentTime;
-  const kurve=Math.pow(atem,1.45);
+  const kurve=Math.pow(atem,1.1);
   const tonAn=tonMidi!==null;
   ausgang=tonAn?kurve*.62:0;
   amp.gain.setTargetAtTime(ausgang,t,.018);
@@ -329,6 +348,8 @@ function schleife(){
   filt.frequency.setTargetAtTime(Math.min(16000,I.cut+I.cutK*Math.pow(atem,1.2)),t,.025);
   lfoG.gain.setTargetAtTime(I.vib*(st.vib/50)*Math.min(1,atem*1.6),t,.15);
   $('meter').style.width=(atem*100).toFixed(1)+'%';
+  if($('einst').open&&an){ const lg=v=>Math.max(0,Math.min(100,(Math.log10(Math.max(v,1e-5))+5)/4.3*100));
+    $('mikroRoh').style.width=lg(roherPegel).toFixed(1)+'%'; $('mikroSchwelle').style.left=lg(schwelleJetzt).toFixed(1)+'%'; }
   $('ring').style.transform=`scale(${(.15+atem*.85).toFixed(3)})`;
   $('ringTxt').textContent=atem>0?(atem<.35?'zart':atem<.75?'mittel':'kräftig'):'Atem';
 }
@@ -367,7 +388,7 @@ setze();
 $('setBtn').onclick=$('instrBtn').onclick=()=>$('einst').showModal();
 $('zu').onclick=()=>$('einst').close();
 $('einst').addEventListener('click',e=>{ if(e.target===$('einst')) $('einst').close() });
-$('instr').onchange=e=>{st.instr=e.target.value; merke(); setInstrument(); baueTasten()};
+$('instr').onchange=async e=>{st.instr=e.target.value; merke(); setInstrument(); baueTasten(); if(an&&kalibriert){ $('einst').close(); await kalibrieren() }};
 $('griff').onchange=e=>{st.griff=e.target.value; merke(); gedrueckt.clear(); reihenfolge=[]; baueTasten()};
 $('tonart').onchange=e=>{st.tonart=e.target.value; merke(); baueTasten()};
 $('skala').onchange=e=>{st.skala=e.target.value; merke(); tonartNamen(); baueTasten()};

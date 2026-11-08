@@ -51,11 +51,12 @@ Die Kamera erkennt deine **Nasenspitze** (wie in MIGA). Die Erkennung läuft kom
 
 1. Auf **😶 Kopf** tippen und die Kamera erlauben.
 2. **Gerade auf den Bildschirm schauen** – diese Haltung ist die Mitte.
-3. **Kopf nach links oder rechts drehen = nächster Ton** – wie ein Tippen. Egal ob links oder rechts: Es klingt immer der Ton, der im Lied als Nächstes dran ist.
+3. **Kopf nach links, rechts, hoch oder runter = nächster Ton** – wie ein Tippen. Egal in welche Richtung: Es klingt immer der Ton, der im Lied als Nächstes dran ist.
 4. **Kurz zurück zur Mitte**, dann zählt die nächste Bewegung. So spielt eine einzige Drehung nie mehrere Töne.
 
-Unten auf der Harfe zeigt eine kleine Anzeige, wo dein Kopf gerade steht: grün = Mitte, orange = hier löst es aus. Der Punkt ist **blau**, wenn die nächste Bewegung bereit ist, und **orange**, solange du erst zur Mitte zurückmusst.
+Unter dem Kamerabild zeigt ein kleines Feld, wo dein Kopf gerade steht: grün = Mitte, orange Rand = hier löst es aus. Der Punkt ist **blau**, wenn die nächste Bewegung bereit ist, und **orange**, solange du erst zur Mitte zurückmusst.
 
+- **Richtung**: *Alle Richtungen*, *Nur links/rechts* oder *Nur Nicken (hoch/runter)* – je nachdem, welche Bewegung am besten klappt.
 - **Bewegung**: wie weit du den Kopf drehen musst – *groß*, *mittel*, *klein*, *ganz klein* oder *winzig*. Bei „winzig“ reicht schon eine ganz kleine Drehung. Je kleiner die Stufe, desto ruhiger sollte der Kopf in der Mitte sein – bei Fehlauslösern eine Stufe größer wählen oder **⌖ Mitte** tippen.
 - **⌖ Mitte**: die jetzige Kopfhaltung als Mitte nehmen. Kleine Verschiebungen gleicht die App mit der Zeit selbst aus.
 - Oben rechts zeigt ein kleines Bild, was die Kamera sieht.

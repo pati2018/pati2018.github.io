@@ -1,16 +1,17 @@
 /*
  * Kopfsteuerung für die Tischharfe (Gesichtserkennung wie in MIGA, läuft auf dem Gerät):
- * Jede Kopfbewegung nach links oder rechts spielt den nächsten Ton des Liedes – wie ein Tippen.
- * Danach erst zurück zur Mitte, dann zählt die nächste Bewegung.
+ * Jede Kopfbewegung nach links, rechts, oben oder unten (Nicken) spielt den nächsten Ton des Liedes –
+ * wie ein Tippen. Danach erst zurück zur Mitte, dann zählt die nächste Bewegung.
+ * Richtung: 'alle' | 'seite' (nur links/rechts) | 'nicken' (nur hoch/runter)
  * Nutzt aus index.html: st, saiten, geo, g, zupf, setzeModus, neustart, initAudio, ctx.
  */
 const KOPF = {
   an: false, stream: null, vid: null, face: null, loop: 0, lastT: -1,
   cx: null, cy: null, px: .5, py: .5, gefunden: false, verloren: 0,
   bereit: true, seite: 0, zuletzt: 0, blitz: 0,
-  einst: { gain: 4.5 },
+  einst: { gain: 4.5, richtung: 'alle' },
 };
-try { const e = JSON.parse(localStorage.getItem('tischharfe-kopf') || '{}'); if (e.gain) KOPF.einst.gain = e.gain; } catch (e) {}
+try { const e = JSON.parse(localStorage.getItem('tischharfe-kopf') || '{}'); if (e.gain) KOPF.einst.gain = e.gain; if (['alle', 'seite', 'nicken'].includes(e.richtung)) KOPF.einst.richtung = e.richtung; } catch (e) {}
 const kopfMerke = () => { try { localStorage.setItem('tischharfe-kopf', JSON.stringify(KOPF.einst)) } catch (e) {} };
 const KOPF_BASIS = new URL('kopf/', location.href).href;
 
@@ -64,7 +65,7 @@ function kopfStop() {
   KOPF.gefunden = false; KOPF.bereit = true; kopfUi(); kopfStatus('');
 }
 
-const KOPF_AUS = .2, KOPF_MITTE = .08;   // Auslöseschwelle und Rückkehrzone (Anteil der halben Bildbreite)
+const KOPF_AUS = .2, KOPF_MITTE = .08;   // Auslöseschwelle und Rückkehrzone (Abstand von der Mitte, 0…0,5)
 
 function kopfSchleife() {
   if (!KOPF.an) return;
@@ -80,22 +81,25 @@ function kopfSchleife() {
     return;
   }
   KOPF.verloren = 0;
-  const nx = lm[1].x;   // Nasenspitze
-  if (KOPF.cx == null) { KOPF.cx = nx; KOPF.px = .5; KOPF.bereit = true; }
+  const nx = lm[1].x, ny = lm[1].y;   // Nasenspitze
+  if (KOPF.cx == null) { KOPF.cx = nx; KOPF.cy = ny; KOPF.px = .5; KOPF.py = .5; KOPF.bereit = true; }
   if (!KOPF.gefunden) kopfStatus(kopfHinweis());
   KOPF.gefunden = true;
-  // Kamerabild ist ungespiegelt: Kopf nach rechts = Nase im Bild nach links
-  const tx = Math.min(1, Math.max(0, .5 + (KOPF.cx - nx) * KOPF.einst.gain));
-  KOPF.px += (tx - KOPF.px) * .5;
-  const aus = KOPF.px - .5;
-  if (KOPF.bereit && Math.abs(aus) > KOPF_AUS && now - KOPF.zuletzt > 150) {
-    KOPF.bereit = false; KOPF.seite = Math.sign(aus); KOPF.zuletzt = now; KOPF.blitz = now;
+  // Kamerabild ist ungespiegelt: Kopf nach rechts = Nase im Bild nach links. Nicken bewegt die Nase weniger → ×1,4 (wie MIGA)
+  const gain = KOPF.einst.gain;
+  const tx = Math.min(1, Math.max(0, .5 + (KOPF.cx - nx) * gain)), ty = Math.min(1, Math.max(0, .5 + (ny - KOPF.cy) * gain * 1.4));
+  KOPF.px += (tx - KOPF.px) * .5; KOPF.py += (ty - KOPF.py) * .5;
+  const ri = KOPF.einst.richtung;
+  const ax = ri === 'nicken' ? 0 : Math.abs(KOPF.px - .5), ay = ri === 'seite' ? 0 : Math.abs(KOPF.py - .5);
+  const weg = Math.max(ax, ay), inMitte = ax < KOPF_MITTE && ay < KOPF_MITTE;
+  if (KOPF.bereit && weg > KOPF_AUS && now - KOPF.zuletzt > 150) {
+    KOPF.bereit = false; KOPF.zuletzt = now; KOPF.blitz = now;
     kopfNaechsterTon();
-  } else if (!KOPF.bereit && Math.abs(aus) < KOPF_MITTE) {
-    KOPF.bereit = true; KOPF.seite = 0;
+  } else if (!KOPF.bereit && inMitte) {
+    KOPF.bereit = true;
   }
   // In Ruhe die Mitte langsam nachführen, falls man sich mit der Zeit etwas verschiebt
-  if (KOPF.bereit && Math.abs(aus) < KOPF_MITTE) KOPF.cx += (nx - KOPF.cx) * .01;
+  if (KOPF.bereit && inMitte) { KOPF.cx += (nx - KOPF.cx) * .01; KOPF.cy += (ny - KOPF.cy) * .01; }
 }
 function kopfNaechsterTon() {
   if (!st.lied) return;
@@ -104,24 +108,30 @@ function kopfNaechsterTon() {
   const z = st.lied.noten[st.pos];
   if (z) zupf(saiten.findIndex(s => s.midi === z.midi), .85);
 }
-function kopfHinweis() { return 'Kopf nach links oder rechts drehen = nächster Ton. Danach kurz zurück zur Mitte.'; }
+function kopfHinweis() {
+  return { alle: 'Kopf nach links, rechts, hoch oder runter = nächster Ton. Danach kurz zurück zur Mitte.',
+           seite: 'Kopf nach links oder rechts drehen = nächster Ton. Danach kurz zurück zur Mitte.',
+           nicken: 'Nicken (Kopf hoch oder runter) = nächster Ton. Danach kurz zurück zur Mitte.' }[KOPF.einst.richtung];
+}
 
-// Anzeige unten auf der Harfe: wo steht der Kopf, ab wo löst es aus (wird aus zeichne() aufgerufen)
+// Kleines Feld unter dem Kamerabild: wo steht der Kopf, ab wo löst es aus (wird aus zeichne() aufgerufen)
 function kopfZeichnen(now) {
   if (!KOPF.an || !KOPF.gefunden || !saiten.length) return;
-  // direkt unter dem Kamerabild oben rechts
-  const vb = document.getElementById('kopfVorschau'), w = vb.offsetWidth, cx = vb.offsetLeft + w / 2, y = vb.offsetTop + vb.offsetHeight + 16, h = 12;
-  const xv = f => cx + (f - .5) * w;
+  const vb = document.getElementById('kopfVorschau'), w = vb.offsetWidth, hh = Math.round(w * .55);
+  const x0 = vb.offsetLeft, y0 = vb.offsetTop + vb.offsetHeight + 8, r = KOPF.einst.richtung;
+  const X = f => x0 + f * w, Y = f => y0 + f * hh;
   g.save();
-  g.fillStyle = 'rgba(40,30,20,.18)'; rundRect(cx - w / 2, y - h / 2, w, h, h / 2); g.fill();
-  g.fillStyle = 'rgba(224,168,79,.35)';                       // Auslösebereiche links und rechts
-  rundRect(cx - w / 2, y - h / 2, w * (.5 - KOPF_AUS), h, h / 2); g.fill();
-  rundRect(xv(.5 + KOPF_AUS), y - h / 2, w * (.5 - KOPF_AUS), h, h / 2); g.fill();
-  g.fillStyle = 'rgba(120,190,110,.45)'; g.fillRect(xv(.5 - KOPF_MITTE), y - h / 2, w * KOPF_MITTE * 2, h);   // Mitte
-  const blitz = Math.max(0, 1 - (now - KOPF.blitz) / 350);
-  g.beginPath(); g.arc(xv(KOPF.px), y, h * .9 + blitz * 6, 0, Math.PI * 2);
-  g.fillStyle = KOPF.bereit ? '#3f6fd0' : '#b0611a'; g.fill(); g.lineWidth = 2; g.strokeStyle = '#fff'; g.stroke();
-  g.font = `${Math.round(h * 1.1)}px system-ui`; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('👃', xv(KOPF.px), y + 1);
+  g.fillStyle = 'rgba(232,150,40,.85)'; rundRect(x0, y0, w, hh, 10); g.fill();            // außen: hier löst es aus
+  // innen: ruhig (Richtungen, die nicht zählen, gehen bis zum Rand)
+  const ix = r === 'nicken' ? 0 : .5 - KOPF_AUS, iy = r === 'seite' ? 0 : .5 - KOPF_AUS;
+  g.fillStyle = 'rgba(250,245,235,.92)'; rundRect(X(ix), Y(iy), w * (1 - 2 * ix), hh * (1 - 2 * iy), 8); g.fill();
+  const mx = r === 'nicken' ? 0 : .5 - KOPF_MITTE, my = r === 'seite' ? 0 : .5 - KOPF_MITTE;
+  g.fillStyle = 'rgba(120,190,110,.6)'; rundRect(X(mx), Y(my), w * (1 - 2 * mx), hh * (1 - 2 * my), 5); g.fill();   // Mitte
+  g.lineWidth = 2; g.strokeStyle = 'rgba(255,255,255,.7)'; rundRect(x0, y0, w, hh, 10); g.stroke();
+  const blitz = Math.max(0, 1 - (now - KOPF.blitz) / 350), px = X(KOPF.px), py = Y(KOPF.py), rr = 9 + blitz * 6;
+  g.beginPath(); g.arc(px, py, rr, 0, Math.PI * 2);
+  g.fillStyle = KOPF.bereit ? '#3f6fd0' : '#b0611a'; g.fill(); g.strokeStyle = '#fff'; g.stroke();
+  g.font = '11px system-ui'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('👃', px, py + 1);
   g.restore(); g.textBaseline = 'alphabetic';
 }
 
@@ -133,10 +143,11 @@ function kopfUi() {
 }
 (function () {
   const $ = id => document.getElementById(id);
-  $('kopfGain').value = String(KOPF.einst.gain);
+  $('kopfGain').value = String(KOPF.einst.gain); $('kopfRichtung').value = KOPF.einst.richtung;
   $('kopfBtn').onclick = () => (KOPF.an ? kopfStop() : kopfStart());
   $('kopfMitte').onclick = () => { KOPF.cx = null; kopfStatus('Mitte neu gesetzt. ' + kopfHinweis()); };
   $('kopfGain').onchange = e => { KOPF.einst.gain = +e.target.value; e.target.blur(); kopfMerke(); };
+  $('kopfRichtung').onchange = e => { KOPF.einst.richtung = e.target.value; e.target.blur(); kopfMerke(); KOPF.bereit = true; if (KOPF.gefunden) kopfStatus(kopfHinweis()); };
   document.addEventListener('visibilitychange', () => { if (document.hidden && KOPF.an) kopfStop(); });
   kopfUi();
 })();

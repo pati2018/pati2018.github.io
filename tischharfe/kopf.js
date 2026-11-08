@@ -9,7 +9,8 @@ const KOPF = {
   an: false, stream: null, vid: null, face: null, loop: 0, lastT: -1,
   cx: null, cy: null, px: .5, py: .5, gefunden: false, verloren: 0,
   bereit: true, seite: 0, zuletzt: 0, blitz: 0,
-  einst: { gain: 4.5, richtung: 'alle' },
+  einst: { gain: 9, richtung: 'alle' },
+  verlauf: [],                             // letzte Rohwerte für den Median (gegen Zittern)
 };
 try { const e = JSON.parse(localStorage.getItem('tischharfe-kopf') || '{}'); if (e.gain) KOPF.einst.gain = e.gain; if (['alle', 'seite', 'nicken'].includes(e.richtung)) KOPF.einst.richtung = e.richtung; } catch (e) {}
 const kopfMerke = () => { try { localStorage.setItem('tischharfe-kopf', JSON.stringify(KOPF.einst)) } catch (e) {} };
@@ -83,17 +84,22 @@ function kopfSchleife() {
   KOPF.verloren = 0;
   const nx = lm[1].x, ny = lm[1].y;   // Nasenspitze
   const neig = kopfNeigung(lm, v);     // Nicken als Winkel (Grad), unabhängig davon, wo der Kopf im Bild ist
-  if (KOPF.cx == null) { KOPF.cx = nx; KOPF.cy = ny; KOPF.n0 = neig; KOPF.px = .5; KOPF.py = .5; KOPF.bereit = true; }
+  if (KOPF.cx == null) { KOPF.cx = nx; KOPF.cy = ny; KOPF.n0 = neig; KOPF.px = .5; KOPF.py = .5; KOPF.bereit = true; KOPF.verlauf = []; }
   if (KOPF.n0 == null && neig != null) KOPF.n0 = neig;
   if (!KOPF.gefunden) kopfStatus(kopfHinweis());
   KOPF.gefunden = true;
   // Links/rechts: Nasenspitze (Kamerabild ungespiegelt: Kopf nach rechts = Nase im Bild nach links).
-  // Hoch/runter: Neigungswinkel – Auslösen bei 60°/Stufe (groß ≈ 20°, mittel ≈ 13°, klein ≈ 9°, ganz klein ≈ 6°, winzig ≈ 4°).
+  // Hoch/runter: Neigungswinkel – Auslösen bei 60°/Stufe (groß ≈ 13°, mittel ≈ 9° … winzig ≈ 2°, minimal ≈ 1,5°).
   // Ohne Tiefeninformation ersatzweise die Nasenspitze (empfindlicher als links/rechts, weil Nicken sie weniger bewegt).
   const gain = KOPF.einst.gain;
   const dy = neig != null && KOPF.n0 != null ? kopfWinkelDiff(neig, KOPF.n0) * gain / 300 : (ny - KOPF.cy) * gain * 2.2;
   const tx = Math.min(1, Math.max(0, .5 + (KOPF.cx - nx) * gain)), ty = Math.min(1, Math.max(0, .5 + dy));
-  KOPF.px += (tx - KOPF.px) * .5; KOPF.py += (ty - KOPF.py) * .5;
+  // Glätten: Median der letzten 5 Bilder, dann gleitender Mittelwert – je feiner die Stufe, desto stärker,
+  // damit das natürliche Zittern der Erkennung bei kleinen Bewegungen keine Töne auslöst
+  KOPF.verlauf.push([tx, ty]); if (KOPF.verlauf.length > 5) KOPF.verlauf.shift();
+  const med = i => { const a = KOPF.verlauf.map(v => v[i]).sort((x, y) => x - y); return a[a.length >> 1]; };
+  const glatt = Math.min(.5, 8 / gain);
+  KOPF.px += (med(0) - KOPF.px) * glatt; KOPF.py += (med(1) - KOPF.py) * glatt;
   const ri = KOPF.einst.richtung;
   const ax = ri === 'nicken' ? 0 : Math.abs(KOPF.px - .5), ay = ri === 'seite' ? 0 : Math.abs(KOPF.py - .5);
   const weg = Math.max(ax, ay), inMitte = ax < KOPF_MITTE && ay < KOPF_MITTE;
@@ -156,6 +162,8 @@ function kopfUi() {
 }
 (function () {
   const $ = id => document.getElementById(id);
+  const stufen = [...$('kopfGain').options].map(o => +o.value);
+  if (!stufen.includes(KOPF.einst.gain)) KOPF.einst.gain = stufen.reduce((a, b) => Math.abs(b - KOPF.einst.gain) < Math.abs(a - KOPF.einst.gain) ? b : a);
   $('kopfGain').value = String(KOPF.einst.gain); $('kopfRichtung').value = KOPF.einst.richtung;
   $('kopfBtn').onclick = () => (KOPF.an ? kopfStop() : kopfStart());
   $('kopfMitte').onclick = () => { KOPF.cx = null; kopfStatus('Mitte neu gesetzt. ' + kopfHinweis()); };

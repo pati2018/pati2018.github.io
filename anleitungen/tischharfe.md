@@ -56,8 +56,21 @@ Die Kamera erkennt deine **Nasenspitze** (wie in MIGA). Die Erkennung läuft kom
 
 Unter dem Kamerabild zeigt ein kleines Feld, wo dein Kopf gerade steht: grün = Mitte, orange Rand = hier löst es aus. Der Punkt ist **blau**, wenn die nächste Bewegung bereit ist, und **orange**, solange du erst zur Mitte zurückmusst.
 
-- **Richtung**: *Alle Richtungen*, *Nur links/rechts* oder *Nur Nicken (hoch/runter)* – je nachdem, welche Bewegung am besten klappt. Fürs Nicken misst die App den **Neigungswinkel** des Kopfes: Bei *mittel* reicht ein Nicken von etwa 13°, bei *winzig* schon etwa 4°.
-- **Bewegung**: wie weit du den Kopf drehen musst – *groß*, *mittel*, *klein*, *ganz klein* oder *winzig*. Bei „winzig“ reicht schon eine ganz kleine Drehung. Je kleiner die Stufe, desto ruhiger sollte der Kopf in der Mitte sein – bei Fehlauslösern eine Stufe größer wählen oder **⌖ Mitte** tippen.
+- **Richtung**: *Alle Richtungen*, *Nur links/rechts* oder *Nur Nicken (hoch/runter)* – je nachdem, welche Bewegung am besten klappt. Fürs Nicken misst die App den **Neigungswinkel** des Kopfes.
+- **Bewegung**: wie weit du den Kopf bewegen musst – in 8 Stufen:
+
+| Stufe | Nicken | links/rechts |
+|---|---|---|
+| groß | ca. 13° | deutlich drehen |
+| mittel | ca. 9° | |
+| klein | ca. 7° | |
+| kleiner | ca. 5° | |
+| ganz klein | ca. 4° | |
+| sehr klein | ca. 3° | |
+| winzig | ca. 2° | |
+| minimal | ca. 1,5° | kaum sichtbar |
+
+  Je kleiner die Stufe, desto ruhiger sollte der Kopf in der Mitte sein. Kommen Töne von allein, eine Stufe größer wählen oder **⌖ Mitte** tippen.
 - **⌖ Mitte**: die jetzige Kopfhaltung als Mitte nehmen. Kleine Verschiebungen gleicht die App mit der Zeit selbst aus.
 - Oben rechts zeigt ein kleines Bild, was die Kamera sieht.
 - Kopf, SoundWhacker und Finger gehen gleichzeitig.

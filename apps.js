@@ -25,10 +25,10 @@ window.APPS = [
     titel: "Groove-Werkstatt",
     kurz: "Beats und Melodien zum Anklicken: Schlagzeug, Melodie und Bass in einem Raster setzen – immer passend in der gewählten Tonart. Mit Swing, Vorlagen, Würfeln, MIDI-Export und direkter Übergabe an den MIDI-Player.",
     links: [
-      { label: "🎛 Groove-Werkstatt öffnen", url: "https://pati2018.github.io/midi-player/sequenzer.html" },
-      { label: "🎼 MIDI-Player öffnen", url: "https://pati2018.github.io/midi-player/" }
+      { label: "🎛 Groove-Werkstatt öffnen", url: "https://pati2018.github.io/groove-werkstatt/" },
+      { label: "🎼 MIDI-Player öffnen", url: "https://pati2018.github.io/groove-werkstatt/midi-player.html" }
     ],
-    link: "https://pati2018.github.io/midi-player/sequenzer.html",
+    link: "https://pati2018.github.io/groove-werkstatt/",
     repo: "https://github.com/pati2018/midi-player",
     kategorie: "Musik",
     symbol: "🎛",

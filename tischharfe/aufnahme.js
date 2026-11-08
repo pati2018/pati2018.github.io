@@ -166,8 +166,8 @@ function aufStop() {
   document.body.classList.remove('rec');
   // Eingeklappt bleibt die Harfe im Vollbild – kurz zeigen, dass die Aufnahme fertig ist (zu finden unter „▼ Menü“)
   const z = document.getElementById('zuRec'); clearTimeout(z._t);
-  if (document.body.classList.contains('zu')) { z.textContent = '✓ Aufnahme fertig'; z.classList.add('fertig'); z._t = setTimeout(() => { z.textContent = '● Video'; z.classList.remove('fertig'); }, 3500); }
-  else z.textContent = '● Video';
+  if (document.body.classList.contains('zu')) { z.textContent = '✓ Aufnahme fertig'; z.classList.add('fertig'); z._t = setTimeout(() => { z.textContent = '● Video aufnehmen'; z.classList.remove('fertig'); }, 3500); }
+  else z.textContent = '● Video aufnehmen';
   aufZeit('max. ' + Math.floor(AUF_MAX / 60) + ':' + String(AUF_MAX % 60).padStart(2, '0'));
 }
 

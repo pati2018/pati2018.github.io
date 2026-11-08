@@ -88,7 +88,7 @@
   .klappZu{border-radius:999px;font-size:14px;padding:7px 14px;box-shadow:0 2px 10px rgba(0,0,0,.35)}
   .zuRec{display:none;position:absolute;top:8px;z-index:3;border-radius:999px;font-size:14px;padding:7px 14px;box-shadow:0 2px 10px rgba(0,0,0,.35)}
   .klappZu{background:rgba(35,28,23,.85);color:var(--ink);border:1.5px solid rgba(255,255,255,.35);font-weight:600}
-  .zuRec{left:8px;background:#c0392b;color:#fff;font-variant-numeric:tabular-nums}
+  .zuRec{left:8px;background:#c0392b;color:#fff;font-variant-numeric:tabular-nums;font-size:16px!important;font-weight:700;padding:9px 18px!important}
   body.zu{padding:6px}
   body.zu .wrap{max-width:none}
   body.zu .top,body.zu .bar,body.zu .swbar,body.zu #msg,body.zu details,body.zu .takes{display:none!important}
@@ -181,7 +181,7 @@
       <button id="modusKnopf" class="klappZu" aria-expanded="false" title="Üben · Vorspielen · Frei · Von vorn ein- oder ausblenden">▼ Modus</button>
       <button id="ausklappen" class="klappZu" title="Ganzes Menü wieder anzeigen">▼ Menü</button>
     </div>
-    <button id="zuRec" class="zuRec" title="Video-Aufnahme starten oder beenden">● Video</button>
+    <button id="zuRec" class="zuRec" title="Video-Aufnahme starten oder beenden">● Video aufnehmen</button>
     <div class="vorschau" id="aufVorschau" hidden><video id="aufVideo" playsinline muted autoplay></video></div></div>
   <div class="swbar" id="swbar" role="group" aria-label="SoundWhacker 1 bis 5 (Tasten 1–5)"></div>
   <div id="takes" class="takes"></div>
@@ -194,7 +194,7 @@
   </details>
 </div>
 
-<script src="lieder.js?v=25"></script>
+<script src="lieder.js?v=26"></script>
 <script>
 const H=window.HARFE, $=id=>document.getElementById(id);
 const cv=$('harfe'), g=cv.getContext('2d');
@@ -595,8 +595,8 @@ ladeLied(); layout(); neustart();
 addEventListener('resize',layout);
 requestAnimationFrame(schleife);
 </script>
-<script src="kopf.js?v=25"></script>
-<script src="aufnahme.js?v=25"></script>
-<script src="eigene.js?v=25"></script>
+<script src="kopf.js?v=26"></script>
+<script src="aufnahme.js?v=26"></script>
+<script src="eigene.js?v=26"></script>
 </body>
 </html>

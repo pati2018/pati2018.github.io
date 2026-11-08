@@ -24,7 +24,7 @@ Oben rechts auf **▲ Menü einklappen** tippen: Alle Knöpfe verschwinden und *
 
 - Mit **▼ Modus** (neben „▼ Menü“) klappst du nur die Leiste **Üben · Vorspielen · Frei · Von vorn** über der Harfe auf – alles andere bleibt eingeklappt. **▲ Modus** klappt sie wieder zu.
 - SoundWhacker, Kopfsteuerung und Finger funktionieren auch eingeklappt.
-- Oben links steht ein roter Knopf **● Video**: Damit startest du die Video-Aufnahme auch im Vollbild (mit den vorher eingestellten Optionen Kamerabild/Mikrofon). Während der Aufnahme zeigt er **■ und die Zeit** – antippen beendet sie. Danach erscheint kurz **✓ Aufnahme fertig**; die Aufnahme zum Speichern findest du unter **▼ Menü**.
+- Oben links steht ein roter Knopf **● Video aufnehmen**: Damit startest du die Video-Aufnahme auch im Vollbild (mit den vorher eingestellten Optionen Kamerabild/Mikrofon). Während der Aufnahme zeigt er **■ und die Zeit** – antippen beendet sie. Danach erscheint kurz **✓ Aufnahme fertig**; die Aufnahme zum Speichern findest du unter **▼ Menü**.
 - Die App merkt sich, ob das Menü eingeklappt war.
 - Für echtes Vollbild ohne Safari-Leiste: In Safari **Teilen → Zum Home-Bildschirm** und die Tischharfe von dort starten.
 

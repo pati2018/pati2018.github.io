@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Atemklang</title>
+<meta name="description" content="Blasinstrument fürs Handy: ins Mikrofon blasen, mit den Fingern die Töne greifen.">
+<meta name="theme-color" content="#14181f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Atemklang">
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<style>
+  :root{--bg:#14181f;--panel:#1f2530;--ink:#eef2f7;--muted:#9aa6b6;--accent:#ffb84d;--line:#323b49}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    overscroll-behavior:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+  body{position:fixed;inset:0;overflow:hidden;touch-action:none}
+  button,select{font:inherit}
+
+  #app{position:absolute;inset:0;display:grid;grid-template-rows:auto 1fr auto;
+    padding:calc(env(safe-area-inset-top) + 6px) 0 calc(env(safe-area-inset-bottom) + 6px)}
+  header{display:flex;align-items:center;gap:8px;padding:0 12px}
+  header a{color:var(--muted);text-decoration:none;font-size:22px;padding:4px 6px}
+  .titel{font-weight:700;font-size:17px;margin-right:auto}
+  .chip{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:15px}
+  .chip.rund{width:38px;height:38px;padding:0;display:grid;place-items:center;font-size:19px}
+
+  main{display:grid;grid-template-columns:minmax(92px,30%) 1fr minmax(92px,30%);min-height:0}
+  .spalte{display:flex;flex-direction:column;justify-content:center;gap:10px;padding:8px 0;min-height:0}
+  .taste{flex:1;max-height:118px;min-height:62px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:var(--c,#556);color:#111;font-weight:800;font-size:clamp(22px,7vw,34px);line-height:1;position:relative;
+    box-shadow:inset 0 -5px 0 rgba(0,0,0,.18);transition:transform .05s,filter .05s,box-shadow .05s;touch-action:none}
+  .links .taste{border-radius:0 26px 26px 0;padding-right:4px}
+  .rechts .taste{border-radius:26px 0 0 26px;padding-left:4px}
+  .taste small{font-size:13px;font-weight:600;opacity:.75;margin-top:5px}
+  .taste.an{filter:brightness(1.18) saturate(1.1);box-shadow:inset 0 0 0 4px rgba(255,255,255,.85);transform:scale(.97)}
+  .taste.loch{background:var(--panel);color:var(--ink);box-shadow:inset 0 0 0 3px var(--line)}
+  .taste.loch .punkt{width:46%;aspect-ratio:1;border-radius:50%;border:3px solid var(--muted)}
+  .taste.loch.an .punkt{background:var(--accent);border-color:var(--accent)}
+  .taste.loch.okt{color:var(--muted);font-size:15px}
+  .taste.loch.okt.an{color:var(--accent)}
+
+  .mitte{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:0 4px;min-width:0}
+  .ton{font-size:clamp(54px,18vw,92px);font-weight:800;line-height:1;transition:color .1s}
+  .silbe{font-size:17px;color:var(--muted);min-height:1.3em}
+  .ring{width:min(30vw,130px);aspect-ratio:1;border-radius:50%;border:3px solid var(--line);display:grid;place-items:center;margin-top:10px;position:relative}
+  .ring i{position:absolute;inset:8%;border-radius:50%;background:radial-gradient(circle,var(--accent),rgba(255,184,77,.15) 70%);transform:scale(0);transition:transform .04s linear}
+  .ring span{position:relative;font-size:13px;color:var(--muted)}
+  .info{font-size:13px;color:var(--muted);min-height:2.6em;max-width:100%}
+
+  footer{padding:6px 16px 0;text-align:center}
+  .zone{border:2px dashed var(--line);border-radius:18px;padding:10px 10px 12px;color:var(--muted);font-size:14px;touch-action:none}
+  .zone.touch{border-color:var(--accent);color:var(--ink)}
+  .meter{height:10px;border-radius:5px;background:var(--panel);overflow:hidden;margin-top:8px}
+  .meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,#5ad1a0,var(--accent),#ff6b5a);transition:width .04s linear}
+
+  .overlay{position:fixed;inset:0;background:rgba(10,12,16,.96);display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:14px;padding:calc(env(safe-area-inset-top) + 20px) 26px calc(env(safe-area-inset-bottom) + 20px);text-align:center;z-index:5;overflow:auto;touch-action:pan-y}
+  .overlay[hidden]{display:none}
+  .overlay h1{margin:0;font-size:34px}
+  .overlay p{margin:0;color:var(--muted);line-height:1.45;max-width:30em}
+  .overlay p b{color:var(--ink)}
+  .gross{background:var(--accent);color:#1d1406;border:0;border-radius:999px;padding:15px 30px;font-weight:700;font-size:18px}
+  .leise{background:none;border:0;color:var(--muted);text-decoration:underline;font-size:15px;padding:8px}
+  .haltung{font-size:64px;line-height:1}
+
+  dialog{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:20px;padding:18px;width:min(92vw,420px);max-height:86vh;overflow:auto;touch-action:pan-y}
+  dialog::backdrop{background:rgba(0,0,0,.6)}
+  dialog h2{margin:0 0 12px;font-size:20px}
+  .feld{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:15px}
+  .feld select{background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:7px 9px;max-width:60%}
+  .feld input[type=range]{accent-color:var(--accent);width:52%}
+  .feld input[type=checkbox]{width:22px;height:22px;accent-color:var(--accent)}
+  .knoepfe{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+  .knoepfe button{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:9px 16px}
+  .knoepfe a{color:var(--muted);align-self:center;font-size:14px}
+  .tabelle{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+  .tabelle td{padding:3px 2px;text-align:center}
+  .tabelle td:first-child{text-align:left;font-weight:700}
+  .dots{letter-spacing:2px;font-size:14px}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <a href="../" aria-label="Alle Apps">‹</a>
+    <span class="titel">Atemklang</span>
+    <button class="chip" id="instrBtn">Saxophon</button>
+    <button class="chip rund" id="setBtn" aria-label="Einstellungen">⚙︎</button>
+  </header>
+  <main>
+    <div class="spalte links" id="links"></div>
+    <div class="mitte">
+      <div class="ton" id="ton">–</div>
+      <div class="silbe" id="silbe"></div>
+      <div class="ring" aria-hidden="true"><i id="ring"></i><span id="ringTxt">Atem</span></div>
+      <div class="info" id="info"></div>
+    </div>
+    <div class="spalte rechts" id="rechts"></div>
+  </main>
+  <footer>
+    <div class="zone" id="zone">⬇︎ Unterkante an die Lippen – hier ins Mikrofon blasen<div class="meter"><i id="meter"></i></div></div>
+  </footer>
+</div>
+
+<div class="overlay" id="start">
+  <div class="haltung" aria-hidden="true">🌬️📱</div>
+  <h1>Atemklang</h1>
+  <p>Halte das iPhone <b>senkrecht vor dir</b>, Bildschirm zu dir. Die <b>Unterkante</b> – dort sitzt das Mikrofon – kommt an die Lippen. Die Finger beider Hände greifen von links und rechts auf die Tasten am Rand.</p>
+  <p><b>Zart blasen = leise, fest blasen = laut.</b></p>
+  <button class="gross" id="los">🎤 Mikrofon starten</button>
+  <button class="leise" id="ohne">Ohne Mikrofon ausprobieren (Feld unten antippen)</button>
+  <p id="startFehler" style="color:#ff8a7a"></p>
+</div>
+
+<div class="overlay" id="kal" hidden>
+  <div class="haltung" aria-hidden="true">🤫</div>
+  <h1>Kurz still sein …</h1>
+  <p id="kalTxt">Ich messe die Umgebung und wie laut das iPhone sich selbst hört. Gleich ertönt kurz ein Ton.</p>
+</div>
+
+<dialog id="einst">
+  <h2>Einstellungen</h2>
+  <div class="feld">Instrument <select id="instr"></select></div>
+  <div class="feld">Griff <select id="griff"><option value="einfach">Einfach: jede Taste ein Ton</option><option value="floete">Flötengriff</option></select></div>
+  <div class="feld">Tonart <select id="tonart"></select></div>
+  <div class="feld">Tonleiter <select id="skala"></select></div>
+  <div class="feld">Oktave <select id="oktave"><option value="-1">tiefer</option><option value="0" selected>normal</option><option value="1">höher</option></select></div>
+  <div class="feld">Empfindlichkeit <input id="sens" type="range" min="0" max="100" value="55"></div>
+  <div class="feld">Hall <input id="hall" type="range" min="0" max="100" value="30"></div>
+  <div class="feld">Vibrato <input id="vib" type="range" min="0" max="100" value="50"></div>
+  <div class="feld">Tasten tauschen (links ↔ rechts) <input id="tausch" type="checkbox"></div>
+  <div class="feld">Ohne Mikrofon (Feld unten = Atem) <input id="touch" type="checkbox"></div>
+  <div class="feld">Echo-Unterdrückung (bei Rückkopplung) <input id="aec" type="checkbox"></div>
+  <div id="griffTabelle"></div>
+  <div class="knoepfe">
+    <button id="neuKal">🎤 Neu kalibrieren</button>
+    <button id="zu">Fertig</button>
+    <a href="../app.html?id=atemklang">Anleitung</a>
+  </div>
+</dialog>
+
+<script>
+const $=id=>document.getElementById(id);
+
+// ================= Daten =================
+// Klangfarben: Obertöne (Sinus-Reihe), Tiefpass abhängig vom Atem, Atemrauschen, Vibrato
+const INSTR={
+  floete:   {name:'Querflöte',   basis:72, h:[1,.32,.13,.06,.03,.015],                 cut:1500, cutK:5200, q:.6,  rausch:.34, rq:1.2, rf:2.2, vib:11, vhz:5.1},
+  klarinette:{name:'Klarinette', basis:60, h:[1,0,.55,0,.35,0,.22,0,.14,0,.09,0,.05], cut:850,  cutK:3600, q:1.1, rausch:.07, rq:2,   rf:3,   vib:4,  vhz:5.0},
+  saxophon: {name:'Saxophon',    basis:60, h:[1,.75,.58,.47,.38,.31,.25,.2,.16,.13,.1,.08,.06,.05], cut:620, cutK:4400, q:2.6, rausch:.1, rq:1.5, rf:2.5, vib:16, vhz:5.6},
+  trompete: {name:'Trompete',    basis:60, h:[1,.9,.78,.66,.55,.46,.38,.31,.25,.2,.16,.13,.1,.08,.06], cut:420, cutK:6200, q:1.4, rausch:.04, rq:2, rf:3, vib:7, vhz:5.4},
+  panfloete:{name:'Panflöte',    basis:72, h:[1,.09,.05,.02],                          cut:2600, cutK:3000, q:.5,  rausch:.55, rq:3,   rf:1,   vib:6,  vhz:4.6},
+};
+const TONARTEN={C:0,D:2,Es:3,F:5,G:-5,A:-3,B:-2};
+const SKALEN={dur:{name:'Dur',iv:[0,2,4,5,7,9,11]},moll:{name:'Moll',iv:[0,2,3,5,7,8,10]},penta:{name:'Pentatonik',iv:[0,2,4,7,9]},blues:{name:'Blues',iv:[0,3,5,6,7,10]}};
+const NAMEN=['C','Cis','D','Es','E','F','Fis','G','As','A','B','H'];
+const SILBEN=['do','re','mi','fa','so','la','ti'];
+// Boomwhacker-Farben wie in den anderen Apps (C rot, D orange, E gelb, F hellgrün, G türkis, A lila, H magenta)
+const FARBEN={0:'#ef5350',2:'#ffa040',4:'#ffe14d',5:'#9ccc65',7:'#4dd0e1',9:'#b06bd6',11:'#f06292'};
+const farbe=m=>{const pc=((m%12)+12)%12; return FARBEN[pc]||FARBEN[(pc+11)%12]};
+
+const st={instr:'saxophon',griff:'einfach',tonart:'C',skala:'dur',oktave:0,sens:55,hall:30,vib:50,tausch:false,touch:false,aec:false};
+try{Object.assign(st,JSON.parse(localStorage.getItem('atemklang')||'{}'))}catch(e){}
+const merke=()=>{try{localStorage.setItem('atemklang',JSON.stringify(st))}catch(e){}};
+
+// ================= Audio =================
+let ctx,master,dry,wet,conv,osc,amp,filt,lfo,lfoG,nsrc,nbp,ngain;
+function initAudio(){
+  if(ctx) return;
+  ctx=new (window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'});
+  const comp=ctx.createDynamicsCompressor(); comp.threshold.value=-8; comp.ratio.value=4; comp.attack.value=.003; comp.release.value=.15;
+  comp.connect(ctx.destination);
+  master=ctx.createGain(); dry=ctx.createGain(); wet=ctx.createGain(); conv=ctx.createConvolver(); conv.buffer=impuls(1.9);
+  master.connect(dry); dry.connect(comp);            // trocken
+  master.connect(conv); conv.connect(wet); wet.connect(comp);   // Hall
+  // Ton
+  osc=ctx.createOscillator(); filt=ctx.createBiquadFilter(); filt.type='lowpass'; amp=ctx.createGain(); amp.gain.value=0;
+  osc.connect(filt); filt.connect(amp); amp.connect(master);
+  lfo=ctx.createOscillator(); lfoG=ctx.createGain(); lfo.connect(lfoG); lfoG.connect(osc.detune);
+  // Atemrauschen
+  const nb=ctx.createBuffer(1,ctx.sampleRate*2,ctx.sampleRate), d=nb.getChannelData(0); for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+  nsrc=ctx.createBufferSource(); nsrc.buffer=nb; nsrc.loop=true; nbp=ctx.createBiquadFilter(); nbp.type='bandpass'; ngain=ctx.createGain(); ngain.gain.value=0;
+  nsrc.connect(nbp); nbp.connect(ngain); ngain.connect(master);
+  osc.start(); lfo.start(); nsrc.start();
+  setInstrument(); setHall();
+}
+function impuls(sek){
+  const sr=ctx.sampleRate,n=Math.floor(sr*sek),b=ctx.createBuffer(2,n,sr);
+  for(let c=0;c<2;c++){const d=b.getChannelData(c); for(let i=0;i<n;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/n,3)}
+  return b;
+}
+function setHall(){ if(!ctx) return; wet.gain.setTargetAtTime(st.hall/100*.6,ctx.currentTime,.05); dry.gain.setTargetAtTime(1-st.hall/250,ctx.currentTime,.05) }
+function setInstrument(){
+  const I=INSTR[st.instr]; $('instrBtn').textContent=I.name;
+  if(!ctx) return;
+  const real=new Float32Array(I.h.length+1), imag=new Float32Array(I.h.length+1);
+  I.h.forEach((v,i)=>imag[i+1]=v);
+  osc.setPeriodicWave(ctx.createPeriodicWave(real,imag));
+  filt.Q.value=I.q; nbp.Q.value=I.rq; lfo.frequency.value=I.vhz;
+  aktualisiereTon(true);
+}
+
+// ================= Tonhöhe aus den Tasten =================
+const gedrueckt=new Set(); let reihenfolge=[];   // Tasten 0–3 links (oben→unten), 4–7 rechts
+function grundton(){ return INSTR[st.instr].basis+TONARTEN[st.tonart]+12*st.oktave }
+function stufeZuMidi(i){ const iv=SKALEN[st.skala].iv; return grundton()+iv[((i%iv.length)+iv.length)%iv.length]+12*Math.floor(i/iv.length) }
+function aktuelleStufe(){
+  if(st.griff==='einfach'){ return reihenfolge.length?reihenfolge[reihenfolge.length-1]:null }
+  // Flötengriff: Löcher L1 L2 L3 R1 R2 R3 (Tasten 0,1,2,4,5,6) – alle zu = tiefster Ton,
+  // Finger von unten nach oben abheben = Tonleiter aufwärts. Kleine Finger (3,7) = Oktave höher.
+  const loecher=[0,1,2,4,5,6]; let n=0; while(n<6&&gedrueckt.has(loecher[n])) n++;
+  let stufe=6-n; if(gedrueckt.has(3)||gedrueckt.has(7)) stufe+=SKALEN[st.skala].iv.length;
+  return stufe;
+}
+let tonMidi=null;
+function aktualisiereTon(sofort=false){
+  const s=aktuelleStufe(); tonMidi=s===null?null:stufeZuMidi(s);
+  if(ctx&&tonMidi!==null){
+    const f=440*2**((tonMidi-69)/12), I=INSTR[st.instr], t=ctx.currentTime;
+    if(sofort) osc.frequency.setValueAtTime(f,t); else osc.frequency.setTargetAtTime(f,t,.012);
+    nbp.frequency.setTargetAtTime(Math.min(9000,f*I.rf),t,.02);
+  }
+  const iv=SKALEN[st.skala].iv;
+  if(tonMidi===null){ $('ton').textContent='–'; $('ton').style.color=''; $('silbe').textContent=st.griff==='einfach'?'Taste drücken':''; }
+  else { const pc=((tonMidi%12)+12)%12; $('ton').textContent=NAMEN[pc]+(tonMidi>=grundton()+12?'′':''); $('ton').style.color=farbe(tonMidi);
+    $('silbe').textContent=st.skala==='dur'||st.skala==='moll'?SILBEN[((s%7)+7)%7]:'' }
+}
+
+// ================= Tasten aufbauen =================
+const FINGER=['Zeigef.','Mittelf.','Ringf.','kl. Finger'];
+function baueTasten(){
+  const L=$(st.tausch?'rechts':'links'), R=$(st.tausch?'links':'rechts'); L.innerHTML=''; R.innerHTML='';
+  for(let k=0;k<8;k++){
+    const el=document.createElement('div'); el.className='taste'; el.dataset.k=k; el.setAttribute('role','button');
+    if(st.griff==='einfach'){
+      const m=stufeZuMidi(k), pc=((m%12)+12)%12;
+      el.style.setProperty('--c',farbe(m));
+      el.innerHTML=`${NAMEN[pc]}${m>=grundton()+12?'′':''}<small>${k+1}</small>`;
+      el.setAttribute('aria-label',`Ton ${NAMEN[pc]}`);
+    } else {
+      el.classList.add('loch');
+      if(k===3||k===7){ el.classList.add('okt'); el.innerHTML='Oktave<small>kl. Finger</small>'; }
+      else el.innerHTML=`<div class="punkt"></div><small>${k<3?k+1:k}</small>`;
+      el.setAttribute('aria-label',k===3||k===7?'Oktavtaste':`Loch ${k<3?k+1:k}`);
+    }
+    (k<4?L:R).appendChild(el);
+    el.addEventListener('pointerdown',e=>{e.preventDefault(); el.setPointerCapture(e.pointerId); el._ptr=(el._ptr||0)+1; druecke(k,true)});
+    const los=()=>{ el._ptr=Math.max(0,(el._ptr||0)-1); if(!el._ptr) druecke(k,false) };
+    el.addEventListener('pointerup',los); el.addEventListener('pointercancel',los);
+  }
+  griffTabelle(); aktualisiereTon();
+}
+function druecke(k,an){
+  if(an){ gedrueckt.add(k); reihenfolge=reihenfolge.filter(x=>x!==k); reihenfolge.push(k) }
+  else { gedrueckt.delete(k); reihenfolge=reihenfolge.filter(x=>x!==k) }
+  document.querySelectorAll(`.taste[data-k="${k}"]`).forEach(el=>el.classList.toggle('an',an));
+  aktualisiereTon();
+}
+function griffTabelle(){
+  const box=$('griffTabelle');
+  if(st.griff!=='floete'){ box.innerHTML=''; return }
+  const zeilen=[]; for(let n=6;n>=0;n--){ const m=stufeZuMidi(6-n), pc=((m%12)+12)%12;
+    const pkt=[0,1,2,3,4,5].map(i=>i<n?'●':'○'); zeilen.push(`<tr><td>${NAMEN[pc]}</td><td class="dots">${pkt.slice(0,3).join('')}</td><td class="dots">${pkt.slice(3).join('')}</td></tr>`) }
+  box.innerHTML=`<p style="font-size:13px;color:var(--muted);margin:12px 0 0">Flötengriff: ● = Finger drauf. Links = Löcher 1–3, rechts = 4–6. Kleiner Finger = eine Oktave höher.</p>
+    <table class="tabelle"><tr><td>Ton</td><td>links</td><td>rechts</td></tr>${zeilen.join('')}</table>`;
+}
+
+// ================= Mikrofon & Atem =================
+let an=null, abuf=null, stream=null;
+let ruhe=.004, leck=0, spitze=.12, atem=0, handAtem=0, ausgang=0;
+async function mikroStart(){
+  if(navigator.audioSession) try{ navigator.audioSession.type='play-and-record' }catch(e){}
+  stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:st.aec,noiseSuppression:false,autoGainControl:false}});
+  const src=ctx.createMediaStreamSource(stream);
+  // Blasen ins Mikrofon erzeugt vor allem tiefes Rauschen (Wind) – nur das werten wir aus,
+  // damit der eigene Ton aus dem Lautsprecher möglichst wenig mitzählt.
+  const lp1=ctx.createBiquadFilter(), lp2=ctx.createBiquadFilter(); lp1.type=lp2.type='lowpass'; lp1.frequency.value=lp2.frequency.value=190; lp1.Q.value=lp2.Q.value=.7;
+  an=ctx.createAnalyser(); an.fftSize=512; abuf=new Float32Array(an.fftSize);
+  const stumm=ctx.createGain(); stumm.gain.value=0;
+  src.connect(lp1); lp1.connect(lp2); lp2.connect(an); an.connect(stumm); stumm.connect(ctx.destination);
+}
+function mikroPegel(){ if(!an) return 0; an.getFloatTimeDomainData(abuf); let s=0; for(let i=0;i<abuf.length;i++) s+=abuf[i]*abuf[i]; return Math.sqrt(s/abuf.length) }
+const warte=ms=>new Promise(r=>setTimeout(r,ms));
+async function kalibrieren(){
+  $('kal').hidden=false; $('kalTxt').textContent='Ich messe die Umgebung und wie laut das iPhone sich selbst hört. Gleich ertönt kurz ein Ton.';
+  kalibriert=false; kalLaeuft=true; amp.gain.cancelScheduledValues(ctx.currentTime); amp.gain.setValueAtTime(0,ctx.currentTime);
+  await warte(250);
+  const ruheW=[]; for(let i=0;i<40;i++){ ruheW.push(mikroPegel()); await warte(20) }
+  ruheW.sort((a,b)=>a-b); const boden=ruheW[Math.floor(ruheW.length*.7)];
+  // Testton: wie stark landet der eigene Klang im Mikrofon?
+  const alt=tonMidi; const testG=.45;
+  osc.frequency.setValueAtTime(440*2**((grundton()-69)/12),ctx.currentTime);
+  amp.gain.setTargetAtTime(testG,ctx.currentTime,.02); filt.frequency.setValueAtTime(3000,ctx.currentTime);
+  await warte(150); const testW=[]; for(let i=0;i<25;i++){ testW.push(mikroPegel()); await warte(20) }
+  amp.gain.setTargetAtTime(0,ctx.currentTime,.02);
+  testW.sort((a,b)=>a-b); const mitTon=testW[Math.floor(testW.length*.5)];
+  ruhe=Math.max(.003,boden*2.2); leck=Math.max(0,(mitTon-boden)/testG);
+  tonMidi=alt; aktualisiereTon(true);
+  await warte(150); $('kal').hidden=true; kalibriert=true; kalLaeuft=false;
+  info(leck>ruhe*8?'Das iPhone hört sich selbst recht laut – mit Kopfhörern klappt es am besten.':'Bereit! Blase sanft über die Unterkante.');
+}
+let kalibriert=false, kalLaeuft=false;
+function info(t){ $('info').textContent=t }
+
+// ================= Hauptschleife =================
+function schleife(){
+  requestAnimationFrame(schleife);
+  if(!ctx||kalLaeuft) return;
+  let ziel=0;
+  if(an&&kalibriert&&!st.touch){
+    const p=mikroPegel();
+    const schwelle=ruhe+leck*ausgang*1.35;
+    const roh=Math.max(0,p-schwelle);
+    spitze=roh>spitze?roh:Math.max(.035,spitze*.9994);
+    const bereich=spitze*.85*(1.6-st.sens/100*1.1);
+    ziel=Math.min(1,roh/Math.max(.004,bereich));
+  }
+  ziel=Math.max(ziel,handAtem);
+  atem+=(ziel-atem)*(ziel>atem?.5:.28); if(atem<.015) atem=0;
+  const I=INSTR[st.instr], t=ctx.currentTime;
+  const kurve=Math.pow(atem,1.45);
+  const tonAn=tonMidi!==null;
+  ausgang=tonAn?kurve*.62:0;
+  amp.gain.setTargetAtTime(ausgang,t,.018);
+  ngain.gain.setTargetAtTime((tonAn?I.rausch:.25)*Math.pow(atem,1.2)*.5,t,.02);
+  filt.frequency.setTargetAtTime(Math.min(16000,I.cut+I.cutK*Math.pow(atem,1.2)),t,.025);
+  lfoG.gain.setTargetAtTime(I.vib*(st.vib/50)*Math.min(1,atem*1.6),t,.15);
+  $('meter').style.width=(atem*100).toFixed(1)+'%';
+  $('ring').style.transform=`scale(${(.15+atem*.85).toFixed(3)})`;
+  $('ringTxt').textContent=atem>0?(atem<.35?'zart':atem<.75?'mittel':'kräftig'):'Atem';
+}
+
+// ================= Atem ohne Mikrofon: Feld unten =================
+const zone=$('zone'); let zoneY0=0;
+zone.addEventListener('pointerdown',e=>{ if(!st.touch&&an) return; initAudio(); ctx.resume(); zone.setPointerCapture(e.pointerId); zoneY0=e.clientY; handAtem=.6 });
+zone.addEventListener('pointermove',e=>{ if(handAtem>0) handAtem=Math.max(.15,Math.min(1,.6+(zoneY0-e.clientY)/160)) });
+['pointerup','pointercancel'].forEach(t=>zone.addEventListener(t,()=>handAtem=0));
+// Computer: A S D F = linke Tasten, J K L Ö = rechte, Leertaste = blasen
+const TASTEN={KeyA:0,KeyS:1,KeyD:2,KeyF:3,KeyJ:4,KeyK:5,KeyL:6,Semicolon:7};
+addEventListener('keydown',e=>{ if(e.repeat||$('einst').open) return;
+  if(e.code in TASTEN){ initAudio(); druecke(TASTEN[e.code],true) } else if(e.code==='Space'){ e.preventDefault(); initAudio(); ctx.resume(); handAtem=.75 } });
+addEventListener('keyup',e=>{ if(e.code in TASTEN) druecke(TASTEN[e.code],false); else if(e.code==='Space') handAtem=0 });
+
+// ================= Start =================
+let wakeLock=null;
+async function wach(){ try{ if('wakeLock' in navigator) wakeLock=await navigator.wakeLock.request('screen') }catch(e){} }
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden&&ctx){ ctx.resume(); wach() } });
+function zoneText(){ zone.firstChild.textContent=st.touch||!an?'👆 Hier gedrückt halten = blasen (nach oben ziehen = kräftiger)':'⬇︎ Unterkante an die Lippen – hier ins Mikrofon blasen'; zone.classList.toggle('touch',st.touch||!an) }
+$('los').onclick=async()=>{
+  initAudio(); await ctx.resume(); wach();
+  try{ await mikroStart(); st.touch=false; $('touch').checked=false; merke(); $('start').hidden=true; zoneText(); await kalibrieren() }
+  catch(e){ $('startFehler').textContent='Das Mikrofon ist nicht verfügbar ('+(e.name||e.message)+'). In Safari: aA → Website-Einstellungen → Mikrofon erlauben. Oder ohne Mikrofon ausprobieren.' }
+};
+$('ohne').onclick=async()=>{ initAudio(); await ctx.resume(); wach(); st.touch=true; $('touch').checked=true; $('start').hidden=true; zoneText(); info('Ohne Mikrofon: Feld unten gedrückt halten.') };
+
+// ================= Einstellungen =================
+for(const k in INSTR) $('instr').add(new Option(INSTR[k].name,k));
+for(const k in TONARTEN) $('tonart').add(new Option(k+'-'+(st.skala==='moll'?'Moll':'Dur'),k));
+for(const k in SKALEN) $('skala').add(new Option(SKALEN[k].name,k));
+function tonartNamen(){ [...$('tonart').options].forEach(o=>o.textContent=o.value+(st.skala==='moll'?'-Moll':st.skala==='dur'?'-Dur':'')) }
+const setze=()=>{ $('instr').value=st.instr; $('griff').value=st.griff; $('tonart').value=st.tonart; $('skala').value=st.skala; $('oktave').value=st.oktave;
+  $('sens').value=st.sens; $('hall').value=st.hall; $('vib').value=st.vib; $('tausch').checked=st.tausch; $('touch').checked=st.touch; $('aec').checked=st.aec; tonartNamen() };
+setze();
+$('setBtn').onclick=$('instrBtn').onclick=()=>$('einst').showModal();
+$('zu').onclick=()=>$('einst').close();
+$('einst').addEventListener('click',e=>{ if(e.target===$('einst')) $('einst').close() });
+$('instr').onchange=e=>{st.instr=e.target.value; merke(); setInstrument(); baueTasten()};
+$('griff').onchange=e=>{st.griff=e.target.value; merke(); gedrueckt.clear(); reihenfolge=[]; baueTasten()};
+$('tonart').onchange=e=>{st.tonart=e.target.value; merke(); baueTasten()};
+$('skala').onchange=e=>{st.skala=e.target.value; merke(); tonartNamen(); baueTasten()};
+$('oktave').onchange=e=>{st.oktave=+e.target.value; merke(); baueTasten()};
+$('sens').oninput=e=>{st.sens=+e.target.value; merke()};
+$('hall').oninput=e=>{st.hall=+e.target.value; merke(); setHall()};
+$('vib').oninput=e=>{st.vib=+e.target.value; merke()};
+$('tausch').onchange=e=>{st.tausch=e.target.checked; merke(); baueTasten()};
+$('touch').onchange=e=>{st.touch=e.target.checked; merke(); zoneText()};
+$('aec').onchange=async e=>{st.aec=e.target.checked; merke(); if(stream){ stream.getTracks().forEach(t=>t.stop()); an=null; await mikroStart(); $('einst').close(); await kalibrieren() } };
+$('neuKal').onclick=async()=>{ $('einst').close(); if(!ctx){ initAudio() } await ctx.resume();
+  if(!an){ try{ await mikroStart(); st.touch=false; merke(); zoneText() }catch(e){ info('Mikrofon nicht verfügbar.'); return } } await kalibrieren() };
+
+baueTasten(); zoneText(); $('instrBtn').textContent=INSTR[st.instr].name;
+requestAnimationFrame(schleife);
+</script>
+</body>
+</html>

@@ -21,6 +21,16 @@
  */
 window.APPS = [
   {
+    id: "atemklang",
+    titel: "Atemklang",
+    kurz: "Ein Blasinstrument fürs iPhone: ins Mikrofon blasen und mit den Fingern die Töne greifen. Zart blasen klingt leise, fest blasen laut. Mit Saxophon, Flöte, Klarinette, Trompete und Panflöte – einfacher Griff oder Flötengriff.",
+    link: "https://pati2018.github.io/atemklang/",
+    repo: "https://github.com/pati2018/pati2018.github.io/tree/main/atemklang",
+    kategorie: "Musik",
+    symbol: "🎷",
+    datum: "2026-11-08"
+  },
+  {
     id: "tischharfe",
     titel: "Tischharfe",
     kurz: "Eine Tischharfe im Browser: Das Notenblatt liegt unter den Saiten, man zupft einfach der Punktlinie nach – ganz ohne Notenkenntnisse. Mit echtem Harfenklang, Übe- und Vorspielmodus und Notenblättern zum Ausdrucken für echte Tischharfen (18 und 25 Saiten).",

@@ -15,6 +15,7 @@
  *  symbol       – ein Emoji als Bild für die Karte
  *  bild         – (optional) Bilddatei statt Emoji, z. B. das App-Symbol
  *  datum        – Veröffentlichungsdatum, Format JJJJ-MM-TT
+ *  ganzUnten    – (optional) true: App steht immer am Ende der Liste
  *
  *  Neueste Apps stehen automatisch oben (sortiert nach Datum).
  * ============================================================
@@ -28,7 +29,8 @@ window.APPS = [
     repo: "https://github.com/pati2018/pati2018.github.io/tree/main/atemklang",
     kategorie: "Musik",
     symbol: "🎷",
-    datum: "2026-11-08"
+    datum: "2026-11-08",
+    ganzUnten: true
   },
   {
     id: "tischharfe",

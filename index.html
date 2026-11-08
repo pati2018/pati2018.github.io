@@ -32,7 +32,7 @@
   <script>document.write('<script src="apps.js?v=' + Date.now() + '"><\/script>');</script>
   <script>
     const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-    const apps = [...(window.APPS || [])].sort((a, b) => String(b.datum).localeCompare(String(a.datum)));
+    const apps = [...(window.APPS || [])].sort((a, b) => (a.ganzUnten ? 1 : 0) - (b.ganzUnten ? 1 : 0) || String(b.datum).localeCompare(String(a.datum)));
     const fmt = d => { const t = new Date(d); return isNaN(t) ? "" : t.toLocaleDateString("de-DE", { day: "numeric", month: "long", year: "numeric" }); };
 
     let aktiv = "Alle";

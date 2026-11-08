@@ -34,13 +34,28 @@ Die **künstlichen Stimmen** (Kind, Frau, Mann) gibt es weiterhin zur Auswahl.
 |---|---|
 | **Stimme** | *Kind*, *Frau* oder *Mann* – andere Tonlage und Stimmfarbe |
 | **Silbe** | *la*, *lu*, *li*, *na* oder *aah* |
-| **Tonart** | C, D, E, F, G oder A – die fünf Töne werden passend verschoben |
+| **Tonart** | alle 12 Tonarten, wahlweise **Dur** oder **Moll** |
 | **Vibrato** | wie stark die Stimme bei langen Tönen „schwingt“ |
 | **Hall** | Raumklang |
 | **Lautstärke** | Gesamtlautstärke – ein Begrenzer sorgt dafür, dass es auch mit allen fünf SoundWhackern zusammen nicht übersteuert |
 | **▶ Hörprobe** | die Stimme singt den Anfang von „Alle meine Entchen“ |
 
 Die Einstellungen werden gemerkt.
+
+## Töne zuordnen
+
+Unter **🎹 Töne zuordnen** legst du fest, welcher SoundWhacker welchen Ton singt. Zur Auswahl stehen die **leitereigenen Töne** der gewählten Tonart – von der Quinte darunter bis zur Terz über der Oktave, jeweils mit Tonname und Stufe (z. B. *g – Stufe 5*, *c′ – Stufe 8*).
+
+**Schnellwahl:**
+
+| Knopf | SW1–SW5 |
+|---|---|
+| **Pentatonik** | Stufen 1 2 3 5 6 – alles klingt zusammen (Voreinstellung) |
+| **Tonleiter** | Stufen 1 2 3 4 5 |
+| **Dreiklang** | Stufen 1 3 5 8 10 – die Töne des Grundakkords |
+| **Mit Tiefe** | Stufen 5↓ 7↓ 1 3 5 – mit tiefen Tönen darunter |
+
+Die Zuordnung gilt in Stufen: Wechselst du die Tonart, wandern die Töne mit. Darunter stehen die leitereigenen Töne der Tonart (z. B. G-Dur: g a h c d e fis). Auf jedem SoundWhacker-Feld stehen Ton und Stufe.
 
 ## Wie entsteht die Stimme?
 

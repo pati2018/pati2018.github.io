@@ -35,6 +35,17 @@
   .msg{margin-top:16px;color:var(--muted);font-size:15px;line-height:1.5}
   .msg b{color:var(--ink)}
   kbd{border:1px solid var(--line);border-radius:4px;padding:0 5px;font-family:inherit;font-size:13px}
+  .zuord{margin-top:12px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px}
+  .zuord[hidden]{display:none}
+  .zuordReihe{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+  .zuordReihe label{display:flex;flex-direction:column;gap:6px;color:var(--ink);font-weight:700;font-size:14px;border-top:4px solid var(--c);padding-top:6px}
+  .zuordReihe select{width:100%}
+  .vorlagen{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px;color:var(--muted);font-size:14px}
+  .vorlagen button{font-size:13px;padding:6px 12px}
+  .leiter{margin-top:10px;color:var(--muted);font-size:14px}
+  .leiter b{color:var(--ink)}
+  .sw .stufe{font-size:clamp(11px,1.8vw,14px);color:var(--muted);font-weight:600}
+  .sw.an .stufe{color:#1a1a1a}
   .fenster{position:fixed;inset:0;background:rgba(10,9,20,.82);display:flex;align-items:center;justify-content:center;padding:16px;z-index:10}
   .fenster[hidden]{display:none}
   .karte{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:20px 22px;max-width:520px;width:100%}
@@ -61,14 +72,26 @@
     <label>Stimme <select id="stimme"><option value="meine" disabled>Meine Stimme</option><option value="kind">Kind (künstlich)</option><option value="frau" selected>Frau (künstlich)</option><option value="mann">Mann (künstlich)</option></select></label>
     <button id="eigenBtn">🎤 Eigene Stimme</button>
     <label id="silbeL">Silbe <select id="silbe"><option value="la" selected>la</option><option value="lu">lu</option><option value="li">li</option><option value="na">na</option><option value="a">aah</option></select></label>
-    <label>Tonart <select id="tonart"><option value="0">C</option><option value="2">D</option><option value="4">E</option><option value="5">F</option><option value="7">G</option><option value="9">A</option></select></label>
+    <label>Tonart <select id="tonart"></select></label>
+    <label><select id="geschlecht" aria-label="Dur oder Moll"><option value="dur">Dur</option><option value="moll">Moll</option></select></label>
     <label id="vibL">Vibrato <input id="vib" type="range" min="0" max="100" value="60"></label>
     <label>Hall <input id="hall" type="range" min="0" max="100" value="30"></label>
     <label>Lautstärke <input id="laut" type="range" min="0" max="100" value="75"></label>
     <button id="probe" class="quiet">▶ Hörprobe</button>
+    <button id="zuordBtn" class="quiet" aria-expanded="false">🎹 Töne zuordnen ▾</button>
+  </div>
+  <div class="zuord" id="zuord" hidden>
+    <div class="zuordReihe" id="zuordReihe"></div>
+    <div class="vorlagen">Schnellwahl:
+      <button class="quiet" data-v="0,1,2,4,5">Pentatonik (1 2 3 5 6)</button>
+      <button class="quiet" data-v="0,1,2,3,4">Tonleiter (1 2 3 4 5)</button>
+      <button class="quiet" data-v="0,2,4,7,9">Dreiklang (1 3 5 8 10)</button>
+      <button class="quiet" data-v="-3,-1,0,2,4">Mit Tiefe (5↓ 7↓ 1 3 5)</button>
+    </div>
+    <div class="leiter" id="leiter"></div>
   </div>
   <div class="sws" id="sws" role="group" aria-label="SoundWhacker 1 bis 5"></div>
-  <p class="msg"><b>Tipp:</b> Mit <b>🎤 Eigene Stimme</b> singst du einmal „laaaa“ – dann singen die SoundWhacker mit deiner echten Stimme.<br>Auf einen <b>SoundWhacker</b> hauen (SW-HUB im Tastatur-Modus) oder <kbd>1</kbd>–<kbd>5</kbd> drücken bzw. die Felder antippen. Jeder Schlag singt <b>einen Ton, der natürlich ausklingt</b> – auch wenn der SoundWhacker gehalten wird. Mehrere zusammen ergeben einen Chor – die fünf Töne passen immer zusammen (Pentatonik).</p>
+  <p class="msg"><b>Tipp:</b> Mit <b>🎤 Eigene Stimme</b> singst du einmal „laaaa“ – dann singen die SoundWhacker mit deiner echten Stimme.<br>Auf einen <b>SoundWhacker</b> hauen (SW-HUB im Tastatur-Modus) oder <kbd>1</kbd>–<kbd>5</kbd> drücken bzw. die Felder antippen. Jeder Schlag singt <b>einen Ton, der natürlich ausklingt</b> – auch wenn der SoundWhacker gehalten wird. Mehrere zusammen ergeben einen Chor. Welcher SW welchen Ton singt, stellst du unter <b>🎹 Töne zuordnen</b> ein.</p>
 </div>
 
 <div class="fenster" id="aufFenster" hidden>
@@ -93,9 +116,17 @@
 <script>
 const $=id=>document.getElementById(id);
 const FARBEN=['#e5484d','#f08c2e','#f2cf3a','#46b37b','#3f8ee8'];
-const STUFEN=[0,2,4,7,9];          // Pentatonik: do re mi so la
+// Tonarten: Dur oder Moll, sieben leitereigene Töne; jeder SW bekommt eine Stufe (0 = Grundton, 7 = Oktave, −3 = Quinte darunter …)
+const LEITERN={dur:[0,2,4,5,7,9,11],moll:[0,2,3,5,7,8,10]};
+const KREUZ=['c','cis','d','dis','e','f','fis','g','gis','a','ais','h'], BE=['c','des','d','es','e','f','ges','g','as','a','b','h'];
+const DUR_NAMEN=['C','Des','D','Es','E','F','Fis','G','As','A','B','H'], MOLL_NAMEN=['c','cis','d','es','e','f','fis','g','gis','a','b','h'];
+const STUFE_MIN=-3, STUFE_MAX=10;
+// Schreibweise je Tonart (Kreuz- oder B-Tonart, bei Moll nach der parallelen Dur-Tonart)
+// B-Tonarten: Dur F, B, Es, As, Des – Moll d, g, c, f, b, es; alle anderen mit Kreuz
+function namenListe(){ return (st.geschlecht==='moll'?[2,7,0,5,10,3]:[5,10,3,8,1]).includes(st.tonart)?BE:KREUZ }
+const tonNameVon=m=>namenListe()[((m%12)+12)%12];
 const NAMEN=['C','Cis','D','Es','E','F','Fis','G','As','A','B','H'];
-const st={stimme:'frau',silbe:'la',tonart:0,vib:60,hall:30,laut:75};
+const st={stimme:'frau',silbe:'la',tonart:0,geschlecht:'dur',zuordnung:[0,1,2,4,5],vib:60,hall:30,laut:75};
 try{Object.assign(st,JSON.parse(localStorage.getItem('singen')||'{}'))}catch(e){}
 const merke=()=>{try{localStorage.setItem('singen',JSON.stringify(st))}catch(e){}};
 
@@ -121,7 +152,9 @@ function grundton(){
   if(st.stimme==='meine'&&EIGENE.daten){ const mitte=Math.round(EIGENE.midiVon(EIGENE.daten.f0))-4; let g=mitte-((mitte-st.tonart)%12+12)%12; if(mitte-g>6) g+=12; return g }
   return STIMME.STIMMEN[st.stimme].grund-4+st.tonart;
 }
-const midiVon=k=>grundton()+STUFEN[k];
+function stufeZuHalbton(s){ const L=LEITERN[st.geschlecht]; return L[((s%7)+7)%7]+12*Math.floor(s/7) }
+const midiVon=k=>grundton()+stufeZuHalbton(st.zuordnung[k]);
+const stufenText=s=>s<0?`${((s%7)+7)%7+1}↓`:String(s+1);
 // Ein Schlag = ein Ton, der natürlich ausklingt (nicht wiederholt, auch wenn der SW gehalten wird)
 function singeTon(midi,t,pegel=.75){
   const aus=ctx.createGain(); aus.connect(bus);
@@ -137,7 +170,7 @@ function singeTon(midi,t,pegel=.75){
 const klingt={};   // k → laufender Ton
 function baue(){
   if(st.stimme==='meine'&&EIGENE.daten) EIGENE.vorbereiten(FARBEN.map((_,k)=>midiVon(k)));   // Töne in der eigenen Stimme vorausberechnen
-  $('sws').innerHTML=FARBEN.map((c,k)=>{const m=midiVon(k); return `<div class="sw" data-k="${k}" style="--c:${c}" role="button" aria-label="SW${k+1}"><span class="nr">SW${k+1}</span><span class="ton">${NAMEN[m%12]}</span><span class="silbe">${st.stimme==='meine'?'♪':st.silbe==='a'?'aah':st.silbe}</span></div>`}).join('');
+  $('sws').innerHTML=FARBEN.map((c,k)=>{const m=midiVon(k); return `<div class="sw" data-k="${k}" style="--c:${c}" role="button" aria-label="SW${k+1}"><span class="nr">SW${k+1}</span><span class="ton">${tonNameVon(m).replace(/^./,c=>c.toUpperCase())}</span><span class="stufe">Stufe ${stufenText(st.zuordnung[k])}</span><span class="silbe">${st.stimme==='meine'?'♪':st.silbe==='a'?'aah':st.silbe}</span></div>`}).join('');
   document.querySelectorAll('.sw').forEach(el=>{
     const k=+el.dataset.k;
     el.addEventListener('pointerdown',e=>{e.preventDefault(); el.setPointerCapture(e.pointerId); an(k)});
@@ -162,8 +195,8 @@ const gehalten={};   // SW gerade gedrückt (gegen wiederholte Tastendrücke des
 // Hörprobe: „Alle meine Entchen“ – Anfang
 $('probe').onclick=()=>{
   initAudio(); ctx.resume();
-  const g=grundton(), mel=[[0,1],[2,1],[4,1],[5,1],[7,2],[7,2]], spb=.42; let t=ctx.currentTime+.1;
-  for(const [s,d] of mel){ singeTon(g+s,t,.8).stop(t+d*spb*.85); t+=d*spb }
+  const g=grundton(), mel=[[0,1],[1,1],[2,1],[3,1],[4,2],[4,2]], spb=.42; let t=ctx.currentTime+.1;   // Stufen 1 2 3 4 5 5 – passt in Dur und Moll
+  for(const [s,d] of mel){ singeTon(g+stufeZuHalbton(s),t,.8).stop(t+d*spb*.85); t+=d*spb }
 };
 
 // Einstellungen
@@ -171,10 +204,23 @@ $('probe').onclick=()=>{
 function eigeneVerfuegbar(){ const da=!!EIGENE.daten; $('stimme').querySelector('option[value="meine"]').disabled=!da; if(!da&&st.stimme==='meine') st.stimme='frau';
   $('silbeL').hidden=$('vibL').hidden=st.stimme==='meine'; }
 EIGENE.laden(); eigeneVerfuegbar();
+function tonartListe(){ const sel=$('tonart'); sel.innerHTML=(st.geschlecht==='moll'?MOLL_NAMEN:DUR_NAMEN).map((n,i)=>`<option value="${i}">${n}</option>`).join(''); sel.value=st.tonart; }
+function zuordnungBauen(){
+  const opts=[]; for(let s=STUFE_MIN;s<=STUFE_MAX;s++){ const m=grundton()+stufeZuHalbton(s), n=tonNameVon(m)+(s>=7?'′':s<0?' (tief)':''); opts.push(`<option value="${s}">${n} – Stufe ${stufenText(s)}</option>`) }
+  $('zuordReihe').innerHTML=FARBEN.map((c,k)=>`<label style="--c:${c}">SW${k+1}<select data-k="${k}">${opts.join('')}</select></label>`).join('');
+  $('zuordReihe').querySelectorAll('select').forEach(sel=>{ sel.value=st.zuordnung[+sel.dataset.k]; sel.onchange=()=>{ st.zuordnung[+sel.dataset.k]=+sel.value; sel.blur(); merke(); baue(); zuordnungBauen() } });
+  const L=LEITERN[st.geschlecht], g=grundton(), titel=(st.geschlecht==='moll'?MOLL_NAMEN[st.tonart]+'-Moll':DUR_NAMEN[st.tonart]+'-Dur');
+  $('leiter').innerHTML=`Leitereigene Töne in <b>${titel}</b>: `+L.map((h,i)=>`<b>${tonNameVon(g+h)}</b>&nbsp;(${i+1})`).join(' · ');
+}
+if(!Array.isArray(st.zuordnung)||st.zuordnung.length!==5) st.zuordnung=[0,1,2,4,5];
+$('geschlecht').value=st.geschlecht; tonartListe();
 $('stimme').value=st.stimme; $('silbe').value=st.silbe; $('tonart').value=st.tonart; $('vib').value=st.vib; $('hall').value=st.hall; $('laut').value=st.laut??75;
-$('stimme').onchange=e=>{st.stimme=e.target.value; e.target.blur(); merke(); eigeneVerfuegbar(); baue()};
+$('stimme').onchange=e=>{st.stimme=e.target.value; e.target.blur(); merke(); eigeneVerfuegbar(); baue(); if(!$('zuord').hidden) zuordnungBauen()};
 $('silbe').onchange=e=>{st.silbe=e.target.value; e.target.blur(); merke(); baue()};
-$('tonart').onchange=e=>{st.tonart=+e.target.value; e.target.blur(); merke(); baue()};
+$('tonart').onchange=e=>{st.tonart=+e.target.value; e.target.blur(); merke(); baue(); zuordnungBauen()};
+$('geschlecht').onchange=e=>{st.geschlecht=e.target.value; e.target.blur(); merke(); tonartListe(); baue(); zuordnungBauen()};
+$('zuordBtn').onclick=()=>{ const auf=$('zuord').hidden; $('zuord').hidden=!auf; $('zuordBtn').setAttribute('aria-expanded',auf); $('zuordBtn').textContent=auf?'🎹 Töne zuordnen ▴':'🎹 Töne zuordnen ▾'; if(auf) zuordnungBauen() };
+document.querySelectorAll('.vorlagen [data-v]').forEach(b=>b.onclick=()=>{ st.zuordnung=b.dataset.v.split(',').map(Number); merke(); baue(); zuordnungBauen() });
 $('vib').oninput=e=>{st.vib=+e.target.value; merke()};
 $('hall').oninput=e=>{st.hall=+e.target.value; merke(); setHall()};
 $('laut').oninput=e=>{st.laut=+e.target.value; merke(); if(laut) laut.gain.setTargetAtTime(st.laut/100,ctx.currentTime,.03)};

@@ -1,0 +1,16 @@
+{
+  "name": "Singen mit SoundWhackern",
+  "short_name": "Singen",
+  "description": "Jeder SoundWhacker singt einen Ton – mit der eigenen Stimme, einem Chor oder einer künstlichen Stimme.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#1d1b2b",
+  "theme_color": "#1d1b2b",
+  "lang": "de",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

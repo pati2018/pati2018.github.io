@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="38%" r="75%">
+      <stop offset="0" stop-color="#4a3f8a"/><stop offset=".6" stop-color="#2a2550"/><stop offset="1" stop-color="#16132b"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffe08a"/><stop offset=".55" stop-color="#f2b84b"/><stop offset="1" stop-color="#c9822a"/>
+    </linearGradient>
+    <linearGradient id="silber" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#8d89a8"/><stop offset=".45" stop-color="#e9e7f5"/><stop offset="1" stop-color="#77738f"/>
+    </linearGradient>
+    <clipPath id="kopf"><rect x="196" y="78" width="120" height="176" rx="60"/></clipPath>
+  </defs>
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <!-- Klangbögen in den SoundWhacker-Farben -->
+  <g fill="none" stroke-linecap="round" stroke-width="15">
+    <path d="M150 112 A120 120 0 0 0 150 280" stroke="#e5484d"/>
+    <path d="M118 84 A160 160 0 0 0 118 308" stroke="#f08c2e"/>
+    <path d="M362 112 A120 120 0 0 1 362 280" stroke="#46b37b"/>
+    <path d="M394 84 A160 160 0 0 1 394 308" stroke="#3f8ee8"/>
+  </g>
+  <!-- Mikrofon -->
+  <g>
+    <rect x="196" y="78" width="120" height="176" rx="60" fill="url(#gold)"/>
+    <g clip-path="url(#kopf)" stroke="#9a5f1c" stroke-opacity=".55" stroke-width="5">
+      <path d="M180 112h160M180 138h160M180 164h160M180 190h160M180 216h160M180 242h160"/>
+      <path d="M222 60v220M256 60v220M290 60v220"/>
+    </g>
+    <rect x="196" y="78" width="120" height="176" rx="60" fill="none" stroke="#fff3c9" stroke-opacity=".5" stroke-width="4"/>
+    <path d="M168 196 v18 a88 88 0 0 0 176 0 v-18" fill="none" stroke="url(#silber)" stroke-width="16" stroke-linecap="round"/>
+    <rect x="246" y="300" width="20" height="44" fill="url(#silber)"/>
+  </g>
+  <!-- fünf SoundWhacker -->
+  <g>
+    <rect x="96"  y="364" width="52" height="96" rx="26" fill="#e5484d"/>
+    <rect x="162" y="352" width="52" height="108" rx="26" fill="#f08c2e"/>
+    <rect x="230" y="342" width="52" height="118" rx="26" fill="#f2cf3a"/>
+    <rect x="298" y="352" width="52" height="108" rx="26" fill="#46b37b"/>
+    <rect x="364" y="364" width="52" height="96" rx="26" fill="#3f8ee8"/>
+    <g fill="#fff" fill-opacity=".28">
+      <rect x="106" y="374" width="12" height="60" rx="6"/><rect x="172" y="362" width="12" height="70" rx="6"/>
+      <rect x="240" y="352" width="12" height="80" rx="6"/><rect x="308" y="362" width="12" height="70" rx="6"/>
+      <rect x="374" y="374" width="12" height="60" rx="6"/>
+    </g>
+  </g>
+</svg>

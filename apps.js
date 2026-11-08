@@ -29,6 +29,7 @@ window.APPS = [
     repo: "https://github.com/pati2018/pati2018.github.io/tree/main/singen",
     kategorie: "Musik",
     symbol: "🎤",
+    bild: "singen/icons/icon-192.png",
     datum: "2026-11-08",
     ganzUnten: 1
   },

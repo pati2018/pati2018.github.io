@@ -4,7 +4,9 @@
  *   aufnehmen()    – Mikrofon, 3-2-1, ca. 2,5 s aufnehmen (ohne Kompression/Filter des Browsers)
  *   aufbereiten()  – Stille abschneiden, Tonhöhe erkennen (Autokorrelation), Pegel angleichen,
  *                    Schleife im gehaltenen Vokal suchen und weich überblenden (gehaltene Töne brechen nicht ab)
- *   spiele()       – Ton in jeder Höhe: Abspielgeschwindigkeit = genau die gewünschte Note (stimmt automatisch)
+ *   spiele()       – Ton in jeder Höhe, mit TD-PSOLA verschoben: die einzelnen Stimmband-Schwingungen werden enger
+ *                    bzw. weiter aneinandergereiht. So ändert sich nur die Tonhöhe, nicht die Klangfarbe
+ *                    (kein „Micky-Maus“-Effekt wie beim schnelleren Abspielen). Jede Note wird einmal berechnet.
  *
  * Gespeichert wird die aufbereitete Aufnahme im Gerätespeicher (16 Bit, Base64).
  */
@@ -94,24 +96,75 @@ window.EIGENE = (function () {
   function uebernehmen(d) { daten = d; speichern(d); }
   const midiVon = f => 69 + 12 * Math.log2(f / 440);
 
-  // ---------- Abspielen ----------
-  function pufferFuer(ctx, D) {
-    if (!D) return null;
-    let p = puffer.get(ctx); if (p && p.d === D) return p.b;
-    const b = ctx.createBuffer(1, D.pcm.length, D.sr); b.getChannelData(0).set(D.pcm);
-    puffer.set(ctx, { d: D, b }); return b;
+  // ---------- TD-PSOLA: Tonhöhe ändern, Klangfarbe behalten ----------
+  const psolaCache = new WeakMap();   // Aufnahme → Map(Note → {pcm, ls, le})
+  function perioden(D) {   // örtliche Periodenlänge (in Samples) alle 256 Samples – nur um die bekannte Tonhöhe herum gesucht
+    const x = D.pcm, sr = D.sr, hop = 256, P0 = sr / D.f0, P = [], lo = Math.floor(P0 * .75), hi = Math.ceil(P0 * 1.33), N = Math.round(P0 * 3);
+    for (let i = 0; i + N + hi < x.length; i += hop) {
+      let best = -1, bl = 0;
+      for (let L = lo; L <= hi; L++) { let s = 0, e1 = 0, e2 = 0; for (let k = 0; k < N; k++) { const a = x[i + k], b = x[i + k + L]; s += a * b; e1 += a * a; e2 += b * b; } const r = s / Math.sqrt(e1 * e2 + 1e-12); if (r > best) { best = r; bl = L; } }
+      P.push(best > .5 ? bl : P0);
+    }
+    if (!P.length) P.push(P0);
+    const g = P.map((_, i) => { const w = P.slice(Math.max(0, i - 2), i + 3).sort((a, b) => a - b); return w[w.length >> 1]; });   // Median glätten
+    return i => g[Math.min(g.length - 1, Math.max(0, Math.floor(i / hop)))];
   }
-  // d: (optional) eine noch nicht übernommene Aufnahme – zum Probehören
+  function marken(D, Pv) {   // eine Marke pro Stimmband-Schwingung (auf der Schwingungsspitze)
+    const x = D.pcm, m = []; let p = Math.round(Pv(0)), best = 0;
+    for (let i = 0; i < p && i < x.length; i++) if (x[i] > x[best]) best = i;
+    for (let k = best; k < x.length;) {
+      m.push(k); const per = Pv(k), mitte = k + per, r = Math.round(per * .2);
+      let n = Math.round(mitte); for (let i = Math.round(mitte - r); i <= mitte + r && i < x.length; i++) if (x[i] > x[n]) n = i;
+      if (n <= k) n = Math.round(k + per); k = n;
+    }
+    return m;
+  }
+  function psola(D, zielF) {
+    if (!D._ana) { const Pv = perioden(D); D._ana = { Pv, M: marken(D, Pv) }; }   // einmal pro Aufnahme
+    const x = D.pcm, sr = D.sr, len = x.length, { Pv, M } = D._ana, faktor = D.f0 / zielF;
+    const y = new Float32Array(len);
+    let j = 0;
+    for (let t = M[0]; t < len;) {
+      while (j < M.length - 1 && Math.abs(M[j + 1] - t) <= Math.abs(M[j] - t)) j++;   // nächste Analyse-Marke
+      const Pa = Math.round(Pv(M[j])), m = M[j];
+      for (let i = -Pa; i <= Pa; i++) {
+        const q = m + i, z = Math.round(t) + i; if (q < 0 || q >= len || z < 0 || z >= len) continue;
+        y[z] += x[q] * (.5 + .5 * Math.cos(Math.PI * i / Pa));   // Hann-Fenster über zwei Schwingungen
+      }
+      t += Pv(m) * faktor;   // neue Periodenlänge: natürliche Schwankungen bleiben, nur verschoben
+    }
+    // Lautstärke wie im Original (im gehaltenen Teil gemessen)
+    let ex = 0, ey = 0; for (let i = D.ls; i < D.le; i++) { ex += x[i] * x[i]; ey += y[i] * y[i]; }
+    const g = Math.sqrt(ex / (ey || 1)); for (let i = 0; i < len; i++) y[i] *= g;
+    // Schleife neu: ganze Schwingungen der neuen Tonhöhe, weich überblenden
+    const per = sr / zielF, ls = D.ls, n = Math.max(4, Math.floor((D.le - D.ls) / per)), le = Math.min(len - 1, ls + Math.round(n * per));
+    const xf = Math.min(Math.round(per * 6), Math.floor((le - ls) / 3));
+    for (let i = 0; i < xf; i++) { const w = i / xf, k = le - xf + i; y[k] = y[k] * (1 - w) + y[ls - xf + i] * w; }
+    return { pcm: y, ls, le };
+  }
+  function fuerNote(D, midi) {
+    let c = psolaCache.get(D); if (!c) { c = new Map(); psolaCache.set(D, c); }
+    const key = Math.round(midi * 100) / 100;
+    if (!c.has(key)) c.set(key, psola(D, 440 * Math.pow(2, (key - 69) / 12)));
+    return c.get(key);
+  }
+
+  // ---------- Abspielen ----------
+  const pufferCache = new WeakMap();   // berechneter Ton → AudioBuffer je AudioContext
   function spiele(ctx, ziel, { midi, t, pegel = .8, d }) {
-    const D = d || daten, b = pufferFuer(ctx, D); if (!b) return { stop() {} };
+    const D = d || daten; if (!D) return { stop() {} };
+    const N = fuerNote(D, midi);
+    let b = pufferCache.get(N); if (!b || b.ctx !== ctx) { const ab = ctx.createBuffer(1, N.pcm.length, D.sr); ab.getChannelData(0).set(N.pcm); b = { ctx, ab }; pufferCache.set(N, b); }
     const src = ctx.createBufferSource(), g = ctx.createGain();
-    src.buffer = b; src.loop = true; src.loopStart = D.ls / D.sr; src.loopEnd = D.le / D.sr;
-    src.playbackRate.value = Math.pow(2, (midi - midiVon(D.f0)) / 12);   // genau auf die Note gestimmt
+    src.buffer = b.ab; src.loop = true; src.loopStart = N.ls / D.sr; src.loopEnd = N.le / D.sr;
     g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(pegel, t + .012);
     src.connect(g); g.connect(ziel); src.start(t);
     let aus = false;
     return { stop(t2) { if (aus) return; aus = true; t2 = Math.max(t2, t + .1); g.gain.cancelScheduledValues(t2); g.gain.setValueAtTime(g.gain.value, t2); g.gain.setTargetAtTime(0, t2, .06); try { src.stop(t2 + .5); } catch (e) {} } };
   }
 
-  return { laden, loeschen, aufnehmen, aufbereiten, uebernehmen, spiele, midiVon, get daten() { return daten; } };
+  // alle Töne schon im Voraus berechnen, damit der erste Schlag sofort klingt
+  function vorbereiten(midis, d) { const D = d || daten; if (D) midis.forEach(m => fuerNote(D, m)); }
+
+  return { laden, loeschen, aufnehmen, aufbereiten, uebernehmen, spiele, vorbereiten, midiVon, get daten() { return daten; } };
 })();

@@ -88,7 +88,7 @@
 </div>
 
 <script src="stimme.js?v=2"></script>
-<script src="eigene-stimme.js?v=2"></script>
+<script src="eigene-stimme.js?v=3"></script>
 <script>
 const $=id=>document.getElementById(id);
 const FARBEN=['#e5484d','#f08c2e','#f2cf3a','#46b37b','#3f8ee8'];
@@ -122,6 +122,7 @@ const singeTon=(midi,t,pegel=.75)=>st.stimme==='meine'&&EIGENE.daten?EIGENE.spie
 // SoundWhacker-Felder
 const klingt={};   // k → laufender Ton
 function baue(){
+  if(st.stimme==='meine'&&EIGENE.daten) EIGENE.vorbereiten(FARBEN.map((_,k)=>midiVon(k)));   // Töne in der eigenen Stimme vorausberechnen
   $('sws').innerHTML=FARBEN.map((c,k)=>{const m=midiVon(k); return `<div class="sw" data-k="${k}" style="--c:${c}" role="button" aria-label="SW${k+1}"><span class="nr">SW${k+1}</span><span class="ton">${NAMEN[m%12]}</span><span class="silbe">${st.stimme==='meine'?'♪':st.silbe==='a'?'aah':st.silbe}</span></div>`}).join('');
   document.querySelectorAll('.sw').forEach(el=>{
     const k=+el.dataset.k;

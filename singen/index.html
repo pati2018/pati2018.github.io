@@ -64,6 +64,7 @@
     <label>Tonart <select id="tonart"><option value="0">C</option><option value="2">D</option><option value="4">E</option><option value="5">F</option><option value="7">G</option><option value="9">A</option></select></label>
     <label id="vibL">Vibrato <input id="vib" type="range" min="0" max="100" value="60"></label>
     <label>Hall <input id="hall" type="range" min="0" max="100" value="30"></label>
+    <label>Lautstärke <input id="laut" type="range" min="0" max="100" value="75"></label>
     <button id="probe" class="quiet">▶ Hörprobe</button>
   </div>
   <div class="sws" id="sws" role="group" aria-label="SoundWhacker 1 bis 5"></div>
@@ -88,26 +89,30 @@
 </div>
 
 <script src="stimme.js?v=2"></script>
-<script src="eigene-stimme.js?v=3"></script>
+<script src="eigene-stimme.js?v=4"></script>
 <script>
 const $=id=>document.getElementById(id);
 const FARBEN=['#e5484d','#f08c2e','#f2cf3a','#46b37b','#3f8ee8'];
 const STUFEN=[0,2,4,7,9];          // Pentatonik: do re mi so la
 const NAMEN=['C','Cis','D','Es','E','F','Fis','G','As','A','B','H'];
-const st={stimme:'frau',silbe:'la',tonart:0,vib:60,hall:30};
+const st={stimme:'frau',silbe:'la',tonart:0,vib:60,hall:30,laut:75};
 try{Object.assign(st,JSON.parse(localStorage.getItem('singen')||'{}'))}catch(e){}
 const merke=()=>{try{localStorage.setItem('singen',JSON.stringify(st))}catch(e){}};
 
 // Audio
-let ctx=null, bus, dry, wet;
+let ctx=null, bus, dry, wet, laut;
 function initAudio(){
   if(ctx) return;
   ctx=new (window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'});
-  const comp=ctx.createDynamicsCompressor(); comp.threshold.value=-12; comp.ratio.value=3; comp.connect(ctx.destination);
+  // Kette: Stimmen → Lautstärke → sanfter Kompressor → Begrenzer (nichts kann übersteuern, auch nicht alle 5 SW zusammen)
+  const comp=ctx.createDynamicsCompressor(); comp.threshold.value=-20; comp.knee.value=8; comp.ratio.value=3; comp.attack.value=.01; comp.release.value=.25;
+  const grenze=ctx.createDynamicsCompressor(); grenze.threshold.value=-4; grenze.knee.value=0; grenze.ratio.value=20; grenze.attack.value=.002; grenze.release.value=.1;
+  laut=ctx.createGain(); laut.gain.value=st.laut/100;
+  laut.connect(comp); comp.connect(grenze); grenze.connect(ctx.destination);
   bus=ctx.createGain(); dry=ctx.createGain(); wet=ctx.createGain();
   const hall=ctx.createConvolver(), n=ctx.sampleRate*2, ir=ctx.createBuffer(2,n,ctx.sampleRate);
   for(let c=0;c<2;c++){const d=ir.getChannelData(c); for(let i=0;i<n;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/n,3)} hall.buffer=ir;
-  bus.connect(dry); bus.connect(hall); hall.connect(wet); dry.connect(comp); wet.connect(comp); setHall();
+  bus.connect(dry); bus.connect(hall); hall.connect(wet); dry.connect(laut); wet.connect(laut); setHall();
 }
 function setHall(){ if(!ctx) return; wet.gain.setTargetAtTime(st.hall/100*.5,ctx.currentTime,.05); dry.gain.setTargetAtTime(1-st.hall/300,ctx.currentTime,.05) }
 // Grundton der fünf Töne: künstliche Stimmen fest, eigene Stimme rund um die aufgenommene Tonhöhe
@@ -117,7 +122,7 @@ function grundton(){
   return STIMME.STIMMEN[st.stimme].grund-4+st.tonart;
 }
 const midiVon=k=>grundton()+STUFEN[k];
-const singeTon=(midi,t,pegel=.75)=>st.stimme==='meine'&&EIGENE.daten?EIGENE.spiele(ctx,bus,{midi,t,pegel:pegel*1.05}):STIMME.singe(ctx,bus,{midi,t,stimme:st.stimme,silbe:st.silbe,vibrato:st.vib/100,pegel});
+const singeTon=(midi,t,pegel=.75)=>st.stimme==='meine'&&EIGENE.daten?EIGENE.spiele(ctx,bus,{midi,t,pegel:pegel*.5}):STIMME.singe(ctx,bus,{midi,t,stimme:st.stimme,silbe:st.silbe,vibrato:st.vib/100,pegel});
 
 // SoundWhacker-Felder
 const klingt={};   // k → laufender Ton
@@ -156,12 +161,13 @@ $('probe').onclick=()=>{
 function eigeneVerfuegbar(){ const da=!!EIGENE.daten; $('stimme').querySelector('option[value="meine"]').disabled=!da; if(!da&&st.stimme==='meine') st.stimme='frau';
   $('silbeL').hidden=$('vibL').hidden=st.stimme==='meine'; }
 EIGENE.laden(); eigeneVerfuegbar();
-$('stimme').value=st.stimme; $('silbe').value=st.silbe; $('tonart').value=st.tonart; $('vib').value=st.vib; $('hall').value=st.hall;
+$('stimme').value=st.stimme; $('silbe').value=st.silbe; $('tonart').value=st.tonart; $('vib').value=st.vib; $('hall').value=st.hall; $('laut').value=st.laut??75;
 $('stimme').onchange=e=>{st.stimme=e.target.value; e.target.blur(); merke(); eigeneVerfuegbar(); baue()};
 $('silbe').onchange=e=>{st.silbe=e.target.value; e.target.blur(); merke(); baue()};
 $('tonart').onchange=e=>{st.tonart=+e.target.value; e.target.blur(); merke(); baue()};
 $('vib').oninput=e=>{st.vib=+e.target.value; merke()};
 $('hall').oninput=e=>{st.hall=+e.target.value; merke(); setHall()};
+$('laut').oninput=e=>{st.laut=+e.target.value; merke(); if(laut) laut.gain.setTargetAtTime(st.laut/100,ctx.currentTime,.03)};
 document.addEventListener('visibilitychange',()=>{ if(document.hidden) Object.keys(klingt).forEach(k=>aus(+k)) });
 // ---------- Aufnahmefenster ----------
 let neu=null;

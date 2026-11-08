@@ -37,6 +37,7 @@ Die **künstlichen Stimmen** (Kind, Frau, Mann) gibt es weiterhin zur Auswahl.
 | **Tonart** | C, D, E, F, G oder A – die fünf Töne werden passend verschoben |
 | **Vibrato** | wie stark die Stimme bei langen Tönen „schwingt“ |
 | **Hall** | Raumklang |
+| **Lautstärke** | Gesamtlautstärke – ein Begrenzer sorgt dafür, dass es auch mit allen fünf SoundWhackern zusammen nicht übersteuert |
 | **▶ Hörprobe** | die Stimme singt den Anfang von „Alle meine Entchen“ |
 
 Die Einstellungen werden gemerkt.

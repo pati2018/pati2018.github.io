@@ -135,7 +135,9 @@ window.EIGENE = (function () {
     }
     // Lautstärke wie im Original (im gehaltenen Teil gemessen)
     let ex = 0, ey = 0; for (let i = D.ls; i < D.le; i++) { ex += x[i] * x[i]; ey += y[i] * y[i]; }
-    const g = Math.sqrt(ex / (ey || 1)); for (let i = 0; i < len; i++) y[i] *= g;
+    let g = Math.sqrt(ex / (ey || 1)), pk = 0; for (let i = 0; i < len; i++) pk = Math.max(pk, Math.abs(y[i] * g));
+    if (pk > .7) g *= .7 / pk;   // Spitzen durch überlagerte Schwingungen nicht höher als im Original
+    for (let i = 0; i < len; i++) y[i] *= g;
     // Schleife neu: ganze Schwingungen der neuen Tonhöhe, weich überblenden
     const per = sr / zielF, ls = D.ls, n = Math.max(4, Math.floor((D.le - D.ls) / per)), le = Math.min(len - 1, ls + Math.round(n * per));
     const xf = Math.min(Math.round(per * 6), Math.floor((le - ls) / 3));

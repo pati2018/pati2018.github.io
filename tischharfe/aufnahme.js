@@ -158,6 +158,7 @@ function aufNeueAufnahme(blob) {
   loeschen.onclick = () => { if (!confirm('Aufnahme ' + n + ' löschen?')) return; vid.pause(); vid.removeAttribute('src'); vid.load(); URL.revokeObjectURL(url); box.remove(); };
   zeile.append(speichern, loeschen); box.append(vid, zeile, info);
   document.getElementById('takes').prepend(box);
+  box.scrollIntoView({ behavior: 'smooth', block: 'center' });   // Aufnahmen liegen unter der Harfe – gleich hinscrollen
 }
 
 (function () {

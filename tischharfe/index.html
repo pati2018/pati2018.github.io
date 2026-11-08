@@ -112,10 +112,6 @@
     <span id="kopfStatus" aria-live="polite"></span>
   </div>
 
-  <div class="stage"><canvas id="harfe" aria-label="Tischharfe – über die Saiten streichen oder einzelne Saiten antippen"></canvas>
-    <div class="vorschau" id="kopfVorschau" hidden><video id="kopfVideo" playsinline muted autoplay></video></div>
-    <div class="vorschau" id="aufVorschau" hidden><video id="aufVideo" playsinline muted autoplay></video></div></div>
-  <div class="swbar" id="swbar" role="group" aria-label="SoundWhacker 1 bis 5 (Tasten 1–5)"></div>
   <div class="bar aufbar">
     <button id="aufBtn">● Video aufnehmen</button>
     <label><input id="aufKamera" type="checkbox" checked> 📷 Kamerabild</label>
@@ -123,6 +119,10 @@
     <span id="aufZeit" class="aufzeit"></span>
     <span id="aufHinweis" class="aufhinweis"></span>
   </div>
+  <div class="stage"><canvas id="harfe" aria-label="Tischharfe – über die Saiten streichen oder einzelne Saiten antippen"></canvas>
+    <div class="vorschau" id="kopfVorschau" hidden><video id="kopfVideo" playsinline muted autoplay></video></div>
+    <div class="vorschau" id="aufVorschau" hidden><video id="aufVideo" playsinline muted autoplay></video></div></div>
+  <div class="swbar" id="swbar" role="group" aria-label="SoundWhacker 1 bis 5 (Tasten 1–5)"></div>
   <div id="takes" class="takes"></div>
   <p class="msg" id="msg" aria-live="polite">Tippe auf die Saite mit dem leuchtenden Punkt.</p>
 

@@ -72,7 +72,10 @@ window.EIGENE = (function () {
     // Lautstärke-Verlauf in 10-ms-Schritten
     const hop = Math.round(sr * .01), env = [];
     for (let i = 0; i + hop <= pcm.length; i += hop) { let s = 0; for (let j = i; j < i + hop; j++) s += pcm[j] * pcm[j]; env.push(Math.sqrt(s / hop)); }
-    const max = Math.max(...env); if (max < .01) return { fehler: 'Zu leise – bitte näher ans Mikrofon und lauter singen.' };
+    const max = Math.max(...env);
+    // iPad-Mikrofone liefern oft nur sehr kleine Pegel – erst bei wirklich fast nichts abbrechen (Pegel wird danach ohnehin angeglichen)
+    if (max < .00002) return { fehler: 'Das Mikrofon liefert kein Signal – bitte Mikrofon-Zugriff in Safari erlauben und nochmal versuchen.' };
+    if (max < .0012) return { fehler: 'Zu leise – bitte etwas näher ans Mikrofon und nochmal singen.' };
     const schw = max * .12; let a = env.findIndex(v => v > schw), e = env.length - 1 - [...env].reverse().findIndex(v => v > schw);
     if ((e - a) * .01 < .5) return { fehler: 'Zu kurz – bitte ein langes „laaaa“ singen (ca. 2 Sekunden).' };
     const start = Math.max(0, a * hop - Math.round(sr * .015)), ende = Math.min(pcm.length, e * hop + Math.round(sr * .04));

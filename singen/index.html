@@ -112,7 +112,7 @@
 </div>
 
 <script src="stimme.js?v=2"></script>
-<script src="eigene-stimme.js?v=5"></script>
+<script src="eigene-stimme.js?v=6"></script>
 <script>
 const $=id=>document.getElementById(id);
 const FARBEN=['#e5484d','#f08c2e','#f2cf3a','#46b37b','#3f8ee8'];
@@ -236,7 +236,7 @@ $('aufStart').onclick=async()=>{
   try{
     for(const z of ['3','2','1']){ $('count').textContent=z; await new Promise(r=>setTimeout(r,700)) }
     $('count').textContent='🎤 laaaa …';
-    const roh=await EIGENE.aufnehmen(ctx,2.6,p=>{ $('pegel').style.width=Math.min(100,Math.sqrt(p)*120)+'%' });
+    const roh=await EIGENE.aufnehmen(ctx,2.6,p=>{ $('pegel').style.width=Math.min(100,Math.sqrt(p)*260)+'%' });
     $('count').textContent=''; $('pegel').style.width='0';
     const d=EIGENE.aufbereiten(roh);
     if(d.fehler){ $('ergebnis').textContent=d.fehler }

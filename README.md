@@ -38,4 +38,3 @@ Speichern, committen – nach ca. einer Minute ist die App auf der Seite.
 | Ordner | App |
 |---|---|
 | `tischharfe/` | Tischharfe mit Unterlegnoten; `lieder.js` enthält die Lieder, `druck.html` die Druckansicht, `noten/` fertige PDFs |
-| `groove-werkstatt/` | Step-Sequencer und MIDI-Player |

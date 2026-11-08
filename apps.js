@@ -35,20 +35,6 @@ window.APPS = [
     datum: "2026-11-08"
   },
   {
-    id: "groove-werkstatt",
-    titel: "Groove-Werkstatt",
-    kurz: "Beats und Melodien zum Anklicken: Schlagzeug, Melodie und Bass in einem Raster setzen – immer passend in der gewählten Tonart. Mit Swing, Vorlagen, Würfeln, MIDI-Export und direkter Übergabe an den MIDI-Player.",
-    links: [
-      { label: "🎛 Groove-Werkstatt öffnen", url: "https://pati2018.github.io/groove-werkstatt/" },
-      { label: "🎼 MIDI-Player öffnen", url: "https://pati2018.github.io/groove-werkstatt/midi-player.html" }
-    ],
-    link: "https://pati2018.github.io/groove-werkstatt/",
-    repo: "https://github.com/pati2018/midi-player",
-    kategorie: "Musik",
-    symbol: "🎛",
-    datum: "2026-11-08"
-  },
-  {
     id: "smart-instruments",
     titel: "Smart Instruments",
     kurz: "Gitarre und Smart-Klavier in einer App: frei spielen oder Akkorde und Töne antippen – mit Mustern, Kreis, Säulen, Boomwhacker-Farben, Kopfsteuerung, SoundWhacker und vielen Klängen (Schlagzeug, Flöte, Streicher, verzerrte E-Gitarre …).",

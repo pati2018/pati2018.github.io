@@ -9,10 +9,10 @@ const KOPF = {
   an: false, stream: null, vid: null, face: null, loop: 0, lastT: -1,
   cx: null, cy: null, px: .5, py: .5, gefunden: false, verloren: 0,
   bereit: true, seite: 0, zuletzt: 0, blitz: 0,
-  einst: { gain: 9, richtung: 'alle' },
+  einst: { gain: 9, nick: 2.5, richtung: 'alle' },   // gain: Stufe links/rechts · nick: Nickwinkel in Grad
   verlauf: [],                             // letzte Rohwerte für den Median (gegen Zittern)
 };
-try { const e = JSON.parse(localStorage.getItem('tischharfe-kopf') || '{}'); if (e.gain) KOPF.einst.gain = e.gain; if (['alle', 'seite', 'nicken'].includes(e.richtung)) KOPF.einst.richtung = e.richtung; } catch (e) {}
+try { const e = JSON.parse(localStorage.getItem('tischharfe-kopf') || '{}'); if (e.gain) KOPF.einst.gain = e.gain; if (e.nick) KOPF.einst.nick = e.nick; if (['alle', 'seite', 'nicken'].includes(e.richtung)) KOPF.einst.richtung = e.richtung; } catch (e) {}
 const kopfMerke = () => { try { localStorage.setItem('tischharfe-kopf', JSON.stringify(KOPF.einst)) } catch (e) {} };
 const KOPF_BASIS = new URL('kopf/', location.href).href;
 
@@ -89,17 +89,17 @@ function kopfSchleife() {
   if (!KOPF.gefunden) kopfStatus(kopfHinweis());
   KOPF.gefunden = true;
   // Links/rechts: Nasenspitze (Kamerabild ungespiegelt: Kopf nach rechts = Nase im Bild nach links).
-  // Hoch/runter: Neigungswinkel – Auslösen bei 60°/Stufe (groß ≈ 13°, mittel ≈ 9° … winzig ≈ 2°, minimal ≈ 1,5°).
+  // Hoch/runter: Neigungswinkel – Auslösen bei „nick“ Grad (eigene Auswahl, 6° bis 0,7°).
   // Ohne Tiefeninformation ersatzweise die Nasenspitze (empfindlicher als links/rechts, weil Nicken sie weniger bewegt).
-  const gain = KOPF.einst.gain;
-  const dy = neig != null && KOPF.n0 != null ? kopfWinkelDiff(neig, KOPF.n0) * gain / 300 : (ny - KOPF.cy) * gain * 2.2;
+  const gain = KOPF.einst.gain, nick = KOPF.einst.nick;   // Nicken löst bei „nick“ Grad aus (eigene Einstellung)
+  const dy = neig != null && KOPF.n0 != null ? kopfWinkelDiff(neig, KOPF.n0) * KOPF_AUS / nick : (ny - KOPF.cy) * (60 / nick) * 2.2;
   const tx = Math.min(1, Math.max(0, .5 + (KOPF.cx - nx) * gain)), ty = Math.min(1, Math.max(0, .5 + dy));
   // Glätten: Median der letzten 5 Bilder, dann gleitender Mittelwert – je feiner die Stufe, desto stärker,
   // damit das natürliche Zittern der Erkennung bei kleinen Bewegungen keine Töne auslöst
   KOPF.verlauf.push([tx, ty]); if (KOPF.verlauf.length > 5) KOPF.verlauf.shift();
   const med = i => { const a = KOPF.verlauf.map(v => v[i]).sort((x, y) => x - y); return a[a.length >> 1]; };
-  const glatt = Math.min(.5, 8 / gain);
-  KOPF.px += (med(0) - KOPF.px) * glatt; KOPF.py += (med(1) - KOPF.py) * glatt;
+  const glattX = Math.min(.5, 8 / gain), glattY = Math.min(.5, nick * .16);
+  KOPF.px += (med(0) - KOPF.px) * glattX; KOPF.py += (med(1) - KOPF.py) * glattY;
   const ri = KOPF.einst.richtung;
   const ax = ri === 'nicken' ? 0 : Math.abs(KOPF.px - .5), ay = ri === 'seite' ? 0 : Math.abs(KOPF.py - .5);
   const weg = Math.max(ax, ay), inMitte = ax < KOPF_MITTE && ay < KOPF_MITTE;
@@ -164,11 +164,16 @@ function kopfUi() {
   const $ = id => document.getElementById(id);
   const stufen = [...$('kopfGain').options].map(o => +o.value);
   if (!stufen.includes(KOPF.einst.gain)) KOPF.einst.gain = stufen.reduce((a, b) => Math.abs(b - KOPF.einst.gain) < Math.abs(a - KOPF.einst.gain) ? b : a);
-  $('kopfGain').value = String(KOPF.einst.gain); $('kopfRichtung').value = KOPF.einst.richtung;
+  const nicks = [...$('kopfNick').options].map(o => +o.value);
+  if (!nicks.includes(KOPF.einst.nick)) KOPF.einst.nick = 2.5;
+  $('kopfGain').value = String(KOPF.einst.gain); $('kopfNick').value = String(KOPF.einst.nick); $('kopfRichtung').value = KOPF.einst.richtung;
+  const sichtbar = () => { $('kopfGainL').hidden = KOPF.einst.richtung === 'nicken'; $('kopfNickL').hidden = KOPF.einst.richtung === 'seite'; };
+  sichtbar();
   $('kopfBtn').onclick = () => (KOPF.an ? kopfStop() : kopfStart());
   $('kopfMitte').onclick = () => { KOPF.cx = null; kopfStatus('Mitte neu gesetzt. ' + kopfHinweis()); };
   $('kopfGain').onchange = e => { KOPF.einst.gain = +e.target.value; e.target.blur(); kopfMerke(); };
-  $('kopfRichtung').onchange = e => { KOPF.einst.richtung = e.target.value; e.target.blur(); kopfMerke(); KOPF.bereit = true; if (KOPF.gefunden) kopfStatus(kopfHinweis()); };
+  $('kopfNick').onchange = e => { KOPF.einst.nick = +e.target.value; e.target.blur(); kopfMerke(); };
+  $('kopfRichtung').onchange = e => { KOPF.einst.richtung = e.target.value; e.target.blur(); kopfMerke(); sichtbar(); KOPF.bereit = true; if (KOPF.gefunden) kopfStatus(kopfHinweis()); };
   document.addEventListener('visibilitychange', () => { if (document.hidden && KOPF.an) kopfStop(); });
   kopfUi();
 })();

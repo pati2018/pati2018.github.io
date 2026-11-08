@@ -48,6 +48,7 @@
   #kopfBtn[aria-pressed=true]{background:#3f6fd0;color:#fff;border-color:#3f6fd0}
   #kopfOpt{display:contents}
   #kopfOpt[hidden]{display:none}
+  .bar label[hidden]{display:none}
   #kopfStatus{color:var(--ink);font-size:14px}
   .vorschau{position:absolute;top:10px;right:10px;width:clamp(96px,16vw,150px);aspect-ratio:4/3;border-radius:10px;overflow:hidden;border:2px solid rgba(255,255,255,.6);box-shadow:0 4px 14px rgba(0,0,0,.4);pointer-events:none;background:#000}
   .vorschau[hidden]{display:none}
@@ -92,7 +93,8 @@
     <button id="kopfBtn" class="quiet" aria-pressed="false">😶 Kopf</button>
     <span id="kopfOpt" hidden>
       <label>Richtung <select id="kopfRichtung"><option value="alle">Alle Richtungen</option><option value="seite">Nur links/rechts</option><option value="nicken">Nur Nicken (hoch/runter)</option></select></label>
-      <label>Bewegung <select id="kopfGain"><option value="4.5">groß</option><option value="6.5">mittel</option><option value="9">klein</option><option value="12">kleiner</option><option value="16">ganz klein</option><option value="22">sehr klein</option><option value="30">winzig</option><option value="40">minimal</option></select></label>
+      <label id="kopfNickL">Nicken <select id="kopfNick"><option value="6">groß · 6°</option><option value="4.5">mittel · 4,5°</option><option value="3.5">klein · 3,5°</option><option value="2.5">kleiner · 2,5°</option><option value="2">ganz klein · 2°</option><option value="1.5">sehr klein · 1,5°</option><option value="1">winzig · 1°</option><option value="0.7">minimal · 0,7°</option></select></label>
+      <label id="kopfGainL">Links/rechts <select id="kopfGain"><option value="4.5">groß</option><option value="6.5">mittel</option><option value="9">klein</option><option value="12">kleiner</option><option value="16">ganz klein</option><option value="22">sehr klein</option><option value="30">winzig</option><option value="40">minimal</option></select></label>
       <button id="kopfMitte" class="quiet">⌖ Mitte</button>
     </span>
     <span id="kopfStatus" aria-live="polite"></span>

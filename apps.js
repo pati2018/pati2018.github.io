@@ -21,6 +21,20 @@
  */
 window.APPS = [
   {
+    id: "tischharfe",
+    titel: "Tischharfe",
+    kurz: "Eine Tischharfe im Browser: Das Notenblatt liegt unter den Saiten, man zupft einfach der Punktlinie nach – ganz ohne Notenkenntnisse. Mit echtem Harfenklang, Übe- und Vorspielmodus und Notenblättern zum Ausdrucken für echte Tischharfen (18 und 25 Saiten).",
+    links: [
+      { label: "🎼 Tischharfe öffnen", url: "https://pati2018.github.io/tischharfe/" },
+      { label: "🖨 Notenblätter drucken", url: "https://pati2018.github.io/tischharfe/druck.html" }
+    ],
+    link: "https://pati2018.github.io/tischharfe/",
+    repo: "https://github.com/pati2018/pati2018.github.io/tree/main/tischharfe",
+    kategorie: "Musik",
+    symbol: "🎼",
+    datum: "2026-11-08"
+  },
+  {
     id: "groove-werkstatt",
     titel: "Groove-Werkstatt",
     kurz: "Beats und Melodien zum Anklicken: Schlagzeug, Melodie und Bass in einem Raster setzen – immer passend in der gewählten Tonart. Mit Swing, Vorlagen, Würfeln, MIDI-Export und direkter Übergabe an den MIDI-Player.",

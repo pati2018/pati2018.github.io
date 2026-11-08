@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tischharfe</title>
+<meta name="description" content="Tischharfe im Browser: Notenblatt unter die Saiten legen und den Punkten folgend zupfen.">
+<meta name="theme-color" content="#231c17">
+<link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<style>
+  :root{--bg:#231c17;--panel:#2f251e;--ink:#f3eadc;--muted:#b8a894;--accent:#e0a84f;--line:#4a3b30}
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  body{min-height:100vh;padding:14px 16px 28px;display:flex;flex-direction:column;align-items:center}
+  .wrap{width:100%;max-width:980px}
+  .top{display:flex;align-items:baseline;gap:8px 16px;flex-wrap:wrap}
+  .top a{color:var(--muted);text-decoration:none;font-size:14px}
+  .top a:hover{color:var(--ink)}
+  h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:clamp(26px,4.5vw,38px);margin-right:auto}
+  .bar{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin-top:12px;font-size:15px;color:var(--muted)}
+  .bar label{display:flex;align-items:center;gap:7px}
+  select,button{font:inherit;font-size:15px}
+  select{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:6px 8px;max-width:100%}
+  button{border:0;border-radius:999px;padding:9px 18px;cursor:pointer;background:var(--accent);color:#2a1d10;font-weight:600}
+  button.quiet{background:transparent;color:var(--ink);border:1.5px solid var(--line);font-weight:500}
+  button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .seg{display:inline-flex;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px}
+  .seg button{background:transparent;color:var(--muted);padding:7px 14px;font-weight:500}
+  .seg button[aria-pressed=true]{background:var(--accent);color:#2a1d10;font-weight:600}
+  input[type=range]{accent-color:var(--accent);width:100px}
+  .stage{position:relative;margin-top:14px}
+  canvas{display:block;width:100%;touch-action:none;user-select:none;-webkit-user-select:none;border-radius:18px}
+  .msg{min-height:1.4em;margin:10px 0 0;font-size:15px;color:var(--muted)}
+  .msg b{color:var(--ink)}
+  details{margin-top:10px;color:var(--muted);font-size:14px}
+  summary{cursor:pointer;color:var(--ink)}
+  .legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:8px}
+  .legend span{display:flex;align-items:center;gap:6px}
+  @media (max-width:560px){.bar{gap:8px 10px} .seg button{padding:7px 10px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <h1>Tischharfe</h1>
+    <a href="../">← Alle Apps</a>
+    <a href="../app.html?id=tischharfe">Anleitung</a>
+  </div>
+
+  <div class="bar">
+    <label>Lied <select id="lied"></select></label>
+    <label>Harfe <select id="modell"></select></label>
+    <div class="seg" role="group" aria-label="Modus">
+      <button data-modus="ueben" aria-pressed="true">Üben</button>
+      <button data-modus="vorspielen" aria-pressed="false">Vorspielen</button>
+      <button data-modus="frei" aria-pressed="false">Frei</button>
+    </div>
+    <button id="start">Von vorn</button>
+  </div>
+  <div class="bar">
+    <label>Klang <select id="klang">
+      <option value="harfe">Konzertharfe (Aufnahmen)</option>
+      <option value="zither">Tischharfe (Zither-Klang)</option>
+    </select></label>
+    <label>Tempo <input id="tempo" type="range" min="40" max="160" value="100"> <span id="tempoVal">100</span></label>
+    <label>Hall <input id="hall" type="range" min="0" max="100" value="35"></label>
+    <label><input id="namen" type="checkbox" checked> Tonnamen</label>
+    <button id="druck" class="quiet">🖨 Notenblatt drucken</button>
+  </div>
+
+  <div class="stage"><canvas id="harfe" aria-label="Tischharfe – über die Saiten streichen oder einzelne Saiten antippen"></canvas></div>
+  <p class="msg" id="msg" aria-live="polite">Tippe auf die Saite mit dem leuchtenden Punkt.</p>
+
+  <details>
+    <summary>Was bedeuten die Zeichen?</summary>
+    <div class="legend" id="legende"></div>
+    <p>Die Linie verbindet die Töne der Reihe nach – einfach von oben nach unten folgen. Graue Balken sind Pausen.</p>
+  </details>
+</div>
+
+<script src="lieder.js"></script>
+<script>
+const H=window.HARFE, $=id=>document.getElementById(id);
+const cv=$('harfe'), g=cv.getContext('2d');
+
+// ================= Zustand =================
+const st={
+  liedId:'entchen', modell:25, modus:'ueben', klang:'harfe', tempo:100, hall:35, namen:true,
+  lied:null, pos:0, scroll:0, scrollZiel:0, fertig:false,
+  spielt:false, t0:0, events:[], evIdx:0,
+};
+let saiten=[];          // {midi, x, amp, t, fehler, ok}
+let geo={};
+
+// ================= Audio =================
+let ctx=null, master, dry, wet, conv, samples={}, ladeStatus='aus';
+const SAMPLE_TOENE={E3:52,G3:55,B3:59,D4:62,F4:65,A4:69,C5:72,E5:76,G5:79,B5:83};
+function initAudio(){
+  if(ctx) return;
+  ctx=new (window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'});
+  const comp=ctx.createDynamicsCompressor(); comp.threshold.value=-10; comp.ratio.value=3; comp.attack.value=.003; comp.release.value=.2;
+  master=ctx.createGain(); master.gain.value=.9; master.connect(comp); comp.connect(ctx.destination);
+  dry=ctx.createGain(); wet=ctx.createGain(); dry.connect(master); wet.connect(master);
+  conv=ctx.createConvolver(); conv.buffer=hallImpuls(2.6); conv.connect(wet);
+  setHall(); ladeSamples();
+}
+function hallImpuls(sek){
+  const sr=ctx.sampleRate, n=Math.floor(sr*sek), b=ctx.createBuffer(2,n,sr);
+  for(let c=0;c<2;c++){const d=b.getChannelData(c); for(let i=0;i<n;i++){const t=i/n; d[i]=(Math.random()*2-1)*Math.pow(1-t,3.2)*(i<sr*.012?i/(sr*.012):1)}}
+  return b;
+}
+function setHall(){ if(!ctx) return; const h=st.hall/100; wet.gain.setTargetAtTime(h*.55,ctx.currentTime,.05); dry.gain.setTargetAtTime(1-h*.35,ctx.currentTime,.05) }
+async function ladeSamples(){
+  if(ladeStatus!=='aus') return; ladeStatus='laedt';
+  try{
+    await Promise.all(Object.entries(SAMPLE_TOENE).map(async([name,midi])=>{
+      const r=await fetch(`samples/${name}.mp3`); if(!r.ok) throw new Error(name);
+      const ab=await r.arrayBuffer();
+      samples[midi]=await new Promise((ok,err)=>ctx.decodeAudioData(ab,ok,err));
+    }));
+    ladeStatus='fertig';
+  }catch(e){
+    ladeStatus='fehler';
+    if(st.klang==='harfe') meldung('Die Harfen-Aufnahmen konnten nicht geladen werden – es klingt die Zither.');
+  }
+}
+// Zither: Karplus-Strong-Saite, pro Ton einmal berechnet
+const zitherCache={};
+function zitherPuffer(midi){
+  if(zitherCache[midi]) return zitherCache[midi];
+  const sr=ctx.sampleRate, f=440*2**((midi-69)/12), N=Math.max(2,Math.round(sr/f));
+  const len=Math.floor(sr*4.5), out=new Float32Array(len), ring=new Float32Array(N);
+  let prev=0; for(let i=0;i<N;i++){const r=Math.random()*2-1; prev=prev*.45+r*.55; ring[i]=prev}
+  const t60=Math.max(2.2,5.2-(midi-55)*.1), rho=Math.pow(10,-3/(t60*f));
+  let idx=0, peak=0;
+  for(let i=0;i<len;i++){
+    const a=ring[idx], b=ring[(idx+1)%N];
+    out[i]=a; ring[idx]=(a*.55+b*.45)*rho; idx=(idx+1)%N;
+    const v=Math.abs(a); if(v>peak) peak=v;
+  }
+  // Zupfstelle (Kammfilter) für den typischen hellen, metallischen Klang
+  const p=Math.max(1,Math.round(N*.18)); for(let i=len-1;i>=p;i--) out[i]-=out[i-p]*.7;
+  peak=0; for(let i=0;i<len;i++){const v=Math.abs(out[i]); if(v>peak) peak=v}
+  for(let i=0;i<len;i++) out[i]/=peak||1;
+  const b=ctx.createBuffer(1,len,sr); b.copyToChannel?b.copyToChannel(out,0):b.getChannelData(0).set(out);
+  return zitherCache[midi]=b;
+}
+function ton(midi,t,vel,pan,bus=null){
+  if(!ctx) return;
+  const src=ctx.createBufferSource(), g1=ctx.createGain();
+  let rate=1, buf=null, pegel=vel;
+  if(st.klang==='harfe'&&ladeStatus==='fertig'){
+    let best=null; for(const k in samples){ if(best===null||Math.abs(k-midi)<Math.abs(best-midi)) best=+k }
+    buf=samples[best]; rate=2**((midi-best)/12); pegel=vel*1.05;
+  } else { buf=zitherPuffer(midi); pegel=vel*.42 }
+  src.buffer=buf; src.playbackRate.value=rate;
+  g1.gain.setValueAtTime(pegel,t);
+  let node=g1;
+  if(ctx.createStereoPanner){const p=ctx.createStereoPanner(); p.pan.value=pan; g1.connect(p); node=p}
+  src.connect(g1); if(bus) node.connect(bus); else { node.connect(dry); node.connect(conv) }
+  src.start(t);
+}
+
+// ================= Lied & Saiten =================
+function ladeLied(){
+  const roh=H.LIEDER.find(l=>l.id===st.liedId)||H.LIEDER[0];
+  st.lied=H.fuer(roh,st.modell);
+  const M=H.MODELLE[st.modell];
+  saiten=[]; for(let m=M.lo;m<=M.hi;m++) saiten.push({midi:m,amp:0,t:0,fehler:0,ok:0});
+  if(geo.w) layout();
+  if(!st.lied){ meldung('Dieses Lied passt nicht auf diese Harfe.'); return }
+  $('tempo').value=st.tempo=st.lied.tempo; $('tempoVal').textContent=st.tempo;
+  neustart();
+}
+function naechsteNote(i){ const n=st.lied.noten; while(i<n.length&&n[i].midi===null) i++; return i }
+function neustart(){
+  stopVorspiel();
+  st.pos=naechsteNote(0); st.fertig=false;
+  st.scrollZiel=st.modus==='frei'?-0.5:zielScroll(); st.scroll=st.scrollZiel;
+  if(st.modus==='ueben') meldung(st.lied.shift?`Tippe auf die Saite mit dem leuchtenden Punkt. <span>(Für diese Harfe um ${Math.abs(st.lied.shift)} ${Math.abs(st.lied.shift)===1?'Halbton':'Halbtöne'} ${st.lied.shift>0?'höher':'tiefer'} gesetzt.)</span>`:'Tippe auf die Saite mit dem leuchtenden Punkt.');
+  else if(st.modus==='vorspielen') meldung('Auf <b>Abspielen</b> drücken und zuhören.');
+  else meldung('Frei spielen: antippen oder über die Saiten streichen. Mit dem Mausrad oder zwei Fingern das Blatt verschieben.');
+  $('start').textContent=st.modus==='vorspielen'?'Abspielen':'Von vorn';
+}
+function zielScroll(){ const n=st.lied.noten[st.pos]; const b=n?n.beat:st.lied.laenge; return b-(geo.blickBeats||8)*0.28 }
+function meldung(html){ $('msg').innerHTML=html }
+
+// ================= Zupfen =================
+function zupf(i,vel=.8){
+  const s=saiten[i]; if(!s) return;
+  initAudio(); if(ctx.state!=='running') ctx.resume();
+  ton(s.midi,ctx.currentTime+.005,vel,(i/(saiten.length-1)-.5)*.7);
+  s.amp=Math.min(1,.55+vel*.5); s.t=performance.now();
+  if(st.modus==='ueben'&&!st.fertig&&st.lied){
+    const ziel=st.lied.noten[st.pos];
+    if(ziel&&ziel.midi===s.midi){
+      s.ok=performance.now();
+      st.pos=naechsteNote(st.pos+1);
+      if(st.pos>=st.lied.noten.length){ st.fertig=true; meldung('<b>Geschafft!</b> 🎉 Das ganze Lied gespielt. „Von vorn“ startet noch einmal.') }
+      st.scrollZiel=zielScroll();
+    } else if(ziel){ s.fehler=performance.now(); }
+  }
+}
+
+// ================= Vorspielen =================
+function startVorspiel(){
+  initAudio(); ctx.resume();
+  const spb=60/st.tempo; st.t0=ctx.currentTime+.25; st.events=[]; st.evIdx=0;
+  st.bus=ctx.createGain(); st.bus.connect(dry); st.bus.connect(conv);
+  st.lied.noten.forEach(n=>{ if(n.midi===null) return;
+    const i=saiten.findIndex(s=>s.midi===n.midi); const t=st.t0+n.beat*spb;
+    ton(n.midi,t,.8,(i/(saiten.length-1)-.5)*.7,st.bus); st.events.push({t,i}); });
+  st.spielt=true; $('start').textContent='Stopp';
+}
+function stopVorspiel(){
+  if(st.bus&&ctx){ // geplante Töne dieses Vorspiels sanft ausblenden
+    const bus=st.bus; st.bus=null;
+    bus.gain.setTargetAtTime(0,ctx.currentTime,.06);
+    setTimeout(()=>bus.disconnect(),600);
+  }
+  st.spielt=false; if(st.modus==='vorspielen') $('start').textContent='Abspielen';
+}
+
+// ================= Zeichnen =================
+function layout(){
+  const w=cv.clientWidth, h=Math.round(Math.min(Math.max(innerHeight*.66,380),760));
+  const dpr=Math.min(devicePixelRatio||1,2.5);
+  cv.style.height=h+'px'; cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr);
+  g.setTransform(dpr,0,0,dpr,0,0);
+  const n=saiten.length, rand=16, sp=(w-2*rand)/(n+0.6);
+  const links=rand+sp*0.8;
+  saiten.forEach((s,i)=>s.x=links+i*sp);
+  const oben=46, unten=h-40;
+  geo={w,h,sp,rand,oben,unten,papL:links-sp*.65,papR:links+(n-1)*sp+sp*.65,papO:oben+8,papU:unten-8,
+       ppb:Math.max(30,Math.min(68,sp*2.1)), r:Math.max(4.5,Math.min(12,sp*.34))};
+  geo.blickBeats=(geo.papU-geo.papO)/geo.ppb;
+  if(st.lied&&st.lied.noten&&st.modus!=='frei'&&!st.spielt){ st.scrollZiel=zielScroll(); st.scroll=st.scrollZiel }
+}
+function yVon(beat){ return geo.papO+18+(beat-st.scroll)*geo.ppb }
+function rundRect(x,y,w,h,r){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath()}
+
+function zeichneNote(x,y,dur,farbe,r,alpha){
+  const z=H.zeichen(dur), rr=r*z.groesse;
+  g.globalAlpha=alpha; g.lineWidth=Math.max(1.6,r*.28);
+  g.beginPath(); g.arc(x,y,rr,0,Math.PI*2);
+  if(z.gefuellt){ g.fillStyle=farbe; g.fill() } else { g.fillStyle='#fbf5e8'; g.fill(); g.strokeStyle=farbe; g.stroke() }
+  if(z.punkt){ g.beginPath(); g.arc(x+rr+r*.55,y,Math.max(1.8,r*.24),0,Math.PI*2); g.fillStyle=farbe; g.fill() }
+  g.globalAlpha=1;
+}
+
+function zeichne(now){
+  const {w,h,sp,oben,unten,r}=geo;
+  g.clearRect(0,0,w,h);
+  // Holzrahmen
+  const holz=g.createLinearGradient(0,0,w,h); holz.addColorStop(0,'#8a5a33'); holz.addColorStop(.5,'#a8713f'); holz.addColorStop(1,'#7a4e2b');
+  rundRect(0,0,w,h,18); g.fillStyle=holz; g.fill();
+  g.globalAlpha=.08; g.strokeStyle='#2a1608'; g.lineWidth=1;
+  for(let y=6;y<h;y+=7){g.beginPath();g.moveTo(0,y);g.bezierCurveTo(w*.3,y+3,w*.6,y-3,w,y+1);g.stroke()} g.globalAlpha=1;
+  // Resonanzboden + Papier
+  rundRect(8,oben-12,w-16,unten-oben+24,12); g.fillStyle='#d9b98c'; g.fill();
+  const {papL,papR,papO,papU}=geo;
+  g.save(); g.shadowColor='rgba(60,30,10,.35)'; g.shadowBlur=10; g.shadowOffsetY=3;
+  g.fillStyle='#fbf5e8'; g.fillRect(papL,papO,papR-papL,papU-papO); g.restore();
+
+  // Notenblatt (beschnitten aufs Papier)
+  if(st.lied){
+    g.save(); g.beginPath(); g.rect(papL,papO,papR-papL,papU-papO); g.clip();
+    const L=st.lied, xs=m=>{const i=m-H.MODELLE[st.modell].lo; return saiten[i]?saiten[i].x:-99};
+    // Hilfslinien je Saite und Taktmarken
+    g.strokeStyle='rgba(120,90,60,.12)'; g.lineWidth=1;
+    for(let b=0;b<=L.laenge;b+=L.takt){const y=yVon(b)-geo.r*1.4; if(y<papO-5||y>papU+5) continue;
+      g.setLineDash([3,4]); g.beginPath(); g.moveTo(papL,y); g.lineTo(papR,y); g.stroke(); g.setLineDash([]);
+      g.fillStyle='rgba(120,90,60,.45)'; g.font=`${Math.max(9,r*.9)}px system-ui`; g.fillText(String(b/L.takt+1),papL+3,y-3)}
+    // Titel
+    const ty=yVon(0)-geo.ppb*.9;
+    if(ty>papO-30){ g.fillStyle='#5b3f27'; g.font=`600 ${Math.max(13,Math.min(20,sp*.7))}px Georgia,serif`; g.textAlign='center'; g.fillText(L.titel,(papL+papR)/2,ty); g.textAlign='left' }
+    // Verbindungslinien
+    const pts=L.noten.map((n,k)=>({n,k})).filter(o=>o.n.midi!==null);
+    g.lineWidth=Math.max(1.5,r*.22); g.lineJoin='round';
+    for(let j=1;j<pts.length;j++){
+      const a=pts[j-1], b=pts[j], ya=yVon(a.n.beat), yb=yVon(b.n.beat);
+      if(yb<papO-20||ya>papU+20) continue;
+      g.strokeStyle=st.modus==='ueben'&&b.k<=st.pos-1?'rgba(90,60,40,.25)':'rgba(90,60,40,.75)';
+      g.beginPath(); g.moveTo(xs(a.n.midi),ya); g.lineTo(xs(b.n.midi),yb); g.stroke();
+    }
+    // Pausen
+    L.noten.forEach(n=>{ if(n.midi!==null) return; const y=yVon(n.beat+n.dur/2); if(y<papO||y>papU) return;
+      g.fillStyle='rgba(90,60,40,.35)'; rundRect((papL+papR)/2-sp*.6,y-r*.3,sp*1.2,r*.6,r*.3); g.fill() });
+    // Noten
+    const zeigTxt=sp>=17;
+    L.noten.forEach((n,k)=>{
+      if(n.midi===null) return; const y=yVon(n.beat), x=xs(n.midi);
+      if(y<papO-20||y>papU+20) return;
+      const gespielt=st.modus==='ueben'&&k<st.pos, aktuell=st.modus==='ueben'&&k===st.pos&&!st.fertig;
+      if(aktuell){ const p=.5+.5*Math.sin(now/180); g.beginPath(); g.arc(x,y,r*2+p*r*.6,0,Math.PI*2); g.fillStyle=`rgba(224,168,79,${.35+.25*p})`; g.fill() }
+      zeichneNote(x,y,n.dur,aktuell?'#b0611a':'#3d2a1a',r,gespielt?.3:1);
+      if(zeigTxt&&n.silbe){ g.globalAlpha=gespielt?.35:.85; g.fillStyle='#6b4a2e'; g.font=`${Math.max(10,Math.min(14,sp*.42))}px system-ui`; g.fillText(n.silbe,x+r*1.5+(H.zeichen(n.dur).punkt?r*.9:0),y+r*.45); g.globalAlpha=1 }
+    });
+    // Spielposition beim Vorspielen
+    if(st.modus==='vorspielen'&&st.spielt){ const y=yVon(st.scroll+geo.blickBeats*.28); g.strokeStyle='rgba(176,97,26,.55)'; g.lineWidth=2; g.beginPath(); g.moveTo(papL,y); g.lineTo(papR,y); g.stroke() }
+    g.restore();
+  }
+
+  // Stege
+  g.fillStyle='#4a2e18'; rundRect(saiten[0].x-sp*.7,oben-6,(saiten.length-1)*sp+sp*1.4,7,3); g.fill(); rundRect(saiten[0].x-sp*.7,unten-1,(saiten.length-1)*sp+sp*1.4,7,3); g.fill();
+  // Saiten
+  const zielMidi=st.modus==='ueben'&&!st.fertig&&st.lied&&st.lied.noten[st.pos]?st.lied.noten[st.pos].midi:null;
+  saiten.forEach((s,i)=>{
+    const alt=(now-s.t)/1000, a=s.amp*Math.exp(-alt*2.6), ausl=a>.01;
+    const dick=1.1+(1-i/saiten.length)*1.5;
+    if(s.midi===zielMidi){ g.strokeStyle='rgba(224,168,79,.35)'; g.lineWidth=sp*.5; g.beginPath(); g.moveTo(s.x,oben); g.lineTo(s.x,unten); g.stroke() }
+    if(now-s.fehler<400){ g.strokeStyle=`rgba(200,70,50,${.45*(1-(now-s.fehler)/400)})`; g.lineWidth=sp*.5; g.beginPath(); g.moveTo(s.x,oben); g.lineTo(s.x,unten); g.stroke() }
+    if(now-s.ok<350){ g.strokeStyle=`rgba(120,190,110,${.5*(1-(now-s.ok)/350)})`; g.lineWidth=sp*.6; g.beginPath(); g.moveTo(s.x,oben); g.lineTo(s.x,unten); g.stroke() }
+    const ausl2=ausl?a*Math.min(sp*.32,7)*Math.sin(now/14+i):0;
+    g.strokeStyle='rgba(30,20,10,.25)'; g.lineWidth=dick+1.2;
+    g.beginPath(); g.moveTo(s.x+1.5,oben); g.quadraticCurveTo(s.x+1.5+ausl2,(oben+unten)/2,s.x+1.5,unten); g.stroke();
+    g.strokeStyle=H.istHalbton(s.midi)?'#8d8f93':'#d8d4cc'; g.lineWidth=dick;
+    g.beginPath(); g.moveTo(s.x,oben); g.quadraticCurveTo(s.x+ausl2,(oben+unten)/2,s.x,unten); g.stroke();
+    // Wirbel
+    g.fillStyle='#c9c3b8'; g.beginPath(); g.arc(s.x,oben-20,Math.max(2.5,Math.min(5,sp*.18)),0,Math.PI*2); g.fill();
+    // Tonname
+    if(st.namen){ g.fillStyle=H.istHalbton(s.midi)?'rgba(255,240,220,.55)':'#fff3e0'; g.font=`${H.istHalbton(s.midi)?'':'600 '}${Math.max(8.5,Math.min(14,sp*.42))}px system-ui`; g.textAlign='center';
+      g.fillText(H.tonName(s.midi),s.x,unten+24); g.textAlign='left' }
+  });
+}
+
+function schleife(now){
+  if(st.modus==='vorspielen'&&st.spielt&&ctx){
+    const beat=(ctx.currentTime-st.t0)*st.tempo/60;
+    st.scroll=beat-geo.blickBeats*.28;
+    while(st.evIdx<st.events.length&&st.events[st.evIdx].t<=ctx.currentTime){ const s=saiten[st.events[st.evIdx].i]; if(s){s.amp=.85; s.t=now} st.evIdx++ }
+    if(beat>st.lied.laenge+1.5){ stopVorspiel(); meldung('Fertig. Jetzt selbst? Oben auf <b>Üben</b> wechseln.') }
+  } else {
+    st.scroll+=(st.scrollZiel-st.scroll)*.12;
+  }
+  zeichne(now); requestAnimationFrame(schleife);
+}
+
+// ================= Eingabe =================
+const zeiger=new Map();
+function naechsteSaite(x){ let best=-1,d=1e9; saiten.forEach((s,i)=>{const dd=Math.abs(s.x-x); if(dd<d){d=dd;best=i}}); return d<=geo.sp*.55?best:-1 }
+function punkt(e){ const r=cv.getBoundingClientRect(); return {x:e.clientX-r.left,y:e.clientY-r.top} }
+cv.addEventListener('pointerdown',e=>{
+  const p=punkt(e); if(p.y<geo.oben-25||p.y>geo.unten+30) return;
+  cv.setPointerCapture(e.pointerId); zeiger.set(e.pointerId,{x:p.x,y:p.y,t:performance.now()});
+  if(zeiger.size===2&&st.modus==='frei'){ return }
+  const i=naechsteSaite(p.x); if(i>=0) zupf(i,.8);
+});
+cv.addEventListener('pointermove',e=>{
+  const alt=zeiger.get(e.pointerId); if(!alt) return;
+  const p=punkt(e), now=performance.now();
+  if(zeiger.size>=2&&st.modus==='frei'){ st.scrollZiel-=(p.y-alt.y)/geo.ppb/zeiger.size; st.scroll=st.scrollZiel; zeiger.set(e.pointerId,{...p,t:now}); return }
+  const tempo=Math.abs(p.x-alt.x)/Math.max(1,now-alt.t);
+  const vel=Math.max(.45,Math.min(.95,.45+tempo*.25));
+  const a=Math.min(alt.x,p.x), b=Math.max(alt.x,p.x);
+  const getroffen=[]; saiten.forEach((s,i)=>{ if(s.x>a&&s.x<=b) getroffen.push(i) });
+  if(p.x<alt.x) getroffen.reverse();
+  getroffen.forEach(i=>zupf(i,vel));
+  zeiger.set(e.pointerId,{x:p.x,y:p.y,t:now});
+});
+['pointerup','pointercancel'].forEach(t=>cv.addEventListener(t,e=>zeiger.delete(e.pointerId)));
+cv.addEventListener('wheel',e=>{ if(st.modus!=='frei') return; e.preventDefault(); st.scrollZiel+=e.deltaY/geo.ppb*.6 },{passive:false});
+
+// Leertaste im Übemodus spielt den nächsten Ton – praktisch mit einem einzelnen großen Taster
+addEventListener('keydown',e=>{
+  if(e.target.closest('select,input,button')||e.repeat||e.metaKey||e.ctrlKey) return;
+  if(e.code==='Space'&&st.modus==='ueben'&&st.lied){ const z=st.lied.noten[st.pos]; if(z){ e.preventDefault(); zupf(saiten.findIndex(s=>s.midi===z.midi)) } }
+});
+
+// ================= Bedienung =================
+H.LIEDER.forEach(l=>$('lied').add(new Option(l.titel,l.id)));
+for(const k in H.MODELLE) $('modell').add(new Option(H.MODELLE[k].name,k));
+// gespeicherte Auswahl
+try{const s=JSON.parse(localStorage.getItem('tischharfe')||'{}'); Object.assign(st,{liedId:s.liedId||st.liedId,modell:+s.modell||st.modell,klang:s.klang||st.klang,hall:s.hall??st.hall,namen:s.namen??st.namen})}catch(e){}
+const q=new URLSearchParams(location.search); if(q.get('lied')) st.liedId=q.get('lied'); if(H.MODELLE[q.get('modell')]) st.modell=+q.get('modell');
+function merke(){ try{localStorage.setItem('tischharfe',JSON.stringify({liedId:st.liedId,modell:st.modell,klang:st.klang,hall:st.hall,namen:st.namen}))}catch(e){} }
+$('lied').value=st.liedId; $('modell').value=st.modell; $('klang').value=st.klang; $('hall').value=st.hall; $('namen').checked=st.namen;
+
+$('lied').onchange=e=>{st.liedId=e.target.value; ladeLied(); merke()};
+$('modell').onchange=e=>{st.modell=+e.target.value; ladeLied(); merke()};
+$('klang').onchange=e=>{st.klang=e.target.value; merke(); if(ctx) zupf(Math.floor(saiten.length/2),.7)};
+$('hall').oninput=e=>{st.hall=+e.target.value; setHall(); merke()};
+$('namen').onchange=e=>{st.namen=e.target.checked; merke()};
+$('tempo').oninput=e=>{st.tempo=+e.target.value; $('tempoVal').textContent=st.tempo; if(st.spielt){stopVorspiel(); startVorspiel()}};
+document.querySelectorAll('[data-modus]').forEach(b=>b.onclick=()=>{
+  st.modus=b.dataset.modus; document.querySelectorAll('[data-modus]').forEach(x=>x.setAttribute('aria-pressed',x===b)); neustart();
+});
+$('start').onclick=()=>{ if(st.modus==='vorspielen'){ st.spielt?stopVorspiel():(neustart(),startVorspiel()) } else neustart() };
+$('druck').onclick=()=>window.open(`druck.html?lied=${encodeURIComponent(st.liedId)}&modell=${st.modell}`,'_blank');
+
+$('legende').innerHTML=H.LEGENDE.map(([d,t])=>{const z=H.zeichen(d), r=7*z.groesse;
+  return `<span><svg width="30" height="20" viewBox="0 0 30 20" aria-hidden="true"><circle cx="10" cy="10" r="${r}" fill="${z.gefuellt?'#f3eadc':'none'}" stroke="#f3eadc" stroke-width="2"/>${z.punkt?'<circle cx="'+(12+r)+'" cy="10" r="2.2" fill="#f3eadc"/>':''}</svg>${t}</span>`}).join('')
+  +`<span><svg width="30" height="20" aria-hidden="true"><rect x="3" y="7" width="22" height="6" rx="3" fill="#b8a894"/></svg>Pause</span>`;
+
+ladeLied(); layout(); neustart();
+addEventListener('resize',layout);
+requestAnimationFrame(schleife);
+</script>
+</body>
+</html>

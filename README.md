@@ -32,3 +32,10 @@ Speichern, committen – nach ca. einer Minute ist die App auf der Seite.
 | `apps.js` | **Liste aller Apps** – hier wird gepflegt |
 | `anleitungen/<id>.md` | Ausführliche Anleitung je App |
 | `style.css` | Gestaltung (hell/dunkel automatisch) |
+
+## Apps, die direkt hier liegen
+
+| Ordner | App |
+|---|---|
+| `tischharfe/` | Tischharfe mit Unterlegnoten; `lieder.js` enthält die Lieder, `druck.html` die Druckansicht, `noten/` fertige PDFs |
+| `groove-werkstatt/` | Step-Sequencer und MIDI-Player |

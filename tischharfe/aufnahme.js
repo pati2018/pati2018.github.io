@@ -38,22 +38,58 @@ function aufKameraStop() {
   document.getElementById('aufVorschau').hidden = true;
 }
 
-// Mikrofon: nur ins Video (recDest), mit Kompressor und Begrenzer wie in MIGA
-async function aufMikroStart() {
-  try { if (navigator.audioSession) navigator.audioSession.type = 'play-and-record'; } catch (e) {}
-  const s = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: !istIOS, autoGainControl: true } });
-  const src = ctx.createMediaStreamSource(s), comp = ctx.createDynamicsCompressor(), auf = ctx.createGain(), lim = ctx.createDynamicsCompressor();
-  comp.threshold.value = -30; comp.knee.value = 10; comp.ratio.value = 4; comp.attack.value = .005; comp.release.value = .25;
-  auf.gain.value = 4;
-  lim.threshold.value = -2; lim.knee.value = 0; lim.ratio.value = 20; lim.attack.value = .001; lim.release.value = .1;
-  src.connect(comp); comp.connect(auf); auf.connect(lim); lim.connect(recDest);
-  AUF.mic = { s, lim };
+// Mikrofon: nur ins Video (recDest), nicht auf die Lautsprecher – wie in MIGA:
+// Lautstärke → Kompressor → Nachverstärkung → Begrenzer. Das iPad-Mikrofon ist sehr leise, daher kräftig verstärkt.
+async function aufMikroOeffnen() {
+  try { if (navigator.audioSession) navigator.audioSession.type = 'play-and-record'; } catch (e) {}   // iPad: sonst kein Mikrofon
+  const AUDIO = { echoCancellation: false, noiseSuppression: !istIOS, autoGainControl: true };
+  try { return await navigator.mediaDevices.getUserMedia({ audio: AUDIO }); }
+  catch (e1) {
+    if (e1 && e1.name === 'NotAllowedError') throw e1;
+    try { return await navigator.mediaDevices.getUserMedia({ audio: true }); }
+    catch (e2) {
+      // iPad: läuft schon die Kamera, klappt das Mikrofon manchmal nur zusammen mit ihr (wie in MIGA)
+      if (!AUF.stream || (e2 && e2.name === 'NotAllowedError')) throw e2;
+      AUF.stream.getTracks().forEach(t => t.stop());
+      const beide = await navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 640 }, height: { ideal: 480 }, facingMode: 'user' }, audio: true });
+      AUF.stream = new MediaStream(beide.getVideoTracks()); AUF.vid.srcObject = AUF.stream; AUF.vid.play().catch(() => {});
+      return new MediaStream(beide.getAudioTracks());
+    }
+  }
 }
-function aufMikroStop() {
-  if (!AUF.mic) return;
-  try { AUF.mic.lim.disconnect(); } catch (e) {}
-  AUF.mic.s.getTracks().forEach(t => t.stop()); AUF.mic = null;
-  try { if (navigator.audioSession) navigator.audioSession.type = 'auto'; } catch (e) {}   // iPad: wieder volle Lautstärke
+async function aufMikroStart() {
+  aufMikroStop(true);
+  const s = await aufMikroOeffnen();
+  const m = AUF.mic = { s, timer: 0 };
+  m.src = ctx.createMediaStreamSource(s);
+  m.gain = ctx.createGain(); m.gain.gain.value = +document.getElementById('aufMikroVol').value / 100;
+  m.comp = ctx.createDynamicsCompressor();
+  m.comp.threshold.value = -30; m.comp.knee.value = 10; m.comp.ratio.value = 4; m.comp.attack.value = .005; m.comp.release.value = .25;
+  m.makeup = ctx.createGain(); m.makeup.gain.value = 6;
+  m.lim = ctx.createDynamicsCompressor();
+  m.lim.threshold.value = -2; m.lim.knee.value = 0; m.lim.ratio.value = 20; m.lim.attack.value = .001; m.lim.release.value = .1;
+  m.an = ctx.createAnalyser(); m.an.fftSize = 512; m.buf = new Uint8Array(512);
+  m.src.connect(m.gain); m.gain.connect(m.comp); m.comp.connect(m.makeup); m.makeup.connect(m.lim);
+  m.lim.connect(recDest); m.lim.connect(m.an);          // Anzeige zeigt, was ins Video geht
+  ctx.resume().catch(() => {});
+  // iPad: das Mikrofon kann beim Kamerastart verloren gehen – dann neu verbinden
+  const spur = s.getAudioTracks()[0];
+  if (spur) spur.onended = () => { if (AUF.rec && AUF.mic && AUF.mic.s === s) { aufHinweis('Mikrofon war kurz weg – wird neu verbunden …'); aufMikroStart().then(() => aufHinweis(''), () => aufHinweis('Mikrofon ging verloren.')); } };
+  document.getElementById('aufPegelBox').hidden = false;
+  m.timer = setInterval(() => {
+    if (!m.an) return;
+    m.an.getByteTimeDomainData(m.buf);
+    let spitze = 0; for (let i = 0; i < m.buf.length; i++) spitze = Math.max(spitze, Math.abs(m.buf[i] - 128));
+    document.getElementById('aufPegel').style.width = Math.min(100, Math.sqrt(spitze / 128) * 110) + '%';   // Wurzel: auch leise Stellen sichtbar
+  }, 80);
+}
+function aufMikroStop(neu) {
+  const m = AUF.mic; if (!m) return;
+  clearInterval(m.timer);
+  ['src', 'gain', 'comp', 'makeup', 'lim', 'an'].forEach(k => { if (m[k]) try { m[k].disconnect(); } catch (e) {} });
+  m.s.getTracks().forEach(t => { t.onended = null; t.stop(); }); AUF.mic = null;
+  document.getElementById('aufPegel').style.width = '0';
+  if (!neu) { document.getElementById('aufPegelBox').hidden = true; try { if (navigator.audioSession) navigator.audioSession.type = 'auto'; } catch (e) {} }   // iPad: wieder volle Lautstärke
 }
 
 // Jedes Bild: Harfe + Kamerabild oben rechts (an derselben Stelle wie die Vorschau auf dem Bildschirm)
@@ -85,6 +121,7 @@ async function aufStart() {
   if (AUF.rec) return;
   if (!window.MediaRecorder || !HTMLCanvasElement.prototype.captureStream) { aufZeit('Aufnahme wird von diesem Browser nicht unterstützt.'); return; }
   initAudio(); ctx.resume();
+  if (!ctx._aufWach) { ctx._aufWach = true; ctx.addEventListener('statechange', () => { if (ctx.state !== 'running' && AUF.rec) ctx.resume().catch(() => {}); }); }
   aufHinweis('');
   if (document.getElementById('aufKamera').checked) {
     try { await aufKameraStart(); }
@@ -168,6 +205,11 @@ function aufNeueAufnahme(blob) {
     if (e.mikro) document.getElementById('aufMikro').checked = true; } catch (e) {}
   const merke = () => { try { localStorage.setItem('tischharfe-aufnahme', JSON.stringify({ kamera: document.getElementById('aufKamera').checked, mikro: document.getElementById('aufMikro').checked })); } catch (e) {} };
   document.getElementById('aufKamera').onchange = merke;
+  const vol = document.getElementById('aufMikroVol');
+  try { const v = +localStorage.getItem('tischharfe-mikro-vol'); if (v) vol.value = v; } catch (e) {}
+  vol.oninput = () => { if (AUF.mic && AUF.mic.gain) AUF.mic.gain.gain.value = vol.value / 100; try { localStorage.setItem('tischharfe-mikro-vol', vol.value); } catch (e) {} };
+  const sync = () => { document.getElementById('aufMikroVolL').hidden = !document.getElementById('aufMikro').checked; };
+  document.getElementById('aufMikro').addEventListener('change', sync); sync();
   document.getElementById('aufMikro').onchange = merke;
   aufZeit('max. ' + Math.floor(AUF_MAX / 60) + ':' + String(AUF_MAX % 60).padStart(2, '0'));
   document.addEventListener('visibilitychange', () => { if (document.hidden && AUF.rec) aufStop(); });

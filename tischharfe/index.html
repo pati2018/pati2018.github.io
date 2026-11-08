@@ -51,6 +51,9 @@
   .bar label[hidden]{display:none}
   #aufBtn{background:#c0392b;color:#fff}
   #aufBtn.stop{background:#fff;color:#c0392b;box-shadow:inset 0 0 0 2px #c0392b}
+  .pegel{display:inline-block;width:80px;height:9px;border-radius:5px;background:var(--line);overflow:hidden}
+  .pegel[hidden]{display:none}
+  .pegel b{display:block;height:100%;width:0;background:#5ad18a;transition:width .08s}
   .aufzeit{font-variant-numeric:tabular-nums;color:var(--ink)}
   .aufhinweis{font-size:14px;color:#ffb199}
   .takes{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px}
@@ -116,6 +119,8 @@
     <button id="aufBtn">● Video aufnehmen</button>
     <label><input id="aufKamera" type="checkbox" checked> 📷 Kamerabild</label>
     <label><input id="aufMikro" type="checkbox"> 🎤 Mikrofon</label>
+    <label id="aufMikroVolL" class="regler" hidden>Lautstärke <input id="aufMikroVol" type="range" min="0" max="1000" value="400" aria-label="Mikrofon-Lautstärke im Video"></label>
+    <span id="aufPegelBox" class="pegel" title="Mikrofon-Pegel im Video" hidden><b id="aufPegel"></b></span>
     <span id="aufZeit" class="aufzeit"></span>
     <span id="aufHinweis" class="aufhinweis"></span>
   </div>

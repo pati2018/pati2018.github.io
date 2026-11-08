@@ -72,7 +72,7 @@ Wie in MIGA kann man das Spielen als Video aufnehmen – zum Anschauen, Vorführ
 
 - Im Video sind **die Harfe mit Notenblatt** und oben rechts das **Kamerabild** zu sehen, dazu der **Harfenklang** direkt aus der App (glasklar, nicht über das Mikrofon).
 - **📷 Kamerabild** ausschalten, wenn nur die Harfe zu sehen sein soll. Läuft die Kopfsteuerung, wird deren Kamerabild verwendet.
-- **🎤 Mikrofon** einschalten, um zusätzlich Stimmen oder Gesang aufzunehmen. Das Mikrofon geht nur ins Video, nicht auf die Lautsprecher. Mit Kopfhörern klingt es am saubersten.
+- **🎤 Mikrofon** einschalten, um zusätzlich Stimmen oder Gesang aufzunehmen. Das Mikrofon geht nur ins Video, nicht auf die Lautsprecher. Mit dem Regler **Lautstärke** stellst du ein, wie laut der Gesang im Video ist. Während der Aufnahme zeigt ein **grüner Balken**, ob das Mikrofon etwas hört – bewegt er sich beim Singen nicht, kommt nichts an. Das Mikrofon geht erst beim Aufnehmen an, weil das iPad mit offenem Mikrofon leiser spielt.
 - Gespeichert wird als **MP4** (auf iPad/iPhone und in aktuellen Browsern), sonst als WebM. Höchstens **5 Minuten** pro Aufnahme.
 - Aufnahmen, die nicht gespeichert wurden, sind nach dem Neuladen weg.
 

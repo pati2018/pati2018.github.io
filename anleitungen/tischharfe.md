@@ -56,7 +56,7 @@ Die Kamera erkennt deine **Nasenspitze** (wie in MIGA). Die Erkennung läuft kom
 
 Unten auf der Harfe zeigt eine kleine Anzeige, wo dein Kopf gerade steht: grün = Mitte, orange = hier löst es aus. Der Punkt ist **blau**, wenn die nächste Bewegung bereit ist, und **orange**, solange du erst zur Mitte zurückmusst.
 
-- **Bewegung**: wie weit du den Kopf drehen musst – *groß*, *mittel* oder *klein* (bei „klein“ reicht schon eine kleine Drehung).
+- **Bewegung**: wie weit du den Kopf drehen musst – *groß*, *mittel*, *klein*, *ganz klein* oder *winzig*. Bei „winzig“ reicht schon eine ganz kleine Drehung. Je kleiner die Stufe, desto ruhiger sollte der Kopf in der Mitte sein – bei Fehlauslösern eine Stufe größer wählen oder **⌖ Mitte** tippen.
 - **⌖ Mitte**: die jetzige Kopfhaltung als Mitte nehmen. Kleine Verschiebungen gleicht die App mit der Zeit selbst aus.
 - Oben rechts zeigt ein kleines Bild, was die Kamera sieht.
 - Kopf, SoundWhacker und Finger gehen gleichzeitig.

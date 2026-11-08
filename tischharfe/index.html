@@ -100,7 +100,6 @@
       <option value="toene">Jeder SW ein Ton</option>
       <option value="aus">Aus</option>
     </select></label>
-    <button id="druck" class="quiet">🖨 Notenblatt drucken</button>
   </div>
   <div class="bar">
     <button id="kopfBtn" class="quiet" aria-pressed="false">😶 Kopf</button>
@@ -496,7 +495,6 @@ $('tempo').oninput=e=>{st.tempo=+e.target.value; $('tempoVal').textContent=st.te
 function setzeModus(m){ st.modus=m; document.querySelectorAll('[data-modus]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.modus===m)); neustart() }
 document.querySelectorAll('[data-modus]').forEach(b=>b.onclick=()=>setzeModus(b.dataset.modus));
 $('start').onclick=()=>{ if(st.modus==='vorspielen'){ st.spielt?stopVorspiel():(neustart(),startVorspiel()) } else neustart() };
-$('druck').onclick=()=>window.open(`druck.html?lied=${encodeURIComponent(st.liedId)}&modell=${st.modell}`,'_blank');
 
 $('legende').innerHTML=H.LEGENDE.map(([d,t])=>{const z=H.zeichen(d), r=7*z.groesse;
   return `<span><svg width="30" height="20" viewBox="0 0 30 20" aria-hidden="true"><circle cx="10" cy="10" r="${r}" fill="${z.gefuellt?'#f3eadc':'none'}" stroke="#f3eadc" stroke-width="2"/>${z.punkt?'<circle cx="'+(12+r)+'" cy="10" r="2.2" fill="#f3eadc"/>':''}</svg>${t}</span>`}).join('')

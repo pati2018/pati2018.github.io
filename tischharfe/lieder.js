@@ -1,6 +1,5 @@
 /*
- * Lieder und Grundlagen für die Tischharfe – wird von der App (index.html)
- * und der Druckansicht (druck.html) gemeinsam genutzt.
+ * Lieder und Grundlagen für die Tischharfe (genutzt von index.html).
  *
  * NEUES LIED EINTRAGEN
  *  noten: "Ton:Dauer" durch Leerzeichen getrennt.

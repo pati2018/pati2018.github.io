@@ -2,8 +2,6 @@
 
 Die **Tischharfe** funktioniert wie die bekannten Tischharfen zum Unterlegen von Noten: Unter den Saiten liegt ein Notenblatt mit Punkten und einer Linie. Man zupft einfach die Saite, unter der der nächste Punkt liegt, und folgt der Linie von oben nach unten. **Notenkenntnisse braucht man nicht** – ideal für die Schule, für Förderschulen, Kinder und Senior:innen.
 
-Dazu gibt es **Notenblätter zum Ausdrucken**, die genau unter die Saiten einer echten Tischharfe passen.
-
 ## Schnellstart
 
 1. **Tischharfe öffnen** – oben auf den Knopf klicken.
@@ -19,8 +17,6 @@ Dazu gibt es **Notenblätter zum Ausdrucken**, die genau unter die Saiten einer 
 | **Kinderlieder** | Alle meine Entchen · Hänschen klein · Bruder Jakob · Old MacDonald Had a Farm · Mary Had a Little Lamb · Row, Row, Row Your Boat · London Bridge Is Falling Down · Yankee Doodle |
 | **Feste** | Zum Geburtstag viel Glück · Morgen kommt der Weihnachtsmann · Jingle Bells · Stille Nacht |
 | **Klassik** | Ode an die Freude · Für Elise (Thema) |
-
-Alle Lieder gibt es auch als Notenblatt zum Ausdrucken (siehe unten).
 
 ## Spielen
 
@@ -108,30 +104,10 @@ Der Abstand zwischen den Punkten zeigt zusätzlich, wie lange ein Ton klingt. Di
 - **Klang**: *Konzertharfe* (echte Aufnahmen einer Harfe) oder *Tischharfe* (heller, metallischer Zither-Klang).
 - **Tempo** für das Vorspielen, **Hall**, und **Tonnamen** unter den Saiten ein- oder ausblenden. Die dunkleren Saiten sind die Halbtöne (cis, dis, fis …).
 
-## Notenblätter für eine echte Tischharfe
-
-Fertige PDFs mit allen Liedern:
-
-- [25 Saiten, A4 quer](https://pati2018.github.io/tischharfe/noten/Tischharfe_Notenblaetter_25-Saiten_A4.pdf)
-- [25 Saiten, A3 hoch](https://pati2018.github.io/tischharfe/noten/Tischharfe_Notenblaetter_25-Saiten_A3.pdf)
-- [18 Saiten, A4 quer](https://pati2018.github.io/tischharfe/noten/Tischharfe_Notenblaetter_18-Saiten_A4.pdf)
-
-Einzelne Lieder druckt man in der App über **🖨 Notenblatt drucken**. Dort lassen sich Harfe, Papier (A4 quer / A3 hoch) und der Abstand (normal, weit, kompakt) einstellen.
-
-**So passt das Blatt unter die Saiten:**
-
-1. Beim Drucken **„Tatsächliche Größe“ / „100 %“** wählen – nicht „An Seite anpassen“.
-2. Die Linie unten rechts nachmessen: Sie muss genau **10 cm** lang sein.
-3. Das Blatt so unter die Saiten schieben, dass die gestrichelten Hilfslinien unter den Saiten liegen. Die Tonnamen oben und unten helfen beim Ausrichten.
-4. Längere Lieder haben mehrere Blätter – einfach nacheinander unterlegen.
-
-Die Blätter sind für den üblichen **Saitenabstand von 11,5 mm** gemacht. Für Harfen mit größerem Abstand (z. B. 16,5 mm) passen sie nicht.
-
 ## Tipps & Probleme
 
 - **Kein Ton?** Einmal auf die Harfe tippen – Browser erlauben Klang erst nach einer Berührung. Am iPad den Stummschalter prüfen.
 - **Am Handy zu eng?** Das Gerät quer halten oder das 18-Saiten-Modell wählen.
-- **Ausdruck zu klein?** Im Druckdialog war „An Seite anpassen“ eingestellt – auf 100 % stellen.
 - **Kopfsteuerung reagiert nicht?** Gesicht gut beleuchtet und ganz im Bild? **⌖ Mitte** tippen. In Safari die Kamera erlauben: **aA → Website-Einstellungen → Kamera**.
 - **Eigene Lieder** lassen sich in der Datei `tischharfe/lieder.js` ergänzen (Anleitung steht oben in der Datei).
 

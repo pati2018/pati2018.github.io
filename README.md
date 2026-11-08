@@ -38,4 +38,4 @@ Speichern, committen – nach ca. einer Minute ist die App auf der Seite.
 | Ordner | App |
 |---|---|
 | `atemklang/` | Blasinstrument mit Atemsteuerung über das Mikrofon |
-| `tischharfe/` | Tischharfe mit Unterlegnoten; `lieder.js` enthält die Lieder, `druck.html` die Druckansicht, `noten/` fertige PDFs |
+| `tischharfe/` | Tischharfe mit Unterlegnoten; `lieder.js` enthält die Lieder, `kopf.js` die Kopfsteuerung, `aufnahme.js` die Video-Aufnahme |

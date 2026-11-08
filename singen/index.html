@@ -112,7 +112,7 @@
 </div>
 
 <script src="stimme.js?v=2"></script>
-<script src="eigene-stimme.js?v=6"></script>
+<script src="eigene-stimme.js?v=7"></script>
 <script>
 const $=id=>document.getElementById(id);
 const FARBEN=['#e5484d','#f08c2e','#f2cf3a','#46b37b','#3f8ee8'];
@@ -228,16 +228,24 @@ document.addEventListener('visibilitychange',()=>{ if(document.hidden) Object.ke
 // ---------- Aufnahmefenster ----------
 let neu=null;
 const zeigeKnoepfe=()=>{ $('aufHoeren').hidden=$('aufOk').hidden=!neu; $('aufWeg').hidden=!EIGENE.daten||!!neu; $('aufStart').textContent=neu?'↺ Nochmal':'● Aufnehmen' };
-$('eigenBtn').onclick=()=>{ neu=null; $('ergebnis').textContent=EIGENE.daten?`Gespeichert: deine Stimme auf ${tonName(EIGENE.daten.f0)}.`:''; $('count').textContent=''; $('pegel').style.width='0'; zeigeKnoepfe(); $('aufFenster').hidden=false };
-$('aufZu').onclick=()=>{ $('aufFenster').hidden=true };
+$('eigenBtn').onclick=()=>{ neu=null; $('ergebnis').textContent=EIGENE.daten?`Gespeichert: deine Stimme auf ${tonName(EIGENE.daten.f0)}.`:''; $('count').textContent=''; $('pegel').style.width='0'; zeigeKnoepfe(); $('aufFenster').hidden=false; mikroFreigeben() };
+const pegelAnzeige=p=>{ $('pegel').style.width=Math.min(100,Math.sqrt(p)*260)+'%' };
+async function mikroFreigeben(){   // gleich beim Öffnen fragen – danach ist das Mikrofon frei, bis das Fenster zugeht
+  initAudio(); try{ await ctx.resume() }catch(e){}
+  $('aufStart').disabled=true; $('count').textContent='🎤 Mikrofon wird freigegeben …';
+  try{ await EIGENE.mikroAn(ctx,pegelAnzeige); $('count').textContent='🎤 bereit' }
+  catch(e){ $('count').textContent=''; $('ergebnis').textContent=e&&e.name==='NotAllowedError'?'Mikrofon nicht erlaubt – in Safari: aA → Website-Einstellungen → Mikrofon → Erlauben.':'Mikrofon nicht verfügbar ('+(e.name||e.message)+').' }
+  $('aufStart').disabled=false;
+}
+$('aufZu').onclick=()=>{ $('aufFenster').hidden=true; EIGENE.mikroAus() };
 const tonName=f=>{ const m=Math.round(EIGENE.midiVon(f)); return NAMEN[(m%12+12)%12]+' ('+Math.round(f)+' Hz)' };
 $('aufStart').onclick=async()=>{
   initAudio(); await ctx.resume(); neu=null; zeigeKnoepfe(); $('aufStart').disabled=true; $('ergebnis').textContent='';
   try{
     for(const z of ['3','2','1']){ $('count').textContent=z; await new Promise(r=>setTimeout(r,700)) }
     $('count').textContent='🎤 laaaa …';
-    const roh=await EIGENE.aufnehmen(ctx,2.6,p=>{ $('pegel').style.width=Math.min(100,Math.sqrt(p)*260)+'%' });
-    $('count').textContent=''; $('pegel').style.width='0';
+    const roh=await EIGENE.aufnehmen(ctx,2.6,pegelAnzeige);
+    $('count').textContent='🎤 bereit';
     const d=EIGENE.aufbereiten(roh);
     if(d.fehler){ $('ergebnis').textContent=d.fehler }
     else { neu=d; $('ergebnis').textContent=`Erkannt: ${tonName(d.f0)} ✓ – zum Prüfen anhören, dann übernehmen.` }
@@ -246,7 +254,7 @@ $('aufStart').onclick=async()=>{
 };
 $('aufHoeren').onclick=()=>{ if(!neu) return; initAudio(); const t=ctx.currentTime+.05, m=Math.round(EIGENE.midiVon(neu.f0));
   [0,2,4,7,4,0].forEach((x,i)=>EIGENE.spiele(ctx,bus,{midi:m-4+x,t:t+i*.4,pegel:.8,d:neu}).stop(t+i*.4+.35)) };
-$('aufOk').onclick=()=>{ EIGENE.uebernehmen(neu); neu=null; st.stimme='meine'; merke(); eigeneVerfuegbar(); $('stimme').value='meine'; baue(); $('aufFenster').hidden=true };
+$('aufOk').onclick=()=>{ EIGENE.mikroAus(); EIGENE.uebernehmen(neu); neu=null; st.stimme='meine'; merke(); eigeneVerfuegbar(); $('stimme').value='meine'; baue(); $('aufFenster').hidden=true };
 $('aufWeg').onclick=()=>{ if(!confirm('Deine aufgenommene Stimme löschen?')) return; EIGENE.loeschen(); eigeneVerfuegbar(); $('stimme').value=st.stimme; merke(); baue(); $('ergebnis').textContent='Gelöscht.'; zeigeKnoepfe() };
 baue();
 </script>

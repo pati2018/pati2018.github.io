@@ -34,16 +34,37 @@ window.EIGENE = (function () {
   function loeschen() { daten = null; try { localStorage.removeItem(KEY); } catch (e) {} }
 
   // ---------- Aufnahme ----------
-  async function aufnehmen(ctx, sek, pegelFn) {
+  // Mikrofon einmal öffnen und offen halten, solange das Aufnahmefenster offen ist –
+  // so fragt Safari nur einmal (beim Öffnen des Fensters) und nicht bei jeder Aufnahme.
+  let mik = null;   // {stream, src, proz, stumm, teile, pegelFn, ctx}
+  async function mikroAn(ctx, pegelFn) {
+    if (mik && mik.ctx === ctx && mik.stream.getAudioTracks().some(t => t.readyState === 'live')) { mik.pegelFn = pegelFn; return; }
+    mikroAus();
     try { if (navigator.audioSession) navigator.audioSession.type = 'play-and-record'; } catch (e) {}
     const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: true } });
     const src = ctx.createMediaStreamSource(stream), proz = ctx.createScriptProcessor(4096, 1, 1), stumm = ctx.createGain();
-    stumm.gain.value = 0; const teile = [];
-    proz.onaudioprocess = e => { const x = e.inputBuffer.getChannelData(0); teile.push(new Float32Array(x)); let p = 0; for (let i = 0; i < x.length; i++) p = Math.max(p, Math.abs(x[i])); if (pegelFn) pegelFn(p); };
+    stumm.gain.value = 0;
+    const m = { ctx, stream, src, proz, stumm, teile: null, pegelFn };
+    proz.onaudioprocess = e => {
+      const x = e.inputBuffer.getChannelData(0); if (m.teile) m.teile.push(new Float32Array(x));
+      let p = 0; for (let i = 0; i < x.length; i++) p = Math.max(p, Math.abs(x[i])); if (m.pegelFn) m.pegelFn(p);
+    };
     src.connect(proz); proz.connect(stumm); stumm.connect(ctx.destination);
-    await new Promise(r => setTimeout(r, sek * 1000));
-    proz.disconnect(); src.disconnect(); stream.getTracks().forEach(t => t.stop());
+    mik = m;
+  }
+  function mikroAus() {
+    if (!mik) return;
+    try { mik.proz.disconnect(); mik.src.disconnect(); mik.stumm.disconnect(); } catch (e) {}
+    mik.stream.getTracks().forEach(t => t.stop()); mik = null;
     try { if (navigator.audioSession) navigator.audioSession.type = 'auto'; } catch (e) {}
+  }
+  async function aufnehmen(ctx, sek, pegelFn) {
+    const warOffen = !!mik;
+    await mikroAn(ctx, pegelFn || (mik && mik.pegelFn));
+    const m = mik; m.teile = [];
+    await new Promise(r => setTimeout(r, sek * 1000));
+    const teile = m.teile; m.teile = null;
+    if (!warOffen) mikroAus();
     const n = teile.reduce((a, t) => a + t.length, 0), pcm = new Float32Array(n); let o = 0;
     teile.forEach(t => { pcm.set(t, o); o += t.length; });
     return { pcm, sr: ctx.sampleRate };
@@ -172,5 +193,5 @@ window.EIGENE = (function () {
   // alle Töne schon im Voraus berechnen, damit der erste Schlag sofort klingt
   function vorbereiten(midis, d) { const D = d || daten; if (D) midis.forEach(m => fuerNote(D, m)); }
 
-  return { laden, loeschen, aufnehmen, aufbereiten, uebernehmen, spiele, vorbereiten, midiVon, get daten() { return daten; } };
+  return { laden, loeschen, mikroAn, mikroAus, aufnehmen, aufbereiten, uebernehmen, spiele, vorbereiten, midiVon, get daten() { return daten; } };
 })();

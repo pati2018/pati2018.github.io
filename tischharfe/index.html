@@ -49,6 +49,9 @@
   #kopfOpt{display:contents}
   #kopfOpt[hidden]{display:none}
   .bar label[hidden]{display:none}
+  .regler small{font-size:12px;color:var(--muted)}
+  .regler input[type=range]{width:clamp(110px,16vw,170px)}
+  .regler b{min-width:3.4em;font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600}
   #kopfStatus{color:var(--ink);font-size:14px}
   .vorschau{position:absolute;top:10px;right:10px;width:clamp(96px,16vw,150px);aspect-ratio:4/3;border-radius:10px;overflow:hidden;border:2px solid rgba(255,255,255,.6);box-shadow:0 4px 14px rgba(0,0,0,.4);pointer-events:none;background:#000}
   .vorschau[hidden]{display:none}
@@ -93,8 +96,8 @@
     <button id="kopfBtn" class="quiet" aria-pressed="false">😶 Kopf</button>
     <span id="kopfOpt" hidden>
       <label>Richtung <select id="kopfRichtung"><option value="alle">Alle Richtungen</option><option value="seite">Nur links/rechts</option><option value="nicken">Nur Nicken (hoch/runter)</option></select></label>
-      <label id="kopfNickL">Nicken <select id="kopfNick"><option value="6">groß · 6°</option><option value="4.5">mittel · 4,5°</option><option value="3.5">klein · 3,5°</option><option value="2.5">kleiner · 2,5°</option><option value="2">ganz klein · 2°</option><option value="1.5">sehr klein · 1,5°</option><option value="1">winzig · 1°</option><option value="0.7">minimal · 0,7°</option></select></label>
-      <label id="kopfGainL">Links/rechts <select id="kopfGain"><option value="4.5">groß</option><option value="6.5">mittel</option><option value="9">klein</option><option value="12">kleiner</option><option value="16">ganz klein</option><option value="22">sehr klein</option><option value="30">winzig</option><option value="40">minimal</option></select></label>
+      <label id="kopfNickL" class="regler">Nicken <small>grob</small><input id="kopfNick" type="range" min="0" max="100" step="1" aria-label="Nicken: grob bis fein"><small>fein</small> <b id="kopfNickVal"></b></label>
+      <label id="kopfGainL" class="regler">Links/rechts <small>grob</small><input id="kopfGain" type="range" min="0" max="100" step="1" aria-label="Links/rechts: grob bis fein"><small>fein</small> <b id="kopfGainVal"></b></label>
       <button id="kopfMitte" class="quiet">⌖ Mitte</button>
     </span>
     <span id="kopfStatus" aria-live="polite"></span>

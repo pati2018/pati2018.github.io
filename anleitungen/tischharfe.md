@@ -57,9 +57,10 @@ Die Kamera erkennt deine **Nasenspitze** (wie in MIGA). Die Erkennung läuft kom
 Unter dem Kamerabild zeigt ein kleines Feld, wo dein Kopf gerade steht: grün = Mitte, orange Rand = hier löst es aus. Der Punkt ist **blau**, wenn die nächste Bewegung bereit ist, und **orange**, solange du erst zur Mitte zurückmusst.
 
 - **Richtung**: *Alle Richtungen*, *Nur links/rechts* oder *Nur Nicken (hoch/runter)* – je nachdem, welche Bewegung am besten klappt. Fürs Nicken misst die App den **Neigungswinkel** des Kopfes.
-- **Links/rechts**: wie weit du den Kopf drehen musst – 8 Stufen von *groß* bis *minimal*.
-- **Nicken**: eigene Einstellung für hoch/runter – 8 Stufen von *groß · 6°* bis *minimal · 0,7°*. Voreingestellt sind 2,5°.
-- Je kleiner die Stufe, desto ruhiger sollte der Kopf in der Mitte sein. Kommen Töne von allein, eine Stufe größer wählen oder **⌖ Mitte** tippen.
+- **Links/rechts** (Schieberegler): wie weit du den Kopf drehen musst. Links = **grob** (große Drehung), rechts = **fein** (kleine Drehung). Daneben steht die Stufe 0–100 – praktisch, um sich den passenden Wert für jedes Kind zu merken.
+- **Nicken** (Schieberegler): wie weit du nicken musst – von **8°** (grob) bis **0,65°** (fein). Der Winkel steht daneben. Voreingestellt sind 2,5°.
+- Der feine Bereich hat auf den Reglern mehr Platz, damit man dort genau einstellen kann. Je weiter Richtung **fein**, desto weiter wandert der Nasen-Punkt im Feld unter dem Kamerabild schon bei einer kleinen Bewegung – so sieht man sofort, ob es reicht.
+- Je feiner die Einstellung, desto ruhiger sollte der Kopf in der Mitte sein. Kommen Töne von allein, den Regler etwas in Richtung **grob** schieben oder **⌖ Mitte** tippen.
 - **⌖ Mitte**: die jetzige Kopfhaltung als Mitte nehmen. Kleine Verschiebungen gleicht die App mit der Zeit selbst aus.
 - Oben rechts zeigt ein kleines Bild, was die Kamera sieht.
 - Kopf, SoundWhacker und Finger gehen gleichzeitig.

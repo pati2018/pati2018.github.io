@@ -66,7 +66,7 @@ function kopfStop() {
   KOPF.gefunden = false; KOPF.bereit = true; kopfUi(); kopfStatus('');
 }
 
-const KOPF_AUS = .2, KOPF_MITTE = .08;   // Auslöseschwelle und Rückkehrzone (Abstand von der Mitte, 0…0,5)
+const KOPF_AUS = .2, KOPF_MITTE = .11;   // Auslöseschwelle und Rückkehrzone (Abstand von der Mitte, 0…0,5)
 
 function kopfSchleife() {
   if (!KOPF.an) return;
@@ -98,7 +98,7 @@ function kopfSchleife() {
   // damit das natürliche Zittern der Erkennung bei kleinen Bewegungen keine Töne auslöst
   KOPF.verlauf.push([tx, ty]); if (KOPF.verlauf.length > 5) KOPF.verlauf.shift();
   const med = i => { const a = KOPF.verlauf.map(v => v[i]).sort((x, y) => x - y); return a[a.length >> 1]; };
-  const glattX = Math.min(.5, 8 / gain), glattY = Math.min(.5, nick * .16);
+  const glattX = Math.max(.13, Math.min(.5, 8 / gain)), glattY = Math.max(.13, Math.min(.5, nick * .16));
   KOPF.px += (med(0) - KOPF.px) * glattX; KOPF.py += (med(1) - KOPF.py) * glattY;
   const ri = KOPF.einst.richtung;
   const ax = ri === 'nicken' ? 0 : Math.abs(KOPF.px - .5), ay = ri === 'seite' ? 0 : Math.abs(KOPF.py - .5);
@@ -162,17 +162,27 @@ function kopfUi() {
 }
 (function () {
   const $ = id => document.getElementById(id);
-  const stufen = [...$('kopfGain').options].map(o => +o.value);
-  if (!stufen.includes(KOPF.einst.gain)) KOPF.einst.gain = stufen.reduce((a, b) => Math.abs(b - KOPF.einst.gain) < Math.abs(a - KOPF.einst.gain) ? b : a);
-  const nicks = [...$('kopfNick').options].map(o => +o.value);
-  if (!nicks.includes(KOPF.einst.nick)) KOPF.einst.nick = 2.5;
-  $('kopfGain').value = String(KOPF.einst.gain); $('kopfNick').value = String(KOPF.einst.nick); $('kopfRichtung').value = KOPF.einst.richtung;
+  // Schieberegler 0 (grob) … 100 (fein), logarithmisch: der feine Bereich bekommt mehr Platz
+  // feines Ende = was in Tests mit typischem Zittern der Erkennung noch zuverlässig ging (≈ 0,65° bzw. 0,6 % Bildbreite)
+  const GAIN_GROB = 3, GAIN_FEIN = 34, NICK_GROB = 8, NICK_FEIN = .65;
+  const zuGain = v => GAIN_GROB * Math.pow(GAIN_FEIN / GAIN_GROB, v / 100), vonGain = g => Math.round(100 * Math.log(g / GAIN_GROB) / Math.log(GAIN_FEIN / GAIN_GROB));
+  const zuNick = v => NICK_GROB * Math.pow(NICK_FEIN / NICK_GROB, v / 100), vonNick = d => Math.round(100 * Math.log(d / NICK_GROB) / Math.log(NICK_FEIN / NICK_GROB));
+  const klemme = v => Math.min(100, Math.max(0, v));
+  const zahl = (x, n) => x.toFixed(n).replace('.', ',');
+  const zeigeWerte = () => {
+    $('kopfNickVal').textContent = zahl(KOPF.einst.nick, KOPF.einst.nick < 3 ? 1 : 0) + '°';
+    $('kopfGainVal').textContent = 'Stufe ' + $('kopfGain').value;
+  };
+  $('kopfGain').value = klemme(vonGain(KOPF.einst.gain || 9)); KOPF.einst.gain = zuGain(+$('kopfGain').value);
+  $('kopfNick').value = klemme(vonNick(KOPF.einst.nick || 2.5)); KOPF.einst.nick = zuNick(+$('kopfNick').value);
+  $('kopfRichtung').value = KOPF.einst.richtung; zeigeWerte();
   const sichtbar = () => { $('kopfGainL').hidden = KOPF.einst.richtung === 'nicken'; $('kopfNickL').hidden = KOPF.einst.richtung === 'seite'; };
   sichtbar();
   $('kopfBtn').onclick = () => (KOPF.an ? kopfStop() : kopfStart());
   $('kopfMitte').onclick = () => { KOPF.cx = null; kopfStatus('Mitte neu gesetzt. ' + kopfHinweis()); };
-  $('kopfGain').onchange = e => { KOPF.einst.gain = +e.target.value; e.target.blur(); kopfMerke(); };
-  $('kopfNick').onchange = e => { KOPF.einst.nick = +e.target.value; e.target.blur(); kopfMerke(); };
+  $('kopfGain').oninput = e => { KOPF.einst.gain = zuGain(+e.target.value); zeigeWerte(); kopfMerke(); };
+  $('kopfNick').oninput = e => { KOPF.einst.nick = zuNick(+e.target.value); zeigeWerte(); kopfMerke(); };
+  $('kopfGain').onchange = $('kopfNick').onchange = e => e.target.blur();
   $('kopfRichtung').onchange = e => { KOPF.einst.richtung = e.target.value; e.target.blur(); kopfMerke(); sichtbar(); KOPF.bereit = true; if (KOPF.gefunden) kopfStatus(kopfHinweis()); };
   document.addEventListener('visibilitychange', () => { if (document.hidden && KOPF.an) kopfStop(); });
   kopfUi();

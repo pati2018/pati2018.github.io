@@ -49,6 +49,16 @@
   #kopfOpt{display:contents}
   #kopfOpt[hidden]{display:none}
   .bar label[hidden]{display:none}
+  #aufBtn{background:#c0392b;color:#fff}
+  #aufBtn.stop{background:#fff;color:#c0392b;box-shadow:inset 0 0 0 2px #c0392b}
+  .aufzeit{font-variant-numeric:tabular-nums;color:var(--ink)}
+  .aufhinweis{font-size:14px;color:#ffb199}
+  .takes{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px}
+  .take{display:flex;flex-direction:column;gap:6px;width:min(340px,100%)}
+  .take video{width:100%;border-radius:10px;background:#000;border:1px solid var(--line)}
+  .takeKn{display:flex;gap:8px;flex-wrap:wrap}
+  .takeKn button{font-size:14px;padding:7px 14px}
+  .takeInfo{font-size:13px;color:var(--muted)}
   .regler small{font-size:12px;color:var(--muted)}
   .regler input[type=range]{width:clamp(110px,16vw,170px)}
   .regler b{min-width:3.4em;font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600}
@@ -104,8 +114,17 @@
   </div>
 
   <div class="stage"><canvas id="harfe" aria-label="Tischharfe – über die Saiten streichen oder einzelne Saiten antippen"></canvas>
-    <div class="vorschau" id="kopfVorschau" hidden><video id="kopfVideo" playsinline muted autoplay></video></div></div>
+    <div class="vorschau" id="kopfVorschau" hidden><video id="kopfVideo" playsinline muted autoplay></video></div>
+    <div class="vorschau" id="aufVorschau" hidden><video id="aufVideo" playsinline muted autoplay></video></div></div>
   <div class="swbar" id="swbar" role="group" aria-label="SoundWhacker 1 bis 5 (Tasten 1–5)"></div>
+  <div class="bar aufbar">
+    <button id="aufBtn">● Video aufnehmen</button>
+    <label><input id="aufKamera" type="checkbox" checked> 📷 Kamerabild</label>
+    <label><input id="aufMikro" type="checkbox"> 🎤 Mikrofon</label>
+    <span id="aufZeit" class="aufzeit"></span>
+    <span id="aufHinweis" class="aufhinweis"></span>
+  </div>
+  <div id="takes" class="takes"></div>
   <p class="msg" id="msg" aria-live="polite">Tippe auf die Saite mit dem leuchtenden Punkt.</p>
 
   <details>
@@ -131,12 +150,14 @@ let geo={};
 
 // ================= Audio =================
 let ctx=null, master, dry, wet, conv, samples={}, ladeStatus='aus';
+let recDest=null;   // Harfenklang für Video-Aufnahmen
 const SAMPLE_TOENE={E3:52,G3:55,B3:59,D4:62,F4:65,A4:69,C5:72,E5:76,G5:79,B5:83};
 function initAudio(){
   if(ctx) return;
   ctx=new (window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'});
   const comp=ctx.createDynamicsCompressor(); comp.threshold.value=-10; comp.ratio.value=3; comp.attack.value=.003; comp.release.value=.2;
   master=ctx.createGain(); master.gain.value=.9; master.connect(comp); comp.connect(ctx.destination);
+  try{ recDest=ctx.createMediaStreamDestination(); comp.connect(recDest) }catch(e){ recDest=null }
   dry=ctx.createGain(); wet=ctx.createGain(); dry.connect(master); wet.connect(master);
   conv=ctx.createConvolver(); conv.buffer=hallImpuls(2.6); conv.connect(wet);
   setHall(); ladeSamples();
@@ -486,5 +507,6 @@ addEventListener('resize',layout);
 requestAnimationFrame(schleife);
 </script>
 <script src="kopf.js"></script>
+<script src="aufnahme.js"></script>
 </body>
 </html>

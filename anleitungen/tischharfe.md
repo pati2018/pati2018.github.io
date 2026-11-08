@@ -65,6 +65,21 @@ Unter dem Kamerabild zeigt ein kleines Feld, wo dein Kopf gerade steht: grün = 
 - Oben rechts zeigt ein kleines Bild, was die Kamera sieht.
 - Kopf, SoundWhacker und Finger gehen gleichzeitig.
 
+## Video aufnehmen
+
+Wie in MIGA kann man das Spielen als Video aufnehmen – zum Anschauen, Vorführen oder für die Dokumentation.
+
+1. Unter der Harfe auf **● Video aufnehmen** tippen.
+2. Spielen – mit den Fingern, den SoundWhackern oder dem Kopf.
+3. **■ Aufnahme beenden**. Die Aufnahme erscheint darunter mit Vorschau.
+4. **💾 Speichern**: Auf dem iPad öffnet sich das Teilen-Menü → **„Video sichern“** (Fotos) oder **„In Dateien sichern“**. Am Computer wird die Datei heruntergeladen.
+
+- Im Video sind **die Harfe mit Notenblatt** und oben rechts das **Kamerabild** zu sehen, dazu der **Harfenklang** direkt aus der App (glasklar, nicht über das Mikrofon).
+- **📷 Kamerabild** ausschalten, wenn nur die Harfe zu sehen sein soll. Läuft die Kopfsteuerung, wird deren Kamerabild verwendet.
+- **🎤 Mikrofon** einschalten, um zusätzlich Stimmen oder Gesang aufzunehmen. Das Mikrofon geht nur ins Video, nicht auf die Lautsprecher. Mit Kopfhörern klingt es am saubersten.
+- Gespeichert wird als **MP4** (auf iPad/iPhone und in aktuellen Browsern), sonst als WebM. Höchstens **5 Minuten** pro Aufnahme.
+- Aufnahmen, die nicht gespeichert wurden, sind nach dem Neuladen weg.
+
 ## Die drei Modi
 
 | Modus | Was passiert |

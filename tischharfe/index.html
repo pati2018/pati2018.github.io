@@ -77,7 +77,6 @@
     <label>SoundWhacker <select id="sw">
       <option value="weiter">Nächster Ton (alle SW)</option>
       <option value="toene">Jeder SW ein Ton</option>
-      <option value="akkorde">Akkorde begleiten</option>
       <option value="aus">Aus</option>
     </select></label>
     <button id="druck" class="quiet">🖨 Notenblatt drucken</button>
@@ -223,25 +222,19 @@ function zupf(i,vel=.8,pruefen=true){
 
 // ================= SoundWhacker (SW-HUB im Tastatur-Modus: Tasten 1–5) =================
 const SW_FARBEN=['#e5484d','#f08c2e','#f2cf3a','#46b37b','#3f8ee8'];
-let swBelegung=[];   // toene: MIDI-Ton je SW · akkorde: {name, pcs}
+let swBelegung=[];   // toene: MIDI-Ton je SW
 const saiteVon=m=>saiten.findIndex(s=>s.midi===m);
 function swAufbau(){
   swBelegung=[]; const L=st.lied;
   if(st.sw==='toene'&&L){
     const toene=[...new Set(L.noten.filter(n=>n.midi!==null).map(n=>n.midi))].sort((a,b)=>a-b);
     if(toene.length<=5) swBelegung=toene;
-  } else if(st.sw==='akkorde'){
-    const t=(((L?L.shift:0)%12)+12)%12;   // Grundton (Lieder sind in C notiert)
-    swBelegung=[[0,4,7,'dur'],[5,9,0,'dur'],[7,11,2,'dur'],[9,0,4,'moll'],[2,5,9,'moll']].map(([a,b,c,art])=>{
-      const nm=H.tonName(48+(a+t)%12); return {name:art==='dur'?nm[0].toUpperCase()+nm.slice(1):nm, pcs:[a,b,c].map(x=>(x+t)%12)};
-    });
   }
   const bar=$('swbar'); bar.hidden=st.sw==='aus';
   bar.innerHTML=SW_FARBEN.map((c,k)=>{
     let unter='', aus=false;
     if(st.sw==='weiter') unter='nächster Ton';
     else if(st.sw==='toene'){ const m=swBelegung[k]; unter=m==null?'–':H.tonName(m); aus=m==null }
-    else if(st.sw==='akkorde') unter=swBelegung[k].name;
     return `<button class="swb" data-sw="${k}" style="--c:${c}"${aus?' disabled':''}>SW${k+1}<small>${unter}</small></button>`;
   }).join('');
   bar.querySelectorAll('.swb').forEach(b=>b.onpointerdown=e=>{e.preventDefault(); swSchlag(+b.dataset.sw)});
@@ -252,11 +245,6 @@ function swSchlag(k){
   if(b){ b.classList.add('schlag'); clearTimeout(b._t); b._t=setTimeout(()=>b.classList.remove('schlag'),160) }
   if(st.sw==='aus'||!st.lied) return;
   initAudio(); if(ctx.state!=='running') ctx.resume();
-  if(st.sw==='akkorde'){            // Akkord als Harfen-Arpeggio von unten nach oben
-    const ch=swBelegung[k]; const idx=saiten.map((s,i)=>i).filter(i=>ch.pcs.includes(saiten[i].midi%12));
-    idx.forEach((i,j)=>setTimeout(()=>zupf(i,.5,false),j*32));
-    return;
-  }
   if(st.modus!=='ueben') setzeModus('ueben');
   if(st.fertig) neustart();
   if(st.sw==='weiter'){ const z=st.lied.noten[st.pos]; if(z) zupf(saiteVon(z.midi),.85) }
@@ -449,7 +437,7 @@ addEventListener('keydown',e=>{
 H.GRUPPEN.forEach(gr=>{const og=document.createElement('optgroup'); og.label=gr; H.LIEDER.filter(l=>l.gruppe===gr).forEach(l=>og.appendChild(new Option(l.titel,l.id))); $('lied').appendChild(og)});
 for(const k in H.MODELLE) $('modell').add(new Option(H.MODELLE[k].name,k));
 // gespeicherte Auswahl
-try{const s=JSON.parse(localStorage.getItem('tischharfe')||'{}'); Object.assign(st,{liedId:s.liedId||st.liedId,modell:+s.modell||st.modell,klang:s.klang||st.klang,hall:s.hall??st.hall,namen:s.namen??st.namen,sw:s.sw||st.sw})}catch(e){}
+try{const s=JSON.parse(localStorage.getItem('tischharfe')||'{}'); Object.assign(st,{liedId:s.liedId||st.liedId,modell:+s.modell||st.modell,klang:s.klang||st.klang,hall:s.hall??st.hall,namen:s.namen??st.namen,sw:['weiter','toene','aus'].includes(s.sw)?s.sw:st.sw})}catch(e){}
 const q=new URLSearchParams(location.search); if(q.get('lied')) st.liedId=q.get('lied'); if(H.MODELLE[q.get('modell')]) st.modell=+q.get('modell');
 function merke(){ try{localStorage.setItem('tischharfe',JSON.stringify({liedId:st.liedId,modell:st.modell,klang:st.klang,hall:st.hall,namen:st.namen,sw:st.sw}))}catch(e){} }
 $('lied').value=st.liedId; $('modell').value=st.modell; $('klang').value=st.klang; $('hall').value=st.hall; $('namen').checked=st.namen; $('sw').value=st.sw;
@@ -459,7 +447,7 @@ $('modell').onchange=e=>{st.modell=+e.target.value; ladeLied(); merke()};
 $('klang').onchange=e=>{st.klang=e.target.value; merke(); if(ctx) zupf(Math.floor(saiten.length/2),.7)};
 $('hall').oninput=e=>{st.hall=+e.target.value; setHall(); merke()};
 $('namen').onchange=e=>{st.namen=e.target.checked; merke()};
-$('sw').onchange=e=>{st.sw=e.target.value; e.target.blur(); merke(); swAufbau(); if(st.sw!=='aus'&&st.sw!=='akkorde'&&st.modus!=='ueben') setzeModus('ueben'); else neustart()};
+$('sw').onchange=e=>{st.sw=e.target.value; e.target.blur(); merke(); swAufbau(); if(st.sw!=='aus'&&st.modus!=='ueben') setzeModus('ueben'); else neustart()};
 $('tempo').oninput=e=>{st.tempo=+e.target.value; $('tempoVal').textContent=st.tempo; if(st.spielt){stopVorspiel(); startVorspiel()}};
 function setzeModus(m){ st.modus=m; document.querySelectorAll('[data-modus]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.modus===m)); neustart() }
 document.querySelectorAll('[data-modus]').forEach(b=>b.onclick=()=>setzeModus(b.dataset.modus));

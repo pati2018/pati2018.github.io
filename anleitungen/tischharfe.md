@@ -41,7 +41,6 @@ Die fünf **SoundWhacker** steuern die Tischharfe über den SW-HUB – genau wie
 |---|---|
 | **Nächster Ton (alle SW)** | Jeder Schlag – egal auf welchen SW – spielt den nächsten Ton des Liedes. So spielt die ganze Gruppe gemeinsam ein Lied, auch ganz ohne Vorkenntnisse. Am Ende geht es mit dem nächsten Schlag von vorn los. |
 | **Jeder SW ein Ton** | Wie bei Boomwhackern: Jeder SW hat einen festen Ton. Die Farbe steht über der Saite und als Ring um jeden Punkt auf dem Notenblatt; der SW, der dran ist, leuchtet unten auf. Geht bei Liedern mit höchstens 5 verschiedenen Tönen: **Hänschen klein, Mary Had a Little Lamb, Old MacDonald, Jingle Bells**. |
-| **Akkorde begleiten** | Jeder SW streicht einen Akkord über die Harfe (SW1–SW5 = C, F, G, a, d – passend zur Tonart des Liedes). Damit kann eine Gruppe begleiten, während jemand die Melodie zupft. |
 | **Aus** | Die SoundWhacker sind abgeschaltet. |
 
 Den SW lange gedrückt halten spielt nur einen Ton – die Harfe klingt von selbst aus.

@@ -153,12 +153,13 @@ window.EIGENE = (function () {
 
   // ---------- Abspielen ----------
   const pufferCache = new WeakMap();   // berechneter Ton → AudioBuffer je AudioContext
-  function spiele(ctx, ziel, { midi, t, pegel = .8, d }) {
+  // schleife: true = gehalten endlos weiterklingen; Standard: einmal abspielen (klingt natürlich aus)
+  function spiele(ctx, ziel, { midi, t, pegel = .8, d, schleife = false }) {
     const D = d || daten; if (!D) return { stop() {} };
     const N = fuerNote(D, midi);
     let b = pufferCache.get(N); if (!b || b.ctx !== ctx) { const ab = ctx.createBuffer(1, N.pcm.length, D.sr); ab.getChannelData(0).set(N.pcm); b = { ctx, ab }; pufferCache.set(N, b); }
     const src = ctx.createBufferSource(), g = ctx.createGain();
-    src.buffer = b.ab; src.loop = true; src.loopStart = N.ls / D.sr; src.loopEnd = N.le / D.sr;
+    src.buffer = b.ab; src.loop = schleife; src.loopStart = N.ls / D.sr; src.loopEnd = N.le / D.sr;
     g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(pegel, t + .012);
     src.connect(g); g.connect(ziel); src.start(t);
     let aus = false;

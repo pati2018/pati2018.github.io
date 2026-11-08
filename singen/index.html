@@ -68,7 +68,7 @@
     <button id="probe" class="quiet">▶ Hörprobe</button>
   </div>
   <div class="sws" id="sws" role="group" aria-label="SoundWhacker 1 bis 5"></div>
-  <p class="msg"><b>Tipp:</b> Mit <b>🎤 Eigene Stimme</b> singst du einmal „laaaa“ – dann singen die SoundWhacker mit deiner echten Stimme.<br>Auf einen <b>SoundWhacker</b> hauen (SW-HUB im Tastatur-Modus) oder <kbd>1</kbd>–<kbd>5</kbd> drücken bzw. die Felder antippen. <b>Gehalten singt die Stimme weiter</b>, losgelassen klingt sie aus. Mehrere zusammen ergeben einen Chor – die fünf Töne passen immer zusammen (Pentatonik).</p>
+  <p class="msg"><b>Tipp:</b> Mit <b>🎤 Eigene Stimme</b> singst du einmal „laaaa“ – dann singen die SoundWhacker mit deiner echten Stimme.<br>Auf einen <b>SoundWhacker</b> hauen (SW-HUB im Tastatur-Modus) oder <kbd>1</kbd>–<kbd>5</kbd> drücken bzw. die Felder antippen. Jeder Schlag singt <b>einen Ton, der natürlich ausklingt</b> – auch wenn der SoundWhacker gehalten wird. Mehrere zusammen ergeben einen Chor – die fünf Töne passen immer zusammen (Pentatonik).</p>
 </div>
 
 <div class="fenster" id="aufFenster" hidden>
@@ -89,7 +89,7 @@
 </div>
 
 <script src="stimme.js?v=2"></script>
-<script src="eigene-stimme.js?v=4"></script>
+<script src="eigene-stimme.js?v=5"></script>
 <script>
 const $=id=>document.getElementById(id);
 const FARBEN=['#e5484d','#f08c2e','#f2cf3a','#46b37b','#3f8ee8'];
@@ -122,7 +122,16 @@ function grundton(){
   return STIMME.STIMMEN[st.stimme].grund-4+st.tonart;
 }
 const midiVon=k=>grundton()+STUFEN[k];
-const singeTon=(midi,t,pegel=.75)=>st.stimme==='meine'&&EIGENE.daten?EIGENE.spiele(ctx,bus,{midi,t,pegel:pegel*.5}):STIMME.singe(ctx,bus,{midi,t,stimme:st.stimme,silbe:st.silbe,vibrato:st.vib/100,pegel});
+// Ein Schlag = ein Ton, der natürlich ausklingt (nicht wiederholt, auch wenn der SW gehalten wird)
+function singeTon(midi,t,pegel=.75){
+  const aus=ctx.createGain(); aus.connect(bus);
+  // nach ~½ s langsam leiser; bei der eigenen Stimme so, dass der Ton bis zum Ende der Aufnahme ganz verklungen ist
+  const eigen=st.stimme==='meine'&&EIGENE.daten, dauer=eigen?EIGENE.daten.pcm.length/EIGENE.daten.sr:3.5;
+  aus.gain.setValueAtTime(1,t); aus.gain.setTargetAtTime(0,t+.45,Math.max(.2,(dauer-.5)/4.5));
+  const v=eigen?EIGENE.spiele(ctx,aus,{midi,t,pegel:pegel*.5}):STIMME.singe(ctx,aus,{midi,t,stimme:st.stimme,silbe:st.silbe,vibrato:st.vib/100,pegel});
+  v.stop(t+4); setTimeout(()=>aus.disconnect(),5000);
+  return v;
+}
 
 // SoundWhacker-Felder
 const klingt={};   // k → laufender Ton
@@ -146,8 +155,9 @@ function aus(k){
   const el=document.querySelector(`.sw[data-k="${k}"]`); if(el) el.classList.remove('an');
 }
 // Tasten 1–5 (SW-HUB im Tastatur-Modus): gedrückt = singen, losgelassen = aus
-addEventListener('keydown',e=>{ const m=/^(Digit|Numpad)([1-5])$/.exec(e.code)||(/^[1-5]$/.test(e.key)?[0,0,e.key]:null); if(!m) return; e.preventDefault(); if(!e.repeat) an(+m[2]-1) });
-addEventListener('keyup',e=>{ const m=/^(Digit|Numpad)([1-5])$/.exec(e.code)||(/^[1-5]$/.test(e.key)?[0,0,e.key]:null); if(m) aus(+m[2]-1) });
+addEventListener('keydown',e=>{ const m=/^(Digit|Numpad)([1-5])$/.exec(e.code)||(/^[1-5]$/.test(e.key)?[0,0,e.key]:null); if(!m) return; e.preventDefault(); const k=+m[2]-1; if(!e.repeat&&!gehalten[k]){ gehalten[k]=true; an(k) } });
+addEventListener('keyup',e=>{ const m=/^(Digit|Numpad)([1-5])$/.exec(e.code)||(/^[1-5]$/.test(e.key)?[0,0,e.key]:null); if(m){ gehalten[+m[2]-1]=false; aus(+m[2]-1) } });
+const gehalten={};   // SW gerade gedrückt (gegen wiederholte Tastendrücke des HUB)
 
 // Hörprobe: „Alle meine Entchen“ – Anfang
 $('probe').onclick=()=>{

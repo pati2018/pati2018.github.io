@@ -1,6 +1,6 @@
 ## Worum geht es?
 
-Bei **Singen mit SoundWhackern** singt jeder SoundWhacker einen Ton – mit einer **künstlichen Stimme auf „la“**. Wer draufhaut, „singt“; wer gedrückt hält, singt weiter. Mehrere SoundWhacker zusammen ergeben einen kleinen **Chor**. Die fünf Töne sind so gewählt (Pentatonik), dass **alles immer zusammenpasst** – falsche Töne gibt es nicht.
+Bei **Singen mit SoundWhackern** singt jeder SoundWhacker einen Ton – mit einer **künstlichen Stimme auf „la“**. Jeder Schlag singt einen Ton, der natürlich ausklingt. Mehrere SoundWhacker zusammen ergeben einen kleinen **Chor**. Die fünf Töne sind so gewählt (Pentatonik), dass **alles immer zusammenpasst** – falsche Töne gibt es nicht.
 
 Am schönsten klingt es mit der **eigenen Stimme**: einmal „laaaa“ singen – fertig.
 
@@ -17,7 +17,7 @@ Ab jetzt singen die SoundWhacker mit dieser Stimme („Meine Stimme“ unter *St
 - Jeder Ton wird **automatisch genau gestimmt** – auch wenn man beim Aufnehmen nicht ganz getroffen hat.
 - Die fünf Töne liegen **rund um die aufgenommene Tonlage**, damit die Stimme natürlich bleibt.
 - Höhere und tiefere Töne entstehen, indem die App die einzelnen Schwingungen der Stimme enger oder weiter aneinanderreiht (PSOLA). So ändert sich nur die **Tonhöhe, nicht die Klangfarbe** – kein „Micky-Maus“-Effekt.
-- **Gedrückt halten** = die Stimme singt weiter.
+- **Ein Schlag = ein Ton**, der natürlich ausklingt – auch wenn der SoundWhacker gehalten wird, wird nichts wiederholt. Früher loslassen = schneller verklungen.
 - Die Aufnahme bleibt **auf dem Gerät gespeichert**. Neu aufnehmen oder **🗑 Meine Stimme löschen** geht jederzeit über **🎤 Eigene Stimme**.
 
 Die **künstlichen Stimmen** (Kind, Frau, Mann) gibt es weiterhin zur Auswahl.

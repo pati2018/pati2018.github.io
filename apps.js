@@ -15,7 +15,7 @@
  *  symbol       – ein Emoji als Bild für die Karte
  *  bild         – (optional) Bilddatei statt Emoji, z. B. das App-Symbol
  *  datum        – Veröffentlichungsdatum, Format JJJJ-MM-TT
- *  ganzUnten    – (optional) true: App steht immer am Ende der Liste
+ *  ganzUnten    – (optional) Zahl: App steht am Ende der Liste, größere Zahl = weiter unten (1 = vorletzter Block, 2 = ganz unten)
  *
  *  Neueste Apps stehen automatisch oben (sortiert nach Datum).
  * ============================================================
@@ -29,7 +29,8 @@ window.APPS = [
     repo: "https://github.com/pati2018/pati2018.github.io/tree/main/singen",
     kategorie: "Musik",
     symbol: "🎤",
-    datum: "2026-11-08"
+    datum: "2026-11-08",
+    ganzUnten: 1
   },
   {
     id: "atemklang",
@@ -40,7 +41,7 @@ window.APPS = [
     kategorie: "Musik",
     symbol: "🎷",
     datum: "2026-11-08",
-    ganzUnten: true
+    ganzUnten: 2
   },
   {
     id: "tischharfe",

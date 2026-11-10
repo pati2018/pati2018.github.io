@@ -45,7 +45,7 @@ window.HARFE = (function () {
       noten: [
         "E4:1 E4:1 F4:1 G4:1 G4:1 F4:1 E4:1 D4:1 C4:1 C4:1 D4:1 E4:1 E4:1.5 D4:.5 D4:2",
         "E4:1 E4:1 F4:1 G4:1 G4:1 F4:1 E4:1 D4:1 C4:1 C4:1 D4:1 E4:1 D4:1.5 C4:.5 C4:2",
-        "D4:1 D4:1 E4:1 C4:1 D4:1 E4:.5 F4:.5 E4:1 C4:1 D4:1 E4:.5 F4:.5 E4:1 D4:1 C4:1 D4:1 G3:2",
+        "D4:1 D4:1 E4:1 C4:1 D4:1 E4:.5 F4:.5 E4:1 C4:1 D4:1 E4:.5 F4:.5 E4:1 D4:1 C4:1 D4:1 G4:2",   // tiefes g eine Oktave höher → nur 5 Töne (c d e f g)
         "E4:1 E4:1 F4:1 G4:1 G4:1 F4:1 E4:1 D4:1 C4:1 C4:1 D4:1 E4:1 D4:1.5 C4:.5 C4:2"].join(" "),
       text: "Freu- de, schö- ner Göt- ter- fun- ken, Toch- ter aus E- ly- si- um, wir be- tre- ten feu- er- trun- ken, Himm- li- sche, dein Hei- lig- tum. Dei- ne Zau- ber bin- den- _ wie- der, was die- _ Mo- de streng ge- teilt; al- le Men- schen wer- den Brü- der, wo dein sanf- ter Flü- gel weilt." },
     { id: "stillenacht", gruppe: "Feste", titel: "Stille Nacht", takt: 3, tempo: 76,

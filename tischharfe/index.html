@@ -613,7 +613,7 @@ addEventListener('keydown',e=>{
 function liedAuswahl(){
   const sel=$('lied'); sel.innerHTML='';
   H.GRUPPEN.forEach(gr=>{ const ls=H.LIEDER.filter(l=>l.gruppe===gr); if(!ls.length) return;
-    const og=document.createElement('optgroup'); og.label=gr; ls.forEach(l=>og.appendChild(new Option(l.titel,l.id))); sel.appendChild(og) });
+    const og=document.createElement('optgroup'); og.label=gr; ls.forEach(l=>og.appendChild(new Option(liedTitelMitMarke(l),l.id))); sel.appendChild(og) });
   if(!H.LIEDER.some(l=>l.id===st.liedId)) st.liedId=H.LIEDER[0].id;
   sel.value=st.liedId;
 }
@@ -653,6 +653,8 @@ function menue(id,auf){
 }
 document.querySelectorAll('.menuKnopf').forEach(b=>b.onclick=()=>menue(b.dataset.menu,b.getAttribute('aria-expanded')!=='true'));
 MENUES.forEach(id=>{ if(menueAuf[id]){ $('menu-'+id).hidden=false; document.querySelector(`.menuKnopf[data-menu="${id}"]`).setAttribute('aria-expanded',true) } });
+// Lieder mit höchstens 5 verschiedenen Tönen markieren (passen auf 5 SoundWhacker)
+function liedTitelMitMarke(l){ let v=0; try{ v=new Set(H.parse(l).noten.filter(n=>n.midi!==null).map(n=>n.midi)).size }catch(e){} return v&&v<=5?'⭐ '+l.titel+' – '+v+' Töne':l.titel }
 function menueLiedName(){ const l=H.LIEDER.find(x=>x.id===st.liedId); $('menuLiedName').textContent=l?l.titel:'Lied'; }
 $('lied').addEventListener('change',menueLiedName);
 { const alt=liedAuswahl; liedAuswahl=function(){ alt(); menueLiedName() }; }

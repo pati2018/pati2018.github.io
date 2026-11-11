@@ -37,7 +37,6 @@ Speichern, committen – nach ca. einer Minute ist die App auf der Seite.
 
 | Ordner | App |
 |---|---|
-| `quiz-taubenschutz/` | Quiz Taubenschutz; die Fragen stehen in `fragen.js` |
 | `singen/` | Singen mit SoundWhackern; `stimme.js` ist die künstliche Singstimme (Formant-Synthese) |
 | `atemklang/` | Blasinstrument mit Atemsteuerung über das Mikrofon |
 | `tischharfe/` | Tischharfe mit Unterlegnoten; `lieder.js` enthält die Lieder, `kopf.js` die Kopfsteuerung, `aufnahme.js` die Video-Aufnahme |

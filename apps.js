@@ -22,6 +22,17 @@
  */
 window.APPS = [
   {
+    id: "quiz-taubenschutz",
+    titel: "Quiz Taubenschutz",
+    kurz: "10 Fragen rund um Stadttauben und Taubenschutz – mit Erklärung nach jeder Antwort, Vorlesen und Sternen am Ende. Spielbar auch mit den Tasten 1–4 bzw. den SoundWhackern.",
+    link: "https://pati2018.github.io/quiz-taubenschutz/",
+    repo: "https://github.com/pati2018/pati2018.github.io/tree/main/quiz-taubenschutz",
+    kategorie: "Quiz",
+    symbol: "🕊️",
+    bild: "quiz-taubenschutz/icons/icon-192.png",
+    datum: "2026-11-11"
+  },
+  {
     id: "singen",
     titel: "Singen mit SoundWhackern",
     kurz: "Jeder SoundWhacker singt einen Ton auf „la“ – mit der eigenen Stimme (einmal „laaaa“ ins Mikrofon singen), einem echten Chor „Aah“ oder einer künstlichen Frauen- oder Männerstimme. Jeder Schlag singt einen Ton, der natürlich ausklingt. Die Töne passen immer zusammen.",

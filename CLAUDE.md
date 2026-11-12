@@ -13,7 +13,7 @@ Repo, neue Regel), diese Datei mit aktualisieren.**
 - **Ergebnis zuerst:** Erst sagen, was fertig ist und wo man es sieht (Link), dann Details.
 - **Testen:** Apps vor dem Veröffentlichen im Browser prüfen, vor allem auf
   **iPad und iPhone** (Hoch- und Querformat).
-- **Barrierefreiheit ist Pflicht:** Große Knöpfe, gut lesbar, Vorlesen wo sinnvoll,
+- **Barrierefreiheit ist Pflicht:** Große Knöpfe, gut lesbar, sofort Klang (draufdrücken und es klingt),
   Bedienung auch per Tastatur bzw. SoundWhacker/Taster.
 - **Nachfragen statt raten**, wenn unklar ist, in welchem Repo oder an welcher App
   gearbeitet werden soll.

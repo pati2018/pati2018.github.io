@@ -74,6 +74,19 @@ svg text { font-family: var(--f-body); fill: var(--ink); }
 .demo { background: var(--stage); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; }
 .demo ol { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; }
 .demo code { font-size: 14px; background: var(--mem-soft); padding: 1px 6px; border-radius: 5px; }
+.notes { align-items: start; }
+details.note { padding: 0; }
+details.note > summary { list-style: none; cursor: pointer; padding: 16px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; }
+details.note > summary::-webkit-details-marker { display: none; }
+details.note > summary h3 { margin: 0; }
+details.note > summary::after { content: ""; flex-shrink: 0; width: 12px; height: 12px; border-right: 3px solid var(--c); border-bottom: 3px solid var(--c); transform: rotate(45deg); margin-top: -6px; transition: transform .15s ease; }
+details.note[open] > summary::after { transform: rotate(225deg); margin-top: 6px; }
+details.note > summary:focus-visible { outline: 3px solid var(--tool); outline-offset: -3px; border-radius: 12px; }
+details.note .body { padding: 0 18px 16px; }
+.notes-head { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.notes-head h2 { margin: 0; }
+.btn-ghost { font: inherit; font-weight: 700; font-size: 15px; cursor: pointer; border: 2px solid var(--ink); background: transparent; color: var(--ink); border-radius: 10px; padding: 8px 16px; }
+@media (prefers-reduced-motion: reduce) { details.note > summary::after { transition: none; } }
 </style>
 <style>
 .t-name { font-family: var(--f-display); font-weight: 600; font-size: 20px; }
@@ -232,31 +245,31 @@ svg text { font-family: var(--f-body); fill: var(--ink); }
   </div>
 
   <section class="notes">
-    <h2>So funktioniert es</h2>
-    <div class="note" style="--c:var(--ink)"><h3>1 · Idee</h3>
+    <div class="notes-head"><h2>So funktioniert es</h2><button class="btn-ghost" id="alle" type="button">Alle aufklappen</button></div>
+    <details class="note" style="--c:var(--ink)"><summary><h3>1 · Idee</h3></summary><div class="body">
       <p>Am Anfang steht ein Wunsch aus dem Unterricht, zum Beispiel ein Instrument, das man mit dem Kopf spielen kann.</p>
-      <p>Ich sage es Claude einfach, oft per Spracheingabe am iPad.</p></div>
-    <div class="note" style="--c:var(--mem)"><h3>2 · Gedächtnis</h3>
+      <p>Ich sage es Claude einfach, oft per Spracheingabe am iPad.</p></div></details>
+    <details class="note" style="--c:var(--mem)"><summary><h3>2 · Gedächtnis</h3></summary><div class="body">
       <p>Claude liest zuerst die Datei CLAUDE.md. Dort steht, wo meine Apps liegen und welche Regeln gelten.</p>
-      <p>Darum muss ich nicht jedes Mal von vorn erklären.</p></div>
-    <div class="note" style="--c:var(--tool)"><h3>3 · Bauen</h3>
+      <p>Darum muss ich nicht jedes Mal von vorn erklären.</p></div></details>
+    <details class="note" style="--c:var(--tool)"><summary><h3>3 · Bauen</h3></summary><div class="body">
       <p>Claude schreibt die App als Webseite: Klänge, große Knöpfe, Steuerung per Taster, Kopf oder SoundWhacker.</p>
-      <p>Nichts muss installiert werden, ein Browser reicht.</p></div>
-    <div class="note" style="--c:var(--skill)"><h3>4 · Testen</h3>
+      <p>Nichts muss installiert werden, ein Browser reicht.</p></div></details>
+    <details class="note" style="--c:var(--skill)"><summary><h3>4 · Testen</h3></summary><div class="body">
       <p>Bevor etwas online geht, prüft Claude die App im Browser, in der Größe von iPad und iPhone.</p>
-      <p>Ich bekomme Bildschirmfotos und sehe vorher, wie es aussieht.</p></div>
-    <div class="note" style="--c:var(--out)"><h3>5 · Online</h3>
+      <p>Ich bekomme Bildschirmfotos und sehe vorher, wie es aussieht.</p></div></details>
+    <details class="note" style="--c:var(--out)"><summary><h3>5 · Online</h3></summary><div class="body">
       <p>Claude lädt die App auf GitHub hoch. Nach ein bis zwei Minuten steht sie auf meiner Webseite.</p>
-      <p>Ein Link reicht, um sie auf jedem Tablet zu öffnen.</p></div>
-    <div class="note" style="--c:var(--rout)"><h3>6 · Unterricht</h3>
+      <p>Ein Link reicht, um sie auf jedem Tablet zu öffnen.</p></div></details>
+    <details class="note" style="--c:var(--rout)"><summary><h3>6 · Unterricht</h3></summary><div class="body">
       <p>Die Schülerinnen und Schüler spielen mit SoundWhackern, Tastern oder Kopfbewegungen.</p>
-      <p>Was ich dabei beobachte, wird zur nächsten Idee – der Kreis schließt sich.</p></div>
-    <div class="note" style="--c:var(--mem)"><h3>Die Regeln</h3>
+      <p>Was ich dabei beobachte, wird zur nächsten Idee – der Kreis schließt sich.</p></div></details>
+    <details class="note" style="--c:var(--mem)"><summary><h3>Die Regeln</h3></summary><div class="body">
       <p>Barrierefreiheit ist keine Zusatzaufgabe. Sie steht im Gedächtnis und gilt für jede neue App automatisch.</p>
-      <p>Große Knöpfe, sofort Klang beim Draufdrücken, Bedienung per Taster, Test auf iPad und iPhone.</p></div>
-    <div class="note" style="--c:var(--skill)"><h3>Das Sicherheitsnetz</h3>
+      <p>Große Knöpfe, sofort Klang beim Draufdrücken, Bedienung per Taster, Test auf iPad und iPhone.</p></div></details>
+    <details class="note" style="--c:var(--skill)"><summary><h3>Das Sicherheitsnetz</h3></summary><div class="body">
       <p>Funktionierende Stände werden gesichert. Geht beim Ausprobieren etwas schief, ist die letzte gute Version sofort wieder da.</p>
-      <p>Darum kann ich mutig ausprobieren.</p></div>
+      <p>Darum kann ich mutig ausprobieren.</p></div></details>
   </section>
 
 </div>
@@ -266,6 +279,16 @@ document.getElementById("fs").addEventListener("click", () => {
   const s = document.getElementById("stage");
   try { const p = s.requestFullscreen ? s.requestFullscreen() : s.webkitRequestFullscreen && s.webkitRequestFullscreen(); if (p && p.catch) p.catch(() => {}); } catch (e) {}
 });
+</script>
+
+<script>
+(function () {
+  var btn = document.getElementById("alle"), items = document.querySelectorAll("details.note");
+  function sync() { var alleOffen = Array.prototype.every.call(items, function (d) { return d.open; }); btn.textContent = alleOffen ? "Alle zuklappen" : "Alle aufklappen"; }
+  btn.addEventListener("click", function () { var auf = btn.textContent === "Alle aufklappen"; items.forEach(function (d) { d.open = auf; }); sync(); });
+  items.forEach(function (d) { d.addEventListener("toggle", sync); });
+  sync();
+})();
 </script>
 </body>
 </html>

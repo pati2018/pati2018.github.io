@@ -71,6 +71,19 @@ svg text { font-family: var(--f-body); fill: var(--ink); }
 .demo { background: var(--stage); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; }
 .demo ol { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; }
 .demo code { font-size: 14px; background: var(--mem-soft); padding: 1px 6px; border-radius: 5px; }
+.notes { align-items: start; }
+details.note { padding: 0; }
+details.note > summary { list-style: none; cursor: pointer; padding: 16px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; }
+details.note > summary::-webkit-details-marker { display: none; }
+details.note > summary h3 { margin: 0; }
+details.note > summary::after { content: ""; flex-shrink: 0; width: 12px; height: 12px; border-right: 3px solid var(--c); border-bottom: 3px solid var(--c); transform: rotate(45deg); margin-top: -6px; transition: transform .15s ease; }
+details.note[open] > summary::after { transform: rotate(225deg); margin-top: 6px; }
+details.note > summary:focus-visible { outline: 3px solid var(--tool); outline-offset: -3px; border-radius: 12px; }
+details.note .body { padding: 0 18px 16px; }
+.notes-head { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.notes-head h2 { margin: 0; }
+.btn-ghost { font: inherit; font-weight: 700; font-size: 15px; cursor: pointer; border: 2px solid var(--ink); background: transparent; color: var(--ink); border-radius: 10px; padding: 8px 16px; }
+@media (prefers-reduced-motion: reduce) { details.note > summary::after { transition: none; } }
 </style>
 
 </head>
@@ -198,32 +211,32 @@ svg text { font-family: var(--f-body); fill: var(--ink); }
   </div>
 
   <section class="notes">
-    <h2>So funktioniert es</h2>
-    <div class="note" style="--c:var(--ink)"><h3>Ich</h3>
+    <div class="notes-head"><h2>So funktioniert es</h2><button class="btn-ghost" id="alle" type="button">Alle aufklappen</button></div>
+    <details class="note" style="--c:var(--ink)"><summary><h3>Ich</h3></summary><div class="body">
       <p>Ich beschreibe einfach, was ich brauche, meistens per Spracheingabe am iPhone oder iPad.</p>
-      <p>Ich muss nicht programmieren können. Es geht von jedem Gerät aus.</p></div>
-    <div class="note" style="--c:var(--ink)"><h3>Claude in der Mitte</h3>
+      <p>Ich muss nicht programmieren können. Es geht von jedem Gerät aus.</p></div></details>
+    <details class="note" style="--c:var(--ink)"><summary><h3>Claude in der Mitte</h3></summary><div class="body">
       <p>Die KI ist die Schaltzentrale. Sie versteht den Auftrag und entscheidet, welche Bausteine sie braucht.</p>
-      <p>Sie hat eine feste Rolle: Bei mir heißt sie „Riff“ und spricht einfaches Deutsch.</p></div>
-    <div class="note" style="--c:var(--mem)"><h3>Gedächtnis</h3>
+      <p>Sie hat eine feste Rolle: Bei mir heißt sie „Riff“ und spricht einfaches Deutsch.</p></div></details>
+    <details class="note" style="--c:var(--mem)"><summary><h3>Gedächtnis</h3></summary><div class="body">
       <p>Eine Textdatei namens CLAUDE.md. Darin steht, welche Projekte es gibt, wo sie liegen und welche Regeln gelten.</p>
-      <p>Sie liegt auf GitHub, nicht bei Claude. Jeder neue Chat liest sie zuerst, so muss ich nichts mehr erklären.</p></div>
-    <div class="note" style="--c:var(--skill)"><h3>Fähigkeiten: Skills &amp; Plugins</h3>
+      <p>Sie liegt auf GitHub, nicht bei Claude. Jeder neue Chat liest sie zuerst, so muss ich nichts mehr erklären.</p></div></details>
+    <details class="note" style="--c:var(--skill)"><summary><h3>Fähigkeiten: Skills &amp; Plugins</h3></summary><div class="body">
       <p>Ein Skill ist ein fester Ablauf für eine Aufgabe, die immer wiederkommt, z. B. aus einem Infoblatt Lehrmaterial bauen oder einen Flyer gestalten. Ein Plugin ist ein fertiges Paket zum Installieren: mehrere Skills, oft zusammen mit passenden Connectors.</p>
       <p>Einmal sauber beschrieben, liefern sie jedes Mal das gleiche gute Ergebnis.</p>
-      <p><strong>Beispiel für ein Plugin:</strong> Meine Schul-Skills, etwa für Lehrmaterial und Flyer, lassen sich zu einem Paket bündeln. Das können Kolleginnen und Kollegen mit einem Klick installieren und sofort nutzen.</p></div>
-    <div class="note" style="--c:var(--tool)"><h3>Werkzeuge: Connectors</h3>
+      <p><strong>Beispiel für ein Plugin:</strong> Meine Schul-Skills, etwa für Lehrmaterial und Flyer, lassen sich zu einem Paket bündeln. Das können Kolleginnen und Kollegen mit einem Klick installieren und sofort nutzen.</p></div></details>
+    <details class="note" style="--c:var(--tool)"><summary><h3>Werkzeuge: Connectors</h3></summary><div class="body">
       <p>Connectors verbinden Claude mit anderen Diensten, z. B. GitHub, Gmail oder Google Drive. Damit kann die KI selbst handeln: Dateien ablegen, Webseiten veröffentlichen, Mails vorbereiten.</p>
-      <p>Wichtig: Abschicken und Löschen nur nach meiner Bestätigung.</p></div>
-    <div class="note" style="--c:var(--out)"><h3>Ergebnisse</h3>
+      <p>Wichtig: Abschicken und Löschen nur nach meiner Bestätigung.</p></div></details>
+    <details class="note" style="--c:var(--out)"><summary><h3>Ergebnisse</h3></summary><div class="body">
       <p>Am Ende steht etwas Fertiges: Musik-Apps auf meiner Webseite, Excel-Listen, Word-Dokumente, PDFs, Flyer.</p>
-      <p>Die Apps sind sofort auf dem Tablet im Unterricht nutzbar.</p></div>
-    <div class="note" style="--c:var(--rout)"><h3>Routinen (nächster Schritt)</h3>
+      <p>Die Apps sind sofort auf dem Tablet im Unterricht nutzbar.</p></div></details>
+    <details class="note" style="--c:var(--rout)"><summary><h3>Routinen (nächster Schritt)</h3></summary><div class="body">
       <p>Aufgaben, die zu festen Zeiten von selbst laufen, z. B. jeden Sonntag prüfen, ob alle Apps funktionieren.</p>
-      <p>Damit wird aus dem Assistenten ein System, das mitdenkt.</p></div>
-    <div class="note" style="--c:var(--mem)"><h3>Der Kreislauf</h3>
+      <p>Damit wird aus dem Assistenten ein System, das mitdenkt.</p></div></details>
+    <details class="note" style="--c:var(--mem)"><summary><h3>Der Kreislauf</h3></summary><div class="body">
       <p>Was neu entsteht, wird im Gedächtnis eingetragen. So wird das System mit jeder Aufgabe ein bisschen klüger.</p>
-      <p>Ein Satz am Ende reicht: „Trag das in die CLAUDE.md ein.“</p></div>
+      <p>Ein Satz am Ende reicht: „Trag das in die CLAUDE.md ein.“</p></div></details>
   </section>
 
 </div>
@@ -233,6 +246,16 @@ document.getElementById("fs").addEventListener("click", () => {
   const s = document.getElementById("stage");
   try { const p = s.requestFullscreen ? s.requestFullscreen() : s.webkitRequestFullscreen && s.webkitRequestFullscreen(); if (p && p.catch) p.catch(() => {}); } catch (e) {}
 });
+</script>
+
+<script>
+(function () {
+  var btn = document.getElementById("alle"), items = document.querySelectorAll("details.note");
+  function sync() { var alleOffen = Array.prototype.every.call(items, function (d) { return d.open; }); btn.textContent = alleOffen ? "Alle zuklappen" : "Alle aufklappen"; }
+  btn.addEventListener("click", function () { var auf = btn.textContent === "Alle aufklappen"; items.forEach(function (d) { d.open = auf; }); sync(); });
+  items.forEach(function (d) { d.addEventListener("toggle", sync); });
+  sync();
+})();
 </script>
 </body>
 </html>

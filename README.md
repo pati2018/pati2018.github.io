@@ -39,5 +39,6 @@ Speichern, committen – nach ca. einer Minute ist die App auf der Seite.
 |---|---|
 | `singen/` | Singen mit SoundWhackern; `stimme.js` ist die künstliche Singstimme (Formant-Synthese) |
 | `atemklang/` | Blasinstrument mit Atemsteuerung über das Mikrofon |
+| `ki-os/` | Erklärseite „Mein KI-Betriebssystem“ (allgemein: Gedächtnis, Skills & Plugins, Connectors, Routinen); verlinkt von `ki-betriebssystem/` |
 | `ki-betriebssystem/` | Erklärseite „So entstehen meine Apps“ (Schaubild, verlinkt alle Musik-Apps); keine App, darum nicht in `apps.js` |
 | `tischharfe/` | Tischharfe mit Unterlegnoten; `lieder.js` enthält die Lieder, `kopf.js` die Kopfsteuerung, `aufnahme.js` die Video-Aufnahme |

@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Mein KI-Betriebssystem: wie Gedächtnis, Skills, Plugins, Connectors und Routinen um Claude zusammenspielen.">
+<link rel="icon" href="../icons/favicon-32.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<title>Mein KI-Betriebssystem</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<style>
+/* Layout: ein 16:9-Schaubild für den Beamer (Nabe in der Mitte, fünf Bausteine drumherum, Ablauf darunter), darunter Sprechertext.
+   Bewusst nur ein helles Erscheinungsbild – gut lesbar am Beamer. */
+:root {
+  --bg: #e9eef0;
+  --stage: #fbfcfc;
+  --ink: #15232b;
+  --muted: #566871;
+  --line: #c9d5da;
+  --mem: #17707a;  --mem-soft: #dcefF1;
+  --skill: #b05a14; --skill-soft: #f8e8da;
+  --tool: #2f5fb3;  --tool-soft: #e0e9f8;
+  --out: #2c7a3c;   --out-soft: #dff0e2;
+  --rout: #6a52b8;  --rout-soft: #ece7f8;
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 17px; line-height: 1.55; }
+.wrap {
+  max-width: 1280px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 56px;
+  display: flex; flex-direction: column; gap: 28px;
+}
+.bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.bar p { margin: 0; color: var(--muted); font-size: 15px; }
+.btn { font: inherit; font-weight: 700; font-size: 15px; cursor: pointer; border: 2px solid var(--ink); background: var(--ink); color: var(--stage); border-radius: 10px; padding: 8px 16px; }
+.links { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+.back { font-weight: 700; color: var(--tool); text-decoration: none; font-size: 17px; }
+.back:hover { text-decoration: underline; }
+.btn:focus-visible { outline: 3px solid var(--tool); outline-offset: 2px; }
+.stage { background: var(--stage); border-radius: 18px; border: 1px solid var(--line); overflow: hidden; width: 100%; aspect-ratio: 16 / 9; max-width: 100%; }
+.stage:fullscreen { border-radius: 0; border: 0; display: flex; align-items: center; justify-content: center; background: var(--stage); }
+.stage svg { display: block; width: 100%; height: 100%; }
+
+svg text { font-family: var(--f-body); fill: var(--ink); }
+.t-title { font-family: var(--f-display); font-weight: 800; font-size: 50px; }
+.t-sub { font-size: 23px; fill: var(--muted); }
+.t-h { font-family: var(--f-display); font-weight: 600; font-size: 28px; }
+.t-l { font-size: 19.5px; }
+.t-small { font-size: 17px; fill: var(--muted); }
+.t-hub { font-family: var(--f-display); font-weight: 800; font-size: 40px; fill: var(--stage); }
+.t-hub2 { font-size: 21px; fill: var(--stage); }
+.t-step { font-size: 19px; }
+.t-num { font-family: var(--f-display); font-weight: 800; font-size: 22px; fill: var(--stage); }
+.t-tag { font-size: 15px; font-weight: 700; letter-spacing: .06em; }
+
+.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 16px; }
+.notes > h2, .demo > h2 { grid-column: 1 / -1; font-family: var(--f-display); font-weight: 600; font-size: 26px; margin: 0; text-wrap: balance; }
+.note { background: var(--stage); border: 1px solid var(--line); border-left: 6px solid var(--c); border-radius: 12px; padding: 16px 18px; min-width: 0; }
+.note h3 { margin: 0 0 4px; font-family: var(--f-display); font-weight: 600; font-size: 20px; color: var(--c); }
+.note p { margin: 0; }
+.note p + p { margin-top: 6px; color: var(--muted); font-size: 15.5px; }
+.demo { background: var(--stage); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; }
+.demo ol { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; }
+.demo code { font-size: 14px; background: var(--mem-soft); padding: 1px 6px; border-radius: 5px; }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <div class="bar">
+    <nav class="links"><a class="back" href="../">← Alle Musik-Apps</a><a class="back" href="../ki-betriebssystem/">KI-Betriebssystem für Musik-Apps →</a></nav>
+    <button class="btn" id="fs" type="button">Vollbild</button>
+  </div>
+
+  <div class="stage" id="stage">
+    <svg viewBox="0 0 1600 900" role="img" aria-labelledby="svgT svgD">
+      <title id="svgT">Mein KI-Betriebssystem</title>
+      <desc id="svgD">Ich gebe Claude per Sprache einen Auftrag. Claude nutzt Gedächtnis, Fähigkeiten, Werkzeuge und Routinen und liefert fertige Ergebnisse. Neues wird im Gedächtnis gemerkt.</desc>
+      <defs>
+        <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#566871"/>
+        </marker>
+        <marker id="ahm" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#17707a"/>
+        </marker>
+      </defs>
+
+      <text class="t-title" x="50" y="72">Mein KI-Betriebssystem</text>
+      <text class="t-sub" x="52" y="108">Wie Claude für mich arbeitet – von der Idee am Handy bis zum fertigen Ergebnis</text>
+
+      <!-- Verbindungen (unter der Nabe gezeichnet) -->
+      <g stroke="#566871" stroke-width="3" fill="none">
+        <line x1="302" y1="410" x2="690" y2="410" marker-end="url(#ah)"/>
+        <line x1="905" y1="410" x2="1292" y2="410" marker-end="url(#ah)"/>
+        <line x1="800" y1="410" x2="630" y2="296" marker-end="url(#ah)" marker-start="url(#ah)"/>
+        <line x1="800" y1="410" x2="970" y2="296" marker-end="url(#ah)"/>
+        <line x1="800" y1="410" x2="630" y2="524" marker-end="url(#ah)"/>
+        <line x1="800" y1="410" x2="970" y2="524" marker-end="url(#ah)" stroke-dasharray="9 8"/>
+      </g>
+      <text class="t-small" x="496" y="398" text-anchor="middle">Auftrag</text>
+      <text class="t-small" x="1098" y="398" text-anchor="middle">fertig</text>
+
+      <!-- Rückkopplung: Neues wird gemerkt -->
+      <path d="M1425,296 C1425,96 545,96 545,148" fill="none" stroke="#17707a" stroke-width="3" stroke-dasharray="10 8" marker-end="url(#ahm)"/>
+      <rect x="1060" y="111" width="300" height="32" rx="16" fill="#fbfcfc"/>
+      <text class="t-tag" x="1210" y="133" text-anchor="middle" fill="#17707a" style="fill:#17707a">NEUES WIRD GEMERKT</text>
+
+      <!-- Ich -->
+      <rect x="50" y="330" width="250" height="160" rx="18" fill="#ffffff" stroke="#15232b" stroke-width="3"/>
+      <text class="t-h" x="76" y="374">Ich</text>
+      <text class="t-l" x="76" y="408">sage, was ich brauche</text>
+      <text class="t-l" x="76" y="436">– oft per Sprache</text>
+      <text class="t-small" x="76" y="470">iPhone · iPad · jeder PC</text>
+
+      <!-- Gedächtnis -->
+      <rect x="400" y="150" width="290" height="144" rx="16" fill="#dcf0f1" stroke="#17707a" stroke-width="3"/>
+      <text class="t-tag" x="424" y="178" style="fill:#17707a">GEDÄCHTNIS</text>
+      <text class="t-h" x="424" y="212">CLAUDE.md</text>
+      <text class="t-l" x="424" y="242">Projekte, Regeln, Ideen</text>
+      <text class="t-l" x="424" y="270">liegt sicher auf GitHub</text>
+
+      <!-- Werkzeuge -->
+      <rect x="910" y="150" width="290" height="144" rx="16" fill="#e0e9f8" stroke="#2f5fb3" stroke-width="3"/>
+      <text class="t-tag" x="934" y="178" style="fill:#2f5fb3">WERKZEUGE</text>
+      <text class="t-h" x="934" y="212">Connectors</text>
+      <text class="t-l" x="934" y="242">Verbindungen zu Diensten:</text>
+      <text class="t-l" x="934" y="270">GitHub, Gmail, Browser, PC</text>
+
+      <!-- Fähigkeiten -->
+      <rect x="400" y="526" width="290" height="144" rx="16" fill="#f8e8da" stroke="#b05a14" stroke-width="3"/>
+      <text class="t-tag" x="424" y="554" style="fill:#b05a14">FÄHIGKEITEN</text>
+      <text class="t-h" x="424" y="588">Skills &amp; Plugins</text>
+      <text class="t-l" x="424" y="618">Skill = fester Ablauf</text>
+      <text class="t-l" x="424" y="646">Plugin = fertiges Paket</text>
+
+      <!-- Routinen -->
+      <rect x="910" y="526" width="290" height="144" rx="16" fill="#ece7f8" stroke="#6a52b8" stroke-width="3" stroke-dasharray="11 8"/>
+      <text class="t-tag" x="934" y="554" style="fill:#6a52b8">ROUTINEN · AUSBLICK</text>
+      <text class="t-h" x="934" y="588">läuft von selbst</text>
+      <text class="t-l" x="934" y="618">zu festen Zeiten, z. B.</text>
+      <text class="t-l" x="934" y="646">App-Check jeden Sonntag</text>
+
+      <!-- Ergebnisse -->
+      <rect x="1300" y="298" width="250" height="224" rx="18" fill="#dff0e2" stroke="#2c7a3c" stroke-width="3"/>
+      <text class="t-tag" x="1324" y="328" style="fill:#2c7a3c">ERGEBNISSE</text>
+      <text class="t-h" x="1324" y="362">fertig &amp; nutzbar</text>
+      <text class="t-l" x="1324" y="396">Musik-Apps online</text>
+      <text class="t-l" x="1324" y="424">Excel, Word, PDF</text>
+      <text class="t-l" x="1324" y="452">Arbeitsblätter</text>
+      <text class="t-l" x="1324" y="480">Flyer, Übersichten</text>
+
+      <!-- Nabe -->
+      <circle cx="800" cy="410" r="108" fill="#15232b"/>
+      <circle cx="800" cy="410" r="120" fill="none" stroke="#15232b" stroke-width="2" opacity=".25"/>
+      <text class="t-hub" x="800" y="406" text-anchor="middle">Claude</text>
+      <text class="t-hub2" x="800" y="440" text-anchor="middle">Assistent „Riff“</text>
+
+      <!-- Ablauf -->
+      <text class="t-tag" x="50" y="722" style="fill:#566871">SO LÄUFT EIN AUFTRAG</text>
+      <g>
+        <rect x="50"   y="738" width="282" height="118" rx="14" fill="#ffffff" stroke="#c9d5da" stroke-width="2"/>
+        <rect x="355"  y="738" width="282" height="118" rx="14" fill="#ffffff" stroke="#c9d5da" stroke-width="2"/>
+        <rect x="660"  y="738" width="282" height="118" rx="14" fill="#ffffff" stroke="#c9d5da" stroke-width="2"/>
+        <rect x="965"  y="738" width="282" height="118" rx="14" fill="#ffffff" stroke="#c9d5da" stroke-width="2"/>
+        <rect x="1270" y="738" width="282" height="118" rx="14" fill="#ffffff" stroke="#c9d5da" stroke-width="2"/>
+        <circle cx="88" cy="778" r="22" fill="#15232b"/><text class="t-num" x="88" y="786" text-anchor="middle">1</text>
+        <circle cx="393" cy="778" r="22" fill="#17707a"/><text class="t-num" x="393" y="786" text-anchor="middle">2</text>
+        <circle cx="698" cy="778" r="22" fill="#b05a14"/><text class="t-num" x="698" y="786" text-anchor="middle">3</text>
+        <circle cx="1003" cy="778" r="22" fill="#2c7a3c"/><text class="t-num" x="1003" y="786" text-anchor="middle">4</text>
+        <circle cx="1308" cy="778" r="22" fill="#17707a"/><text class="t-num" x="1308" y="786" text-anchor="middle">5</text>
+        <text class="t-step" x="122" y="774">Ich sage, was ich</text><text class="t-step" x="122" y="800">brauche.</text>
+        <text class="t-step" x="427" y="774">Claude liest das</text><text class="t-step" x="427" y="800">Gedächtnis.</text>
+        <text class="t-step" x="732" y="774">Claude nimmt Skill</text><text class="t-step" x="732" y="800">und Werkzeug.</text>
+        <text class="t-step" x="1037" y="774">Ich bekomme das</text><text class="t-step" x="1037" y="800">fertige Ergebnis.</text>
+        <text class="t-step" x="1342" y="774">Neues kommt ins</text><text class="t-step" x="1342" y="800">Gedächtnis.</text>
+        <text class="t-small" x="122" y="834">Chat oder Spracheingabe</text>
+        <text class="t-small" x="427" y="834">kennt sofort alles</text>
+        <text class="t-small" x="732" y="834">z. B. Skill + Connector</text>
+        <text class="t-small" x="1037" y="834">online, als Datei, als Mail</text>
+        <text class="t-small" x="1342" y="834">nächster Chat weiß es</text>
+      </g>
+      <g stroke="#c9d5da" stroke-width="3" fill="none">
+        <path d="M334,797 l18,0" marker-end="url(#ah)"/>
+        <path d="M639,797 l18,0" marker-end="url(#ah)"/>
+        <path d="M944,797 l18,0" marker-end="url(#ah)"/>
+        <path d="M1249,797 l18,0" marker-end="url(#ah)"/>
+      </g>
+    </svg>
+  </div>
+
+  <section class="notes">
+    <h2>So funktioniert es</h2>
+    <div class="note" style="--c:var(--ink)"><h3>Ich</h3>
+      <p>Ich beschreibe einfach, was ich brauche, meistens per Spracheingabe am iPhone oder iPad.</p>
+      <p>Ich muss nicht programmieren können. Es geht von jedem Gerät aus.</p></div>
+    <div class="note" style="--c:var(--ink)"><h3>Claude in der Mitte</h3>
+      <p>Die KI ist die Schaltzentrale. Sie versteht den Auftrag und entscheidet, welche Bausteine sie braucht.</p>
+      <p>Sie hat eine feste Rolle: Bei mir heißt sie „Riff“ und spricht einfaches Deutsch.</p></div>
+    <div class="note" style="--c:var(--mem)"><h3>Gedächtnis</h3>
+      <p>Eine Textdatei namens CLAUDE.md. Darin steht, welche Projekte es gibt, wo sie liegen und welche Regeln gelten.</p>
+      <p>Sie liegt auf GitHub, nicht bei Claude. Jeder neue Chat liest sie zuerst, so muss ich nichts mehr erklären.</p></div>
+    <div class="note" style="--c:var(--skill)"><h3>Fähigkeiten: Skills &amp; Plugins</h3>
+      <p>Ein Skill ist ein fester Ablauf für eine Aufgabe, die immer wiederkommt, z. B. aus einem Infoblatt Lehrmaterial bauen oder einen Flyer gestalten. Ein Plugin ist ein fertiges Paket zum Installieren: mehrere Skills, oft zusammen mit passenden Connectors.</p>
+      <p>Einmal sauber beschrieben, liefern sie jedes Mal das gleiche gute Ergebnis.</p>
+      <p><strong>Beispiel für ein Plugin:</strong> Meine Schul-Skills, etwa für Lehrmaterial und Flyer, lassen sich zu einem Paket bündeln. Das können Kolleginnen und Kollegen mit einem Klick installieren und sofort nutzen.</p></div>
+    <div class="note" style="--c:var(--tool)"><h3>Werkzeuge: Connectors</h3>
+      <p>Connectors verbinden Claude mit anderen Diensten, z. B. GitHub, Gmail oder Google Drive. Damit kann die KI selbst handeln: Dateien ablegen, Webseiten veröffentlichen, Mails vorbereiten.</p>
+      <p>Wichtig: Abschicken und Löschen nur nach meiner Bestätigung.</p></div>
+    <div class="note" style="--c:var(--out)"><h3>Ergebnisse</h3>
+      <p>Am Ende steht etwas Fertiges: Musik-Apps auf meiner Webseite, Excel-Listen, Word-Dokumente, PDFs, Flyer.</p>
+      <p>Die Apps sind sofort auf dem Tablet im Unterricht nutzbar.</p></div>
+    <div class="note" style="--c:var(--rout)"><h3>Routinen (nächster Schritt)</h3>
+      <p>Aufgaben, die zu festen Zeiten von selbst laufen, z. B. jeden Sonntag prüfen, ob alle Apps funktionieren.</p>
+      <p>Damit wird aus dem Assistenten ein System, das mitdenkt.</p></div>
+    <div class="note" style="--c:var(--mem)"><h3>Der Kreislauf</h3>
+      <p>Was neu entsteht, wird im Gedächtnis eingetragen. So wird das System mit jeder Aufgabe ein bisschen klüger.</p>
+      <p>Ein Satz am Ende reicht: „Trag das in die CLAUDE.md ein.“</p></div>
+  </section>
+
+</div>
+
+<script>
+document.getElementById("fs").addEventListener("click", () => {
+  const s = document.getElementById("stage");
+  try { const p = s.requestFullscreen ? s.requestFullscreen() : s.webkitRequestFullscreen && s.webkitRequestFullscreen(); if (p && p.catch) p.catch(() => {}); } catch (e) {}
+});
+</script>
+</body>
+</html>

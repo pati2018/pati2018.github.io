@@ -76,7 +76,7 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
 - Veröffentlichung aus `main` über GitHub Actions („Seite veröffentlichen“).
 - **Sicherungen:** `stabil-1` bis `stabil-36` als Tags, ab `stabil-37` als Branches.
 
-## Dieses Repo `midi-player`
+## Repo `midi-player`
 
 - Reine HTML-Dateien, kein Build, kein Server.
 - `index.html`: MIDI-Player mit Soundfonts (smplr), Synth-Fallback, Hall,
@@ -89,7 +89,8 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
 
 - MIDI-Player und Groove-Werkstatt auf die Übersicht „Meine Web-Apps“ bringen.
 
-## Diese Datei gibt es zweimal
+## Diese Datei ist das zentrale Gedächtnis
 
-Gleicher Inhalt in `pati2018.github.io` und `midi-player`. Bei Änderungen beide
-Kopien aktualisieren.
+Dies ist die **einzige vollständige Fassung**. Andere Repos (z. B. `midi-player`)
+haben nur eine kurze `CLAUDE.md` mit einem Verweis hierher. Neues immer **hier**
+eintragen, nicht in den anderen Repos.

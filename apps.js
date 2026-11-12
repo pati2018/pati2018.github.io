@@ -15,9 +15,11 @@
  *  symbol       – ein Emoji als Bild für die Karte
  *  bild         – (optional) Bilddatei statt Emoji, z. B. das App-Symbol
  *  datum        – Veröffentlichungsdatum, Format JJJJ-MM-TT
+ *  ganzOben     – (optional) Zahl: feste Position oben, 1 = ganz oben, 2 = danach …
  *  ganzUnten    – (optional) Zahl: App steht am Ende der Liste, größere Zahl = weiter unten (1 = vorletzter Block, 2 = ganz unten)
  *
- *  Neueste Apps stehen automatisch oben (sortiert nach Datum).
+ *  Erst kommen die Apps mit ganzOben, dann die übrigen (neueste zuerst),
+ *  am Ende die Apps mit ganzUnten.
  * ============================================================
  */
 window.APPS = [
@@ -56,7 +58,8 @@ window.APPS = [
     kategorie: "Musik",
     symbol: "🎼",
     bild: "tischharfe/icons/icon-192.png",
-    datum: "2026-11-08"
+    datum: "2026-11-08",
+    ganzOben: 3
   },
   {
     id: "smart-instruments",
@@ -81,7 +84,8 @@ window.APPS = [
     repo: "https://github.com/pati2018/soundwhacker-looper",
     kategorie: "Musik",
     symbol: "🥁",
-    datum: "2026-11-05"
+    datum: "2026-11-05",
+    ganzOben: 1
   },
   {
     id: "miga",
@@ -91,6 +95,7 @@ window.APPS = [
     repo: "https://github.com/pati2018/soundwhacker-looper",
     kategorie: "Musik",
     symbol: "📷",
-    datum: "2026-11-05"
+    datum: "2026-11-05",
+    ganzOben: 2
   }
 ];

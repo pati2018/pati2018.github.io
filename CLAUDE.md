@@ -54,8 +54,10 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
   - **Achtung:** `tischharfe/lieder.js` lädt auch SoundWhacker Spielen (Gemeinsame Melodie).
     Wer Lieder ändert, ändert sie in beiden Apps – und erhöht in `SoundWhacker_Spielen.html`
     die Nummer bei `../tischharfe/lieder.js?v=…`, sonst bleibt dort die alte Liste im Speicher.
-  - **Reihenfolge auf der Übersicht:** neueste oben; Singen vorletzt (`ganzUnten: 1`),
-    Atemklang ganz unten (`ganzUnten: 2`).
+  - **Reihenfolge auf der Übersicht:** 1. SoundWhacker Smart Control, 2. MIGA,
+    3. Tischharfe (`ganzOben: 1–3` in `apps.js`), danach die übrigen nach Datum
+    (neueste oben); Singen vorletzt (`ganzUnten: 1`), Atemklang ganz unten (`ganzUnten: 2`).
+    Die Kacheln auf der Erklärseite `ki-betriebssystem/` stehen in derselben Reihenfolge.
   - In eigenen Repos (nur verlinkt):
     - Smart Instruments → Repo `pati2018/Gitarre`
     - SoundWhacker Smart Control und MIGA (Mimik, Gestik, Augensteuerung)

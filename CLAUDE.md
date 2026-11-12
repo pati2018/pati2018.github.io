@@ -60,6 +60,9 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
     - Smart Instruments → Repo `pati2018/Gitarre`
     - SoundWhacker Smart Control und MIGA (Mimik, Gestik, Augensteuerung)
       → Repo `pati2018/soundwhacker-looper`
+- **Erklärseite** `ki-betriebssystem/index.html`: Schaubild „Mein KI-Betriebssystem für
+  Musik-Apps“, oben auf der Übersicht verlinkt. Keine App, steht nicht in `apps.js`.
+  Kommt eine neue App dazu, dort die App-Kachel (klickbarer Link) ergänzen.
 - **Weitere Dateien:** `index.html` (Übersicht), `app.html` (zeigt die Anleitung
   einer App), `anleitungen/<id>.md` (Anleitungen), `style.css`, `theme.js`
   (Hell/Dunkel), `manifest.webmanifest` (Home-Bildschirm), `lib/` (marked, DOMPurify).

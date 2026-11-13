@@ -38,6 +38,18 @@ Repo, neue Regel), diese Datei mit aktualisieren.**
 Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
 (z. B. `pati2018.github.io` für Änderungen an der Übersicht).
 
+## GitHub-Zugriff
+
+- **Einmal eingerichtet, gilt dauerhaft:** GitHub-Konto mit Claude verbunden
+  (https://claude.ai/connect-github) und die **Claude GitHub App** auf GitHub installiert.
+- **Pro Chat:** Das Repo beim Start auswählen oder im Chat dazuholen lassen.
+- **Wo die Erlaubnis steht:** bei GitHub unter https://github.com/settings/installations
+  (Claude-App → „Configure“: welche Repos, welche Rechte). Dort lässt sich der Zugriff
+  auch jederzeit entziehen.
+- **Hochladen abgelehnt oder Repo fehlt?** Verbindung über claude.ai/connect-github
+  erneuern; bei einem neuen Repo prüfen, ob es in der Claude-App freigeschaltet ist.
+- **Nie** Passwörter, Tokens oder Schlüssel in diese Datei schreiben – das Repo ist öffentlich.
+
 ## Hauptseite `pati2018.github.io`
 
 - **Veröffentlichung:** GitHub Pages direkt aus `main`. Nach dem Push ist die

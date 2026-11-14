@@ -102,8 +102,9 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
 
 - Veröffentlichung aus `main` über GitHub Actions („Seite veröffentlichen“).
 - **Sicherungen:** `stabil-1` bis `stabil-36` als Tags, ab `stabil-37` als Branches.
-- **Klang auf älteren iPads:** SoundWhacker Spielen erkennt iPadOS 16 und älter (z. B. iPad 5. Generation)
-  und rechnet dann mit 24 kHz und größerem Puffer (gegen Knacken). Test: `?klang=spar` bzw. `?klang=normal`.
+- **iPad 5. Generation (iPadOS 16):** Beim Antippen des Bildschirms kratzt der Klang – auch in der
+  Tischharfe, also eine Grenze von Safari auf diesem Gerät. Mit SoundWhackern/Tasten klingt es sauber.
+  Ausprobiert ohne Erfolg: halbe Abtastrate (24 kHz), größerer Puffer, „Klang schonen“, Leicht-Modus-Idee.
 
 ## Repo `midi-player`
 

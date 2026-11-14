@@ -80,6 +80,10 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
 - **Erklärseite** `ki-os/index.html`: allgemeines Schaubild „Mein KI-Betriebssystem“
   (Gedächtnis, Skills & Plugins, Connectors, Routinen). Von `ki-betriebssystem/` verlinkt
   und umgekehrt. Öffentlich: keine Noten-, Bewertungs- oder Prüfungs-Skills nennen.
+- **Erklärseite** `vorher-nachher/index.html`: „Vorher – Nachher“ – erste, unübersichtliche
+  Version (Looper `stabil-16`, Link über raw.githack.com) gegen SoundWhacker Smart Control;
+  Botschaft: Musik-Apps mit KI brauchen Gestaltung. Bilder `vorher.jpg`/`nachher.jpg`.
+  Von der Übersicht und beiden KI-Erklärseiten verlinkt. Knapp halten, nicht überladen.
 - **Weitere Dateien:** `index.html` (Übersicht), `app.html` (zeigt die Anleitung
   einer App), `anleitungen/<id>.md` (Anleitungen), `style.css`, `theme.js`
   (Hell/Dunkel), `manifest.webmanifest` (Home-Bildschirm), `lib/` (marked, DOMPurify).

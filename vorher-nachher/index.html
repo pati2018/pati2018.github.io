@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Vorher – Nachher: Wie aus einer unübersichtlichen KI-Erstversion die SoundWhacker Smart Control wurde. Musik-Apps mit KI brauchen Gestaltung.">
+<link rel="icon" href="../icons/favicon-32.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<title>Vorher – Nachher</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<style>
+/* Gleiche Gestaltung wie die Erklärseiten ki-betriebssystem/ und ki-os/ – bewusst hell, gut lesbar am Beamer. */
+:root {
+  --bg: #e9eef0;
+  --stage: #fbfcfc;
+  --ink: #15232b;
+  --muted: #566871;
+  --line: #c9d5da;
+  --vor: #b8452f;  --vor-soft: #f8e3dd;
+  --nach: #2c7a3c; --nach-soft: #dff0e2;
+  --tool: #2f5fb3; --tool-soft: #e0e9f8;
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 18px; line-height: 1.55; }
+.wrap {
+  max-width: 1180px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 56px;
+  display: flex; flex-direction: column; gap: 32px;
+}
+.links { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+.back { font-weight: 700; color: var(--tool); text-decoration: none; font-size: 17px; }
+.back:hover { text-decoration: underline; }
+h1 { font-family: var(--f-display); font-weight: 800; font-size: clamp(34px, 5.5vw, 58px); line-height: 1.05; margin: 0; text-wrap: balance; }
+.lead { font-size: clamp(19px, 2.2vw, 23px); color: var(--muted); margin: 10px 0 0; max-width: 46em; text-wrap: pretty; }
+h2 { font-family: var(--f-display); font-weight: 600; font-size: clamp(24px, 3vw, 32px); margin: 0 0 14px; }
+
+/* Vorher / Nachher */
+.vergleich { display: grid; grid-template-columns: 1fr; gap: 20px; }
+@media (min-width: 820px) { .vergleich { grid-template-columns: 1fr auto 1fr; align-items: stretch; } }
+.karte { background: var(--stage); border: 1px solid var(--line); border-top: 8px solid var(--c); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.karte.vor { --c: var(--vor); --soft: var(--vor-soft); }
+.karte.nach { --c: var(--nach); --soft: var(--nach-soft); }
+.marke { align-self: flex-start; font-weight: 700; font-size: 14px; letter-spacing: .08em; text-transform: uppercase; color: var(--c); background: var(--soft); border-radius: 999px; padding: 3px 12px; }
+.karte h3 { font-family: var(--f-display); font-weight: 600; font-size: 24px; margin: 0; }
+.karte .wann { color: var(--muted); font-size: 15px; margin-top: -8px; }
+.bild { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: #0b0f14; }
+.bild img { display: block; width: 100%; height: auto; }
+.bild.lang { height: 340px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.zahl { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.zahl b { font-family: var(--f-display); font-weight: 800; font-size: 44px; line-height: 1; color: var(--c); }
+.zahl span { font-size: 17px; }
+.karte p { margin: 0; }
+.knopf { margin-top: auto; align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 10px 18px; border-radius: 12px; font-weight: 700; text-decoration: none; color: #fff; background: var(--c); }
+.knopf:focus-visible, .back:focus-visible { outline: 3px solid var(--tool); outline-offset: 3px; }
+.pfeil { display: none; }
+@media (min-width: 820px) { .pfeil { display: flex; align-items: center; font-size: 40px; color: var(--muted); } }
+
+/* Worauf achten */
+.punkte { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 14px; }
+.punkte li { background: var(--stage); border: 1px solid var(--line); border-left: 6px solid var(--tool); border-radius: 12px; padding: 14px 16px; }
+.punkte strong { display: block; font-family: var(--f-display); font-weight: 600; font-size: 20px; margin-bottom: 2px; }
+.punkte em { font-style: normal; display: inline-block; margin-top: 6px; background: var(--tool-soft); border-radius: 6px; padding: 2px 8px; font-size: 16px; }
+
+/* Botschaft */
+.botschaft { background: var(--ink); color: var(--stage); border-radius: 18px; padding: clamp(22px, 4vw, 40px); }
+.botschaft p { margin: 0; font-family: var(--f-display); font-weight: 800; font-size: clamp(24px, 3.6vw, 38px); line-height: 1.2; text-wrap: balance; }
+.botschaft p + p { margin-top: 14px; font-family: var(--f-body); font-weight: 400; font-size: clamp(18px, 2vw, 21px); line-height: 1.5; color: #c9d6dc; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="links">
+    <a class="back" href="../">← Alle Musik-Apps</a>
+    <a class="back" href="../ki-betriebssystem/">KI-Betriebssystem für Musik-Apps</a>
+    <a class="back" href="../ki-os/">Mein KI-Betriebssystem</a>
+  </nav>
+
+  <header>
+    <h1>Vorher – Nachher</h1>
+    <p class="lead">Dieselbe App, zwei Versionen. Die KI hat schnell alle Funktionen gebaut – benutzbar wurde die App erst durch Gestaltung.</p>
+  </header>
+
+  <section class="vergleich" aria-label="Vergleich der beiden Versionen">
+    <article class="karte vor">
+      <span class="marke">Vorher</span>
+      <h3>Erste Version</h3>
+      <div class="wann">SoundWhacker Looper · Oktober 2026</div>
+      <div class="bild lang" tabindex="0" aria-label="Bildschirmfoto der ersten Version, zum Scrollen">
+        <img src="vorher.jpg" alt="Die erste Version: eine sehr lange Seite mit vielen Kästen, Knöpfen, Reglern und Auswahllisten untereinander" loading="lazy" width="600" height="2563">
+      </div>
+      <div class="zahl"><b>275</b><span>Knöpfe, Regler und Felder auf <strong>einer</strong> Seite – aufgeklappt rund 6 Bildschirme lang</span></div>
+      <p>Alles ist da, aber nichts ist zu finden.</p>
+      <a class="knopf" href="https://raw.githack.com/pati2018/soundwhacker-looper/stabil-16/SoundWhacker_Looper.html" target="_blank" rel="noopener">Erste Version ansehen ↗</a>
+    </article>
+
+    <div class="pfeil" aria-hidden="true">→</div>
+
+    <article class="karte nach">
+      <span class="marke">Nachher</span>
+      <h3>SoundWhacker Smart Control</h3>
+      <div class="wann">heute</div>
+      <div class="bild">
+        <img src="nachher.jpg" alt="Die neue Startseite: acht große Menü-Knöpfe und fünf Lautstärkeregler" loading="lazy" width="900" height="629">
+      </div>
+      <div class="zahl"><b>19</b><span>Bedienelemente auf der Startseite – alles auf einen Blick, der Rest liegt in klaren Menüs</span></div>
+      <p>Große Knöpfe, klare Namen, eine Aufgabe pro Bereich.</p>
+      <a class="knopf" href="https://pati2018.github.io/soundwhacker-looper/SoundWhacker_Spielen.html" target="_blank" rel="noopener">App öffnen ↗</a>
+    </article>
+  </section>
+
+  <section aria-labelledby="achten">
+    <h2 id="achten">Worauf muss man achten?</h2>
+    <ul class="punkte">
+      <li><strong>Gestaltung einplanen</strong>Die erste KI-Version ist ein Entwurf. Danach kommt die Design-Runde.</li>
+      <li><strong>Menüs bilden</strong>Eine Aufgabe pro Bereich: einstellen, spielen, aufnehmen.</li>
+      <li><strong>Weniger zeigen</strong>Auf die Startseite nur das Wichtigste. Seltenes einklappen.</li>
+      <li><strong>Der KI klare Befehle geben</strong>Kurz und genau sagen, was sich ändern soll.<br><em>„Bring diese drei Knöpfe in eine Zeile.“</em></li>
+      <li><strong>Mit den Kindern testen</strong>Auf dem echten Gerät, mit Taster oder SoundWhacker – dann nachbessern.</li>
+    </ul>
+  </section>
+
+  <section class="botschaft" aria-label="Botschaft">
+    <p>Musik-Apps mit KI entstehen nicht per Knopfdruck.</p>
+    <p>Die KI baut die Funktionen. Gute Bedienung entsteht durch Gestaltung: strukturieren, Menüs anlegen, klare Anweisungen geben, testen und nachbessern.</p>
+  </section>
+</div>
+</body>
+</html>

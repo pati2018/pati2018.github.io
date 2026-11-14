@@ -102,6 +102,8 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
 
 - Veröffentlichung aus `main` über GitHub Actions („Seite veröffentlichen“).
 - **Sicherungen:** `stabil-1` bis `stabil-36` als Tags, ab `stabil-37` als Branches.
+- **Klang auf älteren iPads:** SoundWhacker Spielen erkennt iPadOS 16 und älter (z. B. iPad 5. Generation)
+  und rechnet dann mit 24 kHz und größerem Puffer (gegen Knacken). Test: `?klang=spar` bzw. `?klang=normal`.
 
 ## Repo `midi-player`
 

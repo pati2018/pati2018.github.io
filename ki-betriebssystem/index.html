@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
 <style>
 /* Layout: 16:9-Schaubild – oben der Weg einer Musik-App in 6 Stationen mit Rückkopplung, Mitte die Regeln aus dem Gedächtnis, unten Webseite und Sicherheitsnetz.
-   Bewusst nur ein helles Erscheinungsbild – gut lesbar am Beamer. */
+   Hell oder dunkel – folgt dem Schalter der Hauptseite (theme.js + ../erklaer-dunkel.css). */
 :root {
   --bg: #e9eef0;
   --stage: #fbfcfc;
@@ -26,7 +26,7 @@
   --rout: #6a52b8;  --rout-soft: #ece7f8;
   --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
   --f-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
-  color-scheme: light;
+  color-scheme: light dark;
 }
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
@@ -94,6 +94,8 @@ details.note .body { padding: 0 18px 16px; }
 .t-quote { font-size: 19.5px; font-style: italic; }
 </style>
 
+<link rel="stylesheet" href="../erklaer-dunkel.css?v=1">
+<script src="../theme.js"></script>
 </head>
 <body>
 <div class="wrap">

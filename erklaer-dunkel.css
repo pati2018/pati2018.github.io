@@ -1,0 +1,121 @@
+/*
+ * Dunkelmodus für die Erklärseiten (ki-betriebssystem/, ki-os/, vorher-nachher/).
+ * Folgt derselben Einstellung wie die Hauptseite (theme.js, Speicher-Schlüssel „theme“):
+ *   Auto = wie das Gerät · Hell · Dunkel. Wer auf einer Seite umschaltet, schaltet alle um.
+ * Die Schaubilder (SVG) haben feste Farben – sie werden hier über ihre Farbwerte umgefärbt.
+ */
+
+/* Schalter oben rechts (kommt aus theme.js) */
+.theme-toggle {
+  position: fixed; top: 12px; right: 12px; z-index: 20;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 12px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--line); background: var(--stage); color: var(--ink);
+  font: inherit; font-size: 14px; font-weight: 700; box-shadow: 0 2px 10px rgba(0,0,0,.12);
+}
+.theme-toggle:focus-visible { outline: 3px solid var(--tool); outline-offset: 2px; }
+.theme-toggle .ico { font-size: 16px; line-height: 1; }
+/* Platz für den Schalter neben der Navigation */
+.wrap > .bar:first-child, .wrap > nav.links:first-child { padding-right: 110px; }
+
+/* --- Dunkle Farben (gleiche Namen wie auf den Seiten) --- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #10171b; --stage: #18222a; --ink: #e6eef2; --muted: #9db0b9; --line: #2e3d46;
+    --mem: #4fb8c2;  --mem-soft: #173236;
+    --skill: #e39a5a; --skill-soft: #3a2617;
+    --tool: #8aaef2;  --tool-soft: #1c2a45;
+    --out: #5cc072;   --out-soft: #183323;
+    --rout: #ab96f0;  --rout-soft: #2a2343;
+    --vor: #ec8670;   --vor-soft: #3a1f19;
+    --nach: #5cc072;  --nach-soft: #183323;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #10171b; --stage: #18222a; --ink: #e6eef2; --muted: #9db0b9; --line: #2e3d46;
+  --mem: #4fb8c2;  --mem-soft: #173236;
+  --skill: #e39a5a; --skill-soft: #3a2617;
+  --tool: #8aaef2;  --tool-soft: #1c2a45;
+  --out: #5cc072;   --out-soft: #183323;
+  --rout: #ab96f0;  --rout-soft: #2a2343;
+  --vor: #ec8670;   --vor-soft: #3a1f19;
+  --nach: #5cc072;  --nach-soft: #183323;
+  color-scheme: dark;
+}
+
+/* --- Schaubilder und feste Farben im Dunkelmodus umfärben --- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) svg [fill="#ffffff" i] { fill: var(--stage); }
+  :root:not([data-theme="light"]) svg [stroke="#ffffff" i] { stroke: var(--stage); }
+  :root:not([data-theme="light"]) svg [fill="#fbfcfc" i] { fill: var(--stage); }
+  :root:not([data-theme="light"]) svg [stroke="#fbfcfc" i] { stroke: var(--stage); }
+  :root:not([data-theme="light"]) svg [fill="#dcf0f1" i] { fill: var(--mem-soft); }
+  :root:not([data-theme="light"]) svg [stroke="#dcf0f1" i] { stroke: var(--mem-soft); }
+  :root:not([data-theme="light"]) svg [fill="#dcefF1" i] { fill: var(--mem-soft); }
+  :root:not([data-theme="light"]) svg [stroke="#dcefF1" i] { stroke: var(--mem-soft); }
+  :root:not([data-theme="light"]) svg [fill="#dff0e2" i] { fill: var(--out-soft); }
+  :root:not([data-theme="light"]) svg [stroke="#dff0e2" i] { stroke: var(--out-soft); }
+  :root:not([data-theme="light"]) svg [fill="#f8e8da" i] { fill: var(--skill-soft); }
+  :root:not([data-theme="light"]) svg [stroke="#f8e8da" i] { stroke: var(--skill-soft); }
+  :root:not([data-theme="light"]) svg [fill="#ece7f8" i] { fill: var(--rout-soft); }
+  :root:not([data-theme="light"]) svg [stroke="#ece7f8" i] { stroke: var(--rout-soft); }
+  :root:not([data-theme="light"]) svg [fill="#e0e9f8" i] { fill: var(--tool-soft); }
+  :root:not([data-theme="light"]) svg [stroke="#e0e9f8" i] { stroke: var(--tool-soft); }
+  :root:not([data-theme="light"]) svg [fill="#c9d5da" i] { fill: var(--line); }
+  :root:not([data-theme="light"]) svg [stroke="#c9d5da" i] { stroke: var(--line); }
+  :root:not([data-theme="light"]) svg [fill="#566871" i] { fill: var(--muted); }
+  :root:not([data-theme="light"]) svg [stroke="#566871" i] { stroke: var(--muted); }
+  :root:not([data-theme="light"]) svg [fill="#15232b" i] { fill: var(--ink); }
+  :root:not([data-theme="light"]) svg [stroke="#15232b" i] { stroke: var(--ink); }
+  :root:not([data-theme="light"]) svg [fill="#17707a" i] { fill: var(--mem); }
+  :root:not([data-theme="light"]) svg [stroke="#17707a" i] { stroke: var(--mem); }
+  :root:not([data-theme="light"]) svg [fill="#b05a14" i] { fill: var(--skill); }
+  :root:not([data-theme="light"]) svg [stroke="#b05a14" i] { stroke: var(--skill); }
+  :root:not([data-theme="light"]) svg [fill="#2f5fb3" i] { fill: var(--tool); }
+  :root:not([data-theme="light"]) svg [stroke="#2f5fb3" i] { stroke: var(--tool); }
+  :root:not([data-theme="light"]) svg [fill="#2c7a3c" i] { fill: var(--out); }
+  :root:not([data-theme="light"]) svg [stroke="#2c7a3c" i] { stroke: var(--out); }
+  :root:not([data-theme="light"]) svg [fill="#6a52b8" i] { fill: var(--rout); }
+  :root:not([data-theme="light"]) svg [stroke="#6a52b8" i] { stroke: var(--rout); }
+  :root:not([data-theme="light"]) .botschaft { background: #0b1114; color: #f1f5f7; border: 1px solid var(--line); }
+  :root:not([data-theme="light"]) .botschaft p + p { color: #c9d6dc; }
+  :root:not([data-theme="light"]) .bild { border-color: var(--line); }
+  :root:not([data-theme="light"]) .knopf { color: #0b1114; }
+}
+:root[data-theme="dark"] svg [fill="#ffffff" i] { fill: var(--stage); }
+:root[data-theme="dark"] svg [stroke="#ffffff" i] { stroke: var(--stage); }
+:root[data-theme="dark"] svg [fill="#fbfcfc" i] { fill: var(--stage); }
+:root[data-theme="dark"] svg [stroke="#fbfcfc" i] { stroke: var(--stage); }
+:root[data-theme="dark"] svg [fill="#dcf0f1" i] { fill: var(--mem-soft); }
+:root[data-theme="dark"] svg [stroke="#dcf0f1" i] { stroke: var(--mem-soft); }
+:root[data-theme="dark"] svg [fill="#dcefF1" i] { fill: var(--mem-soft); }
+:root[data-theme="dark"] svg [stroke="#dcefF1" i] { stroke: var(--mem-soft); }
+:root[data-theme="dark"] svg [fill="#dff0e2" i] { fill: var(--out-soft); }
+:root[data-theme="dark"] svg [stroke="#dff0e2" i] { stroke: var(--out-soft); }
+:root[data-theme="dark"] svg [fill="#f8e8da" i] { fill: var(--skill-soft); }
+:root[data-theme="dark"] svg [stroke="#f8e8da" i] { stroke: var(--skill-soft); }
+:root[data-theme="dark"] svg [fill="#ece7f8" i] { fill: var(--rout-soft); }
+:root[data-theme="dark"] svg [stroke="#ece7f8" i] { stroke: var(--rout-soft); }
+:root[data-theme="dark"] svg [fill="#e0e9f8" i] { fill: var(--tool-soft); }
+:root[data-theme="dark"] svg [stroke="#e0e9f8" i] { stroke: var(--tool-soft); }
+:root[data-theme="dark"] svg [fill="#c9d5da" i] { fill: var(--line); }
+:root[data-theme="dark"] svg [stroke="#c9d5da" i] { stroke: var(--line); }
+:root[data-theme="dark"] svg [fill="#566871" i] { fill: var(--muted); }
+:root[data-theme="dark"] svg [stroke="#566871" i] { stroke: var(--muted); }
+:root[data-theme="dark"] svg [fill="#15232b" i] { fill: var(--ink); }
+:root[data-theme="dark"] svg [stroke="#15232b" i] { stroke: var(--ink); }
+:root[data-theme="dark"] svg [fill="#17707a" i] { fill: var(--mem); }
+:root[data-theme="dark"] svg [stroke="#17707a" i] { stroke: var(--mem); }
+:root[data-theme="dark"] svg [fill="#b05a14" i] { fill: var(--skill); }
+:root[data-theme="dark"] svg [stroke="#b05a14" i] { stroke: var(--skill); }
+:root[data-theme="dark"] svg [fill="#2f5fb3" i] { fill: var(--tool); }
+:root[data-theme="dark"] svg [stroke="#2f5fb3" i] { stroke: var(--tool); }
+:root[data-theme="dark"] svg [fill="#2c7a3c" i] { fill: var(--out); }
+:root[data-theme="dark"] svg [stroke="#2c7a3c" i] { stroke: var(--out); }
+:root[data-theme="dark"] svg [fill="#6a52b8" i] { fill: var(--rout); }
+:root[data-theme="dark"] svg [stroke="#6a52b8" i] { stroke: var(--rout); }
+:root[data-theme="dark"] .botschaft { background: #0b1114; color: #f1f5f7; border: 1px solid var(--line); }
+:root[data-theme="dark"] .botschaft p + p { color: #c9d6dc; }
+:root[data-theme="dark"] .bild { border-color: var(--line); }
+:root[data-theme="dark"] .knopf { color: #0b1114; }

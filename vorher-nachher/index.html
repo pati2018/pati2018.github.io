@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
 <style>
-/* Gleiche Gestaltung wie die Erklärseiten ki-betriebssystem/ und ki-os/ – bewusst hell, gut lesbar am Beamer. */
+/* Gleiche Gestaltung wie die Erklärseiten ki-betriebssystem/ und ki-os/ – hell oder dunkel wie die Hauptseite. */
 :root {
   --bg: #e9eef0;
   --stage: #fbfcfc;
@@ -23,7 +23,7 @@
   --tool: #2f5fb3; --tool-soft: #e0e9f8;
   --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
   --f-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
-  color-scheme: light;
+  color-scheme: light dark;
 }
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
@@ -77,6 +77,8 @@ h2 { font-family: var(--f-display); font-weight: 600; font-size: clamp(24px, 3vw
 .botschaft strong { color: #fff; }
 .botschaft p + p { margin-top: 14px; font-family: var(--f-body); font-weight: 400; font-size: clamp(18px, 2vw, 21px); line-height: 1.5; color: #c9d6dc; }
 </style>
+<link rel="stylesheet" href="../erklaer-dunkel.css?v=1">
+<script src="../theme.js"></script>
 </head>
 <body>
 <div class="wrap">

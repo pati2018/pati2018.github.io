@@ -84,6 +84,9 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
   Version (Looper `stabil-16`, Link über raw.githack.com) gegen SoundWhacker Smart Control;
   Botschaft: Musik-Apps mit KI brauchen Gestaltung. Bilder `vorher.jpg`/`nachher.jpg`.
   Von der Übersicht und beiden KI-Erklärseiten verlinkt. Knapp halten, nicht überladen.
+- **Hell/Dunkel auf den Erklärseiten:** Alle drei laden `../theme.js` und `../erklaer-dunkel.css`
+  und folgen damit dem Schalter der Hauptseite (gemeinsamer Speicher „theme“). Neue Farben
+  in den Schaubildern dort in der Umfärbe-Liste ergänzen.
 - **Weitere Dateien:** `index.html` (Übersicht), `app.html` (zeigt die Anleitung
   einer App), `anleitungen/<id>.md` (Anleitungen), `style.css`, `theme.js`
   (Hell/Dunkel), `manifest.webmanifest` (Home-Bildschirm), `lib/` (marked, DOMPurify).

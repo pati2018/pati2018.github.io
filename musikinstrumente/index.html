@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Musikinstrumente">
+<meta name="theme-color" content="#101114">
+<meta name="robots" content="noindex">
+<title>Selbstgebaute barrierefreie digitale Musikinstrumente</title>
+<style>
+:root { --bg:#101114; --bar:#1a1c21; --ink:#f2f3f5; --accent:#f2b900; --barh:64px; }
+* { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html,body { height:100%; margin:0; background:var(--bg); color:var(--ink); font:16px/1.4 -apple-system,"Segoe UI",system-ui,sans-serif; overflow:hidden; overscroll-behavior:none; }
+.app { height:100%; display:flex; flex-direction:column; padding-left:env(safe-area-inset-left); padding-right:env(safe-area-inset-right); }
+.area { flex:1; min-height:0; display:flex; align-items:center; justify-content:center; padding-top:env(safe-area-inset-top); }
+.stage { position:relative; background:#fff; overflow:hidden; aspect-ratio:16/9;
+  width:min(100vw, calc((100vh - var(--barh) - env(safe-area-inset-top) - env(safe-area-inset-bottom)) * 16 / 9));
+  touch-action:pan-y; user-select:none; -webkit-user-select:none; }
+@supports (height:100dvh) { .stage { width:min(100vw, calc((100dvh - var(--barh) - env(safe-area-inset-top) - env(safe-area-inset-bottom)) * 16 / 9)); } }
+.stage > img.bg { position:absolute; inset:0; width:100%; height:100%; display:block; -webkit-user-drag:none; }
+.stage video { position:absolute; background:#000; object-fit:contain; display:block; }
+.stage a.hot { position:absolute; display:block; border-radius:4px; }
+.stage a.hot:focus-visible { outline:3px solid var(--accent); }
+.bar { height:calc(var(--barh) + env(safe-area-inset-bottom)); padding:0 12px env(safe-area-inset-bottom); background:var(--bar); display:flex; align-items:center; gap:10px; justify-content:center; }
+.btn { appearance:none; border:1px solid #343841; background:#23262d; color:var(--ink); font:600 18px/1 -apple-system,"Segoe UI",system-ui,sans-serif; min-width:52px; height:46px; padding:0 16px; border-radius:12px; cursor:pointer; }
+.btn:active { background:#30343d; }
+.btn:disabled { opacity:.35; cursor:default; }
+.btn:focus-visible { outline:3px solid var(--accent); outline-offset:2px; }
+.count { min-width:110px; font-variant-numeric:tabular-nums; }
+.dots { display:flex; gap:6px; padding:0 8px; }
+.dots i { width:8px; height:8px; border-radius:50%; background:#3a3f49; }
+.dots i.on { background:var(--accent); }
+@media (max-width:700px) { .dots { display:none; } }
+.ov { position:fixed; inset:0; background:rgba(10,11,13,.97); z-index:10; overflow:auto; padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left)); }
+.ov[hidden] { display:none; }
+.ov header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; gap:12px; }
+.ov h2 { margin:0; font-size:18px; }
+.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:14px; }
+.grid button { appearance:none; border:3px solid transparent; background:#fff; padding:0; border-radius:8px; overflow:hidden; cursor:pointer; position:relative; }
+.grid button.cur { border-color:var(--accent); }
+.grid img { display:block; width:100%; aspect-ratio:16/9; }
+.grid span { position:absolute; left:6px; bottom:6px; background:rgba(0,0,0,.72); color:#fff; font:600 13px/1 -apple-system,"Segoe UI",system-ui,sans-serif; padding:4px 7px; border-radius:6px; }
+.grid .hasvid::after { content:"▶"; position:absolute; right:6px; bottom:6px; background:rgba(0,0,0,.72); color:#fff; font-size:12px; padding:4px 7px; border-radius:6px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="area"><div class="stage" id="stage" aria-live="polite"></div></div>
+  <nav class="bar" aria-label="Navigation">
+    <button class="btn" id="prev" type="button" aria-label="Vorherige Folie">‹</button>
+    <button class="btn count" id="count" type="button" aria-label="Folienübersicht öffnen">1 / 20</button>
+    <button class="btn" id="next" type="button" aria-label="Nächste Folie">›</button>
+    <div class="dots" id="dots" aria-hidden="true"></div>
+  </nav>
+</div>
+<div class="ov" id="ov" hidden>
+  <header><h2>Folienübersicht</h2><button class="btn" id="ovClose" type="button">Schließen</button></header>
+  <div class="grid" id="grid"></div>
+</div>
+<script>
+(() => {
+  'use strict';
+  const SLIDES = [{}, {}, {"v": [{"id": "s03", "box": [5.024, 13.954, 78.184, 78.184], "name": "iBand 5Lieder Solo"}]}, {}, {"l": [{"url": "https://makecode.microbit.org/", "box": [17.078, 3.446, 65.845, 7.629]}]}, {"v": [{"id": "s06", "box": [12.5, 14.332, 78.438, 78.438], "name": "micro-bit MakeCode Anleitung 20s"}], "l": [{"url": "https://makecode.microbit.org/", "box": [17.078, 3.446, 65.845, 7.629]}]}, {"l": [{"url": "http://tinkercad.com/", "box": [2.734, 6.664, 63.57, 8.527]}]}, {}, {}, {}, {"l": [{"url": "https://claude.ai/artifact/WfwMXY6epzss25JwDNPpKU", "box": [85.896, 21.144, 12.038, 21.542]}]}, {"l": [{"url": "https://pati2018.github.io/vorher-nachher/", "box": [1.439, 86.93, 50.0, 5.385]}]}, {"l": [{"url": "https://pati2018.github.io/", "box": [77.5, 12.222, 21.527, 5.385]}]}, {}, {"v": [{"id": "s15a", "box": [52.446, 3.137, 24.35, 23.198], "name": "IMG 4162"}, {"id": "s15b", "box": [70.294, 32.822, 26.463, 28.448], "name": "IMG 4147"}, {"id": "s15c", "box": [54.416, 67.757, 24.35, 26.372], "name": "IMG 4138"}]}, {"v": [{"id": "s16", "box": [10.938, 23.126, 67.812, 67.812], "name": "Wir bauen die Soundwhackers"}], "l": [{"url": "https://soundwhackers.jimdofree.com/bauanleitungen/soundwhacker-basic-v2/", "box": [81.439, 23.126, 14.858, 9.424]}]}, {"v": [{"id": "s17", "box": [36.162, 14.468, 57.338, 57.338], "name": "So musiziert man mit der Motionwatch"}]}, {"v": [{"id": "s18", "box": [35.547, 14.699, 57.245, 57.245], "name": "Experimente mit dem Soundball klein"}]}, {"v": [{"id": "s19", "box": [35.38, 14.889, 58.299, 58.299], "name": "Erste Experimente mit dem SOUNDMOVER"}]}, {"l": [{"url": "http://www.iBand-Saar.de", "box": [66.946, 61.765, 19.82, 5.764]}, {"url": "http://www.soundwhackers.de", "box": [66.554, 51.87, 24.228, 5.764]}, {"url": "http://www.facebook.com/iBandSaar", "box": [66.946, 72.517, 30.487, 5.764]}]}];
+  const N = SLIDES.length;
+  const $ = (id) => document.getElementById(id);
+  const stage = $('stage');
+  const pad = (n) => String(n).padStart(2, '0');
+  let cur = 0;
+
+  const place = (el, b) => { el.style.left = b[0] + '%'; el.style.top = b[1] + '%'; el.style.width = b[2] + '%'; el.style.height = b[3] + '%'; };
+
+  function render(i) {
+    const s = SLIDES[i];
+    stage.replaceChildren();
+    const img = new Image();
+    img.className = 'bg'; img.alt = 'Folie ' + (i + 1) + ' von ' + N; img.draggable = false;
+    img.src = 'slides/' + pad(i + 1) + '.jpg';
+    stage.appendChild(img);
+    (s.l || []).forEach((l) => {
+      const a = document.createElement('a');
+      a.className = 'hot'; a.href = l.url; a.target = '_blank'; a.rel = 'noopener';
+      a.setAttribute('aria-label', 'Link öffnen: ' + l.url);
+      place(a, l.box); stage.appendChild(a);
+    });
+    (s.v || []).forEach((v) => {
+      const el = document.createElement('video');
+      el.controls = true; el.playsInline = true; el.preload = 'metadata';
+      el.setAttribute('playsinline', ''); el.setAttribute('webkit-playsinline', '');
+      el.poster = 'poster/' + v.id + '.jpg';
+      el.src = 'video/' + v.id + '.mp4';
+      el.setAttribute('aria-label', v.name || 'Video');
+      place(el, v.box);
+      el.addEventListener('play', () => stage.querySelectorAll('video').forEach((o) => { if (o !== el) o.pause(); }));
+      stage.appendChild(el);
+    });
+    [i - 1, i + 1].forEach((k) => { if (k >= 0 && k < N) new Image().src = 'slides/' + pad(k + 1) + '.jpg'; });
+  }
+
+  function go(i, replace) {
+    i = Math.max(0, Math.min(N - 1, i));
+    cur = i;
+    render(i);
+    $('count').textContent = (i + 1) + ' / ' + N;
+    $('prev').disabled = i === 0;
+    $('next').disabled = i === N - 1;
+    document.querySelectorAll('#dots i').forEach((d, k) => d.classList.toggle('on', k === i));
+    document.querySelectorAll('#grid button').forEach((b, k) => b.classList.toggle('cur', k === i));
+    try { history[replace ? 'replaceState' : 'pushState'](null, '', '#' + (i + 1)); } catch (e) {}
+    document.title = 'Folie ' + (i + 1) + ' · Selbstgebaute barrierefreie digitale Musikinstrumente';
+  }
+
+  SLIDES.forEach((s, i) => {
+    const d = document.createElement('i'); $('dots').appendChild(d);
+    const b = document.createElement('button');
+    b.type = 'button'; b.setAttribute('aria-label', 'Zu Folie ' + (i + 1));
+    if (s.v && s.v.length) b.className = 'hasvid';
+    b.innerHTML = '<img loading="lazy" alt="" src="slides/' + pad(i + 1) + '.jpg"><span>' + (i + 1) + '</span>';
+    b.addEventListener('click', () => { closeOv(); go(i); });
+    $('grid').appendChild(b);
+  });
+  const openOv = () => { $('ov').hidden = false; const c = document.querySelector('#grid button.cur'); if (c) c.scrollIntoView({ block: 'center' }); };
+  const closeOv = () => { $('ov').hidden = true; };
+
+  $('prev').addEventListener('click', () => go(cur - 1));
+  $('next').addEventListener('click', () => go(cur + 1));
+  $('count').addEventListener('click', openOv);
+  $('ovClose').addEventListener('click', closeOv);
+
+  window.addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (!$('ov').hidden) { if (e.key === 'Escape') closeOv(); return; }
+    if (e.target && e.target.tagName === 'VIDEO' && (e.key === ' ' || e.key.startsWith('Arrow'))) return;
+    if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); go(cur + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(cur - 1); }
+    else if (e.key === 'Home') go(0);
+    else if (e.key === 'End') go(N - 1);
+    else if (e.key === 'o' || e.key === 'Escape') openOv();
+  });
+
+  let sx = 0, sy = 0, tracking = false;
+  stage.addEventListener('touchstart', (e) => {
+    tracking = !e.target.closest('video') && e.touches.length === 1;
+    if (tracking) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }
+  }, { passive: true });
+  stage.addEventListener('touchend', (e) => {
+    if (!tracking) return;
+    tracking = false;
+    const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) go(cur + (dx < 0 ? 1 : -1));
+  }, { passive: true });
+
+  window.addEventListener('hashchange', () => {
+    const n = parseInt(location.hash.slice(1), 10);
+    if (n >= 1 && n <= N && n - 1 !== cur) go(n - 1, true);
+  });
+
+  const start = parseInt(location.hash.slice(1), 10);
+  go(start >= 1 && start <= N ? start - 1 : 0, true);
+})();
+</script>
+</body>
+</html>

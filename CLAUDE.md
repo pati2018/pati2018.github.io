@@ -88,6 +88,8 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
   (20 Folien als Bilder in `slides/`, 9 Videos in `video/`, Vorschaubilder in `poster/`, Wischen und
   Folienübersicht in `index.html`). Keine Musik-App, steht nicht in `apps.js`, mit `noindex`.
   Link: https://pati2018.github.io/veranstaltungen/praesentationen/ – Die Videos zeigen Schülerinnen und Schüler.
+  Dazu die Teilnehmer-PDF `Praesentation_Teilnehmer.pdf` (alle Links anklickbar, Videos verlinken auf die App):
+  https://pati2018.github.io/veranstaltungen/praesentationen/Praesentation_Teilnehmer.pdf
 - **Hell/Dunkel auf den Erklärseiten:** Alle drei laden `../theme.js` und `../erklaer-dunkel.css`
   und folgen damit dem Schalter der Hauptseite (gemeinsamer Speicher „theme“). Neue Farben
   in den Schaubildern dort in der Umfärbe-Liste ergänzen.

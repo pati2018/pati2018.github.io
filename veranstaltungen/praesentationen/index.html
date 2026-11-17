@@ -77,7 +77,7 @@ html,body { height:100%; margin:0; background:var(--bg); color:var(--ink); font:
     stage.replaceChildren();
     const img = new Image();
     img.className = 'bg'; img.alt = 'Folie ' + (i + 1) + ' von ' + N; img.draggable = false;
-    img.src = 'slides/' + pad(i + 1) + '.jpg';
+    img.src = 'slides/' + pad(i + 1) + '.jpg?v=2';
     stage.appendChild(img);
     (s.l || []).forEach((l) => {
       const a = document.createElement('a');
@@ -89,14 +89,14 @@ html,body { height:100%; margin:0; background:var(--bg); color:var(--ink); font:
       const el = document.createElement('video');
       el.controls = true; el.playsInline = true; el.preload = 'metadata';
       el.setAttribute('playsinline', ''); el.setAttribute('webkit-playsinline', '');
-      el.poster = 'poster/' + v.id + '.jpg';
+      el.poster = 'poster/' + v.id + '.jpg?v=2';
       el.src = 'video/' + v.id + '.mp4';
       el.setAttribute('aria-label', v.name || 'Video');
       place(el, v.box);
       el.addEventListener('play', () => stage.querySelectorAll('video').forEach((o) => { if (o !== el) o.pause(); }));
       stage.appendChild(el);
     });
-    [i - 1, i + 1].forEach((k) => { if (k >= 0 && k < N) new Image().src = 'slides/' + pad(k + 1) + '.jpg'; });
+    [i - 1, i + 1].forEach((k) => { if (k >= 0 && k < N) new Image().src = 'slides/' + pad(k + 1) + '.jpg?v=2'; });
   }
 
   function go(i, replace) {
@@ -117,7 +117,7 @@ html,body { height:100%; margin:0; background:var(--bg); color:var(--ink); font:
     const b = document.createElement('button');
     b.type = 'button'; b.setAttribute('aria-label', 'Zu Folie ' + (i + 1));
     if (s.v && s.v.length) b.className = 'hasvid';
-    b.innerHTML = '<img loading="lazy" alt="" src="slides/' + pad(i + 1) + '.jpg"><span>' + (i + 1) + '</span>';
+    b.innerHTML = '<img loading="lazy" alt="" src="slides/' + pad(i + 1) + '.jpg?v=2"><span>' + (i + 1) + '</span>';
     b.addEventListener('click', () => { closeOv(); go(i); });
     $('grid').appendChild(b);
   });

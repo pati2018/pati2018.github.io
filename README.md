@@ -37,6 +37,7 @@ Speichern, committen – nach ca. einer Minute ist die App auf der Seite.
 
 | Ordner | App |
 |---|---|
+| `fagott/` | Fagott – Klänge in `klang/` (GeneralUser GS, Bassoon); Lieder kommen aus `../tischharfe/lieder.js` |
 | `singen/` | Singen mit SoundWhackern; `stimme.js` ist die künstliche Singstimme (Formant-Synthese) |
 | `atemklang/` | Blasinstrument mit Atemsteuerung über das Mikrofon |
 | `ki-os/` | Erklärseite „Mein KI-Betriebssystem“ (allgemein: Gedächtnis, Skills & Plugins, Connectors, Routinen); verlinkt von `ki-betriebssystem/` |

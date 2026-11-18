@@ -63,7 +63,8 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
       `kopf.js` = Kopfsteuerung, `aufnahme.js` = Video-Aufnahme)
     - `singen/` – Singen mit SoundWhackern
     - `atemklang/` – Atemklang
-  - **Achtung:** `tischharfe/lieder.js` lädt auch SoundWhacker Spielen (Gemeinsame Melodie).
+    - `fagott/` – Fagott (Klänge in `klang/`, Bassoon aus GeneralUser GS; Lied-Modus lädt `../tischharfe/lieder.js`)
+  - **Achtung:** `tischharfe/lieder.js` lädt auch SoundWhacker Spielen (Gemeinsame Melodie) und das Fagott.
     Wer Lieder ändert, ändert sie in beiden Apps – und erhöht in `SoundWhacker_Spielen.html`
     die Nummer bei `../tischharfe/lieder.js?v=…`, sonst bleibt dort die alte Liste im Speicher.
   - **Reihenfolge auf der Übersicht:** 1. SoundWhacker Smart Control, 2. MIGA,

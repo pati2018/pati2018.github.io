@@ -24,6 +24,17 @@
  */
 window.APPS = [
   {
+    id: "fagott",
+    titel: "Fagott",
+    kurz: "Ein echtes Fagott zum Antippen: frei spielen in jeder Tonart (Dur/Moll, tief/mittel/hoch) – der Ton klingt, solange man hält. Oder Lieder Ton für Ton: jeder Schlag spielt den nächsten Ton. Auch mit den SoundWhackern 1–5.",
+    link: "https://pati2018.github.io/fagott/",
+    repo: "https://github.com/pati2018/pati2018.github.io/tree/main/fagott",
+    kategorie: "Musik",
+    symbol: "🎶",
+    bild: "fagott/icons/icon-192.png",
+    datum: "2026-11-18"
+  },
+  {
     id: "singen",
     titel: "Singen mit SoundWhackern",
     kurz: "Jeder SoundWhacker singt einen Ton auf „la“ – mit der eigenen Stimme (einmal „laaaa“ ins Mikrofon singen), einem echten Chor „Aah“ oder einer künstlichen Frauen- oder Männerstimme. Jeder Schlag singt einen Ton, der natürlich ausklingt. Die Töne passen immer zusammen.",

@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fagott</title>
+<meta name="description" content="Ein Fagott zum Antippen: frei spielen in jeder Tonart oder Lieder Ton für Ton – auch mit den SoundWhackern.">
+<meta name="theme-color" content="#2a1a10">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-title" content="Fagott">
+<style>
+  :root{--bg:#1e140d;--holz:#7a4a26;--holz-hell:#b9783f;--karte:#2b1d13;--linie:#4a3323;--text:#f6ead9;--mut:#c9b49a;--gold:#e7b75a;
+        --sw1:#e5484d;--sw2:#f08c2e;--sw3:#f2cf3a;--sw4:#46b37b;--sw5:#3f8ee8}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  body{min-height:100vh;padding:calc(env(safe-area-inset-top) + 12px) max(14px,env(safe-area-inset-right)) 24px max(14px,env(safe-area-inset-left))}
+  .wrap{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+  .top{display:flex;align-items:center;gap:12px 18px;flex-wrap:wrap}
+  .top h1{margin:0;font-size:26px;display:flex;align-items:center;gap:10px;flex:1;min-width:180px}
+  .top h1 img{width:42px;height:42px;border-radius:11px}
+  .top a{color:var(--gold);text-decoration:none;font-weight:700;font-size:15px}
+  button,select{font:inherit;color:inherit}
+  .modi{display:flex;gap:10px;flex-wrap:wrap}
+  .modi button{flex:1;min-width:150px;min-height:56px;border-radius:16px;border:2px solid var(--linie);background:var(--karte);font-size:19px;font-weight:800;cursor:pointer}
+  .modi button[aria-pressed="true"]{background:var(--gold);color:#2a1a10;border-color:var(--gold)}
+  .leiste{display:flex;gap:10px 16px;flex-wrap:wrap;align-items:center;background:var(--karte);border:1px solid var(--linie);border-radius:16px;padding:10px 14px}
+  .leiste label{display:flex;align-items:center;gap:8px;font-size:16px;color:var(--mut)}
+  .leiste select{font-size:17px;min-height:44px;padding:6px 10px;border-radius:10px;border:1px solid var(--linie);background:#20150e}
+  .leiste input[type=range]{width:120px;accent-color:var(--gold)}
+  .schalter{min-height:44px;padding:6px 14px;border-radius:10px;border:1px solid var(--linie);background:#20150e;font-weight:700;cursor:pointer}
+  .schalter[aria-pressed="true"]{border-color:var(--gold);color:var(--gold)}
+  .buehne{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:stretch}
+  .fagottbild{width:92px;display:flex;justify-content:center}
+  .fagottbild svg{height:100%;max-height:520px;width:auto;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5));transition:filter .15s}
+  .fagottbild.klingt svg{filter:drop-shadow(0 0 18px rgba(231,183,90,.75))}
+  @media (max-width:640px){.buehne{grid-template-columns:1fr}.fagottbild{display:none}}
+  /* Tasten */
+  .tasten{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  @media (min-width:900px){.tasten{grid-template-columns:repeat(8,1fr)}}
+  .taste{--c:var(--holz-hell);position:relative;min-height:150px;border-radius:22px;border:3px solid var(--c);
+         background:linear-gradient(180deg,color-mix(in srgb,var(--c) 30%,#2b1d13),#24170f);
+         display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;
+         touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;will-change:opacity}
+  @media (min-width:900px){.taste{min-height:260px}}
+  .taste *{pointer-events:none}
+  .taste .ton{font-size:clamp(30px,5vw,44px);font-weight:900;line-height:1}
+  .taste .nr{font-size:15px;font-weight:700;color:var(--mut)}
+  .taste .sw{position:absolute;top:8px;left:10px;font-size:12px;font-weight:800;color:var(--c)}
+  .taste.an{background:var(--c);color:#1e140d}
+  .taste.an .nr,.taste.an .sw{color:#1e140d}
+  /* Lied */
+  .lied{display:flex;flex-direction:column;gap:12px}
+  .lied .kopf{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .lied select{flex:1;min-width:220px;font-size:19px;min-height:52px;padding:8px 12px;border-radius:12px;border:1px solid var(--linie);background:var(--karte)}
+  .lied .vorne{min-height:52px;padding:8px 18px;border-radius:12px;border:2px solid var(--linie);background:var(--karte);font-size:18px;font-weight:800;cursor:pointer}
+  .anzeige{background:var(--karte);border:1px solid var(--linie);border-radius:20px;padding:18px;text-align:center}
+  .anzeige .jetzt{font-size:clamp(60px,14vw,120px);font-weight:900;line-height:1.05;min-height:1.1em}
+  .anzeige .silbe{font-size:clamp(24px,5vw,40px);color:var(--gold);min-height:1.3em}
+  .anzeige .weiter{font-size:18px;color:var(--mut);margin-top:6px}
+  .band{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:14px;max-height:96px;overflow-y:auto}
+  .band span{min-width:30px;padding:4px 6px;border-radius:8px;border:1px solid var(--linie);font-size:15px;color:var(--mut)}
+  .band span.war{color:#bfe8c6;border-color:#3d6646}
+  .band span.akt{background:var(--gold);color:#1e140d;border-color:var(--gold);font-weight:800}
+  .spielknopf{min-height:120px;border-radius:24px;border:3px solid var(--gold);background:#3a2615;color:var(--gold);font-size:30px;font-weight:900;cursor:pointer;
+              touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;will-change:opacity}
+  .spielknopf *{pointer-events:none}
+  .spielknopf.an{background:var(--gold);color:#1e140d}
+  .hinweis{color:var(--mut);font-size:15px;text-align:center;line-height:1.5}
+  .start{position:fixed;inset:0;background:rgba(20,12,7,.92);display:flex;align-items:center;justify-content:center;z-index:50;padding:20px}
+  .start button{min-height:90px;padding:16px 34px;border-radius:24px;border:none;background:var(--gold);color:#1e140d;font-size:28px;font-weight:900;cursor:pointer}
+  [hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="start" id="start"><button id="startBtn">🎵 Fagott starten</button></div>
+<div class="wrap">
+  <div class="top">
+    <h1><img src="icons/icon-192.png" alt="">Fagott</h1>
+    <a href="../">← Alle Apps</a>
+    <a href="../app.html?id=fagott">Anleitung</a>
+  </div>
+
+  <div class="modi" role="group" aria-label="Modus">
+    <button data-m="frei" aria-pressed="true">🎵 Frei spielen</button>
+    <button data-m="lied" aria-pressed="false">🎶 Lied spielen</button>
+  </div>
+
+  <div class="leiste">
+    <label id="tonartL">Tonart <select id="tonart"></select> <select id="geschlecht"><option value="dur">Dur</option><option value="moll">Moll</option></select></label>
+    <label>Lage <select id="lage"><option value="36">tief</option><option value="48" selected>mittel</option><option value="60">hoch</option></select></label>
+    <label>Lautstärke <input id="laut" type="range" min="0" max="100" value="80"></label>
+    <label>Hall <input id="hall" type="range" min="0" max="100" value="30"></label>
+    <button id="vib" class="schalter" aria-pressed="true">〰 Vibrato: an</button>
+  </div>
+
+  <div class="buehne">
+    <div class="fagottbild" id="bild" aria-hidden="true">
+      <svg viewBox="0 0 90 520">
+        <defs><linearGradient id="h" x1="0" x2="1"><stop offset="0" stop-color="#5a3519"/><stop offset=".45" stop-color="#c48447"/><stop offset="1" stop-color="#6b3f1e"/></linearGradient></defs>
+        <path d="M40 30 C 20 8, 6 30, 18 58" stroke="#d9c08a" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <circle cx="18" cy="60" r="5" fill="#d9c08a"/>
+        <rect x="30" y="18" width="30" height="470" rx="13" fill="url(#h)"/>
+        <rect x="27" y="14" width="36" height="16" rx="6" fill="#e9dcc2"/>
+        <rect x="27" y="160" width="36" height="10" rx="4" fill="#e9dcc2"/>
+        <rect x="27" y="330" width="36" height="10" rx="4" fill="#e9dcc2"/>
+        <rect x="25" y="470" width="40" height="30" rx="10" fill="#4a2b14"/>
+        <g fill="#f2e4c3"><circle cx="45" cy="210" r="6"/><circle cx="45" cy="240" r="6"/><circle cx="45" cy="270" r="6"/><circle cx="45" cy="370" r="6"/><circle cx="45" cy="400" r="6"/><circle cx="45" cy="430" r="6"/></g>
+        <g stroke="#e9dcc2" stroke-width="3" fill="none"><path d="M60 200 h12 v40 h-12"/><path d="M60 380 h12 v30 h-12"/></g>
+      </svg>
+    </div>
+
+    <div>
+      <section id="frei">
+        <div class="tasten" id="tasten"></div>
+        <p class="hinweis">Antippen und halten – das Fagott klingt, solange du drückst. Tasten <b>1–8</b> am Computer, die <b>SoundWhacker 1–5</b> spielen die ersten fünf Töne.</p>
+      </section>
+
+      <section id="lied" class="lied" hidden>
+        <div class="kopf">
+          <select id="liedwahl" aria-label="Lied"></select>
+          <button id="vorne" class="vorne">⏮ Von vorne</button>
+        </div>
+        <div class="anzeige">
+          <div class="jetzt" id="jetzt">♪</div>
+          <div class="silbe" id="silbe"></div>
+          <div class="weiter" id="weiter"></div>
+          <div class="band" id="band"></div>
+        </div>
+        <button class="spielknopf" id="spielknopf">▶ Nächster Ton</button>
+        <p class="hinweis">Jeder Schlag spielt den nächsten Ton des Lieds – auf den Knopf tippen, <b>irgendeinen SoundWhacker</b> drücken oder die <b>Leertaste</b>. Halten = der Ton klingt weiter. Am Ende geht es von vorn los.</p>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script src="../tischharfe/lieder.js?v=36"></script>
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  // ---------- Einstellungen ----------
+  const st={modus:'frei',tonart:3,geschlecht:'dur',lage:48,laut:80,hall:30,vib:true,lied:'entchen'};   // Standard Es-Dur – eine typische Fagott-Tonart
+  try{Object.assign(st,JSON.parse(localStorage.getItem('fagott')||'{}'))}catch(e){}
+  const merke=()=>{try{localStorage.setItem('fagott',JSON.stringify(st))}catch(e){}};
+
+  // ---------- Töne und Namen ----------
+  const LEITER={dur:[0,2,4,5,7,9,11,12],moll:[0,2,3,5,7,8,10,12]};
+  const KREUZ=['c','cis','d','dis','e','f','fis','g','gis','a','ais','h'], BE=['c','des','d','es','e','f','ges','g','as','a','b','h'];
+  const DUR=['C','Des','D','Es','E','F','Fis','G','As','A','B','H'], MOLL=['c','cis','d','es','e','f','fis','g','gis','a','b','h'];
+  const mitBe=()=> (st.geschlecht==='moll'?[2,7,0,5,10,3]:[5,10,3,8,1]).includes(st.tonart);
+  function name(m){ const n=(mitBe()?BE:KREUZ)[((m%12)+12)%12], o=Math.floor(m/12)-1;   // deutsche Schreibweise: C, c, c′, c″
+    if(o<=2) return n[0].toUpperCase()+n.slice(1)+(o<2?'₁':''); return n+'′'.repeat(o-3); }
+  const MIN=34, MAX=76;   // Tonumfang des Fagotts: B₁ bis e″
+  function grundton(){ const pc=((st.tonart%12)+12)%12; let g=Number(st.lage)+pc; if(pc>5) g-=12; while(g<MIN) g+=12; return g; }   // Grundton nah an der gewählten Lage (C₂ / C / c′)
+  const FARBEN=['var(--sw1)','var(--sw2)','var(--sw3)','var(--sw4)','var(--sw5)'];
+
+  // ---------- Klang ----------
+  const TOENE=[]; for(let m=34;m<=79;m+=3) TOENE.push(m);
+  const roh={}; TOENE.forEach(m=>{ roh[m]=fetch('klang/'+m+'.mp3').then(r=>r.arrayBuffer()).catch(()=>null); });
+  let ctx=null, haupt, hallG, trockenG; const puffer={};
+  function startAudio(){
+    if(ctx){ if(ctx.state!=='running') ctx.resume(); return; }
+    try{ if(navigator.audioSession) navigator.audioSession.type='playback'; }catch(e){}
+    ctx=new (window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'});
+    haupt=ctx.createGain(); haupt.gain.value=st.laut/100*0.9;
+    const comp=ctx.createDynamicsCompressor(); comp.threshold.value=-10; comp.ratio.value=6; comp.attack.value=.004; comp.release.value=.2;
+    haupt.connect(comp); comp.connect(ctx.destination);
+    trockenG=ctx.createGain(); hallG=ctx.createGain(); trockenG.connect(haupt);
+    const hall=ctx.createConvolver(), n=Math.round(ctx.sampleRate*2.2), ir=ctx.createBuffer(2,n,ctx.sampleRate);
+    for(let c=0;c<2;c++){ const d=ir.getChannelData(c); for(let i=0;i<n;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/n,3.2); }
+    hall.buffer=ir; hallG.connect(hall); hall.connect(haupt); setHall();
+    TOENE.forEach(m=>roh[m].then(a=>a&&new Promise((ok,no)=>ctx.decodeAudioData(a.slice(0),ok,no))).then(b=>{ if(b) puffer[m]=vorbereiten(b,m); }).catch(()=>{}));
+  }
+  function setHall(){ if(!ctx) return; hallG.gain.setTargetAtTime(st.hall/100*0.55,ctx.currentTime,.05); trockenG.gain.setTargetAtTime(1-st.hall/250,ctx.currentTime,.05); }
+  // Anfang (MP3-Stille) überspringen; Halte-Schleife im gleichmäßigen Teil, genau auf ganze Schwingungen gelegt
+  function vorbereiten(b,m){
+    const d=b.getChannelData(0), sr=b.sampleRate; let a=0; while(a<d.length&&Math.abs(d[a])<.004) a++;
+    const per=sr/(440*Math.pow(2,(m-69)/12)), nullDurchgang=i=>{ for(let k=0;k<per*2&&i+1<d.length;k++,i++) if(d[i]<=0&&d[i+1]>0) return i; return i; };
+    const ls=nullDurchgang(a+Math.round(sr*1.0)), le=ls+Math.round(Math.round(sr*2.0/per)*per);
+    return {b, off:a/sr, loopStart:ls/sr, loopEnd:Math.min(le,d.length-sr*.5)/sr};
+  }
+  function naechster(m){ let best=null; for(const k in puffer){ const v=+k; if(best===null||Math.abs(v-m)<Math.abs(best-m)) best=v; } return best; }
+  const klingend=new Set();
+  function spiele(m){
+    startAudio(); const k=naechster(m); if(k===null) return null;
+    const P=puffer[k], t=ctx.currentTime+.005, src=ctx.createBufferSource(), g=ctx.createGain();
+    src.buffer=P.b; src.playbackRate.value=Math.pow(2,(m-k)/12);
+    src.loop=true; src.loopStart=P.loopStart; src.loopEnd=P.loopEnd;
+    g.gain.value=1; src.connect(g); g.connect(trockenG); g.connect(hallG);
+    let vib=null;
+    if(st.vib){ const o=ctx.createOscillator(), og=ctx.createGain(); o.frequency.value=5.2; og.gain.setValueAtTime(0,t); og.gain.setTargetAtTime(14,t+.35,.25); o.connect(og); og.connect(src.detune); o.start(t); vib=o; }
+    src.start(t,P.off);
+    const v={ stop(){ const t2=ctx.currentTime; g.gain.cancelScheduledValues(t2); g.gain.setValueAtTime(g.gain.value,t2); g.gain.setTargetAtTime(0,t2,.07);
+      try{src.stop(t2+.6)}catch(e){} if(vib) try{vib.stop(t2+.6)}catch(e){} klingend.delete(v); bildAn(); } };
+    klingend.add(v); bildAn(); return v;
+  }
+  function bildAn(){ requestAnimationFrame(()=>$('bild').classList.toggle('klingt',klingend.size>0)); }
+
+  // ---------- Knöpfe: am iPad über Touch (sauberes an/aus), am PC mit der Maus; jeder Ton klingt mindestens 0,25 s ----------
+  function knopf(el, an, aus){
+    let held=false, t0=0, ausT=0, touchId=null;
+    const runter=()=>{ if(held) return; held=true; if(ausT){ clearTimeout(ausT); ausT=0; aus(); } t0=performance.now(); an(); requestAnimationFrame(()=>{ if(held) el.classList.add('an'); }); };
+    const hoch=()=>{ if(!held) return; held=false; requestAnimationFrame(()=>el.classList.remove('an'));
+      clearTimeout(ausT); ausT=setTimeout(()=>{ ausT=0; if(!held) aus(); },Math.max(0,250-(performance.now()-t0))); };
+    el.addEventListener('touchstart',e=>{ e.preventDefault(); if(touchId!==null) return; touchId=e.changedTouches[0].identifier; runter(); },{passive:false});
+    const tEnde=e=>{ for(const t of e.changedTouches) if(t.identifier===touchId){ touchId=null; hoch(); } };
+    el.addEventListener('touchend',tEnde,{passive:false}); el.addEventListener('touchcancel',tEnde,{passive:false});
+    el.addEventListener('mousedown',e=>{ e.preventDefault(); runter(); }); window.addEventListener('mouseup',()=>{ if(touchId===null) hoch(); });
+    el.addEventListener('contextmenu',e=>e.preventDefault());
+    return {runter,hoch};
+  }
+
+  // ---------- Frei spielen ----------
+  const tastenStimme=[]; let tastenSteuer=[];
+  function tastenBauen(){
+    const g=grundton(), L=LEITER[st.geschlecht];
+    $('tasten').innerHTML=L.map((s,i)=>{ const m=Math.min(MAX,g+s); return '<button class="taste" data-i="'+i+'" style="'+(i<5?'--c:'+FARBEN[i]:'')+'">'+(i<5?'<span class="sw">SW'+(i+1)+'</span>':'')+'<span class="ton">'+name(m)+'</span><span class="nr">'+(i+1)+'</span></button>'; }).join('');
+    tastenSteuer=[...$('tasten').children].map((el,i)=>knopf(el,()=>{ startAudio(); if(tastenStimme[i]) tastenStimme[i].stop(); tastenStimme[i]=spiele(Math.min(MAX,grundton()+LEITER[st.geschlecht][i])); },()=>{ if(tastenStimme[i]){ tastenStimme[i].stop(); tastenStimme[i]=null; } }));
+  }
+
+  // ---------- Lied spielen (Ton für Ton) ----------
+  let lied=[], pos=0, liedStimme=null;
+  function liedLaden(){
+    const l=window.HARFE&&HARFE.LIEDER.find(x=>x.id===st.lied)||(window.HARFE&&HARFE.LIEDER[0]); if(!l){ lied=[]; return; }
+    st.lied=l.id; merke();
+    const n=HARFE.parse(l).noten.filter(x=>x.midi!==null), ms=n.map(x=>x.midi);
+    const mitte=(Math.min(...ms)+Math.max(...ms))/2, ziel=Number(st.lage)+7;   // Lied in die gewählte Lage schieben (ganze Oktaven)
+    let shift=Math.round((ziel-mitte)/12)*12;
+    while(Math.min(...ms)+shift<MIN) shift+=12; while(Math.max(...ms)+shift>MAX) shift-=12;
+    lied=n.map(x=>({m:x.midi+shift,s:x.silbe||''})); pos=0; liedZeigen(true);
+  }
+  function liedZeigen(neu){
+    const band=$('band');
+    if(neu) band.innerHTML=lied.map(x=>'<span>'+name(x.m)+'</span>').join('');
+    const letzt=pos>0?lied[pos-1]:null;
+    $('jetzt').textContent=letzt?name(letzt.m):'♪'; $('silbe').textContent=letzt?letzt.s:'';
+    $('weiter').textContent=lied.length?('Nächster Ton: '+name(lied[pos%lied.length].m)+' · '+(pos>=lied.length?'Lied zu Ende – weiter geht’s von vorn':pos+' von '+lied.length)):'';
+    [...band.children].forEach((el,i)=>{ el.className=i<pos-1?'war':i===pos-1?'akt':''; });
+    const cur=band.children[pos-1]; if(cur){ const o=cur.offsetTop-band.offsetTop; if(o<band.scrollTop||o+cur.offsetHeight>band.scrollTop+band.clientHeight) band.scrollTop=Math.max(0,o-4); }
+  }
+  function liedTon(){ if(!lied.length) return; startAudio(); if(pos>=lied.length) pos=0; const x=lied[pos++]; if(liedStimme) liedStimme.stop(); liedStimme=spiele(x.m); requestAnimationFrame(()=>liedZeigen(false)); }
+  function liedAus(){ if(liedStimme){ liedStimme.stop(); liedStimme=null; } }
+  const spielSteuer=knopf($('spielknopf'),liedTon,liedAus);
+  function liedListe(){
+    const sel=$('liedwahl'); sel.innerHTML='';
+    if(!window.HARFE){ sel.add(new Option('Lieder konnten nicht geladen werden','')); return; }
+    const gr={}; HARFE.LIEDER.forEach(l=>{ if(!gr[l.gruppe]){ gr[l.gruppe]=document.createElement('optgroup'); gr[l.gruppe].label=l.gruppe; sel.appendChild(gr[l.gruppe]); } gr[l.gruppe].appendChild(new Option(l.titel,l.id)); });
+    sel.value=st.lied; if(sel.selectedIndex<0) sel.selectedIndex=0;
+  }
+
+  // ---------- Bedienung ----------
+  function modusZeigen(){ document.querySelectorAll('.modi button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===st.modus)); $('frei').hidden=st.modus!=='frei'; $('lied').hidden=st.modus!=='lied'; $('tonartL').style.visibility=st.modus==='frei'?'':'hidden'; }
+  document.querySelector('.modi').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; b.blur(); st.modus=b.dataset.m; merke(); modusZeigen(); if(st.modus==='lied') liedLaden(); });
+  function tonartListe(){ const s=$('tonart'); s.innerHTML=(st.geschlecht==='moll'?MOLL:DUR).map((n,i)=>'<option value="'+i+'">'+n+'</option>').join(''); s.value=st.tonart; }
+  $('tonart').onchange=e=>{ st.tonart=+e.target.value; e.target.blur(); merke(); tastenBauen(); };
+  $('geschlecht').onchange=e=>{ st.geschlecht=e.target.value; e.target.blur(); merke(); tonartListe(); tastenBauen(); };
+  $('lage').onchange=e=>{ st.lage=+e.target.value; e.target.blur(); merke(); tastenBauen(); liedLaden(); };
+  $('laut').oninput=e=>{ st.laut=+e.target.value; merke(); if(haupt) haupt.gain.setTargetAtTime(st.laut/100*0.9,ctx.currentTime,.05); };
+  $('hall').oninput=e=>{ st.hall=+e.target.value; merke(); setHall(); };
+  const vibZeigen=()=>{ $('vib').setAttribute('aria-pressed',st.vib); $('vib').textContent='〰 Vibrato: '+(st.vib?'an':'aus'); };
+  $('vib').onclick=()=>{ st.vib=!st.vib; merke(); vibZeigen(); $('vib').blur(); };
+  $('liedwahl').onchange=e=>{ st.lied=e.target.value; e.target.blur(); liedLaden(); };
+  $('vorne').onclick=()=>{ $('vorne').blur(); pos=0; liedZeigen(false); };
+  // Tasten / SoundWhacker-HUB im Tastatur-Modus: Frei = 1–8, Lied = jede Taste 1–5 oder Leertaste
+  const gedrueckt={};
+  addEventListener('keydown',e=>{
+    if(e.target&&e.target.tagName==='SELECT') e.target.blur();
+    const z=/^(Digit|Numpad)([1-8])$/.exec(e.code), d=z?+z[2]:(/^[1-8]$/.test(e.key)?+e.key:0), k=d||(e.key===' '?'leer':0);
+    if(!k) return; e.preventDefault(); if(e.repeat||gedrueckt[k]) return; gedrueckt[k]=true; $('start').hidden=true;
+    if(st.modus==='frei'&&d&&tastenSteuer[d-1]) tastenSteuer[d-1].runter(); else if(st.modus==='lied'&&(k==='leer'||d<=5)) spielSteuer.runter();
+  });
+  addEventListener('keyup',e=>{
+    const z=/^(Digit|Numpad)([1-8])$/.exec(e.code), d=z?+z[2]:(/^[1-8]$/.test(e.key)?+e.key:0), k=d||(e.key===' '?'leer':0);
+    if(!k||!gedrueckt[k]) return; gedrueckt[k]=false;
+    if(st.modus==='frei'&&d&&tastenSteuer[d-1]) tastenSteuer[d-1].hoch(); else if(st.modus==='lied') spielSteuer.hoch();
+  });
+  // Erster Tipp startet den Klang (iPad verlangt eine Berührung)
+  $('startBtn').onclick=()=>{ startAudio(); $('start').hidden=true; };
+  ['touchstart','mousedown','keydown'].forEach(t=>document.addEventListener(t,()=>startAudio(),{capture:true,passive:true}));
+
+  $('geschlecht').value=st.geschlecht; tonartListe(); $('lage').value=st.lage; $('laut').value=st.laut; $('hall').value=st.hall; vibZeigen();
+  tastenBauen(); liedListe(); modusZeigen(); if(st.modus==='lied') liedLaden();
+})();
+</script>
+</body>
+</html>

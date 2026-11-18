@@ -151,8 +151,9 @@
   const mitBe=()=> (st.geschlecht==='moll'?[2,7,0,5,10,3]:[5,10,3,8,1]).includes(st.tonart);
   function name(m){ const n=(mitBe()?BE:KREUZ)[((m%12)+12)%12], o=Math.floor(m/12)-1;   // deutsche Schreibweise: C, c, c′, c″
     if(o<=2) return n[0].toUpperCase()+n.slice(1)+(o<2?'₁':''); return n+'′'.repeat(o-3); }
-  const MIN=34, MAX=76;   // Tonumfang des Fagotts: B₁ bis e″
-  function grundton(){ const pc=((st.tonart%12)+12)%12; let g=Number(st.lage)+pc; if(pc>5) g-=12; while(g<MIN) g+=12; return g; }   // Grundton nah an der gewählten Lage (C₂ / C / c′)
+  const MIN=34, MAX=81;   // Fagott ab B₁; „hoch“ darf etwas über das e″ hinaus (der höchste Klang wird dafür leicht hochgestimmt)
+  // Grundton: „tief“ = der tiefste mögliche (B₁ bis A), „mittel“ eine Oktave höher, „hoch“ zwei Oktaven höher – jede Lage klar eine Oktave auseinander
+  function grundton(){ const pc=((st.tonart%12)+12)%12, tief=MIN+((pc-MIN)%12+12)%12, stufe=Math.max(0,Math.min(2,Math.round((Number(st.lage)-36)/12))); return tief+12*stufe; }
   const FARBEN=['var(--sw1)','var(--sw2)','var(--sw3)','var(--sw4)','var(--sw5)'];
 
   // ---------- Klang ----------

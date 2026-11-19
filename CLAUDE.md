@@ -100,6 +100,11 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
   je App `zaehler: "<Pfad>"`; die Übersicht holt die Zahl über `…/counter/<Pfad>.json` und zeigt „👁 n Aufrufe“.
   **Neue App:** Zählskript in die App-Seite und `zaehler` in `apps.js` eintragen. Gilt auch für Gitarre und
   soundwhacker-looper (Spielen, Kamera, Looper). In GoatCounter muss „Allow adding visitor counts“ an sein.
+- **Datenschutz** `datenschutz/index.html`: gemeinsame Datenschutzerklärung für Musik- und Schul-Seite
+  (GitHub Pages, GoatCounter, Mikrofon/Kamera nur lokal, PeerJS bei der Fernsteuerung, lokaler Speicher).
+  Kontakt-E-Mail laut Nutzer: schaeferkbbz@googlemail.com. Unten auf beiden Übersichten verlinkt.
+  **Kommt ein neuer externer Dienst dazu (Server, CDN, Zähler), dort ergänzen.**
+- **Schriften** liegen lokal in `fonts/` (`/fonts/fonts.css`) – **keine Google Fonts** einbinden.
 - **Weitere Dateien:** `index.html` (Übersicht), `app.html` (zeigt die Anleitung
   einer App), `anleitungen/<id>.md` (Anleitungen), `style.css`, `theme.js`
   (Hell/Dunkel), `manifest.webmanifest` (Home-Bildschirm), `lib/` (marked, DOMPurify).

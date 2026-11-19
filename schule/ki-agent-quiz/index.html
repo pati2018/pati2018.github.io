@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>KI-Agent zuordnen</title>
+<meta name="description" content="Zuordnungsquiz: Welche Teile des Menschen passen zu welchem Fachbegriff aus der KI-Welt? Sprachmodell, Harness, Prompt, Skills, Connectors, Routinen und mehr.">
+<link rel="icon" type="image/png" sizes="32x32" href="../../icons/favicon-32.png">
+<link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+/* Gleiche Farben wie das Schaubild ki-mensch/ – hell oder dunkel wie die Hauptseite */
+:root {
+  --bg: #e9eef0; --stage: #fbfcfc; --ink: #15232b; --muted: #566871; --line: #c9d5da;
+  --figur: #ffffff; --wange: #f8e8da;
+  --denk: #15232b;
+  --mem: #17707a;  --mem-soft: #dcf0f1;
+  --ohr: #3d4f59;  --ohr-soft: #e6ecef;
+  --skill: #b05a14; --skill-soft: #f8e8da;
+  --tool: #2f5fb3;  --tool-soft: #e0e9f8;
+  --rout: #6a52b8;  --rout-soft: #ece7f8;
+  --out: #2c7a3c;   --out-soft: #dff0e2;
+  --harn: #b4236b;  --harn-soft: #fae3ee;
+  --gut: #2c7a3c; --gut-soft: #dff0e2; --falsch: #c2412d; --falsch-soft: #fbe3de;
+  --wahl: #f2cf3a; --zahl: #ffffff;
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #10171b; --stage: #18222a; --ink: #e6eef2; --muted: #9db0b9; --line: #2e3d46;
+    --figur: #22303a; --wange: #4a3427; --denk: #e6eef2;
+    --mem: #4fb8c2;  --mem-soft: #173236;
+    --ohr: #b9c8cf;  --ohr-soft: #24323b;
+    --skill: #e39a5a; --skill-soft: #3a2617;
+    --tool: #8aaef2;  --tool-soft: #1c2a45;
+    --rout: #ab96f0;  --rout-soft: #2a2343;
+    --out: #5cc072;   --out-soft: #183323;
+    --harn: #ef7fb0;  --harn-soft: #3a1a2a;
+    --gut: #5cc072; --gut-soft: #183323; --falsch: #ef8a74; --falsch-soft: #3a1f19;
+    --zahl: #10171b;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #10171b; --stage: #18222a; --ink: #e6eef2; --muted: #9db0b9; --line: #2e3d46;
+  --figur: #22303a; --wange: #4a3427; --denk: #e6eef2;
+  --mem: #4fb8c2;  --mem-soft: #173236;
+  --ohr: #b9c8cf;  --ohr-soft: #24323b;
+  --skill: #e39a5a; --skill-soft: #3a2617;
+  --tool: #8aaef2;  --tool-soft: #1c2a45;
+  --rout: #ab96f0;  --rout-soft: #2a2343;
+  --out: #5cc072;   --out-soft: #183323;
+  --harn: #ef7fb0;  --harn-soft: #3a1a2a;
+  --gut: #5cc072; --gut-soft: #183323; --falsch: #ef8a74; --falsch-soft: #3a1f19;
+  --zahl: #10171b;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 18px; line-height: 1.5; }
+button { font: inherit; color: inherit; }
+.wrap {
+  max-width: 1200px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 16px 40px;
+  display: flex; flex-direction: column; gap: 18px;
+}
+.kopf { display: flex; flex-direction: column; gap: 6px; padding-right: 110px; }
+.links { display: flex; flex-wrap: wrap; gap: 4px 20px; }
+.links a { font-weight: 700; color: var(--tool); text-decoration: none; font-size: 16px; }
+.links a:hover { text-decoration: underline; }
+h1 { font-family: var(--f-display); font-weight: 800; font-size: clamp(30px, 5vw, 48px); line-height: 1.05; margin: 4px 0 0; text-wrap: balance; }
+.lead { margin: 0; color: var(--muted); font-size: clamp(17px, 2vw, 20px); max-width: 44em; text-wrap: pretty; }
+
+.theme-toggle {
+  position: absolute; top: 12px; right: 12px; z-index: 30;
+  display: inline-flex; align-items: center; gap: 6px; min-height: 44px;
+  padding: 8px 12px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--line); background: var(--stage); color: var(--ink);
+  font-size: 14px; font-weight: 700; box-shadow: 0 2px 10px rgba(0,0,0,.12);
+}
+
+/* Steuerleiste */
+.leiste { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.stand { font-weight: 700; font-size: 18px; margin-right: auto; }
+.stand small { font-weight: 400; color: var(--muted); font-size: 16px; }
+.knopf { min-height: 52px; padding: 10px 20px; border-radius: 12px; border: 2px solid var(--ink); background: var(--stage); font-weight: 700; cursor: pointer; }
+.knopf.haupt { background: var(--ink); color: var(--stage); }
+.knopf:disabled { opacity: .45; cursor: default; }
+.schalter { display: inline-flex; align-items: center; gap: 8px; min-height: 52px; padding: 0 6px; cursor: pointer; font-weight: 700; }
+.schalter input { width: 24px; height: 24px; accent-color: var(--ink); }
+:focus-visible { outline: 4px solid var(--tool); outline-offset: 2px; }
+
+/* Spielfläche */
+.spiel { display: grid; gap: 18px; grid-template-columns: 1fr; align-items: start; }
+@media (min-width: 900px) {
+  .spiel { grid-template-columns: minmax(300px, 0.85fr) 1.15fr; }
+  .bildspalte { position: sticky; top: 12px; }
+}
+.bild { background: var(--stage); border: 1px solid var(--line); border-radius: 18px; padding: 8px; }
+.bild svg { display: block; width: 100%; height: auto; max-height: 78vh; margin: 0 auto; }
+@media (max-width: 899px) { .bild svg { max-height: 52vh; } }
+.bildhinweis { margin: 8px 4px 0; color: var(--muted); font-size: 15px; text-align: center; }
+
+svg .fig { fill: var(--figur); stroke: var(--ink); }
+svg .strich { stroke: var(--ink); }
+svg .innen { stroke: var(--figur); }
+svg .tinte { fill: var(--ink); }
+svg .wange { fill: var(--wange); }
+svg .nerv { stroke: var(--harn); }
+svg .mk { cursor: pointer; }
+svg .mk circle { stroke: var(--stage); stroke-width: 5; transition: r .15s ease; }
+svg .mk text { fill: var(--zahl); font-family: var(--f-display); font-weight: 800; font-size: 30px; pointer-events: none; }
+svg .mk.ok circle { fill: var(--gut) !important; }
+svg .mk.aktiv circle { stroke: var(--wahl); stroke-width: 8; }
+svg .papier { fill: var(--stage); stroke: var(--ink); }
+
+/* Begriffe */
+.bank { background: var(--stage); border: 2px dashed var(--line); border-radius: 16px; padding: 12px; }
+.bank h2 { margin: 0 0 8px; font-family: var(--f-display); font-weight: 600; font-size: 20px; }
+.bank .hilfe { margin: 0 0 10px; color: var(--muted); font-size: 15px; }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; min-height: 56px; }
+.chip {
+  min-height: 56px; padding: 8px 16px; border-radius: 14px; cursor: pointer;
+  border: 2px solid var(--ink); background: var(--stage); font-weight: 700; font-size: 18px;
+  display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center; text-align: left; line-height: 1.2;
+  box-shadow: 0 2px 0 var(--line);
+}
+.chip small { font-weight: 400; font-size: 14px; color: var(--muted); }
+.chip[aria-pressed="true"] { background: var(--wahl); color: #15232b; border-color: #15232b; transform: translateY(-2px); box-shadow: 0 6px 14px rgba(0,0,0,.18); }
+.chip[aria-pressed="true"] small { color: #3a3a3a; }
+.leer { color: var(--muted); font-size: 16px; align-self: center; }
+@media (max-width: 899px) {
+  .bank { position: sticky; bottom: 0; z-index: 10; border-style: solid; box-shadow: 0 -6px 18px rgba(0,0,0,.12); padding-bottom: max(12px, env(safe-area-inset-bottom, 0px)); }
+  .bank .hilfe { display: none; }
+  .chip { min-height: 48px; font-size: 16px; padding: 6px 12px; }
+  .chip small { display: none; }
+}
+@media (min-width: 900px) { .bank { position: sticky; top: 12px; z-index: 10; } }
+
+/* Plätze */
+.plaetze { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.platz {
+  --c: var(--ink); --soft: var(--stage);
+  display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; align-items: center;
+  background: var(--stage); border: 1px solid var(--line); border-left: 8px solid var(--c); border-radius: 14px; padding: 10px 12px;
+}
+.nr { grid-row: span 2; width: 46px; height: 46px; border-radius: 50%; background: var(--c); color: var(--zahl); display: grid; place-items: center; font-family: var(--f-display); font-weight: 800; font-size: 24px; }
+.wer { font-family: var(--f-display); font-weight: 600; font-size: 20px; line-height: 1.2; }
+.wer span { display: block; font-family: var(--f-body); font-weight: 400; font-size: 15.5px; color: var(--muted); }
+.ziel {
+  grid-column: 2; min-height: 56px; border-radius: 12px; border: 2px dashed var(--c); background: var(--soft);
+  display: flex; align-items: center; gap: 10px; padding: 8px 14px; cursor: pointer; text-align: left; font-weight: 700; font-size: 18px; width: 100%;
+}
+.ziel .platzhalter { font-weight: 400; color: var(--muted); font-size: 16px; }
+.ziel.voll { border-style: solid; }
+.ziel.bereit { box-shadow: 0 0 0 3px var(--wahl); }
+.platz.ok { border-left-color: var(--gut); }
+.platz.ok .ziel { border-color: var(--gut); background: var(--gut-soft); cursor: default; }
+.platz.ok .nr { background: var(--gut); }
+.platz.falsch .ziel { border-color: var(--falsch); background: var(--falsch-soft); animation: wackel .4s ease; }
+.zeichen { margin-left: auto; font-size: 24px; }
+.erkl { grid-column: 2; margin: 2px 0 0; font-size: 16px; }
+@keyframes wackel { 0%,100% { transform: none; } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+@media (prefers-reduced-motion: reduce) { .platz.falsch .ziel { animation: none; } .chip { transition: none; } }
+.ohne-hinweise .wer span { display: none; }
+
+/* Meldung und Erfolg */
+.meldung { position: fixed; left: 50%; top: 16px; transform: translateX(-50%); z-index: 40; background: var(--ink); color: var(--stage); padding: 10px 18px; border-radius: 12px; font-weight: 700; max-width: calc(100% - 32px); text-align: center; }
+.geschafft { background: var(--gut-soft); border: 3px solid var(--gut); border-radius: 18px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; }
+.geschafft h2 { margin: 0; font-family: var(--f-display); font-weight: 800; font-size: clamp(24px, 3.5vw, 34px); }
+.geschafft p { margin: 0; }
+.merk { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 4px; }
+</style>
+<script src="../../theme.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <header class="kopf">
+    <nav class="links"><a href="../">← Meine Apps Schule</a><a href="../../ki-mensch/">Schaubild „KI-Agent und Mensch“ ↗</a></nav>
+    <h1>KI-Agent zuordnen</h1>
+    <p class="lead">Ein KI-Agent ist gebaut wie ein Mensch. Welcher Fachbegriff aus der KI-Welt passt zu welchem Teil des Menschen? Begriff antippen – dann den passenden Platz antippen.</p>
+  </header>
+
+  <div class="leiste">
+    <div class="stand" id="stand" aria-live="polite">0 von 8 richtig</div>
+    <label class="schalter"><input type="checkbox" id="hinweise" checked> Hinweise zeigen</label>
+    <button class="knopf haupt" id="pruefen" type="button">Prüfen</button>
+    <button class="knopf" id="neu" type="button">Neu mischen</button>
+  </div>
+
+  <section class="geschafft" id="geschafft" hidden tabindex="-1">
+    <h2>🎉 Geschafft – alle 8 richtig!</h2>
+    <p id="geschafftText"></p>
+    <ul class="merk">
+      <li><b>Sprachmodell</b> + <b>Harness</b> = <b>KI-Agent</b>. Das Sprachmodell denkt, der Harness lässt es handeln.</li>
+      <li>Die KI braucht immer den <b>Prompt</b> eines Menschen – sie will nichts von selbst.</li>
+      <li>Ohne <b>CLAUDE.md</b> (Gedächtnis) vergisst sie nach jedem Chat alles.</li>
+    </ul>
+    <div><button class="knopf haupt" id="nochmal" type="button">Nochmal spielen</button></div>
+  </section>
+
+  <div class="spiel">
+    <div class="bildspalte">
+      <div class="bild">
+        <svg viewBox="530 54 640 836" role="img" aria-labelledby="figT">
+          <title id="figT">Menschenfigur mit acht nummerierten Stellen: 1 Denkblase, 2 Gedächtnis im Kopf, 3 Ohr, 4 gelerntes Können im Arm, 5 Hand mit Hammer, 6 Füße, 7 fertiges Werkstück, 8 Körper und Nerven</title>
+          <g stroke-linejoin="round">
+            <path class="strich" d="M712,452 L590,560" stroke-width="40" stroke-linecap="round"/>
+            <path class="strich" d="M888,452 L1010,560" stroke-width="40" stroke-linecap="round"/>
+            <path class="innen" d="M712,452 L590,560" stroke-width="32" stroke-linecap="round"/>
+            <path class="innen" d="M888,452 L1010,560" stroke-width="32" stroke-linecap="round"/>
+            <path class="strich" d="M762,620 L742,792" stroke-width="44" stroke-linecap="round"/>
+            <path class="strich" d="M838,620 L858,792" stroke-width="44" stroke-linecap="round"/>
+            <path class="innen" d="M762,620 L742,792" stroke-width="36" stroke-linecap="round"/>
+            <path class="innen" d="M838,620 L858,792" stroke-width="36" stroke-linecap="round"/>
+            <ellipse class="fig" stroke-width="4" cx="728" cy="812" rx="40" ry="18"/>
+            <ellipse class="fig" stroke-width="4" cx="872" cy="812" rx="40" ry="18"/>
+            <rect class="fig" stroke-width="4" x="700" y="410" width="200" height="230" rx="64"/>
+            <rect class="fig" stroke-width="4" x="780" y="386" width="40" height="34"/>
+            <circle class="fig" stroke-width="4" cx="585" cy="566" r="30"/>
+            <circle class="fig" stroke-width="4" cx="1015" cy="566" r="30"/>
+            <ellipse class="fig" stroke-width="4" cx="696" cy="296" rx="18" ry="32"/>
+            <ellipse class="fig" stroke-width="4" cx="904" cy="296" rx="18" ry="32"/>
+            <circle class="fig" stroke-width="4" cx="800" cy="296" r="104"/>
+          </g>
+          <!-- Nerven -->
+          <g class="nerv" stroke-width="5" fill="none" stroke-linecap="round" stroke-dasharray="1 10">
+            <path d="M800,372 L800,618"/><path d="M800,440 Q700,470 600,556"/><path d="M800,440 Q900,470 1000,556"/>
+            <path d="M800,618 Q770,700 748,782"/><path d="M800,618 Q830,700 852,782"/>
+          </g>
+          <!-- Gesicht -->
+          <circle class="tinte" cx="764" cy="280" r="11"/><circle class="tinte" cx="836" cy="280" r="11"/>
+          <circle class="wange" cx="745" cy="322" r="14"/><circle class="wange" cx="855" cy="322" r="14"/>
+          <path class="strich" d="M762,330 Q800,368 838,330" stroke-width="7" fill="none" stroke-linecap="round"/>
+          <!-- Namensschild -->
+          <rect class="tinte" x="722" y="462" width="156" height="58" rx="14"/>
+          <text x="800" y="500" text-anchor="middle" style="fill:var(--stage);font-family:var(--f-display);font-weight:800;font-size:24px">KI-Agent</text>
+          <!-- Denkblase -->
+          <circle class="fig" stroke-width="3" cx="902" cy="214" r="7"/>
+          <circle class="fig" stroke-width="3" cx="920" cy="192" r="10"/>
+          <rect class="fig" stroke-width="3" x="930" y="78" width="196" height="112" rx="40"/>
+          <text x="1028" y="146" text-anchor="middle" style="fill:var(--ink);font-family:var(--f-display);font-weight:800;font-size:40px">💭 ?</text>
+          <!-- Hammer -->
+          <g transform="translate(1015 566) rotate(-30)">
+            <rect x="-7" y="-86" width="14" height="96" rx="6" style="fill:var(--tool)"/>
+            <rect x="-34" y="-104" width="68" height="28" rx="7" style="fill:var(--tool)"/>
+          </g>
+          <!-- Werkstück: ein fertiges Notenblatt -->
+          <g transform="rotate(6 1010 760)">
+            <rect class="papier" stroke-width="3" x="950" y="700" width="120" height="140" rx="8"/>
+            <g class="strich" stroke-width="2">
+              <path d="M966,740 H1054 M966,752 H1054 M966,764 H1054 M966,776 H1054 M966,788 H1054"/>
+            </g>
+            <ellipse class="tinte" cx="990" cy="782" rx="9" ry="7"/><path class="strich" stroke-width="3" d="M998,782 V748"/>
+            <ellipse class="tinte" cx="1026" cy="770" rx="9" ry="7"/><path class="strich" stroke-width="3" d="M1034,770 V736"/>
+            <path class="strich" stroke-width="5" d="M998,750 L1034,738"/>
+            <text x="1010" y="826" text-anchor="middle" style="fill:var(--muted);font-size:17px">fertig ✓</text>
+          </g>
+          <!-- Nummern (werden per Skript gefüllt) -->
+          <g id="marken"></g>
+        </svg>
+        <p class="bildhinweis">Die Nummern im Bild lassen sich auch antippen.</p>
+      </div>
+    </div>
+
+    <div class="rechts">
+      <section class="bank" aria-labelledby="bankT">
+        <h2 id="bankT">Begriffe aus der KI-Welt</h2>
+        <p class="hilfe">1. Begriff antippen (er wird gelb) · 2. passenden Platz antippen. Mit der Tastatur: Tab und Eingabetaste.</p>
+        <div class="chips" id="chips"></div>
+      </section>
+      <ol class="plaetze" id="plaetze" style="margin-top:14px"></ol>
+    </div>
+  </div>
+</div>
+<div class="meldung" id="meldung" role="status" hidden></div>
+
+<script>
+(function () {
+  // Die 8 Plätze am Menschen und der richtige KI-Begriff
+  var PLAETZE = [
+    { teil: "Denkblase", hinweis: "denkt, plant und entscheidet", farbe: "denk", x: 1126, y: 86,
+      begriff: "sprachmodell", erkl: "Das Sprachmodell ist der Verstand, zum Beispiel Claude Opus. Es denkt, plant und entscheidet – allein kann es aber nichts tun." },
+    { teil: "Gedächtnis im Kopf", hinweis: "erinnert sich an Wichtiges", farbe: "mem", x: 728, y: 220,
+      begriff: "claudemd", erkl: "Die Datei CLAUDE.md ist das Notizbuch: Projekte und Regeln. Jeder neue Chat liest sie zuerst – ohne sie vergisst die KI alles." },
+    { teil: "Ohren", hinweis: "hören, was gebraucht wird", farbe: "ohr", x: 662, y: 300,
+      begriff: "prompt", erkl: "Der Prompt ist der Auftrag eines Menschen – getippt oder gesprochen. Ohne Prompt tut die KI nichts." },
+    { teil: "Gelerntes Können", hinweis: "wie Klavier spielen oder kochen", farbe: "skill", x: 640, y: 500,
+      begriff: "skills", erkl: "Skills sind gelernte Abläufe, zum Beispiel „Flyer erstellen“. Plugins sind ganze Pakete von Skills." },
+    { teil: "Hände mit Werkzeug", hinweis: "packen an", farbe: "tool", x: 1060, y: 610,
+      begriff: "connectors", erkl: "Connectors sind die Hände: Verbindungen zu anderen Programmen wie GitHub, Gmail, Browser oder PC." },
+    { teil: "Füße", hinweis: "Gewohnheiten wie Gehen – läuft von selbst", farbe: "rout", x: 668, y: 812,
+      begriff: "routinen", erkl: "Routinen laufen von selbst zu festen Zeiten, zum Beispiel jeden Sonntag die Apps prüfen." },
+    { teil: "Fertiges Werkstück", hinweis: "was am Ende herauskommt", farbe: "out", x: 1080, y: 708,
+      begriff: "artefakt", erkl: "Ein Artefakt ist das fertige Ergebnis: eine App, ein Arbeitsblatt, ein Flyer, ein Bild." },
+    { teil: "Körper und Nerven", hinweis: "verbinden den Kopf mit allem", farbe: "harn", x: 800, y: 580,
+      begriff: "harness", erkl: "Der Harness ist das Programm rund um das Sprachmodell, bei uns Claude Code. Er verbindet alles, achtet auf Regeln und hält die Arbeit in Gang." }
+  ];
+  var BEGRIFFE = {
+    sprachmodell: { name: "Sprachmodell", zusatz: "z. B. Claude Opus" },
+    claudemd:     { name: "CLAUDE.md", zusatz: "Gedächtnis-Datei" },
+    prompt:       { name: "Prompt", zusatz: "der Auftrag" },
+    skills:       { name: "Skills & Plugins", zusatz: "feste Abläufe" },
+    connectors:   { name: "Connectors", zusatz: "GitHub, Gmail, PC" },
+    routinen:     { name: "Routinen", zusatz: "zu festen Zeiten" },
+    artefakt:     { name: "Artefakt", zusatz: "das Ergebnis" },
+    harness:      { name: "Harness", zusatz: "z. B. Claude Code" }
+  };
+
+  var $ = function (id) { return document.getElementById(id); };
+  var chipsEl = $("chips"), plaetzeEl = $("plaetze"), markenEl = $("marken");
+  var belegt, ok, gewaehlt, versuche, reihe;
+
+  function mische(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+
+  var meldTimer;
+  function melde(t) { var m = $("meldung"); m.textContent = t; m.hidden = false; clearTimeout(meldTimer); meldTimer = setTimeout(function () { m.hidden = true; }, 2200); }
+
+  // Plätze und Nummern einmal aufbauen
+  var SVGNS = "http://www.w3.org/2000/svg";
+  PLAETZE.forEach(function (p, i) {
+    var li = document.createElement("li");
+    li.className = "platz"; li.style.setProperty("--c", "var(--" + p.farbe + ")");
+    li.style.setProperty("--soft", p.farbe === "denk" ? "var(--stage)" : "var(--" + p.farbe + "-soft)");
+    li.innerHTML = '<div class="nr" aria-hidden="true">' + (i + 1) + '</div>' +
+      '<div class="wer">' + p.teil + '<span>' + p.hinweis + '</span></div>' +
+      '<button class="ziel" type="button"></button>' +
+      '<p class="erkl" hidden></p>';
+    li.querySelector(".ziel").addEventListener("click", function () { platzTippen(i); });
+    plaetzeEl.appendChild(li);
+
+    var g = document.createElementNS(SVGNS, "g");
+    g.setAttribute("class", "mk"); g.setAttribute("aria-hidden", "true");
+    var c = document.createElementNS(SVGNS, "circle");
+    c.setAttribute("cx", p.x); c.setAttribute("cy", p.y); c.setAttribute("r", 26);
+    c.style.fill = "var(--" + p.farbe + ")";
+    var t = document.createElementNS(SVGNS, "text");
+    t.setAttribute("x", p.x); t.setAttribute("y", p.y + 11); t.setAttribute("text-anchor", "middle");
+    t.textContent = i + 1;
+    g.appendChild(c); g.appendChild(t);
+    g.addEventListener("click", function () { platzTippen(i); });
+    markenEl.appendChild(g);
+  });
+  function start() {
+    belegt = PLAETZE.map(function () { return null; });
+    ok = PLAETZE.map(function () { return false; });
+    gewaehlt = null; versuche = 0;
+    reihe = mische(Object.keys(BEGRIFFE));
+    $("geschafft").hidden = true;
+    zeichne();
+  }
+
+  function frei(id) { return belegt.indexOf(id) < 0; }
+
+  function zeichne() {
+    chipsEl.innerHTML = "";
+    var n = 0;
+    reihe.forEach(function (id) {
+      if (!frei(id)) return;
+      n++;
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "chip";
+      b.setAttribute("aria-pressed", gewaehlt === id ? "true" : "false");
+      b.innerHTML = BEGRIFFE[id].name + "<small>" + BEGRIFFE[id].zusatz + "</small>";
+      b.addEventListener("click", function () {
+        gewaehlt = gewaehlt === id ? null : id;
+        zeichne();
+        var neu = chipsEl.querySelector('[aria-pressed="true"]'); if (neu) neu.focus();
+      });
+      chipsEl.appendChild(b);
+    });
+    if (!n) chipsEl.innerHTML = '<span class="leer">Alle Begriffe verteilt – jetzt <b>Prüfen</b> antippen.</span>';
+
+    PLAETZE.forEach(function (p, i) {
+      var li = plaetzeEl.children[i], z = li.querySelector(".ziel"), id = belegt[i];
+      li.classList.toggle("ok", ok[i]);
+      z.classList.toggle("voll", !!id);
+      z.classList.toggle("bereit", !!gewaehlt && !ok[i]);
+      z.disabled = ok[i];
+      if (id) {
+        z.innerHTML = BEGRIFFE[id].name + (ok[i] ? '<span class="zeichen" aria-hidden="true">✓</span>' : "");
+        z.setAttribute("aria-label", "Platz " + (i + 1) + ", " + p.teil + ": " + BEGRIFFE[id].name + (ok[i] ? ", richtig" : ", antippen zum Zurücklegen"));
+      } else {
+        z.innerHTML = '<span class="platzhalter">' + (gewaehlt ? "hier ablegen" : "leer") + "</span>";
+        z.setAttribute("aria-label", "Platz " + (i + 1) + ", " + p.teil + ": leer");
+      }
+      var e = li.querySelector(".erkl"); e.hidden = !ok[i]; e.textContent = PLAETZE[i].erkl;
+      markenEl.children[i].classList.toggle("ok", ok[i]);
+      markenEl.children[i].classList.toggle("aktiv", !!gewaehlt && !ok[i]);
+    });
+    var r = ok.filter(Boolean).length;
+    $("stand").innerHTML = r + " von 8 richtig" + (versuche ? " <small>· " + versuche + (versuche === 1 ? " Prüfung" : " Prüfungen") + "</small>" : "");
+    $("pruefen").disabled = r === 8 || belegt.every(function (b, i) { return !b || ok[i]; });
+  }
+
+  function platzTippen(i) {
+    if (ok[i]) { melde("Platz " + (i + 1) + " ist schon richtig ✓"); return; }
+    plaetzeEl.children[i].classList.remove("falsch");
+    if (gewaehlt) {
+      belegt[i] = gewaehlt; gewaehlt = null;
+      zeichne();
+      var naechster = chipsEl.querySelector(".chip");
+      if (naechster && document.activeElement && document.activeElement.tagName !== "svg") naechster.focus();
+      return;
+    }
+    if (belegt[i]) { belegt[i] = null; zeichne(); return; }
+    melde("Zuerst oben einen Begriff antippen");
+  }
+
+  $("pruefen").addEventListener("click", function () {
+    versuche++;
+    var falsch = [];
+    PLAETZE.forEach(function (p, i) {
+      if (!belegt[i] || ok[i]) return;
+      if (belegt[i] === p.begriff) ok[i] = true; else falsch.push(i);
+    });
+    gewaehlt = null;
+    zeichne();
+    falsch.forEach(function (i) { plaetzeEl.children[i].classList.add("falsch"); });
+    var r = ok.filter(Boolean).length;
+    if (r === 8) {
+      $("geschafftText").textContent = versuche === 1 ? "Beim ersten Prüfen alles richtig – stark!" : "Mit " + versuche + " Prüfungen. Die Erklärungen stehen bei jedem Platz.";
+      $("geschafft").hidden = false; $("geschafft").focus();
+      $("geschafft").scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+    melde(falsch.length ? falsch.length + " noch nicht richtig – die Begriffe kommen zurück." : "Richtig! Weiter so.");
+    if (falsch.length) setTimeout(function () {
+      falsch.forEach(function (i) { if (!ok[i]) belegt[i] = null; plaetzeEl.children[i].classList.remove("falsch"); });
+      zeichne();
+    }, 1400);
+  });
+  $("neu").addEventListener("click", start);
+  $("nochmal").addEventListener("click", function () { start(); window.scrollTo({ top: 0, behavior: "smooth" }); });
+  $("hinweise").addEventListener("change", function () { plaetzeEl.classList.toggle("ohne-hinweise", !this.checked); });
+
+  start();
+})();
+</script>
+</body>
+</html>

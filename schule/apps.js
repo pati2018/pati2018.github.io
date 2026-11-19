@@ -23,6 +23,16 @@
  */
 window.APPS = [
   {
+    id: "ki-agent-quiz",
+    titel: "KI-Agent zuordnen",
+    kurz: "Zuordnungsquiz: Ein KI-Agent ist gebaut wie ein Mensch. Acht Fachbegriffe wie Sprachmodell, Harness, Prompt, Skills, Connectors und Routinen den passenden Körperteilen zuordnen – mit Erklärung bei jeder richtigen Antwort.",
+    link: "https://pati2018.github.io/schule/ki-agent-quiz/",
+    repo: "https://github.com/pati2018/pati2018.github.io/tree/main/schule/ki-agent-quiz",
+    kategorie: "Künstliche Intelligenz",
+    symbol: "🤖",
+    datum: "2026-11-19"
+  },
+  {
     id: "herzlich-willkommen",
     titel: "Herzlich willkommen im Reisebüro",
     kurz: "Lesetext im Lesemodus: Wie man Kundinnen und Kunden begrüßt und in den ersten Minuten Vertrauen aufbaut. Wichtige Stellen lassen sich farbig markieren, dazu Fragen zum Text mit Lösungshinweisen.",

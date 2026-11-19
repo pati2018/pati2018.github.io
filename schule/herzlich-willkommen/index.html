@@ -135,9 +135,37 @@
   .link-btn{ background:none; border:none; padding:0; font:inherit; color:var(--ink-faint); text-decoration:underline; text-underline-offset:2px; cursor:pointer; }
   .link-btn.danger{ color:var(--bad); font-weight:600; }
 
-  mark.hl{ background:var(--hl-yellow); color:var(--mark-ink); padding:.02em 0; border-radius:.15em; box-decoration-break:clone; -webkit-box-decoration-break:clone; cursor:pointer; }
-  mark.hl-coral{ background:var(--hl-coral); }
-  mark.hl-mint{ background:var(--hl-mint); }
+  .hl, .pv-yellow{ background:var(--hl-yellow); color:var(--mark-ink); padding:.04em 0; box-decoration-break:clone; -webkit-box-decoration-break:clone; cursor:pointer; }
+  .hl-coral, .pv-coral{ background:var(--hl-coral); color:var(--mark-ink); }
+  .hl-mint, .pv-mint{ background:var(--hl-mint); color:var(--mark-ink); }
+  .pv-erase{ background:transparent !important; color:var(--ink-faint); text-decoration:line-through; }
+
+  /* Markierstift unten */
+  .penbar{
+    position:fixed; left:0; right:0; bottom:0; z-index:55;
+    background:color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter:saturate(150%) blur(10px); -webkit-backdrop-filter:saturate(150%) blur(10px);
+    border-top:1px solid var(--rule);
+    padding-top:.5rem; padding-bottom:calc(.5rem + env(safe-area-inset-bottom,0px));
+    padding-left:max(12px, env(safe-area-inset-left,0px)); padding-right:max(12px, env(safe-area-inset-right,0px));
+    font-family:'Work Sans', system-ui, sans-serif;
+  }
+  .penbar-row{ max-width:42rem; margin:0 auto; display:flex; align-items:center; justify-content:center; gap:.45rem; flex-wrap:wrap; }
+  .penlabel{ font-weight:700; font-size:.78rem; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft); margin-right:.2rem; }
+  .pen{
+    display:inline-flex; align-items:center; gap:.4rem; min-height:44px; padding:.4rem .75rem;
+    border:2px solid var(--rule); border-radius:999px; background:var(--paper-raised); color:var(--ink);
+    font:inherit; font-weight:600; font-size:.9rem; cursor:pointer; -webkit-tap-highlight-color:transparent;
+  }
+  .pen[aria-pressed="true"]{ border-color:var(--ink); background:var(--ink); color:var(--paper); }
+  .pen .dotc{ width:1.15rem; height:1.15rem; border-radius:50%; border:1px solid rgba(0,0,0,.15); flex:none; }
+  .dotc.yellow{ background:var(--hl-yellow); } .dotc.coral{ background:var(--hl-coral); } .dotc.mint{ background:var(--hl-mint); }
+  .dotc.erase{ background:repeating-linear-gradient(45deg, var(--paper) 0 3px, var(--ink-faint) 3px 5px); }
+  .penhint{ max-width:42rem; margin:.35rem auto 0; text-align:center; font-size:.78rem; color:var(--ink-soft); }
+  body.pen-on #article{ -webkit-user-select:none; user-select:none; -webkit-touch-callout:none; touch-action:pan-y; cursor:crosshair; }
+  body.pen-on #article *{ -webkit-user-select:none; user-select:none; }
+  .page{ padding-bottom:9rem !important; }
+  @media (max-width:440px){ .penlabel{ display:none; } .penbar-row{ gap:.3rem; flex-wrap:nowrap; } .pen{ padding:.35rem .5rem; font-size:.8rem; gap:.3rem; } .pen .dotc{ width:1rem; height:1rem; } }
 
   .select-popup{ position:fixed; z-index:70; display:flex; align-items:center; gap:.5rem; background:var(--paper-raised); border:1px solid var(--rule); border-radius:999px; padding:.45rem .55rem; box-shadow:0 10px 28px var(--shadow); }
   .swatch{ width:1.9rem; height:1.9rem; border-radius:50%; border:2px solid rgba(0,0,0,.08); cursor:pointer; padding:0; -webkit-tap-highlight-color:transparent; }
@@ -146,12 +174,12 @@
   @media (prefers-reduced-motion: reduce){ .progress{ transition:none; } }
   @page{ margin:1.8cm 1.5cm; }
   @media print{
-    .progress, .toolbar, .hint, .select-popup, .footer-actions{ display:none !important; }
+    .progress, .toolbar, .hint, .select-popup, .footer-actions, .penbar{ display:none !important; }
     body{ background:#fff; color:#000; }
     .page{ padding:0; }
     #article{ max-width:none; font-size:11.5pt; line-height:1.5; color:#111; }
     .tipcard, .tipbox-item, .pullquote, .tasks{ break-inside:avoid; }
-    mark.hl{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .hl{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
   }
 </style>
 </head>
@@ -170,7 +198,7 @@
 
 <div class="hint" id="hint">
   <span class="dot" aria-hidden="true"></span>
-  <span>Text mit dem Finger oder der Maus markieren und eine Farbe wählen. Ein Tipp auf eine Markierung entfernt sie wieder. Die Markierungen bleiben auf diesem Gerät gespeichert.</span>
+  <span><b>Markieren:</b> Unten eine Farbe antippen, dann mit dem Finger <b>waagerecht</b> über den Text streichen. Senkrecht wischen scrollt weiter. Mit dem Radierer entfernen Sie Markierungen. Die Markierungen bleiben auf diesem Gerät gespeichert.</span>
   <button id="hintClose" aria-label="Hinweis schließen">✕</button>
 </div>
 
@@ -181,6 +209,17 @@
     <span id="confirmBox" hidden><span id="confirmText"></span> <button class="link-btn danger" id="confirmYes">Ja, löschen</button> · <button class="link-btn" id="confirmNo">Abbrechen</button></span>
   </div>
 </main>
+
+<div class="penbar" role="toolbar" aria-label="Markierstift">
+  <div class="penbar-row">
+    <span class="penlabel">Markieren</span>
+    <button class="pen" data-pen="yellow" aria-pressed="false"><span class="dotc yellow" aria-hidden="true"></span>Gelb</button>
+    <button class="pen" data-pen="coral" aria-pressed="false"><span class="dotc coral" aria-hidden="true"></span>Koralle</button>
+    <button class="pen" data-pen="mint" aria-pressed="false"><span class="dotc mint" aria-hidden="true"></span>Mint</button>
+    <button class="pen" data-pen="erase" aria-pressed="false"><span class="dotc erase" aria-hidden="true"></span>Radierer</button>
+  </div>
+  <p class="penhint" id="penhint" hidden></p>
+</div>
 
 <div class="select-popup" id="popup" hidden>
   <button class="swatch yellow" data-color="yellow" aria-label="Gelb markieren"></button>
@@ -274,20 +313,31 @@
   function loadHighlights(){ try{ var raw = localStorage.getItem(STORE_KEY); if (raw) highlights = JSON.parse(raw) || {}; }catch(e){ highlights = {}; } }
   function saveHighlights(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(highlights)); }catch(e){} }
 
+  /* Text in Wörter und Zwischenräume zerlegen; jedes Stück kennt seine Zeichenposition (data-s/data-e). */
   function renderText(text, hlList){
-    if (!hlList || !hlList.length) return escapeHtml(text);
-    var sorted = hlList.slice().sort(function(a,b){ return a.start - b.start; });
-    var out = '', pos = 0;
-    for (var i=0; i<sorted.length; i++){
-      var h = sorted[i], s = Math.max(h.start, pos), e = Math.min(h.end, text.length);
-      if (e <= s) continue;
-      if (s > pos) out += escapeHtml(text.slice(pos, s));
-      out += '<mark class="hl hl-' + h.color + '" data-hid="' + h.id + '">' + escapeHtml(text.slice(s,e)) + '</mark>';
+    hlList = hlList || [];
+    var parts = text.match(/\s+|[^\s]+/g) || [], out = '', pos = 0;
+    parts.forEach(function(t){
+      var s = pos, e = pos + t.length, h = null;
       pos = e;
-    }
-    if (pos < text.length) out += escapeHtml(text.slice(pos));
+      for (var i = hlList.length - 1; i >= 0; i--){ if (hlList[i].start < e && hlList[i].end > s){ h = hlList[i]; break; } }
+      var cls = /^\s/.test(t) ? 'sp' : 'w';
+      out += '<span class="' + cls + (h ? ' hl hl-' + h.color + '" data-hid="' + h.id : '') + '" data-s="' + s + '" data-e="' + e + '">' + escapeHtml(t) + '</span>';
+    });
     return out;
   }
+
+  /* Bereich [s,e) aus allen Markierungen eines Absatzes herausschneiden (Rest bleibt erhalten). */
+  function cutRange(cid, s, e){
+    var list = highlights[cid] || [], out = [];
+    list.forEach(function(h){
+      if (h.end <= s || h.start >= e){ out.push(h); return; }
+      if (h.start < s) out.push({id:h.id + 'a', start:h.start, end:s, color:h.color});
+      if (h.end > e) out.push({id:h.id + 'b', start:e, end:h.end, color:h.color});
+    });
+    highlights[cid] = out;
+  }
+  function newId(){ return 'h' + Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
 
   function buildHtml(){
     var html = '';
@@ -337,11 +387,12 @@
     popup.hidden = false;
     var pw = popup.offsetWidth || 140, ph = popup.offsetHeight || 44;
     var left = Math.max(8, Math.min(rect.left + rect.width/2 - pw/2, window.innerWidth - pw - 8));
-    var top = rect.top - ph - 10;
-    if (top < 8) top = rect.bottom + 10;
+    var top = rect.bottom + 14;
+    if (top + ph > window.innerHeight - 90) top = rect.top - ph - 14;
     popup.style.left = left + 'px'; popup.style.top = top + 'px';
   }
   function onSelectionEnd(){
+    if (pen){ hidePopup(); return; }
     var sel = window.getSelection();
     if (!sel || sel.rangeCount === 0 || sel.isCollapsed){ hidePopup(); return; }
     var range = sel.getRangeAt(0);
@@ -374,8 +425,8 @@
       var e = el.contains(range.endContainer) ? getOffset(el, range.endContainer, range.endOffset) : text.length;
       s = Math.max(0, Math.min(s, text.length)); e = Math.max(0, Math.min(e, text.length));
       if (e > s){
-        var hid = 'h' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
-        (highlights[cid] = highlights[cid] || []).push({id:hid, start:s, end:e, color:color});
+        cutRange(cid, s, e);
+        highlights[cid].push({id:newId(), start:s, end:e, color:color});
         touched.push(cid);
       }
     });
@@ -385,7 +436,8 @@
   }
 
   articleEl.addEventListener('click', function(e){
-    var mark = e.target.closest ? e.target.closest('mark.hl') : null;
+    if (pen) return;
+    var mark = e.target.closest ? e.target.closest('.hl') : null;
     if (!mark) return;
     var sel = window.getSelection();
     if (sel && !sel.isCollapsed) return;
@@ -396,6 +448,78 @@
     rerender(cid); saveHighlights();
   });
   document.addEventListener('scroll', function(){ if (!popup.hidden && activeRange) showPopupAt(activeRange); }, {passive:true, capture:true});
+
+  /* ---------- Markierstift: Farbe wählen, mit dem Finger über den Text streichen ---------- */
+  var pen = null, drag = null;
+  var penHint = document.getElementById('penhint');
+  var PEN_TEXT = {
+    yellow:'Waagerecht über die Wörter streichen. Markiertes Wort antippen = Markierung weg.',
+    coral:'Waagerecht über die Wörter streichen. Markiertes Wort antippen = Markierung weg.',
+    mint:'Waagerecht über die Wörter streichen. Markiertes Wort antippen = Markierung weg.',
+    erase:'Über markierte Wörter streichen, um sie zu entfernen.'
+  };
+  function setPen(p){
+    pen = (pen === p) ? null : p;
+    document.querySelectorAll('.pen').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.pen === pen)); });
+    document.body.classList.toggle('pen-on', !!pen);
+    penHint.hidden = !pen;
+    penHint.textContent = pen ? PEN_TEXT[pen] + ' Stift erneut antippen = fertig.' : '';
+    try{ window.getSelection().removeAllRanges(); }catch(e){}
+    hidePopup();
+  }
+  document.querySelectorAll('.pen').forEach(function(b){ b.addEventListener('click', function(){ setPen(b.dataset.pen); }); });
+
+  function clearPreview(){ articleEl.querySelectorAll('.pv-yellow,.pv-coral,.pv-mint,.pv-erase').forEach(function(n){ n.classList.remove('pv-yellow','pv-coral','pv-mint','pv-erase'); }); }
+  function preview(){
+    clearPreview();
+    drag.el.querySelectorAll('[data-s]').forEach(function(n){
+      if (+n.dataset.s >= drag.a && +n.dataset.e <= drag.b) n.classList.add('pv-' + pen);
+    });
+  }
+  function tokenAt(x, y){
+    var t = document.elementFromPoint(x, y);
+    return t && t.closest ? t.closest('[data-s]') : null;
+  }
+  articleEl.addEventListener('pointerdown', function(e){
+    if (!pen || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    var w = e.target.closest ? e.target.closest('[data-s]') : null;
+    var host = w && w.closest('[data-cid]');
+    if (!host) return;
+    e.preventDefault();
+    var s0 = +w.dataset.s, e0 = +w.dataset.e;
+    drag = {el:host, cid:host.getAttribute('data-cid'), s0:s0, e0:e0, a:s0, b:e0, moved:false, hid:w.dataset.hid || null, wasColor:(w.className.match(/hl-(\w+)/)||[])[1] || null};
+    preview();
+  });
+  articleEl.addEventListener('pointermove', function(e){
+    if (!drag) return;
+    var w = tokenAt(e.clientX, e.clientY);
+    if (!w || !drag.el.contains(w)) return;
+    var s = +w.dataset.s, en = +w.dataset.e;
+    var a = Math.min(drag.s0, s), b = Math.max(drag.e0, en);
+    if (a !== drag.a || b !== drag.b){ drag.a = a; drag.b = b; drag.moved = true; preview(); }
+  });
+  function endDrag(commit){
+    if (!drag) return;
+    var d = drag; drag = null;
+    clearPreview();
+    if (!commit) return;
+    var text = textById[d.cid]; if (text === undefined) return;
+    if (!d.moved && d.hid && pen !== 'erase'){
+      // Einzelnes markiertes Wort angetippt: diese Markierung entfernen
+      highlights[d.cid] = (highlights[d.cid] || []).filter(function(h){ return h.id !== d.hid; });
+    } else {
+      // Leerzeichen am Rand nicht mitmarkieren
+      while (d.a < d.b && /\s/.test(text[d.a])) d.a++;
+      while (d.b > d.a && /\s/.test(text[d.b - 1])) d.b--;
+      if (d.b <= d.a) return;
+      cutRange(d.cid, d.a, d.b);
+      if (pen !== 'erase') highlights[d.cid].push({id:newId(), start:d.a, end:d.b, color:pen});
+    }
+    rerender(d.cid); saveHighlights();
+  }
+  document.addEventListener('pointerup', function(){ endDrag(true); });
+  document.addEventListener('pointercancel', function(){ endDrag(false); });
+  articleEl.addEventListener('contextmenu', function(e){ if (pen) e.preventDefault(); });
 
   /* ---------- Alle löschen (Bestätigung auf der Seite) ---------- */
   var clearBtn = document.getElementById('clearAll'), confirmBox = document.getElementById('confirmBox');

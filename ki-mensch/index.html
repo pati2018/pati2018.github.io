@@ -22,6 +22,7 @@
   --tool: #2f5fb3;  --tool-soft: #e0e9f8;
   --out: #2c7a3c;   --out-soft: #dff0e2;
   --rout: #6a52b8;  --rout-soft: #ece7f8;
+  --harn: #b4236b;  --harn-soft: #fae3ee;
   --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
   --f-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
   color-scheme: light dark;
@@ -84,7 +85,7 @@ details.note .body { padding: 0 18px 16px; }
 @media (prefers-reduced-motion: reduce) { details.note > summary::after { transition: none; } }
 </style>
 
-<link rel="stylesheet" href="../erklaer-dunkel.css?v=1">
+<link rel="stylesheet" href="../erklaer-dunkel.css?v=2">
 <script src="../theme.js"></script>
 <!-- Aufrufe zählen: GoatCounter (datenschutzfreundlich, ohne Cookies) – Zähler auf der Übersicht -->
 <script data-goatcounter="https://pati2018.goatcounter.com/count" data-goatcounter-settings='{"path":"/ki-mensch/"}' async src="//gc.zgo.at/count.js"></script>
@@ -99,7 +100,7 @@ details.note .body { padding: 0 18px 16px; }
   <div class="stage" id="stage">
     <svg viewBox="0 0 1600 900" role="img" aria-labelledby="svgT svgD">
       <title id="svgT">KI-Agent und Mensch</title>
-      <desc id="svgD">Eine freundliche Menschenfigur mit dem Namensschild „Claude – Riff“ auf der Brust. Eine Denkblase zeigt den Verstand: denkt, plant und entscheidet. Das Gedächtnis entspricht der Datei CLAUDE.md, die Ohren dem Auftrag, gelerntes Können den Skills und Plugins, die Hände den Werkzeugen (Connectors), Gewohnheiten wie das Gehen den Routinen. Was die Hände herstellen, sind die Ergebnisse. Unterschied: Ohne Notizbuch vergisst die KI alles, und sie braucht immer den Auftrag eines Menschen.</desc>
+      <desc id="svgD">Eine freundliche Menschenfigur mit dem Namensschild „Claude – Riff“ auf der Brust. Eine Denkblase zeigt den Verstand, das Sprachmodell: denkt, plant und entscheidet. Der Körper mit seinem Nervensystem ist der Harness – bei uns Claude Code: er verbindet den Verstand mit allen Bausteinen, steuert und schützt. Das Gedächtnis entspricht der Datei CLAUDE.md, die Ohren dem Auftrag, gelerntes Können den Skills und Plugins, die Hände den Werkzeugen (Connectors), Gewohnheiten wie das Gehen den Routinen. Was die Hände herstellen, sind die Ergebnisse. Unterschied: Ohne Notizbuch vergisst die KI alles, und sie braucht immer den Auftrag eines Menschen.</desc>
       <text class="t-title" x="60" y="82">KI-Agent und Mensch</text>
       <text class="t-sub" x="62" y="120">Ein KI-Agent arbeitet ähnlich wie ein Mensch – Baustein für Baustein</text>
 
@@ -124,6 +125,14 @@ details.note .body { padding: 0 18px 16px; }
         <circle cx="800" cy="296" r="104" fill="#ffffff"/>
       </g>
       <!-- freundliches Gesicht -->
+      <!-- Harness = Nervensystem: verbindet Kopf mit Händen und Füßen -->
+      <g stroke="#b4236b" stroke-width="5" fill="none" stroke-linecap="round" stroke-dasharray="1 10">
+        <path d="M800,372 L800,618"/>
+        <path d="M800,440 Q700,470 600,556"/>
+        <path d="M800,440 Q900,470 1000,556"/>
+        <path d="M800,618 Q770,700 748,782"/>
+        <path d="M800,618 Q830,700 852,782"/>
+      </g>
       <circle cx="764" cy="280" r="11" fill="#15232b"/>
       <circle cx="836" cy="280" r="11" fill="#15232b"/>
       <circle cx="745" cy="322" r="14" fill="#f8e8da"/>
@@ -140,6 +149,7 @@ details.note .body { padding: 0 18px 16px; }
       <text class="t-h" x="1028" y="120" text-anchor="middle" style="font-size:26px">Verstand</text>
       <text class="t-small" x="1028" y="148" text-anchor="middle" style="font-size:16px">denkt, plant</text>
       <text class="t-small" x="1028" y="170" text-anchor="middle" style="font-size:16px">und entscheidet</text>
+      <text class="t-tag" x="1028" y="216" text-anchor="middle" style="font-size:14px">= SPRACHMODELL (z. B. OPUS)</text>
       <!-- Werkzeug in der rechten Hand -->
       <!-- Hammer in der rechten Hand -->
       <g transform="translate(1015 566) rotate(-30)">
@@ -206,12 +216,17 @@ details.note .body { padding: 0 18px 16px; }
       <text class="t-l" x="1182" y="252">alles – der Mensch erinnert sich.</text>
       <text class="t-l" x="1164" y="292">• Die KI will nichts von selbst:</text>
       <text class="t-l" x="1182" y="320">Sie braucht den Auftrag eines Menschen.</text>
+      <path d="M800,834 L800,800" stroke="#b4236b" stroke-width="3" stroke-dasharray="2 7" stroke-linecap="round"/>
+      <rect x="555" y="834" width="490" height="58" rx="16" fill="#fae3ee" stroke="#b4236b" stroke-width="3"/>
+      <text class="t-tag" x="800" y="857" text-anchor="middle" style="fill:#b4236b">HARNESS · KÖRPER &amp; NERVENSYSTEM</text>
+      <text class="t-l" x="800" y="882" text-anchor="middle"><tspan style="font-weight:700">KI:</tspan> Claude Code – verbindet, steuert, schützt</text>
     </svg>
   </div>
 
   <section class="notes">
     <h2>So kann man es erklären</h2>
-    <div class="note" style="--c:var(--mem)"><h3>Kopf</h3><p>Der <b>Verstand</b> (die Denkblase) denkt, plant und entscheidet – beim KI-Agenten ist das Claude, hier mit Namensschild „Riff“. Das <b>Gedächtnis</b> ist ein Notizbuch: die Datei CLAUDE.md. Was dort steht, weiß jeder neue Chat sofort.</p></div>
+    <div class="note" style="--c:var(--mem)"><h3>Kopf</h3><p>Der <b>Verstand</b> (die Denkblase) denkt, plant und entscheidet – beim KI-Agenten ist das das <b>Sprachmodell</b> Claude, hier mit Namensschild „Riff“. Das <b>Gedächtnis</b> ist ein Notizbuch: die Datei CLAUDE.md. Was dort steht, weiß jeder neue Chat sofort.</p></div>
+    <div class="note" style="--c:var(--harn)"><h3>Körper und Nerven</h3><p>Der Verstand allein ist nur ein <b>Sprachmodell</b> (zum Beispiel Claude Opus): Er kann denken, aber nichts tun. Erst der <b>Harness</b> („Geschirr“, wie beim Pferd) macht daraus einen Agenten. Bei uns ist das <b>Claude Code</b>.</p><p>Er liest das Notizbuch, gibt die Hände, achtet auf Regeln und Erlaubnis und hält die Arbeit in Gang, bis sie fertig ist.</p></div>
     <div class="note" style="--c:var(--ink)"><h3>Ohren</h3><p>Alles beginnt mit dem <b>Zuhören</b>: Ich sage, was ich brauche – oft einfach per Sprache am iPad.</p></div>
     <div class="note" style="--c:var(--skill)"><h3>Gelerntes Können</h3><p>Wie ein Mensch Klavier spielen oder ein Rezept kochen gelernt hat, hat die KI <b>Skills</b> (feste Abläufe) und <b>Plugins</b> (ganze Pakete davon).</p></div>
     <div class="note" style="--c:var(--tool)"><h3>Hände</h3><p>Mit den Händen und Werkzeugen packt der Mensch an. Die KI nutzt <b>Connectors</b>: Verbindungen zu GitHub, Gmail, Browser oder PC.</p></div>

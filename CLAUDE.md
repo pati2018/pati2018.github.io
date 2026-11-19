@@ -84,7 +84,8 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
   und umgekehrt. Öffentlich: keine Noten-, Bewertungs- oder Prüfungs-Skills nennen.
 - **Erklärseite** `ki-mensch/index.html`: „KI-Agent und Mensch“ – Menschenfigur, deren Körperteile den Bausteinen
   aus `ki-os/` entsprechen (Kopf = Verstand/Gedächtnis, Ohren = Auftrag, Können = Skills, Hände = Connectors,
-  Gewohnheit = Routinen, Ergebnisse), dazu „Der Unterschied“. Von `ki-os/` verlinkt, gleiche Gestaltung, Hell/Dunkel.
+  Gewohnheit = Routinen, Ergebnisse), dazu „Der Unterschied“. Verstand = Sprachmodell (z. B. Opus), Körper/Nerven = Harness (Claude Code, Farbe #b4236b).
+  Von `ki-os/` verlinkt, gleiche Gestaltung, Hell/Dunkel.
 - **Erklärseite** `vorher-nachher/index.html`: „Vorher – Nachher“ – erste, unübersichtliche
   Version (Looper `stabil-16`, Link über raw.githack.com) gegen SoundWhacker Smart Control;
   Botschaft: Musik-Apps mit KI brauchen Gestaltung. Bilder `vorher.jpg`/`nachher.jpg`.

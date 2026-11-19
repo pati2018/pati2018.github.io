@@ -27,6 +27,7 @@
     --tool: #8aaef2;  --tool-soft: #1c2a45;
     --out: #5cc072;   --out-soft: #183323;
     --rout: #ab96f0;  --rout-soft: #2a2343;
+    --harn: #ef7fb0;  --harn-soft: #3a1a2a;
     --vor: #ec8670;   --vor-soft: #3a1f19;
     --nach: #5cc072;  --nach-soft: #183323;
     color-scheme: dark;
@@ -39,6 +40,7 @@
   --tool: #8aaef2;  --tool-soft: #1c2a45;
   --out: #5cc072;   --out-soft: #183323;
   --rout: #ab96f0;  --rout-soft: #2a2343;
+  --harn: #ef7fb0;  --harn-soft: #3a1a2a;
   --vor: #ec8670;   --vor-soft: #3a1f19;
   --nach: #5cc072;  --nach-soft: #183323;
   color-scheme: dark;
@@ -119,3 +121,13 @@
 :root[data-theme="dark"] .botschaft p + p { color: #c9d6dc; }
 :root[data-theme="dark"] .bild { border-color: var(--line); }
 :root[data-theme="dark"] .knopf { color: #0b1114; }
+
+/* Harness (ki-mensch) */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) svg [fill="#fae3ee" i] { fill: var(--harn-soft); }
+  :root:not([data-theme="light"]) svg [stroke="#b4236b" i] { stroke: var(--harn); }
+  :root:not([data-theme="light"]) svg [style*="#b4236b" i] { fill: var(--harn) !important; }
+}
+:root[data-theme="dark"] svg [fill="#fae3ee" i] { fill: var(--harn-soft); }
+:root[data-theme="dark"] svg [stroke="#b4236b" i] { stroke: var(--harn); }
+:root[data-theme="dark"] svg [style*="#b4236b" i] { fill: var(--harn) !important; }

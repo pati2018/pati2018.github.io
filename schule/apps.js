@@ -23,6 +23,16 @@
  */
 window.APPS = [
   {
+    id: "serienbrief",
+    titel: "Serienbrief in 8 Schritten",
+    kurz: "Animierte Erklärung des Serienbriefs in Word am Beispiel einer Einladung zur Grippeschutzimpfung: Hauptdokument + Datenquelle = 120 Briefe. Mit Sprachausgabe und automatischem Ablauf für den Beamer.",
+    link: "https://pati2018.github.io/schule/serienbrief/",
+    repo: "https://github.com/pati2018/pati2018.github.io/tree/main/schule/serienbrief",
+    kategorie: "Textverarbeitung",
+    symbol: "✉️",
+    datum: "2026-11-19"
+  },
+  {
     id: "datenschutz-tom",
     titel: "TOM-Rundgang Datenschutz",
     kurz: "Die 14 technischen und organisatorischen Maßnahmen (TOM) im Datenschutz, erklärt an Beispielen aus Arzt- und Tierarztpraxis. Mit Präsentationsmodus für den Beamer, Übersicht und Quiz für MFA- und TFA-Azubis.",

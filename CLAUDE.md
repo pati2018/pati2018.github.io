@@ -82,6 +82,9 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
 - **Erklärseite** `ki-os/index.html`: allgemeines Schaubild „Mein KI-Betriebssystem“
   (Gedächtnis, Skills & Plugins, Connectors, Routinen). Von `ki-betriebssystem/` verlinkt
   und umgekehrt. Öffentlich: keine Noten-, Bewertungs- oder Prüfungs-Skills nennen.
+- **Erklärseite** `ki-mensch/index.html`: „KI-Agent und Mensch“ – Menschenfigur, deren Körperteile den Bausteinen
+  aus `ki-os/` entsprechen (Kopf = Verstand/Gedächtnis, Ohren = Auftrag, Können = Skills, Hände = Connectors,
+  Gewohnheit = Routinen, Ergebnisse), dazu „Der Unterschied“. Von `ki-os/` verlinkt, gleiche Gestaltung, Hell/Dunkel.
 - **Erklärseite** `vorher-nachher/index.html`: „Vorher – Nachher“ – erste, unübersichtliche
   Version (Looper `stabil-16`, Link über raw.githack.com) gegen SoundWhacker Smart Control;
   Botschaft: Musik-Apps mit KI brauchen Gestaltung. Bilder `vorher.jpg`/`nachher.jpg`.
@@ -92,7 +95,7 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
   Link: https://pati2018.github.io/veranstaltungen/praesentationen/ – Die Videos zeigen Schülerinnen und Schüler.
   Dazu die Teilnehmer-PDF `Praesentation_Teilnehmer.pdf` (alle Links anklickbar, Videos verlinken auf die App):
   https://pati2018.github.io/veranstaltungen/praesentationen/Praesentation_Teilnehmer.pdf
-- **Hell/Dunkel auf den Erklärseiten:** Alle drei laden `../theme.js` und `../erklaer-dunkel.css`
+- **Hell/Dunkel auf den Erklärseiten:** Alle laden `../theme.js` und `../erklaer-dunkel.css`
   und folgen damit dem Schalter der Hauptseite (gemeinsamer Speicher „theme“). Neue Farben
   in den Schaubildern dort in der Umfärbe-Liste ergänzen.
 - **Aufrufe zählen (GoatCounter, Konto `pati2018`, https://pati2018.goatcounter.com):** Jede App-Seite hat im

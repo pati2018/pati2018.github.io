@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="KI-Agent und Mensch im Vergleich: Gedächtnis, Ohren, Hände, Können und Gewohnheiten – so arbeitet ein KI-Agent ähnlich wie ein Mensch.">
+<link rel="icon" href="../icons/favicon-32.png">
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+<title>KI-Agent und Mensch</title>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+/* Layout: ein 16:9-Schaubild für den Beamer – eine Menschenfigur in der Mitte, die Bausteine des KI-Agenten an den passenden Körperteilen.
+   Hell oder dunkel – folgt dem Schalter der Hauptseite (theme.js + ../erklaer-dunkel.css). */
+:root {
+  --bg: #e9eef0;
+  --stage: #fbfcfc;
+  --ink: #15232b;
+  --muted: #566871;
+  --line: #c9d5da;
+  --mem: #17707a;  --mem-soft: #dcefF1;
+  --skill: #b05a14; --skill-soft: #f8e8da;
+  --tool: #2f5fb3;  --tool-soft: #e0e9f8;
+  --out: #2c7a3c;   --out-soft: #dff0e2;
+  --rout: #6a52b8;  --rout-soft: #ece7f8;
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  color-scheme: light dark;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 17px; line-height: 1.55; }
+.wrap {
+  max-width: 1280px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 56px;
+  display: flex; flex-direction: column; gap: 28px;
+}
+.bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.bar p { margin: 0; color: var(--muted); font-size: 15px; }
+.btn { font: inherit; font-weight: 700; font-size: 15px; cursor: pointer; border: 2px solid var(--ink); background: var(--ink); color: var(--stage); border-radius: 10px; padding: 8px 16px; }
+.links { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+.back { font-weight: 700; color: var(--tool); text-decoration: none; font-size: 17px; }
+.back:hover { text-decoration: underline; }
+.btn:focus-visible { outline: 3px solid var(--tool); outline-offset: 2px; }
+.stage { background: var(--stage); border-radius: 18px; border: 1px solid var(--line); overflow: hidden; width: 100%; aspect-ratio: 16 / 9; max-width: 100%; }
+.stage:fullscreen { border-radius: 0; border: 0; display: flex; align-items: center; justify-content: center; background: var(--stage); }
+.stage svg { display: block; width: 100%; height: 100%; }
+
+svg text { font-family: var(--f-body); fill: var(--ink); }
+.t-title { font-family: var(--f-display); font-weight: 800; font-size: 50px; }
+.t-sub { font-size: 23px; fill: var(--muted); }
+.t-h { font-family: var(--f-display); font-weight: 600; font-size: 28px; }
+.t-l { font-size: 19.5px; }
+.t-small { font-size: 17px; fill: var(--muted); }
+.t-hub { font-family: var(--f-display); font-weight: 800; font-size: 40px; fill: var(--stage); }
+.t-hub2 { font-size: 21px; fill: var(--stage); }
+.t-step { font-size: 19px; }
+.t-num { font-family: var(--f-display); font-weight: 800; font-size: 22px; fill: var(--stage); }
+.t-tag { font-size: 15px; font-weight: 700; letter-spacing: .06em; }
+
+.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 16px; }
+.notes > h2, .demo > h2 { grid-column: 1 / -1; font-family: var(--f-display); font-weight: 600; font-size: 26px; margin: 0; text-wrap: balance; }
+.note { background: var(--stage); border: 1px solid var(--line); border-left: 6px solid var(--c); border-radius: 12px; padding: 16px 18px; min-width: 0; }
+.note h3 { margin: 0 0 4px; font-family: var(--f-display); font-weight: 600; font-size: 20px; color: var(--c); }
+.note p { margin: 0; }
+.note p + p { margin-top: 6px; color: var(--muted); font-size: 15.5px; }
+.demo { background: var(--stage); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; }
+.demo ol { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; }
+.demo code { font-size: 14px; background: var(--mem-soft); padding: 1px 6px; border-radius: 5px; }
+.notes { align-items: start; }
+details.note { padding: 0; }
+details.note > summary { list-style: none; cursor: pointer; padding: 16px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; }
+details.note > summary::-webkit-details-marker { display: none; }
+details.note > summary h3 { margin: 0; }
+details.note > summary::after { content: ""; flex-shrink: 0; width: 12px; height: 12px; border-right: 3px solid var(--c); border-bottom: 3px solid var(--c); transform: rotate(45deg); margin-top: -6px; transition: transform .15s ease; }
+details.note[open] > summary::after { transform: rotate(225deg); margin-top: 6px; }
+details.note > summary:focus-visible { outline: 3px solid var(--tool); outline-offset: -3px; border-radius: 12px; }
+details.note .body { padding: 0 18px 16px; }
+.notes-head { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.notes-head h2 { margin: 0; }
+.btn-ghost { font: inherit; font-weight: 700; font-size: 15px; cursor: pointer; border: 2px solid var(--ink); background: transparent; color: var(--ink); border-radius: 10px; padding: 8px 16px; }
+@media (prefers-reduced-motion: reduce) { details.note > summary::after { transition: none; } }
+</style>
+
+<link rel="stylesheet" href="../erklaer-dunkel.css?v=1">
+<script src="../theme.js"></script>
+<!-- Aufrufe zählen: GoatCounter (datenschutzfreundlich, ohne Cookies) – Zähler auf der Übersicht -->
+<script data-goatcounter="https://pati2018.goatcounter.com/count" data-goatcounter-settings='{"path":"/ki-mensch/"}' async src="//gc.zgo.at/count.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar">
+    <nav class="links"><a class="back" href="../">← Alle Musik-Apps</a><a class="back" href="../ki-os/">Mein KI-Betriebssystem →</a><a class="back" href="../ki-betriebssystem/">KI-Betriebssystem für Musik-Apps →</a></nav>
+    <button class="btn" id="fs" type="button">Vollbild</button>
+  </div>
+
+  <div class="stage" id="stage">
+    <svg viewBox="0 0 1600 900" role="img" aria-labelledby="svgT svgD">
+      <title id="svgT">KI-Agent und Mensch</title>
+      <desc id="svgD">Eine Menschenfigur. Der Kopf ist der Verstand, beim KI-Agenten Claude. Das Gedächtnis entspricht der Datei CLAUDE.md, die Ohren dem Auftrag, gelerntes Können den Skills und Plugins, die Hände den Werkzeugen (Connectors), Gewohnheiten wie das Gehen den Routinen. Was die Hände herstellen, sind die Ergebnisse. Unterschied: Ohne Notizbuch vergisst die KI alles, und sie braucht immer den Auftrag eines Menschen.</desc>
+      <text class="t-title" x="60" y="82">KI-Agent und Mensch</text>
+      <text class="t-sub" x="62" y="120">Ein KI-Agent arbeitet ähnlich wie ein Mensch – Baustein für Baustein</text>
+
+      <!-- Menschenfigur -->
+      <g stroke="#15232b" stroke-width="4" stroke-linejoin="round">
+        <path d="M712,452 L590,560" stroke="#15232b" stroke-width="40" stroke-linecap="round"/>
+        <path d="M888,452 L1010,560" stroke="#15232b" stroke-width="40" stroke-linecap="round"/>
+        <path d="M712,452 L590,560" stroke="#ffffff" stroke-width="32" stroke-linecap="round"/>
+        <path d="M888,452 L1010,560" stroke="#ffffff" stroke-width="32" stroke-linecap="round"/>
+        <path d="M762,620 L742,792" stroke="#15232b" stroke-width="44" stroke-linecap="round"/>
+        <path d="M838,620 L858,792" stroke="#15232b" stroke-width="44" stroke-linecap="round"/>
+        <path d="M762,620 L742,792" stroke="#ffffff" stroke-width="36" stroke-linecap="round"/>
+        <path d="M838,620 L858,792" stroke="#ffffff" stroke-width="36" stroke-linecap="round"/>
+        <ellipse cx="728" cy="812" rx="40" ry="18" fill="#ffffff"/>
+        <ellipse cx="872" cy="812" rx="40" ry="18" fill="#ffffff"/>
+        <rect x="700" y="410" width="200" height="230" rx="64" fill="#ffffff"/>
+        <rect x="780" y="386" width="40" height="34" fill="#ffffff"/>
+        <circle cx="585" cy="566" r="30" fill="#ffffff"/>
+        <circle cx="1015" cy="566" r="30" fill="#ffffff"/>
+        <ellipse cx="696" cy="296" rx="18" ry="32" fill="#ffffff"/>
+        <ellipse cx="904" cy="296" rx="18" ry="32" fill="#ffffff"/>
+        <circle cx="800" cy="296" r="104" fill="#15232b"/>
+      </g>
+      <text class="t-hub" x="800" y="292" text-anchor="middle" style="font-size:33px">Verstand</text>
+      <text class="t-hub2" x="800" y="326" text-anchor="middle" style="font-size:19px">= Claude „Riff“</text>
+      <!-- Werkzeug in der rechten Hand -->
+      <!-- Hammer in der rechten Hand -->
+      <g transform="translate(1015 566) rotate(-30)">
+        <rect x="-7" y="-86" width="14" height="96" rx="6" fill="#2f5fb3"/>
+        <rect x="-34" y="-104" width="68" height="28" rx="7" fill="#2f5fb3"/>
+      </g>
+
+      <!-- Bausteine links -->
+      <rect x="60" y="150" width="420" height="150" rx="16" fill="#dcf0f1" stroke="#17707a" stroke-width="3"/>
+      <text class="t-tag" x="84" y="184" style="fill:#17707a">GEDÄCHTNIS · KOPF</text>
+      <text class="t-h" x="84" y="220">Notizbuch</text>
+      <text class="t-l" x="84" y="252"><tspan style="font-weight:700">Mensch:</tspan> erinnert sich an Erlebtes</text>
+      <text class="t-l" x="84" y="282"><tspan style="font-weight:700">KI:</tspan> CLAUDE.md – Projekte, Regeln</text>
+      <path d="M480,215 L716,240" stroke="#17707a" stroke-width="3" fill="none" stroke-dasharray="2 7" stroke-linecap="round"/>
+      <circle cx="716" cy="240" r="7" fill="#17707a"/>
+
+      <rect x="60" y="330" width="420" height="150" rx="16" fill="#ffffff" stroke="#15232b" stroke-width="3"/>
+      <text class="t-tag" x="84" y="364" >OHREN · AUFTRAG</text>
+      <text class="t-h" x="84" y="400">Zuhören</text>
+      <text class="t-l" x="84" y="432"><tspan style="font-weight:700">Mensch:</tspan> hört, was gebraucht wird</text>
+      <text class="t-l" x="84" y="462"><tspan style="font-weight:700">KI:</tspan> Auftrag per Chat oder Sprache</text>
+      <path d="M480,400 L680,300" stroke="#15232b" stroke-width="3" fill="none" stroke-dasharray="2 7" stroke-linecap="round"/>
+      <circle cx="680" cy="300" r="7" fill="#15232b"/>
+
+      <rect x="60" y="510" width="420" height="150" rx="16" fill="#f8e8da" stroke="#b05a14" stroke-width="3"/>
+      <text class="t-tag" x="84" y="544" style="fill:#b05a14">FÄHIGKEITEN · GELERNT</text>
+      <text class="t-h" x="84" y="580">Können</text>
+      <text class="t-l" x="84" y="612"><tspan style="font-weight:700">Mensch:</tspan> Klavier, Rezept, Handgriff</text>
+      <text class="t-l" x="84" y="642"><tspan style="font-weight:700">KI:</tspan> Skills &amp; Plugins</text>
+      <path d="M480,580 L622,528" stroke="#b05a14" stroke-width="3" fill="none" stroke-dasharray="2 7" stroke-linecap="round"/>
+      <circle cx="622" cy="528" r="7" fill="#b05a14"/>
+
+      <rect x="60" y="690" width="420" height="150" rx="16" fill="#ece7f8" stroke="#6a52b8" stroke-width="3" stroke-dasharray="10 8"/>
+      <text class="t-tag" x="84" y="724" style="fill:#6a52b8">ROUTINEN · GEWOHNHEIT</text>
+      <text class="t-h" x="84" y="760">läuft von selbst</text>
+      <text class="t-l" x="84" y="792"><tspan style="font-weight:700">Mensch:</tspan> Gehen, Zähneputzen</text>
+      <text class="t-l" x="84" y="822"><tspan style="font-weight:700">KI:</tspan> App-Check jeden Sonntag</text>
+      <path d="M480,770 L690,810" stroke="#6a52b8" stroke-width="3" fill="none" stroke-dasharray="2 7" stroke-linecap="round"/>
+      <circle cx="690" cy="810" r="7" fill="#6a52b8"/>
+
+
+      <!-- Bausteine rechts -->
+      <rect x="1140" y="430" width="420" height="150" rx="16" fill="#e0e9f8" stroke="#2f5fb3" stroke-width="3"/>
+      <text class="t-tag" x="1164" y="464" style="fill:#2f5fb3">WERKZEUGE · HÄNDE</text>
+      <text class="t-h" x="1164" y="500">Anpacken</text>
+      <text class="t-l" x="1164" y="532"><tspan style="font-weight:700">Mensch:</tspan> Hände, Hammer, Stift</text>
+      <text class="t-l" x="1164" y="562"><tspan style="font-weight:700">KI:</tspan> Connectors – GitHub, Gmail, PC</text>
+      <path d="M1140,505 L1048,560" stroke="#2f5fb3" stroke-width="3" fill="none" stroke-dasharray="2 7" stroke-linecap="round"/>
+      <circle cx="1048" cy="560" r="7" fill="#2f5fb3"/>
+
+      <rect x="1140" y="640" width="420" height="150" rx="16" fill="#dff0e2" stroke="#2c7a3c" stroke-width="3"/>
+      <text class="t-tag" x="1164" y="674" style="fill:#2c7a3c">ERGEBNISSE</text>
+      <text class="t-h" x="1164" y="710">fertig &amp; nutzbar</text>
+      <text class="t-l" x="1164" y="742"><tspan style="font-weight:700">Mensch:</tspan> ein Bild, ein Brief, ein Lied</text>
+      <text class="t-l" x="1164" y="772"><tspan style="font-weight:700">KI:</tspan> Musik-Apps, Arbeitsblätter</text>
+      <path d="M1140,715 L1040,600" stroke="#2c7a3c" stroke-width="3" fill="none" stroke-dasharray="2 7" stroke-linecap="round"/>
+      <circle cx="1040" cy="600" r="7" fill="#2c7a3c"/>
+
+
+      <!-- Der Unterschied -->
+      <rect x="1140" y="150" width="420" height="250" rx="16" fill="#ffffff" stroke="#c9d5da" stroke-width="2"/>
+      <text class="t-tag" x="1164" y="184" style="fill:#566871">DER UNTERSCHIED</text>
+      <text class="t-l" x="1164" y="224">• Ohne Notizbuch vergisst die KI</text>
+      <text class="t-l" x="1182" y="252">alles – der Mensch erinnert sich.</text>
+      <text class="t-l" x="1164" y="292">• Die KI will nichts von selbst:</text>
+      <text class="t-l" x="1182" y="320">Sie braucht den Auftrag eines Menschen.</text>
+      <text class="t-l" x="1164" y="360" style="font-weight:700">• Die Expertise hat, wer Musik versteht.</text>
+    </svg>
+  </div>
+
+  <section class="notes">
+    <h2>So kann man es erklären</h2>
+    <div class="note" style="--c:var(--mem)"><h3>Kopf</h3><p>Der <b>Verstand</b> denkt, plant und entscheidet – beim KI-Agenten ist das Claude. Das <b>Gedächtnis</b> ist ein Notizbuch: die Datei CLAUDE.md. Was dort steht, weiß jeder neue Chat sofort.</p></div>
+    <div class="note" style="--c:var(--ink)"><h3>Ohren</h3><p>Alles beginnt mit dem <b>Zuhören</b>: Ich sage, was ich brauche – oft einfach per Sprache am iPad.</p></div>
+    <div class="note" style="--c:var(--skill)"><h3>Gelerntes Können</h3><p>Wie ein Mensch Klavier spielen oder ein Rezept kochen gelernt hat, hat die KI <b>Skills</b> (feste Abläufe) und <b>Plugins</b> (ganze Pakete davon).</p></div>
+    <div class="note" style="--c:var(--tool)"><h3>Hände</h3><p>Mit den Händen und Werkzeugen packt der Mensch an. Die KI nutzt <b>Connectors</b>: Verbindungen zu GitHub, Gmail, Browser oder PC.</p></div>
+    <div class="note" style="--c:var(--rout)"><h3>Gewohnheiten</h3><p>Manches läuft wie von selbst – wie das Gehen. Bei der KI sind das <b>Routinen</b>, zum Beispiel jeden Sonntag die Apps prüfen.</p></div>
+    <div class="note" style="--c:var(--out)"><h3>Ergebnisse</h3><p>Am Ende steht etwas <b>Fertiges</b>: beim Menschen ein Bild oder ein Lied, bei der KI eine Musik-App, ein Arbeitsblatt oder ein Flyer.</p></div>
+  </section>
+</div>
+
+<script>
+(function () {
+  var b = document.getElementById("fs"), s = document.getElementById("stage");
+  if (!s.requestFullscreen && !s.webkitRequestFullscreen) { b.hidden = true; return; }
+  b.addEventListener("click", function () {
+    var f = s.requestFullscreen || s.webkitRequestFullscreen;
+    try { var r = f.call(s); if (r && r.catch) r.catch(function () {}); } catch (e) {}
+  });
+})();
+</script>
+</body>
+</html>

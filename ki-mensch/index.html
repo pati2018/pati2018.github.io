@@ -99,7 +99,7 @@ details.note .body { padding: 0 18px 16px; }
   <div class="stage" id="stage">
     <svg viewBox="0 0 1600 900" role="img" aria-labelledby="svgT svgD">
       <title id="svgT">KI-Agent und Mensch</title>
-      <desc id="svgD">Eine Menschenfigur. Der Kopf ist der Verstand, beim KI-Agenten Claude. Das Gedächtnis entspricht der Datei CLAUDE.md, die Ohren dem Auftrag, gelerntes Können den Skills und Plugins, die Hände den Werkzeugen (Connectors), Gewohnheiten wie das Gehen den Routinen. Was die Hände herstellen, sind die Ergebnisse. Unterschied: Ohne Notizbuch vergisst die KI alles, und sie braucht immer den Auftrag eines Menschen.</desc>
+      <desc id="svgD">Eine freundliche Menschenfigur mit dem Namensschild „Claude – Riff“ auf der Brust. Eine Denkblase zeigt den Verstand: denkt, plant und entscheidet. Das Gedächtnis entspricht der Datei CLAUDE.md, die Ohren dem Auftrag, gelerntes Können den Skills und Plugins, die Hände den Werkzeugen (Connectors), Gewohnheiten wie das Gehen den Routinen. Was die Hände herstellen, sind die Ergebnisse. Unterschied: Ohne Notizbuch vergisst die KI alles, und sie braucht immer den Auftrag eines Menschen.</desc>
       <text class="t-title" x="60" y="82">KI-Agent und Mensch</text>
       <text class="t-sub" x="62" y="120">Ein KI-Agent arbeitet ähnlich wie ein Mensch – Baustein für Baustein</text>
 
@@ -121,10 +121,25 @@ details.note .body { padding: 0 18px 16px; }
         <circle cx="1015" cy="566" r="30" fill="#ffffff"/>
         <ellipse cx="696" cy="296" rx="18" ry="32" fill="#ffffff"/>
         <ellipse cx="904" cy="296" rx="18" ry="32" fill="#ffffff"/>
-        <circle cx="800" cy="296" r="104" fill="#15232b"/>
+        <circle cx="800" cy="296" r="104" fill="#ffffff"/>
       </g>
-      <text class="t-hub" x="800" y="292" text-anchor="middle" style="font-size:33px">Verstand</text>
-      <text class="t-hub2" x="800" y="326" text-anchor="middle" style="font-size:19px">= Claude „Riff“</text>
+      <!-- freundliches Gesicht -->
+      <circle cx="764" cy="280" r="11" fill="#15232b"/>
+      <circle cx="836" cy="280" r="11" fill="#15232b"/>
+      <circle cx="745" cy="322" r="14" fill="#f8e8da"/>
+      <circle cx="855" cy="322" r="14" fill="#f8e8da"/>
+      <path d="M762,330 Q800,368 838,330" stroke="#15232b" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <!-- Namensschild auf der Brust -->
+      <rect x="722" y="458" width="156" height="78" rx="16" fill="#15232b"/>
+      <text class="t-hub" x="800" y="494" text-anchor="middle" style="font-size:28px">Claude</text>
+      <text class="t-hub2" x="800" y="522" text-anchor="middle" style="font-size:18px">„Riff“</text>
+      <!-- Denkblase: der Verstand -->
+      <circle cx="902" cy="214" r="7" fill="#ffffff" stroke="#15232b" stroke-width="3"/>
+      <circle cx="920" cy="192" r="10" fill="#ffffff" stroke="#15232b" stroke-width="3"/>
+      <rect x="930" y="78" width="196" height="112" rx="40" fill="#ffffff" stroke="#15232b" stroke-width="3"/>
+      <text class="t-h" x="1028" y="120" text-anchor="middle" style="font-size:26px">Verstand</text>
+      <text class="t-small" x="1028" y="148" text-anchor="middle" style="font-size:16px">denkt, plant</text>
+      <text class="t-small" x="1028" y="170" text-anchor="middle" style="font-size:16px">und entscheidet</text>
       <!-- Werkzeug in der rechten Hand -->
       <!-- Hammer in der rechten Hand -->
       <g transform="translate(1015 566) rotate(-30)">
@@ -197,7 +212,7 @@ details.note .body { padding: 0 18px 16px; }
 
   <section class="notes">
     <h2>So kann man es erklären</h2>
-    <div class="note" style="--c:var(--mem)"><h3>Kopf</h3><p>Der <b>Verstand</b> denkt, plant und entscheidet – beim KI-Agenten ist das Claude. Das <b>Gedächtnis</b> ist ein Notizbuch: die Datei CLAUDE.md. Was dort steht, weiß jeder neue Chat sofort.</p></div>
+    <div class="note" style="--c:var(--mem)"><h3>Kopf</h3><p>Der <b>Verstand</b> (die Denkblase) denkt, plant und entscheidet – beim KI-Agenten ist das Claude, hier mit Namensschild „Riff“. Das <b>Gedächtnis</b> ist ein Notizbuch: die Datei CLAUDE.md. Was dort steht, weiß jeder neue Chat sofort.</p></div>
     <div class="note" style="--c:var(--ink)"><h3>Ohren</h3><p>Alles beginnt mit dem <b>Zuhören</b>: Ich sage, was ich brauche – oft einfach per Sprache am iPad.</p></div>
     <div class="note" style="--c:var(--skill)"><h3>Gelerntes Können</h3><p>Wie ein Mensch Klavier spielen oder ein Rezept kochen gelernt hat, hat die KI <b>Skills</b> (feste Abläufe) und <b>Plugins</b> (ganze Pakete davon).</p></div>
     <div class="note" style="--c:var(--tool)"><h3>Hände</h3><p>Mit den Händen und Werkzeugen packt der Mensch an. Die KI nutzt <b>Connectors</b>: Verbindungen zu GitHub, Gmail, Browser oder PC.</p></div>

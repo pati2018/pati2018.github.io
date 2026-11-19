@@ -86,6 +86,9 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
   aus `ki-os/` entsprechen (Kopf = Verstand/Gedächtnis, Ohren = Auftrag, Können = Skills, Hände = Connectors,
   Gewohnheit = Routinen, Ergebnisse), dazu „Der Unterschied“. Verstand = Sprachmodell (z. B. Opus), Körper/Nerven = Harness (Claude Code, Farbe #b4236b).
   Von `ki-os/` verlinkt, gleiche Gestaltung, Hell/Dunkel.
+  Darunter das **Erklärvideo** `ki-mensch/ki-agent-video.mp4` (2:51, Stimme ElevenLabs „Matilda“, Untertitel ins Bild
+  eingebaut, Vorschaubild `ki-agent-video.jpg`). Gebaut aus einer animierten HTML-Seite (Playwright-Bilder + ffmpeg);
+  ElevenLabs-Schlüssel liegt als Netzwerk-Geheimnis in der Cloud-Umgebung „MP3“ (Gratis-Plan wird über den Proxy gesperrt).
 - **Erklärseite** `vorher-nachher/index.html`: „Vorher – Nachher“ – erste, unübersichtliche
   Version (Looper `stabil-16`, Link über raw.githack.com) gegen SoundWhacker Smart Control;
   Botschaft: Musik-Apps mit KI brauchen Gestaltung. Bilder `vorher.jpg`/`nachher.jpg`.

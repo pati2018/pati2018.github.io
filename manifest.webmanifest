@@ -1,6 +1,6 @@
 {
-  "name": "Meine Web-Apps",
-  "short_name": "Web-Apps",
+  "name": "Meine Musik-Apps",
+  "short_name": "Musik-Apps",
   "lang": "de",
   "start_url": "./",
   "scope": "./",

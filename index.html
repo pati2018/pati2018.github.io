@@ -12,6 +12,8 @@
   <meta name="apple-mobile-web-app-title" content="Web-Apps">
   <link rel="stylesheet" href="style.css">
   <script src="theme.js"></script>
+<!-- Aufrufe zählen: GoatCounter (datenschutzfreundlich, ohne Cookies) – Zähler auf der Übersicht -->
+<script data-goatcounter="https://pati2018.goatcounter.com/count" data-goatcounter-settings='{"path":"/"}' async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
   <header class="site wrap">
@@ -27,6 +29,7 @@
     </div>
     <div class="grid" id="liste"></div>
     <p class="empty" id="leer" hidden>Keine App gefunden.</p>
+    <p class="datenschutz">Die Aufrufe werden datenschutzfreundlich mit <a href="https://www.goatcounter.com/" target="_blank" rel="noopener">GoatCounter</a> gezählt – ohne Cookies und ohne persönliche Daten.</p>
   </main>
 
 
@@ -65,7 +68,7 @@
             ${a.bild ? `<div class="icon" aria-hidden="true" style="background:none;overflow:hidden"><img src="${esc(a.bild)}" alt="" style="width:100%;height:100%;border-radius:inherit"></div>` : `<div class="icon" aria-hidden="true"${[...(a.symbol || "")].length > 1 ? ' style="font-size:18px;letter-spacing:-2px"' : ""}>${esc(a.symbol || "🧩")}</div>`}
             <div>
               <h2>${esc(a.titel)}</h2>
-              <div class="meta">${esc(a.kategorie || "")}${a.kategorie && a.datum ? " · " : ""}${esc(fmt(a.datum))}</div>
+              <div class="meta">${esc(a.kategorie || "")}${a.kategorie && a.datum ? " · " : ""}${esc(fmt(a.datum))}${a.zaehler ? `<span class="zaehler" data-pfad="${esc(a.zaehler)}" hidden> · 👁 <b></b> Aufrufe</span>` : ""}</div>
             </div>
           </div>
           <p>${esc(a.kurz)}</p>
@@ -78,6 +81,26 @@
       document.getElementById("leer").hidden = treffer.length > 0;
     }
     zeigen();
+
+    // Aufrufe je App (GoatCounter, öffentliche Zähler). Klappt die Abfrage nicht, bleibt die Anzeige einfach weg.
+    const aufrufe = {};
+    function zaehlerZeigen() {
+      document.querySelectorAll(".zaehler").forEach(el => {
+        const n = aufrufe[el.dataset.pfad];
+        if (n == null) return;
+        el.querySelector("b").textContent = n.toLocaleString("de-DE");
+        el.hidden = false;
+      });
+    }
+    apps.filter(a => a.zaehler).forEach(a => {
+      fetch("https://pati2018.goatcounter.com/counter/" + encodeURIComponent(a.zaehler) + ".json")
+        .then(r => r.ok ? r.json() : (r.status === 404 ? { count: "0" } : null))
+        .then(j => { if (!j) return; aufrufe[a.zaehler] = parseInt(String(j.count).replace(/[^0-9]/g, ""), 10) || 0; zaehlerZeigen(); })
+        .catch(() => {});
+    });
+    // nach Suche/Kategorie-Wechsel die Zahlen wieder eintragen
+    suche.addEventListener("input", zaehlerZeigen);
+    chipBox.addEventListener("click", zaehlerZeigen);
 
     // Läuft die Übersicht selbst als Home-Bildschirm-App, öffnen sich die Apps darin ohne Safari-Leiste –
     // dann gibt es kein „Teilen“. Darum: Link kopieren und in Safari einfügen.

@@ -95,6 +95,11 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
 - **Hell/Dunkel auf den Erklärseiten:** Alle drei laden `../theme.js` und `../erklaer-dunkel.css`
   und folgen damit dem Schalter der Hauptseite (gemeinsamer Speicher „theme“). Neue Farben
   in den Schaubildern dort in der Umfärbe-Liste ergänzen.
+- **Aufrufe zählen (GoatCounter, Konto `pati2018`, https://pati2018.goatcounter.com):** Jede App-Seite hat im
+  `<head>` das Zählskript mit festem Pfad (`data-goatcounter-settings='{"path":"/fagott/"}'`). In `apps.js` steht
+  je App `zaehler: "<Pfad>"`; die Übersicht holt die Zahl über `…/counter/<Pfad>.json` und zeigt „👁 n Aufrufe“.
+  **Neue App:** Zählskript in die App-Seite und `zaehler` in `apps.js` eintragen. Gilt auch für Gitarre und
+  soundwhacker-looper (Spielen, Kamera, Looper). In GoatCounter muss „Allow adding visitor counts“ an sein.
 - **Weitere Dateien:** `index.html` (Übersicht), `app.html` (zeigt die Anleitung
   einer App), `anleitungen/<id>.md` (Anleitungen), `style.css`, `theme.js`
   (Hell/Dunkel), `manifest.webmanifest` (Home-Bildschirm), `lib/` (marked, DOMPurify).

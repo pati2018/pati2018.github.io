@@ -133,3 +133,8 @@ main.wrap { padding-bottom: 48px; }
 
 h1.brand { display: flex; align-items: center; gap: 14px; }
 h1.brand img { width: clamp(40px, 7vw, 56px); height: auto; border-radius: 14px; box-shadow: var(--shadow); }
+
+/* Aufruf-Zähler und Datenschutz-Hinweis auf der Übersicht */
+.zaehler b { font-weight: 700; color: var(--text); }
+.datenschutz { margin: 28px 0 0; font-size: 13px; color: var(--muted); text-align: center; }
+.datenschutz a { color: inherit; }

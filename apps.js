@@ -15,6 +15,7 @@
  *  symbol       – ein Emoji als Bild für die Karte
  *  bild         – (optional) Bilddatei statt Emoji, z. B. das App-Symbol
  *  datum        – Veröffentlichungsdatum, Format JJJJ-MM-TT
+ *  zaehler      – (optional) Pfad, unter dem GoatCounter die Aufrufe der App zählt (wird auf der Karte angezeigt)
  *  ganzOben     – (optional) Zahl: feste Position oben, 1 = ganz oben, 2 = danach …
  *  ganzUnten    – (optional) Zahl: App steht am Ende der Liste, größere Zahl = weiter unten (1 = vorletzter Block, 2 = ganz unten)
  *
@@ -25,6 +26,7 @@
 window.APPS = [
   {
     id: "fagott",
+    zaehler: "/fagott/",
     titel: "Fagott",
     kurz: "Ein echtes Fagott zum Antippen: frei spielen in jeder Tonart (Dur/Moll, tief/mittel/hoch) – der Ton klingt, solange man hält. Oder Lieder Ton für Ton: jeder Schlag spielt den nächsten Ton. Auch mit den SoundWhackern 1–5.",
     link: "https://pati2018.github.io/fagott/",
@@ -36,6 +38,7 @@ window.APPS = [
   },
   {
     id: "singen",
+    zaehler: "/singen/",
     titel: "Singen mit SoundWhackern",
     kurz: "Jeder SoundWhacker singt einen Ton auf „la“ – mit der eigenen Stimme (einmal „laaaa“ ins Mikrofon singen), einem echten Chor „Aah“ oder einer künstlichen Frauen- oder Männerstimme. Jeder Schlag singt einen Ton, der natürlich ausklingt. Die Töne passen immer zusammen.",
     link: "https://pati2018.github.io/singen/",
@@ -48,6 +51,7 @@ window.APPS = [
   },
   {
     id: "atemklang",
+    zaehler: "/atemklang/",
     titel: "Atemklang",
     kurz: "Ein Blasinstrument fürs iPhone: ins Mikrofon blasen und mit den Fingern die Töne greifen. Zart blasen klingt leise, fest blasen laut. Mit Saxophon, Flöte, Klarinette, Trompete und Panflöte – einfacher Griff oder Flötengriff.",
     link: "https://pati2018.github.io/atemklang/",
@@ -59,6 +63,7 @@ window.APPS = [
   },
   {
     id: "tischharfe",
+    zaehler: "/tischharfe/",
     titel: "Tischharfe",
     kurz: "Eine Tischharfe im Browser: Das Notenblatt liegt unter den Saiten, man zupft einfach der Punktlinie nach – ganz ohne Notenkenntnisse. Mit echtem Harfenklang und zehn weiteren Instrumenten (Klavier, E-Piano, Marimba …), Übe- und Vorspielmodus, 18 oder 25 Saiten und Video-Aufnahme – spielbar auch mit den SoundWhackern oder mit dem Kopf.",
     links: [
@@ -74,6 +79,7 @@ window.APPS = [
   },
   {
     id: "smart-instruments",
+    zaehler: "/Gitarre/",
     titel: "Smart Instruments",
     kurz: "Gitarre und Smart-Klavier in einer App: frei spielen oder Akkorde und Töne antippen – mit Mustern, Kreis, Säulen, Boomwhacker-Farben, Kopfsteuerung, SoundWhacker und vielen Klängen (Schlagzeug, Flöte, Streicher, Chor, verzerrte E-Gitarre …).",
     links: [
@@ -89,6 +95,7 @@ window.APPS = [
   },
   {
     id: "soundwhacker-spielen",
+    zaehler: "/soundwhacker-looper/SoundWhacker_Spielen.html",
     titel: "SoundWhacker Smart Control",
     kurz: "Mit den SoundWhackern (oder den Tasten 1–5) Akkorde, Töne, Melodien und Arpeggios spielen, improvisieren und Loops steuern – mit eingebauten Instrumenten.",
     link: "https://pati2018.github.io/soundwhacker-looper/SoundWhacker_Spielen.html",
@@ -100,6 +107,7 @@ window.APPS = [
   },
   {
     id: "miga",
+    zaehler: "/soundwhacker-looper/SoundWhacker_Kamera.html",
     titel: "MIGA – Mimik, Gestik, Augensteuerung",
     kurz: "Musik machen mit Mimik, Gesten und Augen: Die Kamera erkennt Hände, Kopf, Gesicht, Augen oder den ganzen Körper und spielt dazu Akkorde, Töne oder Loops.",
     link: "https://pati2018.github.io/soundwhacker-looper/SoundWhacker_Kamera.html",

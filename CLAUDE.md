@@ -126,6 +126,12 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
   - `schule/serienbrief/` – Serienbrief in 8 Schritten (Word, Hauptdokument + Datenquelle = 120 Briefe),
     Animation mit eingebetteter Sprachausgabe (MP3 als Base64, Datei ca. 900 KB). Artefakt:
     https://claude.ai/artifact/JCjRSYdx3gcXEeeM3cHtL9
+  - `schule/herzlich-willkommen/` – Lesemodus „Herzlich willkommen im Reisebüro“ (Markieren in 3 Farben,
+    Schriftgröße, Fragen zum Text). **Eigener Text** mit erfundenen Personen, nach dem Vorbild des Artefakts
+    https://claude.ai/artifact/3v58hSx3jKPgMsf7swshpW – das Artefakt selbst enthält einen fremden Fachartikel (fvw)
+    und darf **nicht** öffentlich auf github.io.
+- **Urheberrecht:** Artefakte mit fremden Texten (Zeitungs-/Fachartikel, Schulbuchseiten) nicht öffentlich hosten.
+  Stattdessen eigenen Text schreiben oder nur geschlossen (Moodle/OSS) teilen.
 
 ## Repo `soundwhacker-looper`
 

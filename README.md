@@ -53,3 +53,4 @@ Eigene Übersicht für Lernseiten und Schul-Apps: https://pati2018.github.io/sch
 |---|---|
 | `schule/datenschutz-tom/` | TOM-Rundgang: technische und organisatorische Maßnahmen im Datenschutz für MFA und TFA |
 | `schule/serienbrief/` | Serienbrief in 8 Schritten: animierte Erklärung mit Sprachausgabe |
+| `schule/herzlich-willkommen/` | Lesemodus „Herzlich willkommen im Reisebüro“ mit Markierfunktion und Fragen zum Text |

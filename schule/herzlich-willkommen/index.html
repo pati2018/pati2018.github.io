@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Herzlich willkommen im Reisebüro</title>
+<meta name="description" content="Lesetext im Lesemodus: Wie man Kundinnen und Kunden im Reisebüro begrüßt und in den ersten Minuten Vertrauen aufbaut. Mit Markierfunktion und Fragen zum Text.">
+<link rel="icon" type="image/png" sizes="32x32" href="../../icons/favicon-32.png">
+<link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&family=Work+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ---------- tokens ---------- */
+  :root{
+    --paper:#FBF6EC; --paper-raised:#F3EAD8; --ink:#2A2118; --ink-soft:#6B5C4B; --ink-faint:#8A7B65;
+    --accent:#C1502B; --accent-strong:#A5401F; --accent-ink:#FFF9F1; --accent-soft:#F3DCC6;
+    --rule:#E3D5BC; --shadow:rgba(42,33,24,0.14);
+    --good:#3F7A5C; --bad:#B14A3A; --good-soft:#E1EEE4; --bad-soft:#F5E2DD;
+    --hl-yellow:#FBD877; --hl-coral:#F5AC93; --hl-mint:#A0D6B8; --mark-ink:#241a10;
+    --font-scale:1;
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#1A1611; --paper-raised:#242019; --ink:#EFE6D6; --ink-soft:#B7A88F; --ink-faint:#9A8B74;
+      --accent:#E68A56; --accent-strong:#F0A576; --accent-ink:#2A1608; --accent-soft:#3B2A1B;
+      --rule:#3A3226; --shadow:rgba(0,0,0,0.45);
+      --good:#7CC49B; --bad:#E08872; --good-soft:#22332A; --bad-soft:#38251F;
+      color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#1A1611; --paper-raised:#242019; --ink:#EFE6D6; --ink-soft:#B7A88F; --ink-faint:#9A8B74;
+    --accent:#E68A56; --accent-strong:#F0A576; --accent-ink:#2A1608; --accent-soft:#3B2A1B;
+    --rule:#3A3226; --shadow:rgba(0,0,0,0.45);
+    --good:#7CC49B; --bad:#E08872; --good-soft:#22332A; --bad-soft:#38251F;
+    color-scheme:dark;
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Literata', Georgia, 'Times New Roman', serif;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  }
+  [hidden]{display:none!important}
+  ::selection{ background: var(--hl-yellow); color:var(--mark-ink); }
+
+  .progress{ position:fixed; top:0; left:0; height:3px; width:0%; background:var(--accent); z-index:60; transition:width .08s linear; }
+
+  .toolbar{
+    position:sticky; top:0; z-index:50;
+    background:color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter:saturate(150%) blur(10px); -webkit-backdrop-filter:saturate(150%) blur(10px);
+    border-bottom:1px solid var(--rule);
+  }
+  .toolbar-inner{
+    max-width:42rem; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:.75rem;
+    padding-block:.6rem;
+    padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px));
+  }
+  .brand{ font-family:'Work Sans', system-ui, sans-serif; font-weight:600; font-size:.8rem; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft); white-space:nowrap; text-decoration:none; }
+  .brand:hover{ color:var(--accent); }
+  .toolbar-actions{ display:flex; align-items:center; gap:.4rem; }
+  .btn{
+    font-family:'Work Sans', system-ui, sans-serif; font-weight:600; font-size:.85rem;
+    border:1px solid var(--rule); background:var(--paper-raised); color:var(--ink);
+    border-radius:.6rem; padding:.42rem .6rem; cursor:pointer; line-height:1; -webkit-tap-highlight-color:transparent;
+  }
+  .btn:active{ transform:translateY(1px); }
+  .btn:focus-visible, button:focus-visible, summary:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .btn-font{ min-width:2.4rem; }
+
+  .hint{
+    max-width:42rem; margin:0 auto; display:flex; align-items:center; gap:.6rem;
+    padding-block:.55rem;
+    padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px));
+    font-family:'Work Sans', system-ui, sans-serif; font-size:.78rem; color:var(--ink-soft);
+    border-bottom:1px solid var(--rule);
+  }
+  .hint .dot{ width:.5rem; height:.5rem; border-radius:50%; background:var(--hl-coral); flex:none; }
+  .hint button{ margin-left:auto; background:none; border:none; color:var(--ink-faint); font-size:1rem; cursor:pointer; padding:.1rem .3rem; line-height:1; }
+
+  .page{ padding-block:1.75rem 4rem; padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px)); }
+  #article{
+    max-width:38rem; margin:0 auto;
+    font-size:calc(1.0625rem * var(--font-scale)); line-height:1.68;
+    -webkit-user-select:text; user-select:text; -webkit-touch-callout:default;
+  }
+  .kicker{ font-family:'Work Sans', system-ui, sans-serif; font-weight:700; font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin:0 0 .6rem; }
+  h1{ font-family:'Fraunces', Georgia, serif; font-weight:700; font-size:clamp(2.1rem, 9vw, 2.9rem); line-height:1.05; letter-spacing:-.01em; margin:0 0 .9rem; text-wrap:balance; }
+  .deck{ font-weight:500; font-style:italic; font-size:1.2em; color:var(--ink-soft); margin:0 0 .9rem; line-height:1.5; }
+  .byline{ font-family:'Work Sans', system-ui, sans-serif; font-size:.8rem; font-weight:600; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.06em; margin:0 0 1.6rem; padding-bottom:1.4rem; border-bottom:1px solid var(--rule); }
+  h2{ font-family:'Fraunces', Georgia, serif; font-weight:600; font-size:1.45em; line-height:1.2; margin:2.1em 0 .7em; text-wrap:balance; }
+  p.body{ margin:0 0 1.15em; }
+
+  .pullquote{ margin:1.6em 0; padding:.2em 0 .2em 1.1em; border-left:3px solid var(--accent); }
+  .pullquote p{ font-family:'Fraunces', Georgia, serif; font-style:italic; font-weight:500; font-size:1.28em; line-height:1.35; margin:0 0 .35em; }
+  .pullquote .attr{ font-family:'Work Sans', system-ui, sans-serif; font-size:.72em; font-weight:600; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-faint); }
+
+  .tipcard{ margin:1.9em 0; background:var(--paper-raised); border:1px solid var(--rule); border-left:4px solid var(--accent); border-radius:.25rem; padding:1.05rem 1.15rem; }
+  .tipcard-label{ font-family:'Work Sans', system-ui, sans-serif; font-weight:700; font-size:.68rem; letter-spacing:.09em; text-transform:uppercase; color:var(--accent); margin:0 0 .5em; }
+  .tipcard-quote{ font-size:1em; line-height:1.55; margin:0 0 .55em; }
+  .tipcard-attr{ font-family:'Work Sans', system-ui, sans-serif; font-size:.76rem; font-weight:600; color:var(--ink-soft); margin:0; }
+
+  .tipbox{ margin:2.1em 0; border:1px solid var(--rule); border-radius:.4rem; overflow:hidden; background:var(--paper-raised); }
+  .tipbox-head{ padding:1.1rem 1.15rem .2rem; }
+  .tipbox h3{ font-family:'Fraunces', Georgia, serif; font-weight:600; font-size:1.25em; margin:0 0 .15em; }
+  .tipbox-sub{ font-family:'Work Sans', system-ui, sans-serif; font-size:.76rem; font-weight:600; color:var(--ink-faint); margin:0 0 .9em; }
+  .tipbox-grid{ display:grid; grid-template-columns:1fr; gap:1px; background:var(--rule); }
+  .tipbox-item{ padding:1rem 1.15rem 1.15rem; display:flex; gap:.65rem; align-items:flex-start; }
+  .tipbox-item.do{ background:var(--good-soft); }
+  .tipbox-item.dont{ background:var(--bad-soft); }
+  .ico{ flex:none; width:1.5rem; height:1.5rem; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Work Sans', system-ui, sans-serif; font-weight:700; font-size:.85rem; margin-top:.1em; }
+  .do .ico{ background:var(--good); color:var(--paper); }
+  .dont .ico{ background:var(--bad); color:var(--paper); }
+  .tipbox-item p{ margin:0; font-size:.96em; line-height:1.55; }
+  .tipbox-item strong{ font-family:'Work Sans', system-ui, sans-serif; font-weight:700; font-size:.92em; display:block; margin-bottom:.25em; }
+  .do strong{ color:var(--good); } .dont strong{ color:var(--bad); }
+  @media (min-width:30rem){ .tipbox-grid{ grid-template-columns:1fr 1fr; } }
+
+  /* Fragen zum Text */
+  .tasks{ margin:2.6em 0 0; padding:1.2rem 1.15rem; border:1px solid var(--rule); border-radius:.4rem; }
+  .tasks h2{ margin:0 0 .6em; font-size:1.3em; }
+  .tasks ol{ margin:0; padding-left:1.3em; display:grid; gap:.55em; }
+  .tasks details{ margin-top:1em; font-family:'Work Sans', system-ui, sans-serif; font-size:.9em; }
+  .tasks summary{ cursor:pointer; font-weight:600; color:var(--accent); }
+  .tasks details ol{ margin-top:.7em; font-family:'Literata', Georgia, serif; font-size:1.05em; }
+
+  .source{ margin-top:2.2em; padding-top:1.2em; border-top:1px solid var(--rule); font-family:'Work Sans', system-ui, sans-serif; font-size:.76rem; color:var(--ink-faint); line-height:1.5; }
+  .footer-actions{ max-width:38rem; margin:1.2em auto 0; display:flex; justify-content:flex-end; align-items:center; gap:.8rem; flex-wrap:wrap; font-family:'Work Sans', system-ui, sans-serif; font-size:.8rem; color:var(--ink-soft); }
+  .link-btn{ background:none; border:none; padding:0; font:inherit; color:var(--ink-faint); text-decoration:underline; text-underline-offset:2px; cursor:pointer; }
+  .link-btn.danger{ color:var(--bad); font-weight:600; }
+
+  mark.hl{ background:var(--hl-yellow); color:var(--mark-ink); padding:.02em 0; border-radius:.15em; box-decoration-break:clone; -webkit-box-decoration-break:clone; cursor:pointer; }
+  mark.hl-coral{ background:var(--hl-coral); }
+  mark.hl-mint{ background:var(--hl-mint); }
+
+  .select-popup{ position:fixed; z-index:70; display:flex; align-items:center; gap:.5rem; background:var(--paper-raised); border:1px solid var(--rule); border-radius:999px; padding:.45rem .55rem; box-shadow:0 10px 28px var(--shadow); }
+  .swatch{ width:1.9rem; height:1.9rem; border-radius:50%; border:2px solid rgba(0,0,0,.08); cursor:pointer; padding:0; -webkit-tap-highlight-color:transparent; }
+  .swatch.yellow{ background:var(--hl-yellow); } .swatch.coral{ background:var(--hl-coral); } .swatch.mint{ background:var(--hl-mint); }
+
+  @media (prefers-reduced-motion: reduce){ .progress{ transition:none; } }
+  @page{ margin:1.8cm 1.5cm; }
+  @media print{
+    .progress, .toolbar, .hint, .select-popup, .footer-actions{ display:none !important; }
+    body{ background:#fff; color:#000; }
+    .page{ padding:0; }
+    #article{ max-width:none; font-size:11.5pt; line-height:1.5; color:#111; }
+    .tipcard, .tipbox-item, .pullquote, .tasks{ break-inside:avoid; }
+    mark.hl{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  }
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<header class="toolbar">
+  <div class="toolbar-inner">
+    <a class="brand" href="../" title="Zurück zu Meine Apps Schule">Lesemodus</a>
+    <div class="toolbar-actions">
+      <button class="btn btn-font" id="fontDown" aria-label="Schrift verkleinern">A−</button>
+      <button class="btn btn-font" id="fontUp" aria-label="Schrift vergrößern">A+</button>
+    </div>
+  </div>
+</header>
+
+<div class="hint" id="hint">
+  <span class="dot" aria-hidden="true"></span>
+  <span>Text mit dem Finger oder der Maus markieren und eine Farbe wählen. Ein Tipp auf eine Markierung entfernt sie wieder. Die Markierungen bleiben auf diesem Gerät gespeichert.</span>
+  <button id="hintClose" aria-label="Hinweis schließen">✕</button>
+</div>
+
+<main class="page">
+  <article id="article"></article>
+  <div class="footer-actions" id="footer">
+    <button class="link-btn" id="clearAll">Alle Markierungen löschen</button>
+    <span id="confirmBox" hidden><span id="confirmText"></span> <button class="link-btn danger" id="confirmYes">Ja, löschen</button> · <button class="link-btn" id="confirmNo">Abbrechen</button></span>
+  </div>
+</main>
+
+<div class="select-popup" id="popup" hidden>
+  <button class="swatch yellow" data-color="yellow" aria-label="Gelb markieren"></button>
+  <button class="swatch coral" data-color="coral" aria-label="Koralle markieren"></button>
+  <button class="swatch mint" data-color="mint" aria-label="Mint markieren"></button>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* Eigener Lesetext für den Unterricht. Alle Personen und Reisebüros sind erfunden. */
+  var CONTENT = [
+    {type:'kicker', text:'1 · Den Kontakt herstellen'},
+    {type:'h1', text:'Herzlich willkommen im Reisebüro'},
+    {type:'deck', text:'Ein Kunde öffnet die Tür, und schon läuft die Uhr. In den ersten Minuten entscheidet sich, ob er sich gut aufgehoben fühlt und wiederkommt.'},
+    {type:'byline', text:'Lesetext für den Unterricht'},
+
+    {type:'p', id:'p1', text:'Dienstagvormittag im Reisebüro Fernweh. Ein Mann Mitte fünfzig betritt den Laden, die Jacke geschlossen, den Blick auf das Prospektregal gerichtet. „Ich wollte nur mal schauen“, sagt er knapp. Mira Kessler, seit drei Jahren Reiseverkehrskauffrau, steht auf, lächelt und sagt: „Sehr gern. Schauen Sie in Ruhe. Darf ich Ihnen in der Zwischenzeit einen Kaffee bringen?“ Der Mann zögert, dann nickt er. Zehn Minuten später sitzt er an ihrem Schreibtisch und erzählt von der Silberhochzeit, die er mit seiner Frau an der Algarve feiern möchte.'},
+    {type:'p', id:'p2', text:'Was ist hier passiert? Mira hat dem Kunden nichts verkauft. Sie hat ihm zuerst das Gefühl gegeben, willkommen zu sein. Erst danach ist er bereit, über seine Wünsche zu sprechen. Genau darum geht es beim ersten Kontakt: Vertrauen entsteht, bevor das eigentliche Beratungsgespräch beginnt.'},
+
+    {type:'h2', text:'Der erste Eindruck zählt doppelt'},
+    {type:'p', id:'p3', text:'Menschen bilden sich in wenigen Sekunden ein Urteil über ihr Gegenüber. Dabei achten sie weniger auf Worte als auf Körpersprache, Mimik und Stimme. Ein ehrliches Lächeln, ein offener Blick und eine zugewandte Haltung sagen mehr als jede einstudierte Begrüßungsformel.'},
+    {type:'p', id:'p4', text:'Viele erfahrene Beraterinnen und Berater stehen deshalb auf, wenn ein Kunde hereinkommt. So begegnen sich beide auf Augenhöhe. Wer sitzen bleibt und nur kurz vom Bildschirm aufschaut, wirkt dagegen schnell desinteressiert, auch wenn er es gar nicht so meint.'},
+
+    {type:'pull', id:'pull1', text:'„Der Kunde soll merken: Hier hat jemand Zeit für mich.“', attr:'Mira Kessler, Reisebüro Fernweh'},
+
+    {type:'p', id:'p5', text:'Zur Begrüßung gehört, dass man sich mit Namen vorstellt. Fragt man anschließend nach dem Namen des Kunden, kann man ihn im Gespräch persönlich ansprechen. Das wirkt aufmerksam und schafft Nähe. Ob man dem Kunden die Hand gibt, ist dagegen Geschmackssache. Manche Menschen möchten das nicht. Wer unsicher ist, wartet ab, ob der Kunde selbst die Hand reicht.'},
+
+    {type:'h2', text:'Die richtigen Worte für den Anfang'},
+    {type:'p', id:'p6', text:'„Kann ich Ihnen helfen?“ ist die wohl häufigste Frage im Verkauf. Sie hat einen Nachteil: Man kann sie mit einem einzigen Wort beenden. „Nein danke, ich schaue nur.“ Besser sind offene Fragen, auf die der Kunde mit einem ganzen Satz antwortet, zum Beispiel: „Wohin soll es denn gehen?“ oder „Was haben Sie für Ihren nächsten Urlaub geplant?“'},
+    {type:'p', id:'p7', text:'Auch der Ton der Begrüßung darf zum Kunden passen. Eine Familie mit Kindern begrüßt man vielleicht locker und herzlich, ein Geschäftsreisender schätzt eher eine kurze, sachliche Ansprache. Stammkunden freuen sich, wenn man sich an ihren letzten Urlaub erinnert: „Und, wie war es auf Kreta?“'},
+
+    {type:'tipcard', id:'t1', quote:'„Ich höre in den ersten Sätzen genau hin: Wie spricht der Kunde, wie schnell, wie ausführlich? Dann passe ich mich ein bisschen an.“', attr:'Jan Okafor, Reisebüro am Markt'},
+
+    {type:'h2', text:'Die Umgebung spricht mit'},
+    {type:'p', id:'p8', text:'Nicht nur die Beraterin, auch das Reisebüro selbst begrüßt den Kunden. Ein aufgeräumter Schreibtisch, gut sortierte Kataloge und ein freier Stuhl laden zum Hinsetzen ein. Stapel von Unterlagen, ein klingelndes Telefon und laute Gespräche unter Kolleginnen wirken dagegen unruhig.'},
+    {type:'p', id:'p9', text:'Auch Musik im Hintergrund will überlegt sein. Leise, angenehme Musik kann für Urlaubsstimmung sorgen. Ein Radiosender mit Werbung und Nachrichten über Staus oder Krisen passt dagegen schlecht zu einem Gespräch über die schönsten Wochen des Jahres.'},
+
+    {type:'tipbox'},
+
+    {type:'h2', text:'Keine Schubladen'},
+    {type:'p', id:'p10', text:'Kleidung, Alter oder Auftreten verraten wenig darüber, welche Reise sich jemand wünscht oder leisten möchte. Die junge Frau in Sportkleidung plant vielleicht eine Fernreise für die ganze Familie, der Herr im Anzug sucht ein günstiges Wochenende an der Nordsee. Wer Kunden vorschnell einschätzt, verpasst Chancen und verärgert Menschen.'},
+
+    {type:'h2', text:'Wenn gerade keine Zeit ist'},
+    {type:'p', id:'p11', text:'Mitten in einer Beratung kommt ein neuer Kunde herein. Jetzt ist Fingerspitzengefühl gefragt. Den neuen Gast zu übersehen, wäre ein Fehler. Ein kurzer Blickkontakt, ein Nicken und ein Satz wie „Ich bin gleich für Sie da, nehmen Sie doch schon Platz“ genügen, damit er sich wahrgenommen fühlt. Dauert es länger, hilft es, zwischendurch immer wieder kurz Blickkontakt aufzunehmen.'},
+    {type:'p', id:'p12', text:'Wartezeit lässt sich angenehm gestalten: mit einem Getränk, passenden Katalogen oder einem Bildschirm mit Reisezielen. Wichtig bleibt aber der Kunde, mit dem man gerade spricht. Er soll nicht das Gefühl bekommen, dass er nun schnell abgefertigt wird.'},
+    {type:'p', id:'p13', text:'Ähnlich ist es am Telefon. Ein wichtiges Gespräch beendet man nicht abrupt, nur weil jemand hereinkommt. Seufzen, Augenrollen oder ungeduldige Gesten in Richtung des Wartenden sollte man vermeiden. Der Anrufer hört mehr, als man denkt, und der Wartende sieht alles.'},
+
+    {type:'h2', text:'Nur ein Katalog? Eine Chance!'},
+    {type:'p', id:'p14', text:'„Ich möchte nur einen Katalog für Mallorca.“ Diesen Satz hört man im Reisebüro oft. Natürlich kann man den Katalog einfach über den Tresen reichen. Man kann aber auch kurz nachfragen: „Gern! Wissen Sie schon, wann Sie fahren möchten, und was Ihnen im Urlaub wichtig ist?“ Schon nach zwei, drei Antworten lässt sich der passende Katalog finden, und oft entsteht daraus ein Beratungsgespräch.'},
+    {type:'p', id:'p15', text:'So ging es auch einem jungen Paar bei Jan Okafor. Es wollte nur Unterlagen mitnehmen und blieb am Ende eine halbe Stunde. Statt des lauten Partyhotels, das Freunde empfohlen hatten, buchte es eine kleine Finca im Landesinneren. „Das hat viel besser zu den beiden gepasst“, sagt Okafor. „Im Jahr darauf kamen sie wieder.“'},
+
+    {type:'tipcard', id:'t2', quote:'„Ein freundlicher Anfang kostet nichts. Aber er entscheidet oft darüber, ob ein Kunde bleibt oder wieder geht.“', attr:'Mira Kessler, Reisebüro Fernweh'},
+
+    {type:'tasks'},
+
+    {type:'source', text:'Eigener Lesetext für den Unterricht. Alle Personen und Reisebüros sind erfunden.'}
+  ];
+
+  var ARMS_DO = 'Halten Sie die Arme locker und eher oberhalb der Hüfte. Offene Handflächen und eine leicht zugewandte Haltung zeigen: Ich bin interessiert. Nicken und Blickkontakt unterstützen das.';
+  var ARMS_DONT = 'Verschränkte Arme, Hände in den Hosentaschen oder ein abgewandter Oberkörper wirken verschlossen. Auch ständiges Spielen mit Kugelschreiber oder Handy lenkt ab.';
+
+  var TASKS = [
+    'Warum stellt Mira Kessler dem Kunden in der Einstiegsszene zuerst keine Fragen zu seinem Urlaub?',
+    'Nennen Sie drei Dinge, die bei der Begrüßung einen guten ersten Eindruck machen.',
+    'Erklären Sie den Unterschied zwischen „Kann ich Ihnen helfen?“ und einer offenen Frage. Formulieren Sie zwei eigene offene Einstiegsfragen.',
+    'Ein neuer Kunde kommt herein, während Sie beraten. Beschreiben Sie, wie Sie sich verhalten.',
+    'Ein Kunde möchte „nur einen Katalog“. Schreiben Sie einen kurzen Dialog, wie daraus ein Beratungsgespräch werden kann.'
+  ];
+  var ANSWERS = [
+    'Sie will zuerst Vertrauen schaffen. Der Kunde soll sich willkommen fühlen und nicht unter Druck gesetzt werden.',
+    'Zum Beispiel: aufstehen und lächeln, sich mit Namen vorstellen und nach dem Namen fragen, offener Blickkontakt, zugewandte Körperhaltung, einen Platz oder ein Getränk anbieten.',
+    'Auf „Kann ich Ihnen helfen?“ kann der Kunde mit „Nein“ antworten, dann ist das Gespräch zu Ende. Eine offene Frage verlangt einen ganzen Satz, z. B. „Wohin soll es gehen?“ oder „Was ist Ihnen im Urlaub besonders wichtig?“',
+    'Blickkontakt aufnehmen, nicken, kurz ansprechen („Ich bin gleich für Sie da“), Platz und eventuell ein Getränk oder Kataloge anbieten, zwischendurch Blickkontakt halten; den aktuellen Kunden trotzdem in Ruhe weiter beraten.',
+    'Individuelle Lösung. Wichtig: freundlich zustimmen, dann offene Fragen zu Reisezeit, Reisenden und Wünschen stellen, eigene Tipps geben.'
+  ];
+
+  var textById = {};
+  CONTENT.forEach(function(item){
+    if (item.type === 'p' || item.type === 'pull') textById[item.id] = item.text;
+    if (item.type === 'tipcard') textById[item.id + '-quote'] = item.quote;
+  });
+  textById['arms-do'] = ARMS_DO;
+  textById['arms-dont'] = ARMS_DONT;
+
+  function escapeHtml(str){ return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  var STORE_KEY = 'hwk2-highlights-v1', FONT_KEY = 'hwk2-fontscale-v1', HINT_KEY = 'hwk2-hint-dismissed-v1';
+  var highlights = {};
+  function loadHighlights(){ try{ var raw = localStorage.getItem(STORE_KEY); if (raw) highlights = JSON.parse(raw) || {}; }catch(e){ highlights = {}; } }
+  function saveHighlights(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(highlights)); }catch(e){} }
+
+  function renderText(text, hlList){
+    if (!hlList || !hlList.length) return escapeHtml(text);
+    var sorted = hlList.slice().sort(function(a,b){ return a.start - b.start; });
+    var out = '', pos = 0;
+    for (var i=0; i<sorted.length; i++){
+      var h = sorted[i], s = Math.max(h.start, pos), e = Math.min(h.end, text.length);
+      if (e <= s) continue;
+      if (s > pos) out += escapeHtml(text.slice(pos, s));
+      out += '<mark class="hl hl-' + h.color + '" data-hid="' + h.id + '">' + escapeHtml(text.slice(s,e)) + '</mark>';
+      pos = e;
+    }
+    if (pos < text.length) out += escapeHtml(text.slice(pos));
+    return out;
+  }
+
+  function buildHtml(){
+    var html = '';
+    CONTENT.forEach(function(item){
+      switch(item.type){
+        case 'kicker': html += '<p class="kicker">' + escapeHtml(item.text) + '</p>'; break;
+        case 'h1': html += '<h1>' + escapeHtml(item.text) + '</h1>'; break;
+        case 'deck': html += '<p class="deck">' + escapeHtml(item.text) + '</p>'; break;
+        case 'byline': html += '<p class="byline">' + escapeHtml(item.text) + '</p>'; break;
+        case 'h2': html += '<h2>' + escapeHtml(item.text) + '</h2>'; break;
+        case 'p': html += '<p class="body" data-cid="' + item.id + '">' + renderText(item.text, highlights[item.id]) + '</p>'; break;
+        case 'pull':
+          html += '<div class="pullquote"><p data-cid="' + item.id + '">' + renderText(item.text, highlights[item.id]) + '</p><div class="attr">' + escapeHtml(item.attr) + '</div></div>'; break;
+        case 'tipcard':
+          html += '<aside class="tipcard"><p class="tipcard-label">Tipp aus der Praxis</p>' +
+                  '<p class="tipcard-quote" data-cid="' + item.id + '-quote">' + renderText(item.quote, highlights[item.id + '-quote']) + '</p>' +
+                  '<p class="tipcard-attr">— ' + escapeHtml(item.attr) + '</p></aside>'; break;
+        case 'tipbox':
+          html += '<aside class="tipbox"><div class="tipbox-head"><h3>Wohin mit den Armen?</h3><p class="tipbox-sub">Körpersprache bei der Begrüßung</p></div><div class="tipbox-grid">' +
+                  '<div class="tipbox-item do"><span class="ico">✓</span><p><strong>So wirkt es offen</strong><span data-cid="arms-do">' + renderText(ARMS_DO, highlights['arms-do']) + '</span></p></div>' +
+                  '<div class="tipbox-item dont"><span class="ico">✕</span><p><strong>So lieber nicht</strong><span data-cid="arms-dont">' + renderText(ARMS_DONT, highlights['arms-dont']) + '</span></p></div>' +
+                  '</div></aside>'; break;
+        case 'tasks':
+          html += '<section class="tasks"><h2>Fragen zum Text</h2><ol>' + TASKS.map(function(t){ return '<li>' + escapeHtml(t) + '</li>'; }).join('') + '</ol>' +
+                  '<details><summary>Lösungshinweise anzeigen</summary><ol>' + ANSWERS.map(function(t){ return '<li>' + escapeHtml(t) + '</li>'; }).join('') + '</ol></details></section>'; break;
+        case 'source': html += '<footer class="source">' + escapeHtml(item.text) + '</footer>'; break;
+      }
+    });
+    return html;
+  }
+
+  var articleEl = document.getElementById('article');
+  function fullRender(){ articleEl.innerHTML = buildHtml(); }
+  function rerender(cid){
+    var el = articleEl.querySelector('[data-cid="' + cid + '"]');
+    if (el) el.innerHTML = renderText(textById[cid], highlights[cid]);
+  }
+
+  /* ---------- Markieren ---------- */
+  var popup = document.getElementById('popup');
+  var activeRange = null;
+  function getOffset(root, node, offset){ var r = document.createRange(); r.selectNodeContents(root); r.setEnd(node, offset); return r.toString().length; }
+  function hidePopup(){ popup.hidden = true; activeRange = null; }
+  function showPopupAt(range){
+    var rect = range.getBoundingClientRect();
+    if (!rect || (rect.width === 0 && rect.height === 0)) { hidePopup(); return; }
+    popup.hidden = false;
+    var pw = popup.offsetWidth || 140, ph = popup.offsetHeight || 44;
+    var left = Math.max(8, Math.min(rect.left + rect.width/2 - pw/2, window.innerWidth - pw - 8));
+    var top = rect.top - ph - 10;
+    if (top < 8) top = rect.bottom + 10;
+    popup.style.left = left + 'px'; popup.style.top = top + 'px';
+  }
+  function onSelectionEnd(){
+    var sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0 || sel.isCollapsed){ hidePopup(); return; }
+    var range = sel.getRangeAt(0);
+    if (!articleEl.contains(range.commonAncestorContainer) || range.toString().trim().length === 0){ hidePopup(); return; }
+    activeRange = range.cloneRange();
+    showPopupAt(range);
+  }
+  var selTimer = null;
+  function scheduleCheck(){ clearTimeout(selTimer); selTimer = setTimeout(onSelectionEnd, 15); }
+  document.addEventListener('mouseup', scheduleCheck);
+  document.addEventListener('touchend', scheduleCheck);
+  document.addEventListener('selectionchange', function(){ clearTimeout(selTimer); selTimer = setTimeout(onSelectionEnd, 350); });
+  popup.addEventListener('mousedown', function(e){ e.preventDefault(); });
+  popup.addEventListener('touchstart', function(e){ e.preventDefault(); }, {passive:false});
+  popup.querySelectorAll('.swatch').forEach(function(btn){
+    btn.addEventListener('click', function(){ applyHighlight(btn.getAttribute('data-color')); });
+    btn.addEventListener('touchend', function(e){ e.preventDefault(); applyHighlight(btn.getAttribute('data-color')); });
+  });
+
+  function applyHighlight(color){
+    if (!activeRange) return;
+    var range = activeRange, touched = [];
+    articleEl.querySelectorAll('[data-cid]').forEach(function(el){
+      var pr = document.createRange(); pr.selectNodeContents(el);
+      var overlaps = range.compareBoundaryPoints(Range.END_TO_START, pr) < 0 && range.compareBoundaryPoints(Range.START_TO_END, pr) > 0;
+      if (!overlaps) return;
+      var cid = el.getAttribute('data-cid'), text = textById[cid];
+      if (text === undefined) return;
+      var s = el.contains(range.startContainer) ? getOffset(el, range.startContainer, range.startOffset) : 0;
+      var e = el.contains(range.endContainer) ? getOffset(el, range.endContainer, range.endOffset) : text.length;
+      s = Math.max(0, Math.min(s, text.length)); e = Math.max(0, Math.min(e, text.length));
+      if (e > s){
+        var hid = 'h' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+        (highlights[cid] = highlights[cid] || []).push({id:hid, start:s, end:e, color:color});
+        touched.push(cid);
+      }
+    });
+    if (touched.length){ touched.forEach(rerender); saveHighlights(); }
+    window.getSelection().removeAllRanges();
+    hidePopup();
+  }
+
+  articleEl.addEventListener('click', function(e){
+    var mark = e.target.closest ? e.target.closest('mark.hl') : null;
+    if (!mark) return;
+    var sel = window.getSelection();
+    if (sel && !sel.isCollapsed) return;
+    var wrap = mark.closest('[data-cid]'); if (!wrap) return;
+    var cid = wrap.getAttribute('data-cid'), hid = mark.getAttribute('data-hid');
+    if (!highlights[cid]) return;
+    highlights[cid] = highlights[cid].filter(function(h){ return h.id !== hid; });
+    rerender(cid); saveHighlights();
+  });
+  document.addEventListener('scroll', function(){ if (!popup.hidden && activeRange) showPopupAt(activeRange); }, {passive:true, capture:true});
+
+  /* ---------- Alle löschen (Bestätigung auf der Seite) ---------- */
+  var clearBtn = document.getElementById('clearAll'), confirmBox = document.getElementById('confirmBox');
+  function countHl(){ return Object.keys(highlights).reduce(function(n,k){ return n + (highlights[k]||[]).length; }, 0); }
+  clearBtn.addEventListener('click', function(){
+    var n = countHl();
+    if (!n) return;
+    document.getElementById('confirmText').textContent = 'Alle ' + n + ' Markierungen löschen?';
+    clearBtn.hidden = true; confirmBox.hidden = false;
+    document.getElementById('confirmNo').focus();
+  });
+  document.getElementById('confirmNo').addEventListener('click', function(){ confirmBox.hidden = true; clearBtn.hidden = false; });
+  document.getElementById('confirmYes').addEventListener('click', function(){
+    highlights = {}; saveHighlights(); fullRender();
+    confirmBox.hidden = true; clearBtn.hidden = false;
+  });
+
+  /* ---------- Schriftgröße ---------- */
+  var SCALES = [0.9, 1, 1.1, 1.25, 1.4], scaleIndex = 1;
+  function applyFontScale(){
+    document.documentElement.style.setProperty('--font-scale', SCALES[scaleIndex]);
+    try{ localStorage.setItem(FONT_KEY, String(scaleIndex)); }catch(e){}
+  }
+  try{ var v = localStorage.getItem(FONT_KEY); if (v !== null) scaleIndex = Math.max(0, Math.min(SCALES.length-1, parseInt(v,10) || 1)); }catch(e){}
+  applyFontScale();
+  document.getElementById('fontUp').addEventListener('click', function(){ scaleIndex = Math.min(SCALES.length-1, scaleIndex+1); applyFontScale(); });
+  document.getElementById('fontDown').addEventListener('click', function(){ scaleIndex = Math.max(0, scaleIndex-1); applyFontScale(); });
+
+  /* ---------- Hinweis ---------- */
+  var hintEl = document.getElementById('hint');
+  try{ if (localStorage.getItem(HINT_KEY) === '1') hintEl.hidden = true; }catch(e){}
+  document.getElementById('hintClose').addEventListener('click', function(){ hintEl.hidden = true; try{ localStorage.setItem(HINT_KEY, '1'); }catch(e){} });
+
+  /* ---------- Lesefortschritt ---------- */
+  var progressEl = document.getElementById('progress'), ticking = false;
+  function updateProgress(){
+    var h = document.documentElement, max = h.scrollHeight - h.clientHeight;
+    progressEl.style.width = Math.max(0, Math.min(100, max > 0 ? (h.scrollTop / max) * 100 : 0)) + '%';
+    ticking = false;
+  }
+  document.addEventListener('scroll', function(){ if (!ticking){ requestAnimationFrame(updateProgress); ticking = true; } }, {passive:true});
+
+  loadHighlights();
+  fullRender();
+  updateProgress();
+})();
+</script>
+</body>
+</html>

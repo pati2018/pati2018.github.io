@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TOM-Rundgang Praxis</title>
+<meta name="description" content="Die 14 technischen und organisatorischen Maßnahmen (TOM) im Datenschutz, erklärt an Beispielen aus Arzt- und Tierarztpraxis, für MFA- und TFA-Azubis.">
+<link rel="icon" type="image/png" sizes="32x32" href="../../icons/favicon-32.png">
+<link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0B6B75">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&display=swap">
+<script src="../../theme.js"></script>
+<style>
+/* Layout: sticky practice header → tabbed views; the tour is a "patient chart" stage: station list left, scene (Situation → Risiko → Maßnahmen) right */
+:root{
+  --bg:#F2F5F6; --surface:#FFFFFF; --surface-2:#E8EEF0; --ink:#13232B; --muted:#56676F; --line:#D5DFE2;
+  --accent:#0B6B75; --accent-ink:#FFFFFF; --accent-soft:#D6ECEE;
+  --tech:#2852C9; --tech-soft:#E1E8FB; --org:#9A5A00; --org-soft:#F7EAD3;
+  --risk:#B93B0B; --risk-soft:#FBE4DA; --ok:#23704A; --ok-soft:#DCF0E4;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0D1719; --surface:#142226; --surface-2:#1B2D32; --ink:#E5EEF0; --muted:#98ACB2; --line:#26393E;
+  --accent:#46B9C3; --accent-ink:#06282C; --accent-soft:#16383D;
+  --tech:#8AA8FF; --tech-soft:#1C2848; --org:#F2AE4B; --org-soft:#3A2A10;
+  --risk:#FF8E62; --risk-soft:#3D1E12; --ok:#63C990; --ok-soft:#14342A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D1719; --surface:#142226; --surface-2:#1B2D32; --ink:#E5EEF0; --muted:#98ACB2; --line:#26393E;
+  --accent:#46B9C3; --accent-ink:#06282C; --accent-soft:#16383D;
+  --tech:#8AA8FF; --tech-soft:#1C2848; --org:#F2AE4B; --org-soft:#3A2A10;
+  --risk:#FF8E62; --risk-soft:#3D1E12; --ok:#63C990; --ok-soft:#14342A; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+h1,h2,h3{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* Header */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;padding-block:10px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:800;font-size:1.15rem;margin-right:auto}
+.brand svg{width:30px;height:30px}
+.tabs{display:flex;gap:4px;flex-wrap:wrap}
+.tab{border:0;background:transparent;padding:8px 12px;border-radius:10px;font-weight:700;color:var(--muted)}
+.tab[aria-current="page"]{background:var(--accent-soft);color:var(--ink)}
+.tab:hover{color:var(--ink)}
+.seg{display:inline-flex;background:var(--surface-2);border-radius:999px;padding:3px}
+.seg button{border:0;background:transparent;padding:6px 14px;border-radius:999px;font-weight:700;font-size:.92rem;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.btn{border:1px solid var(--line);background:var(--surface);padding:9px 16px;border-radius:10px;font-weight:700;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn svg{width:18px;height:18px}
+
+main{padding-block:28px 60px}
+.view{display:grid;gap:28px}
+
+/* Intro */
+.hero{display:grid;grid-template-columns:1.25fr 1fr;gap:28px;align-items:center}
+.eyebrow{text-transform:uppercase;letter-spacing:.09em;font-size:.78rem;font-weight:700;color:var(--accent)}
+.hero h1{font-size:clamp(2rem,4.6vw,3.3rem);font-weight:800;margin-block:8px 14px;letter-spacing:-.01em}
+.hero p.lead{font-size:1.12rem;color:var(--muted);max-width:60ch}
+.hero .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.law{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:grid;gap:10px;font-size:.95rem}
+.law h3{font-size:1.05rem}
+.law .para{font-family:var(--f-display);font-weight:800;color:var(--accent);font-size:1.6rem}
+.law ul{margin:0;padding-left:1.1em;display:grid;gap:4px}
+.to-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.to{border-radius:var(--r);padding:20px;display:grid;gap:8px}
+.to.t{background:var(--tech-soft)} .to.o{background:var(--org-soft)}
+.to h3{font-size:1.25rem;display:flex;align-items:center;gap:10px}
+.to.t h3{color:var(--tech)} .to.o h3{color:var(--org)}
+.to .ex{font-size:.95rem}
+.badge{display:inline-flex;align-items:center;justify-content:center;font-family:var(--f-display);font-weight:800;font-size:.75rem;border-radius:6px;min-width:22px;height:22px;padding:0 6px}
+.badge.t{background:var(--tech);color:var(--surface)} .badge.o{background:var(--org);color:var(--surface)}
+.people{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.person{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;gap:14px;align-items:flex-start}
+.avatar{flex:none;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font-family:var(--f-display);font-weight:800;font-size:1.2rem}
+.person h3{font-size:1.1rem}
+.person p{color:var(--muted);font-size:.95rem}
+.note{font-size:.9rem;color:var(--muted);max-width:75ch}
+.section-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.section-h h2{font-size:1.5rem}
+
+/* Tour */
+.tour{display:grid;grid-template-columns:270px minmax(0,1fr);gap:24px;align-items:start}
+.stations{position:sticky;top:calc(env(safe-area-inset-top,0px) + 80px);display:grid;gap:2px;max-height:calc(100vh - 110px);overflow:auto;padding-right:4px}
+.st{display:grid;grid-template-columns:44px 1fr;gap:8px;align-items:center;text-align:left;border:0;background:transparent;padding:7px 10px;border-radius:10px;font-size:.93rem;color:var(--muted)}
+.st .num{white-space:nowrap;font-family:var(--f-display);font-weight:800;font-variant-numeric:tabular-nums;color:var(--muted)}
+.st:hover{background:var(--surface-2);color:var(--ink)}
+.st[aria-current="step"]{background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line);font-weight:700}
+.st[aria-current="step"] .num{color:var(--accent)}
+.st.seen .num::after{content:" ✓";color:var(--ok);font-size:.8em}
+
+.stage{display:grid;gap:20px;min-width:0}
+.progress{height:6px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+.progress span{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .4s ease}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,30px);display:grid;gap:20px}
+.st-head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:center}
+.icon-tile{width:84px;height:84px;border-radius:20px;background:var(--accent-soft);display:grid;place-items:center;color:var(--accent)}
+.icon-tile svg{width:52px;height:52px}
+.st-head .count{font-weight:700;color:var(--muted);font-size:.85rem;letter-spacing:.06em;text-transform:uppercase}
+.st-head h2{font-size:clamp(1.6rem,3.4vw,2.4rem);font-weight:800}
+.st-head .alt{font-size:.88rem;color:var(--muted)}
+.question{font-family:var(--f-display);font-weight:700;font-size:clamp(1.15rem,2.2vw,1.45rem);border-left:4px solid var(--accent);padding-left:14px}
+.goal{color:var(--muted);max-width:75ch}
+
+.scene{display:grid;grid-template-columns:1fr auto 1fr auto 1.25fr;gap:10px;align-items:stretch}
+.panel{border-radius:var(--r);padding:16px;display:grid;align-content:start;gap:8px;animation:rise .55s cubic-bezier(.2,.7,.2,1) both}
+.panel h4{margin:0;font-family:var(--f-display);font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;display:flex;align-items:center;gap:8px}
+.panel.sit{background:var(--surface-2)} .panel.sit h4{color:var(--ink)}
+.panel.risk{background:var(--risk-soft)} .panel.risk h4{color:var(--risk)}
+.panel.fix{background:var(--ok-soft);animation-delay:.5s} .panel.fix h4{color:var(--ok)}
+.panel.risk{animation-delay:.25s}
+.arrow{display:grid;place-items:center;color:var(--muted);animation:rise .4s ease both}
+.arrow svg{width:26px;height:26px}
+.arrow.a1{animation-delay:.15s}.arrow.a2{animation-delay:.4s}
+.fixlist{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.fixlist li{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:start;font-size:.97rem}
+.fixlist .badge{margin-top:2px}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.memo{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;background:var(--accent-soft);border-radius:var(--r);padding:16px 18px}
+.memo svg{width:30px;height:30px;color:var(--accent)}
+.memo p{font-weight:700;font-size:1.05rem}
+.memo small{display:block;font-weight:400;color:var(--muted);font-size:.85rem;text-transform:uppercase;letter-spacing:.08em}
+.nav{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.88rem;color:var(--muted);align-items:center}
+.legend span{display:inline-flex;gap:6px;align-items:center}
+
+/* Overview */
+.grid14{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.ov{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;text-align:left;display:grid;gap:6px;align-content:start}
+.ov:hover{border-color:var(--accent)}
+.ov .row{display:flex;align-items:center;gap:10px}
+.ov .row svg{width:28px;height:28px;color:var(--accent);flex:none}
+.ov .n{font-family:var(--f-display);font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums}
+.ov h3{font-size:1.05rem}
+.ov p{font-size:.92rem;color:var(--muted)}
+.ov .ex{font-size:.9rem;color:var(--ink)}
+
+/* Quiz */
+.quiz{max-width:780px;display:grid;gap:18px}
+.qmeta{display:flex;justify-content:space-between;color:var(--muted);font-weight:700;font-size:.9rem}
+.qcase{font-size:1.2rem;font-family:var(--f-display);font-weight:700}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:14px;text-align:left;font-weight:700}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--risk);background:var(--risk-soft)}
+.feedback{border-radius:12px;padding:14px 16px;background:var(--surface-2)}
+.score{font-family:var(--f-display);font-size:3rem;font-weight:800;color:var(--accent)}
+
+/* Presentation mode */
+body.present header.top,body.present .stations,body.present .legend{display:none}
+body.present main{padding-block:16px}
+body.present .wrap{max-width:1500px}
+body.present .tour{grid-template-columns:1fr}
+body.present{font-size:21px}
+body.present .card{border:0;background:transparent;padding:8px 0}
+.exit-present{display:none}
+body.present .exit-present{display:inline-flex;position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:6}
+
+@media (max-width:900px){
+  header.top{position:static}
+  .hero,.to-grid,.people{grid-template-columns:1fr}
+  .tour{grid-template-columns:1fr}
+  .stations{position:static;display:flex;overflow-x:auto;max-height:none;gap:6px;padding-bottom:6px}
+  .st{grid-template-columns:auto;white-space:nowrap;padding:8px 12px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}
+  .st .lbl{display:none}
+  .scene{grid-template-columns:1fr}
+  .arrow{transform:rotate(90deg)}
+  .arrow svg{width:20px;height:20px}
+  .opts{grid-template-columns:1fr}
+}
+@media (max-width:520px){ .st-head{grid-template-columns:1fr} .icon-tile{width:64px;height:64px} .icon-tile svg{width:40px;height:40px} body{font-size:16px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* Grundlage (auf claude.ai liefert das die Plattform) */
+html{-webkit-text-size-adjust:100%}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+/* Hell/Dunkel-Schalter aus ../../theme.js: unten links statt oben rechts, damit er das Menü nicht verdeckt */
+.theme-toggle{position:fixed;left:max(12px,env(safe-area-inset-left,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:6;display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.theme-toggle .ico{font-size:16px;line-height:1}
+body.present .theme-toggle{display:none}
+.brand{text-decoration:none;color:inherit}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="../" title="Zurück zu Meine Apps Schule">
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="3" y="3" width="26" height="26" rx="8" fill="var(--accent)"/><path d="M16 8.5l6 2.4v4.6c0 4-2.6 6.8-6 8-3.4-1.2-6-4-6-8v-4.6z" fill="var(--accent-ink)"/><path d="M13 16l2.2 2.2L19.5 14" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      TOM-Rundgang
+    </a>
+    <nav class="tabs" aria-label="Bereiche">
+      <button class="tab" data-view="start">Einführung</button>
+      <button class="tab" data-view="rundgang">Rundgang</button>
+      <button class="tab" data-view="uebersicht">Übersicht</button>
+      <button class="tab" data-view="quiz">Quiz</button>
+    </nav>
+    <div class="seg" role="group" aria-label="Beispiele aus">
+      <button id="m-mfa" data-mode="mfa" aria-pressed="true">Arztpraxis</button>
+      <button id="m-tfa" data-mode="tfa" aria-pressed="false">Tierarztpraxis</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- START -->
+  <section class="view" id="v-start">
+    <div class="hero">
+      <div>
+        <div class="eyebrow">Datenschutz für MFA &amp; TFA</div>
+        <h1>14 Schutzmaßnahmen, ein Arbeitstag in der Praxis</h1>
+        <p class="lead">Technische und organisatorische Maßnahmen (TOM) sorgen dafür, dass Patienten- und Tierhalterdaten sicher bleiben. Wir gehen sie Station für Station durch, jeweils mit einer Situation aus dem Praxisalltag, dem Risiko und den passenden Maßnahmen.</p>
+        <div class="actions">
+          <button class="btn primary" data-go="rundgang">Rundgang starten
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          <button class="btn" id="present-btn">Präsentationsmodus
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8"/></svg></button>
+        </div>
+      </div>
+      <aside class="law">
+        <div class="para">Art. 32 DSGVO</div>
+        <h3>Sicherheit der Verarbeitung</h3>
+        <p>Die Praxis muss „geeignete technische und organisatorische Maßnahmen“ treffen. Ziel ist der Schutz von:</p>
+        <ul>
+          <li><b>Vertraulichkeit</b>: Nur Befugte sehen die Daten.</li>
+          <li><b>Integrität</b>: Die Daten stimmen und werden nicht unbemerkt verändert.</li>
+          <li><b>Verfügbarkeit</b>: Die Daten sind da, wenn sie gebraucht werden.</li>
+          <li><b>Belastbarkeit</b>: Die Systeme halten auch Störungen aus.</li>
+        </ul>
+        <p class="note">Die 14 Kontrollziele stammen aus § 64 Abs. 3 BDSG und werden in der Praxis gern als Checkliste für Art. 32 DSGVO genutzt.</p>
+      </aside>
+    </div>
+
+    <div class="to-grid">
+      <div class="to t">
+        <h3><span class="badge t">T</span> Technisch</h3>
+        <p>Alles, was <b>Technik</b> erledigt: Schlösser, Passwörter, Verschlüsselung, Backups, Software-Rechte.</p>
+        <p class="ex"><b>Bild:</b> das Schloss an der Tür.</p>
+      </div>
+      <div class="to o">
+        <h3><span class="badge o">O</span> Organisatorisch</h3>
+        <p>Alles, was <b>Menschen und Regeln</b> erledigen: Anweisungen, Schulungen, Verträge, Zuständigkeiten, Checklisten.</p>
+        <p class="ex"><b>Bild:</b> die Regel, wer den Schlüssel bekommt.</p>
+      </div>
+    </div>
+
+    <div class="section-h"><h2>Unsere Azubis im Gesundheitshaus Lindenhof</h2></div>
+    <div class="people">
+      <div class="person"><div class="avatar">L</div><div><h3>Lena, MFA im 2. Lehrjahr</h3><p>Hausarztpraxis Dr. Berger, Erdgeschoss. Anmeldung, Labor, Telematikinfrastruktur, Hausbesuche.</p></div></div>
+      <div class="person"><div class="avatar">J</div><div><h3>Jonas, TFA im 2. Lehrjahr</h3><p>Tierarztpraxis Dr. Yilmaz, 1. Stock. Kleintiere, ab und zu Hofbesuche, ein kleiner Futtershop gehört auch dazu.</p></div></div>
+    </div>
+    <p class="note"><b>Auch in der Tierarztpraxis gilt die DSGVO:</b> Das Tier hat keinen Datenschutz, aber Name, Adresse, Telefonnummer und Bankverbindung der Tierhalter sind personenbezogene Daten. Oben rechts kannst du jederzeit zwischen den Beispielen aus beiden Praxen wechseln.</p>
+  </section>
+
+  <!-- TOUR -->
+  <section class="view" id="v-rundgang" hidden>
+    <div class="tour">
+      <nav class="stations" id="stations" aria-label="Stationen"></nav>
+      <div class="stage">
+        <div class="progress" aria-hidden="true"><span id="bar"></span></div>
+        <article class="card" id="card" aria-live="polite"></article>
+        <div class="nav">
+          <button class="btn" id="prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Zurück</button>
+          <div class="legend"><span><span class="badge t">T</span> technisch</span><span><span class="badge o">O</span> organisatorisch</span><span>Pfeiltasten ← → blättern</span></div>
+          <button class="btn primary" id="next">Weiter<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OVERVIEW -->
+  <section class="view" id="v-uebersicht" hidden>
+    <div class="section-h"><h2>Alle 14 Kontrollziele auf einen Blick</h2><span class="note">Antippen öffnet die Station im Rundgang.</span></div>
+    <div class="grid14" id="grid14"></div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="view" id="v-quiz" hidden>
+    <div class="quiz" id="quiz"></div>
+  </section>
+</main>
+<button class="btn primary exit-present" id="exit-present">Präsentation beenden (Esc)</button>
+
+<script>
+const I = {
+ door:'<rect x="14" y="6" width="28" height="44" rx="2"/><circle cx="35" cy="29" r="2.4"/><path d="M8 50h40"/>',
+ disk:'<rect x="18" y="8" width="20" height="40" rx="4"/><path d="M22 8V4h12v4M23 18h10M23 24h10"/>',
+ laptop:'<rect x="12" y="12" width="32" height="22" rx="2"/><path d="M6 42h44l-4-8H10z"/><rect x="24" y="19" width="8" height="8" rx="1"/><path d="M26 19v-2a2 2 0 014 0v2"/>',
+ user:'<circle cx="28" cy="20" r="8"/><path d="M12 48c2-9 8-13 16-13s14 4 16 13"/>',
+ key:'<circle cx="18" cy="28" r="8"/><path d="M26 28h22M40 28v8M46 28v6"/>',
+ send:'<path d="M8 28L48 10 38 48 28 32z"/><path d="M28 32l20-22"/>',
+ pen:'<path d="M10 46l4-12L38 10l8 8-24 24z"/><path d="M32 16l8 8M10 46h36"/>',
+ box:'<path d="M8 18l20-9 20 9v22l-20 9-20-9z"/><path d="M8 18l20 9 20-9M28 27v22"/>',
+ restore:'<path d="M12 28a16 16 0 1 0 5-11.6"/><path d="M12 10v8h8"/><path d="M28 20v9l6 4"/>',
+ bell:'<path d="M16 38V26a12 12 0 0124 0v12l4 4H12z"/><path d="M24 46a4 4 0 008 0"/>',
+ check:'<path d="M28 6l18 7v12c0 11-7.5 19-18 23C17.5 44 10 36 10 25V13z"/><path d="M20 27l6 6 11-12"/>',
+ contract:'<path d="M14 6h20l8 8v36H14z"/><path d="M34 6v8h8M20 24h16M20 31h16M20 40c3-3 5 2 8-1"/>',
+ flame:'<path d="M28 6c6 8 14 14 14 26a14 14 0 01-28 0c0-6 3-10 6-13 0 6 3 8 5 8-2-8 0-15 3-21z"/>',
+ layers:'<path d="M28 8l20 10-20 10L8 18z"/><path d="M8 28l20 10 20-10M8 38l20 10 20-10"/>'
+};
+const svg = (k,w=2.6) => `<svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[k]}</svg>`;
+
+const S = [
+ {name:"Zugangskontrolle", icon:"door", alt:"Gemeint ist der Schutz der Räume und Geräte. In älteren Lehrbüchern heißt das „Zutrittskontrolle“.",
+  frage:"Wer kommt körperlich an unsere Computer, Server und Akten heran?",
+  ziel:"Unbefugten wird der Zugang zu den Anlagen verwehrt, mit denen Daten verarbeitet werden.",
+  merk:"Erst die Tür, dann der Computer: Fremde kommen gar nicht erst in die Nähe.",
+  mfa:{sit:"Der Praxisserver steht im Abstellraum direkt neben dem Patienten-WC. Die Tür klemmt und steht meistens offen.",
+       risk:"Ein Patient auf dem Weg zur Toilette könnte den Server ausschalten, einen USB-Stick einstecken oder Akten mitnehmen.",
+       t:["Server in einen abschließbaren Serverschrank oder Raum mit Schloss bzw. Transponder","Abschließbare Aktenschränke"],
+       o:["Schlüsselliste: Wer hat welchen Schlüssel?","Anmeldung ist immer besetzt, Patienten gehen nie allein in Personalräume"]},
+  tfa:{sit:"Durch die Hintertür kommen Tierhalter mit großen Hunden herein. Der Weg führt direkt am Büro mit dem Praxis-PC vorbei.",
+       risk:"Wartende Tierhalter können das Büro betreten und an Rechner oder Karteikarten gelangen.",
+       t:["Bürotür mit Zahlenschloss oder Transponder","Tür schließt automatisch (Türschließer)"],
+       o:["Schild „Nur für Personal“ und klare Wegeführung","Tierhalter werden immer begleitet"]}},
+ {name:"Datenträgerkontrolle", icon:"disk", alt:"Datenträger sind USB-Sticks, CDs, externe Festplatten, Speicherkarten, aber auch Papier.",
+  frage:"Was passiert mit USB-Sticks, CDs und alten Festplatten?",
+  ziel:"Datenträger dürfen nicht unbefugt gelesen, kopiert, verändert oder gelöscht werden.",
+  merk:"Jeder Datenträger ist wie eine Akte zum Mitnehmen: verschlüsseln, nachhalten, sicher vernichten.",
+  mfa:{sit:"Ein alter Praxis-PC wird ausgetauscht. Lena soll ihn „einfach zum Wertstoffhof bringen“.",
+       risk:"Auf der Festplatte stehen noch Tausende Patientendaten. Wer das Gerät findet, kann sie auslesen.",
+       t:["Festplatte zertifiziert löschen oder physisch vernichten (DIN 66399)","USB-Anschlüsse an Empfangs-PCs sperren"],
+       o:["Vernichtung nur über Fachfirma mit Vernichtungsprotokoll","Verzeichnis aller Datenträger der Praxis"]},
+  tfa:{sit:"Jonas soll Röntgenbilder eines Hundes für die Tierklinik auf einen USB-Stick ziehen und dem Halter mitgeben.",
+       risk:"Der Stick geht verloren. Name, Adresse und Telefonnummer des Halters stehen in den Bilddaten.",
+       t:["Nur verschlüsselte Praxis-Sticks mit Passwort","Besser: sichere Übertragung direkt an die Klinik"],
+       o:["Ausgabe von Sticks wird eingetragen (wer, wann, wofür)","Private Sticks sind verboten"]}},
+ {name:"Speicherkontrolle", icon:"laptop", alt:"Es geht um die Daten, die auf einem Gerät gespeichert sind.",
+  frage:"Sind gespeicherte Daten sicher, auch wenn das Gerät in falsche Hände gerät?",
+  ziel:"Gespeicherte Daten dürfen nicht unbefugt eingegeben, eingesehen, verändert oder gelöscht werden.",
+  merk:"Verschlüsselte Daten sind für Diebe nur Datensalat.",
+  mfa:{sit:"Lena fährt mit Dr. Berger zu Hausbesuchen. Der Laptop mit der Patientenliste liegt im Auto, während beide im Pflegeheim sind.",
+       risk:"Das Auto wird aufgebrochen. Auf dem Laptop stehen Diagnosen und Medikamente von 40 Patienten.",
+       t:["Festplattenverschlüsselung (z. B. BitLocker)","Nur nötige Daten lokal speichern, Rest im Praxissystem lassen"],
+       o:["Regel: Geräte nie unbeaufsichtigt im Auto lassen","Verlust sofort der Praxisleitung melden"]},
+  tfa:{sit:"Für Hofbesuche nimmt Jonas ein Tablet mit. Darauf stehen die Bestandsdaten und Kontaktdaten der Landwirte.",
+       risk:"Das Tablet bleibt im Stall liegen. Jeder, der es findet, sieht die Daten.",
+       t:["Geräteverschlüsselung und PIN","Fernlöschung bei Verlust"],
+       o:["Tablet wird nach jedem Einsatz zurückgegeben und geprüft","Mitarbeiter wissen, wem sie einen Verlust melden"]}},
+ {name:"Benutzerkontrolle", icon:"user", alt:"Wer darf das System überhaupt benutzen? Es geht um die Anmeldung (Login).",
+  frage:"Wer darf sich überhaupt an unseren Computern anmelden?",
+  ziel:"Unbefugte dürfen die IT-Systeme nicht benutzen, auch nicht über Netzwerk oder Fernzugriff.",
+  merk:"Jeder hat sein eigenes Login, und wer aufsteht, sperrt den Bildschirm.",
+  mfa:{sit:"Am Empfang melden sich alle mit demselben Login an: „praxis“, Passwort „1234“. Das steht auf einem Zettel am Monitor.",
+       risk:"Jeder kann sich anmelden, auch eine Aushilfe oder ein Fremder. Niemand weiß später, wer was gemacht hat.",
+       t:["Persönliche Benutzerkonten mit sicheren Passwörtern","Automatische Bildschirmsperre nach wenigen Minuten"],
+       o:["Passwörter nie aufschreiben oder weitergeben","Beim Verlassen des Platzes: Windows-Taste + L"]},
+  tfa:{sit:"Jonas holt schnell eine Katze aus dem Behandlungsraum. Am Tresen bleibt der Bildschirm entsperrt, davor steht ein Tierhalter.",
+       risk:"Der Tierhalter sieht Daten anderer Kunden oder tippt selbst etwas ein.",
+       t:["Bildschirmsperre und Blickschutzfolie","Anmeldung mit Chipkarte oder Kurz-PIN, damit Sperren nicht lästig ist"],
+       o:["Regel „Wer geht, sperrt“","Monitor so stellen, dass Kunden nicht draufschauen"]}},
+ {name:"Zugriffskontrolle", icon:"key", alt:"Angemeldet heißt nicht: alles sehen dürfen. Jeder sieht nur, was er für seine Arbeit braucht.",
+  frage:"Sieht jeder nur das, was er für seine Arbeit braucht?",
+  ziel:"Befugte Benutzer greifen nur auf die Daten zu, für die sie berechtigt sind.",
+  merk:"Need to know: Ich sehe nur, was ich für meine Aufgabe brauche.",
+  mfa:{sit:"Die Nachbarin von Lena ist Patientin. Neugierig könnte Lena deren Befunde öffnen, sie hat Zugriff auf alles.",
+       risk:"Verstoß gegen die Schweigepflicht (§ 203 StGB) und den Datenschutz, auch wenn die Daten „in der Praxis bleiben“.",
+       t:["Rollen- und Rechtekonzept in der Praxissoftware","Lohnbuchhaltung und Personalakten nur für die Praxisleitung"],
+       o:["Rechte werden beim Eintritt vergeben und beim Austritt sofort entzogen","Schulung: Neugier ist kein Grund für einen Zugriff"]},
+  tfa:{sit:"Im Praxisprogramm kann Jonas nicht nur Termine, sondern auch die Gehaltsabrechnungen aller Kolleginnen öffnen.",
+       risk:"Personaldaten sind sehr sensibel. Ein Azubi braucht sie für seine Arbeit nicht.",
+       t:["Benutzerrolle „Azubi“: Termine, Patientenkartei, Kasse","Buchhaltung in eigenem, gesperrtem Bereich"],
+       o:["Praxisleitung prüft die Rechte regelmäßig","Vertretungsregel: Rechte nur befristet erweitern"]}},
+ {name:"Übertragungskontrolle", icon:"send", alt:"Es geht um das Versenden von Daten über Netzwerke: E-Mail, Fax, Portale.",
+  frage:"An wen schicken wir Daten, und ist das sicher und nachvollziehbar?",
+  ziel:"Es lässt sich prüfen und feststellen, an welche Stellen Daten übermittelt wurden.",
+  merk:"Gesundheitsdaten verschicken wir nur verschlüsselt und mit Nachweis.",
+  mfa:{sit:"Ein Befund soll schnell zur Kardiologin. Eine Kollegin schlägt vor, ihn als normale E-Mail mit PDF-Anhang zu schicken.",
+       risk:"Unverschlüsselte E-Mails können unterwegs mitgelesen werden. Ein Tippfehler in der Adresse, und der Befund ist bei einem Fremden.",
+       t:["KIM (Kommunikation im Medizinwesen) über die Telematikinfrastruktur","Fax nur mit gespeicherten, geprüften Nummern"],
+       o:["Versand wird dokumentiert (wer, was, an wen, wann)","Empfänger vorher prüfen, im Zweifel anrufen"]},
+  tfa:{sit:"Ein Tierhalter bittet: „Schicken Sie mir die Laborwerte meines Hundes einfach per WhatsApp.“",
+       risk:"WhatsApp liest das Adressbuch des Praxishandys aus und gibt Daten an Dritte weiter. Ein Versandnachweis fehlt.",
+       t:["Befunde über ein gesichertes Kundenportal oder verschlüsselte E-Mail","Kein privater Messenger auf Praxisgeräten"],
+       o:["Versandweg mit dem Tierhalter klären und notieren","Feste Regel, welche Kanäle erlaubt sind"]}},
+ {name:"Eingabekontrolle", icon:"pen", alt:"Hier geht es um Nachvollziehbarkeit: Wer hat wann was eingegeben oder geändert?",
+  frage:"Können wir später nachweisen, wer wann was eingetragen oder geändert hat?",
+  ziel:"Es lässt sich nachträglich prüfen, welche Daten wann und von wem eingegeben oder verändert wurden.",
+  merk:"Jeder Eintrag hat einen Namen und eine Uhrzeit.",
+  mfa:{sit:"Im Medikationsplan einer Patientin steht plötzlich eine andere Dosierung. Niemand weiß, wer das geändert hat.",
+       risk:"Falsche Dosierung kann gefährlich sein. Ohne Nachweis lässt sich der Fehler nicht aufklären.",
+       t:["Protokollierung in der Praxissoftware (Benutzer, Datum, Uhrzeit)","Alte Werte bleiben sichtbar, statt überschrieben zu werden"],
+       o:["Nur mit eigenem Login arbeiten","Änderungen in der Patientenakte müssen erkennbar sein (§ 630f BGB)"]},
+  tfa:{sit:"Das Körpergewicht eines Hundes wurde von 32 kg auf 23 kg geändert. Danach wird die Narkosemenge berechnet.",
+       risk:"Ein Zahlendreher führt zu einer falschen Dosierung. Wer hat ihn eingegeben?",
+       t:["Änderungsprotokoll mit Benutzerkürzel","Warnhinweis bei großen Gewichtsänderungen"],
+       o:["Wichtige Werte nach dem Vier-Augen-Prinzip prüfen","Regel: kein Arbeiten unter fremdem Login"]}},
+ {name:"Transportkontrolle", icon:"box", alt:"Gemeint ist der körperliche Transport, z. B. Proben, Akten, Briefe, aber auch die Übertragung von Daten.",
+  frage:"Kommen Proben, Akten und Briefe sicher und unverändert an?",
+  ziel:"Beim Transport von Datenträgern und bei der Übermittlung bleiben Vertraulichkeit und Richtigkeit der Daten geschützt.",
+  merk:"Was die Praxis verlässt, ist verschlossen, und die Übergabe wird bestätigt.",
+  mfa:{sit:"Die Laborproben mit Begleitscheinen (Name, Geburtsdatum, Verdachtsdiagnose) stehen offen auf dem Tresen und warten auf den Laborfahrer.",
+       risk:"Wartende Patienten lesen die Scheine. Eine falsche Person könnte die Proben mitnehmen.",
+       t:["Verschließbare Transportbox","Begleitscheine mit Barcode statt vollem Klartext, wo möglich"],
+       o:["Übergabe nur an den bekannten Laborfahrer, mit Unterschrift","Box außer Sichtweite der Patienten lagern"]},
+  tfa:{sit:"Die Akte eines Pferdes soll per Post an eine Tierklinik gehen. Jonas steckt sie in einen Umschlag mit Sichtfenster.",
+       risk:"Durch das Fenster sind Daten sichtbar. Ohne Nachweis weiß niemand, ob die Akte angekommen ist.",
+       t:["Blickdichter, verschlossener Umschlag","Wenn möglich: elektronische Übermittlung statt Papier"],
+       o:["Einschreiben oder Kurier mit Sendungsnachweis","Versand im Postausgangsbuch eintragen"]}},
+ {name:"Wiederherstellbarkeit", icon:"restore", alt:"Wenn doch etwas passiert ist: Wie schnell sind wir wieder arbeitsfähig?",
+  frage:"Wenn alles weg ist: Können wir die Daten zurückholen?",
+  ziel:"Die IT-Systeme lassen sich nach einer Störung wiederherstellen.",
+  merk:"Ein Backup zählt erst, wenn die Wiederherstellung getestet wurde.",
+  mfa:{sit:"Eine Kollegin öffnet eine „Bewerbung“ als E-Mail-Anhang. Kurz darauf sind alle Daten verschlüsselt, auf dem Bildschirm steht eine Lösegeldforderung.",
+       risk:"Ohne Backup sind alle Patientenakten weg. Die Praxis kann nicht arbeiten.",
+       t:["Tägliches automatisches Backup, eine Kopie offline oder außer Haus (3-2-1-Regel)","Virenschutz und E-Mail-Filter"],
+       o:["Wiederherstellung regelmäßig testen und dokumentieren","Notfallplan mit Telefonnummer des IT-Dienstleisters am Empfang"]},
+  tfa:{sit:"Montag, 8 Uhr: Die Festplatte des Praxisservers ist defekt. Das Wartezimmer ist voll.",
+       risk:"Termine, Impfdaten und Rechnungen sind nicht abrufbar.",
+       t:["Backup von gestern auf neue Hardware einspielen","Gespiegelte Festplatten (RAID) im Server"],
+       o:["Notfallplan: Wer macht was? Papierformulare für die Übergangszeit","Zuständige Person prüft täglich, ob das Backup gelaufen ist"]}},
+ {name:"Zuverlässigkeit", icon:"bell", alt:"Die Systeme funktionieren, und Fehler werden bemerkt und gemeldet.",
+  frage:"Merken wir rechtzeitig, wenn etwas nicht funktioniert?",
+  ziel:"Alle Funktionen der Systeme stehen zur Verfügung, und auftretende Fehler werden gemeldet.",
+  merk:"Warnmeldungen werden nicht weggeklickt, sondern weitergegeben.",
+  mfa:{sit:"Seit drei Wochen erscheint morgens „Datensicherung fehlgeschlagen“. Alle klicken die Meldung weg.",
+       risk:"Im Ernstfall gibt es kein aktuelles Backup, und keiner hat es gewusst.",
+       t:["Automatische Überwachung (Monitoring) mit E-Mail an den IT-Dienstleister","Software-Updates regelmäßig einspielen"],
+       o:["Klarer Meldeweg: Fehlermeldungen an eine feste Ansprechperson","Fehlerbuch am Empfang"]},
+  tfa:{sit:"Der Virenschutz am Empfangs-PC meldet täglich: „Lizenz abgelaufen“. Jonas denkt, das sei nicht seine Aufgabe.",
+       risk:"Der Rechner ist ungeschützt. Schadsoftware kann sich unbemerkt ausbreiten.",
+       t:["Zentrale Verwaltung des Virenschutzes mit Ablaufwarnung","Automatische Updates"],
+       o:["Jeder ist verpflichtet, Warnungen zu melden","Zuständigkeit für IT-Themen schriftlich festlegen"]}},
+ {name:"Datenintegrität", icon:"check", alt:"Integrität bedeutet: Die Daten sind vollständig und richtig und werden nicht durch Technikfehler beschädigt.",
+  frage:"Bleiben unsere Daten heil, auch wenn die Technik streikt?",
+  ziel:"Gespeicherte Daten werden nicht durch Fehlfunktionen des Systems beschädigt.",
+  merk:"Daten müssen nicht nur da sein, sie müssen auch stimmen.",
+  mfa:{sit:"Bei einem Gewitter fällt der Strom aus, während der Server gerade die Abrechnung speichert.",
+       risk:"Die Datenbank wird beschädigt. Einträge fehlen oder sind fehlerhaft.",
+       t:["USV (unterbrechungsfreie Stromversorgung): Server fährt sauber herunter","Überspannungsschutz"],
+       o:["USV-Akkus nach Wartungsplan prüfen lassen","Nach Störungen Daten stichprobenartig kontrollieren"]},
+  tfa:{sit:"Das Blutanalysegerät überträgt die Werte automatisch in die Praxissoftware. Nach einem Update landen Werte beim falschen Tier.",
+       risk:"Ein gesunder Kater bekommt die Nierenwerte eines kranken Hundes, und damit die falsche Behandlung.",
+       t:["Zuordnung über eindeutige Probennummer oder Chipnummer","Software- und Schnittstellen-Updates erst testen"],
+       o:["Abgleich: Name des Tieres und Halter vor dem Speichern prüfen","Auffälligkeiten sofort melden"]}},
+ {name:"Auftragskontrolle", icon:"contract", alt:"Wenn externe Firmen für die Praxis Daten verarbeiten, heißt das Auftragsverarbeitung (Art. 28 DSGVO).",
+  frage:"Halten sich externe Dienstleister an unsere Vorgaben?",
+  ziel:"Daten, die im Auftrag verarbeitet werden, werden nur nach den Weisungen der Praxis verarbeitet.",
+  merk:"Kein Dienstleister ohne Vertrag, kein Fernzugriff ohne Erlaubnis.",
+  mfa:{sit:"Das IT-Systemhaus möchte per Fernwartung auf den Praxisserver, um ein Update einzuspielen.",
+       risk:"Der Techniker sieht dabei Patientendaten. Ohne Regeln weiß niemand, was er damit macht.",
+       t:["Fernzugriff nur nach Freigabe am Praxis-PC, Sitzung wird protokolliert","Zugang danach automatisch wieder gesperrt"],
+       o:["Auftragsverarbeitungsvertrag (AVV) nach Art. 28 DSGVO","Verpflichtung des Dienstleisters zur Verschwiegenheit (§ 203 StGB)"]},
+  tfa:{sit:"Die Praxis nutzt einen Online-Dienst für Terminbuchung und SMS-Erinnerungen an Impftermine.",
+       risk:"Der Anbieter hat Namen und Handynummern aller Tierhalter. Nutzt er sie vielleicht für Werbung?",
+       t:["Anbieter mit Servern in der EU und verschlüsselter Verbindung","Nur nötige Daten übertragen"],
+       o:["AVV abschließen und ablegen","Anbieter vorher prüfen (Zertifikate, Datenschutzinfos)"]}},
+ {name:"Verfügbarkeitskontrolle", icon:"flame", alt:"Hier geht es um Vorbeugung gegen Verlust durch Feuer, Wasser, Hitze oder Diebstahl.",
+  frage:"Sind unsere Daten vor Feuer, Wasser und Hitze geschützt?",
+  ziel:"Daten werden gegen zufällige Zerstörung oder Verlust geschützt.",
+  merk:"Verfügbarkeit heißt vorbeugen. Wiederherstellbarkeit heißt reparieren.",
+  mfa:{sit:"Server und das Papierarchiv stehen im Keller. Dort verläuft die Hauptwasserleitung des Hauses.",
+       risk:"Bei einem Wasserrohrbruch sind Server und Akten auf einen Schlag zerstört.",
+       t:["Server nicht im Keller, auf Podest oder im Rack","Rauchmelder, Feuerlöscher (CO₂) im Serverraum"],
+       o:["Kopie der Datensicherung außer Haus aufbewahren","Akten im feuerfesten Schrank, Brandschutzbegehung"]},
+  tfa:{sit:"Der Server steht in der Kammer direkt neben dem Sterilisator (Autoklav). Im Sommer wird es dort über 40 °C warm.",
+       risk:"Die Hitze lässt Festplatten ausfallen. Daten gehen verloren.",
+       t:["Serverraum belüften oder klimatisieren, Temperaturfühler mit Alarm","Server an einem kühlen Ort aufstellen"],
+       o:["Raumplanung mit IT abstimmen","Regel: Kammer wird nicht als Abstellraum genutzt"]}},
+ {name:"Trennbarkeit", icon:"layers", alt:"Auch „Trennungsgebot“ genannt. Hängt eng mit der Zweckbindung (Art. 5 DSGVO) zusammen.",
+  frage:"Bleiben Daten für unterschiedliche Zwecke voneinander getrennt?",
+  ziel:"Daten, die zu unterschiedlichen Zwecken erhoben wurden, können getrennt verarbeitet werden.",
+  merk:"Daten aus der Behandlung sind für die Behandlung da, nicht für Werbung.",
+  mfa:{sit:"Die Praxis möchte einen Newsletter für die Grippeimpfung verschicken und dafür einfach alle Patienten aus der Praxissoftware nehmen.",
+       risk:"Die Daten wurden für die Behandlung erhoben, nicht für Werbung. Auch Bewerbungsunterlagen dürfen nicht neben Patientendaten liegen.",
+       t:["Getrennte Datenbanken oder Mandanten (Patienten, Personal, Newsletter)","Echte Daten nie zum Testen neuer Software"],
+       o:["Newsletter nur mit eigener Einwilligung","Zweck jeder Datensammlung festlegen"]},
+  tfa:{sit:"Zur Praxis gehört ein kleiner Futter-Onlineshop. Die Idee: Allen Haltern übergewichtiger Hunde gezielt Diätfutter-Werbung schicken.",
+       risk:"Behandlungsdaten würden für Werbung genutzt, ohne dass die Halter eingewilligt haben.",
+       t:["Shop-Kundendaten in einem eigenen System","Kein automatischer Datenaustausch zwischen Shop und Praxissoftware"],
+       o:["Werbung nur mit ausdrücklicher Einwilligung","Mitarbeiter schulen: Behandlung und Verkauf sind zwei Zwecke"]}}
+];
+
+let mode="mfa", cur=0, view="start";
+const seen=new Set([0]);
+const $=s=>document.querySelector(s);
+
+function renderStations(){
+  $("#stations").innerHTML=S.map((s,i)=>`<button class="st${seen.has(i)?' seen':''}" data-i="${i}" ${i===cur?'aria-current="step"':''}><span class="num">${String(i+1).padStart(2,"0")}</span><span class="lbl">${s.name}</span></button>`).join("");
+}
+function renderCard(){
+  const s=S[cur], d=s[mode];
+  const arrow=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+  $("#card").innerHTML=`
+   <div class="st-head">
+     <div class="icon-tile">${svg(s.icon)}</div>
+     <div><div class="count">Kontrollziel ${cur+1} von 14 · ${mode==="mfa"?"Arztpraxis":"Tierarztpraxis"}</div><h2>${s.name}</h2><div class="alt">${s.alt}</div></div>
+   </div>
+   <p class="question">${s.frage}</p>
+   <p class="goal"><b>Ziel:</b> ${s.ziel}</p>
+   <div class="scene">
+     <div class="panel sit"><h4>Situation · ${mode==="mfa"?"Lena":"Jonas"}</h4><p>${d.sit}</p></div>
+     <div class="arrow a1">${arrow}</div>
+     <div class="panel risk"><h4>Risiko</h4><p>${d.risk}</p></div>
+     <div class="arrow a2">${arrow}</div>
+     <div class="panel fix"><h4>Maßnahmen</h4><ul class="fixlist">
+       ${d.t.map(x=>`<li><span class="badge t">T</span><span>${x}</span></li>`).join("")}
+       ${d.o.map(x=>`<li><span class="badge o">O</span><span>${x}</span></li>`).join("")}
+     </ul></div>
+   </div>
+   <div class="memo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 00-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0012 3z"/></svg><p><small>Merksatz</small>${s.merk}</p></div>`;
+  $("#bar").style.width=((cur+1)/14*100)+"%";
+  $("#prev").disabled=cur===0;
+  $("#next").innerHTML=cur===13?`Zum Quiz <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`:`Weiter <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+  renderStations();
+  const a=document.querySelector('.st[aria-current="step"]'); if(a&&window.innerWidth<=900) a.scrollIntoView({block:"nearest",inline:"center"});
+}
+function go(i){cur=Math.max(0,Math.min(13,i));seen.add(cur);renderCard();if(view==="rundgang") setHash("station-"+(cur+1));}
+function renderGrid(){
+  $("#grid14").innerHTML=S.map((s,i)=>`<button class="ov" data-i="${i}"><div class="row">${svg(s.icon,3)}<span class="n">${String(i+1).padStart(2,"0")}</span><h3>${s.name}</h3></div><p>${s.frage}</p><p class="ex"><b>Beispiel:</b> ${s[mode].t[0]}</p></button>`).join("");
+}
+
+/* Quiz */
+const Q=[
+ ["Jonas legt die Blutproben für das externe Labor in eine verschlossene Box und übergibt sie nur gegen Unterschrift.",7],
+ ["Die Praxissoftware speichert bei jeder Änderung das Benutzerkürzel und die Uhrzeit.",6],
+ ["Jede Nacht läuft ein Backup. Einmal im Monat wird getestet, ob es sich zurückspielen lässt.",8],
+ ["Lena darf Termine vergeben, die Lohnabrechnungen kann sie aber nicht öffnen.",4],
+ ["Mit dem IT-Systemhaus wurde ein Vertrag nach Art. 28 DSGVO geschlossen.",11],
+ ["Der Serverschrank ist abgeschlossen. Den Schlüssel hat nur die Praxisinhaberin.",0],
+ ["Der Laptop für Hausbesuche ist komplett verschlüsselt.",2],
+ ["Jede Mitarbeiterin hat ein eigenes Login mit eigenem Passwort.",3],
+ ["Die Kundendaten des Futtershops liegen in einem anderen System als die Behandlungsdaten.",13],
+ ["Eine USV hält den Server bei Stromausfall am Laufen, bis er sauber heruntergefahren ist.",10],
+ ["Befunde gehen per KIM statt per normaler E-Mail an die Fachärztin.",5],
+ ["Alte Festplatten werden von einer Fachfirma vernichtet, die ein Protokoll ausstellt.",1],
+ ["Im Serverraum hängen ein Rauchmelder und ein CO₂-Feuerlöscher.",12],
+ ["Die Meldung „Backup fehlgeschlagen“ geht automatisch per E-Mail an den IT-Dienstleister.",9]
+];
+let qi=0, qs=0, order=[], opts=[];
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function startQuiz(){order=shuffle(Q.map((_,i)=>i)).slice(0,10);qi=0;qs=0;renderQ();}
+function renderQ(){
+  const box=$("#quiz");
+  if(qi>=order.length){
+    const msg=qs>=9?"Super, du kennst die TOM richtig gut.":qs>=6?"Gut gemacht. Schau dir die Stationen mit Fehlern noch einmal an.":"Geh den Rundgang am besten noch einmal durch und versuch es dann erneut.";
+    box.innerHTML=`<div class="eyebrow">Ergebnis</div><div class="score">${qs} / ${order.length}</div><p>${msg}</p><div class="nav" style="justify-content:flex-start"><button class="btn primary" id="q-again">Neues Quiz</button><button class="btn" data-go="rundgang">Zum Rundgang</button></div>`;
+    return;
+  }
+  const [txt,ans]=Q[order[qi]];
+  opts=shuffle([ans,...shuffle(S.map((_,i)=>i).filter(i=>i!==ans)).slice(0,3)]);
+  box.innerHTML=`<div class="qmeta"><span>Frage ${qi+1} von ${order.length}</span><span>Punkte: ${qs}</span></div>
+   <div class="progress"><span style="width:${qi/order.length*100}%"></span></div>
+   <div class="eyebrow">Welches Kontrollziel steckt dahinter?</div>
+   <p class="qcase">${txt}</p>
+   <div class="opts">${opts.map(o=>`<button class="opt" data-o="${o}">${S[o].name}</button>`).join("")}</div>
+   <div id="fb"></div>`;
+}
+function answer(o){
+  const ans=Q[order[qi]][1];
+  document.querySelectorAll(".opt").forEach(b=>{b.disabled=true;const v=+b.dataset.o;if(v===ans)b.classList.add("right");else if(v===o)b.classList.add("wrong");});
+  const ok=o===ans; if(ok)qs++;
+  $("#fb").innerHTML=`<div class="feedback"><b>${ok?"Richtig!":"Nicht ganz."}</b> ${S[ans].name}: ${S[ans].frage}<div style="margin-top:12px"><button class="btn primary" id="q-next">${qi===order.length-1?"Ergebnis anzeigen":"Nächste Frage"}</button></div></div>`;
+  $("#q-next").focus();
+}
+
+/* Views & routing */
+function setHash(h){try{history.replaceState(null,"","#"+h)}catch(e){location.hash=h}}
+function show(v,push=true){
+  view=v;
+  ["start","rundgang","uebersicht","quiz"].forEach(x=>{$("#v-"+x).hidden=x!==v});
+  document.querySelectorAll(".tab").forEach(t=>t.toggleAttribute("aria-current",t.dataset.view===v)||t.dataset.view===v&&t.setAttribute("aria-current","page"));
+  document.querySelectorAll(".tab").forEach(t=>{if(t.dataset.view===v)t.setAttribute("aria-current","page");else t.removeAttribute("aria-current")});
+  if(v==="rundgang"){renderCard(); if(push)setHash("station-"+(cur+1));}
+  else if(push) setHash(v);
+  if(v==="uebersicht")renderGrid();
+  if(v==="quiz"&&(!order.length||qi>=order.length))startQuiz();
+  window.scrollTo({top:0});
+}
+function fromHash(){
+  const h=location.hash.slice(1);
+  const m=h.match(/^station-(\d{1,2})$/);
+  if(m){cur=Math.max(0,Math.min(13,+m[1]-1));seen.add(cur);show("rundgang",false);}
+  else if(["rundgang","uebersicht","quiz","start"].includes(h)) show(h,false);
+  else show("start",false);
+}
+function setMode(m){
+  mode=m;
+  document.querySelectorAll("[data-mode]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.mode===m));
+  try{localStorage.setItem("tom-mode",m)}catch(e){}
+  if(view==="rundgang")renderCard(); if(view==="uebersicht")renderGrid();
+}
+function present(on){
+  document.body.classList.toggle("present",on);
+  if(on){show("rundgang");try{document.documentElement.requestFullscreen?.().catch(()=>{})}catch(e){}}
+  else{try{if(document.fullscreenElement)document.exitFullscreen().catch(()=>{})}catch(e){}}
+}
+
+document.addEventListener("click",e=>{
+  const t=e.target.closest("button"); if(!t)return;
+  if(t.dataset.view) show(t.dataset.view);
+  else if(t.dataset.go) show(t.dataset.go);
+  else if(t.dataset.mode) setMode(t.dataset.mode);
+  else if(t.classList.contains("st")) go(+t.dataset.i);
+  else if(t.classList.contains("ov")){cur=+t.dataset.i;seen.add(cur);show("rundgang");}
+  else if(t.classList.contains("opt")) answer(+t.dataset.o);
+  else if(t.id==="q-next"){qi++;renderQ();}
+  else if(t.id==="q-again") startQuiz();
+  else if(t.id==="prev") go(cur-1);
+  else if(t.id==="next"){ if(cur===13){present(false);show("quiz");} else go(cur+1); }
+  else if(t.id==="present-btn") present(true);
+  else if(t.id==="exit-present") present(false);
+});
+document.addEventListener("keydown",e=>{
+  if(view!=="rundgang"||e.target.closest("input,textarea"))return;
+  if(e.key==="ArrowRight"||e.key==="PageDown"){e.preventDefault();go(cur+1)}
+  else if(e.key==="ArrowLeft"||e.key==="PageUp"){e.preventDefault();go(cur-1)}
+  else if(e.key==="Escape"&&document.body.classList.contains("present"))present(false);
+});
+document.addEventListener("fullscreenchange",()=>{if(!document.fullscreenElement&&document.body.classList.contains("present"))document.body.classList.remove("present")});
+window.addEventListener("hashchange",fromHash);
+try{const m=localStorage.getItem("tom-mode");if(m==="tfa"||m==="mfa")mode=m}catch(e){}
+document.querySelectorAll("[data-mode]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.mode===mode));
+fromHash();
+</script>
+</body>
+</html>

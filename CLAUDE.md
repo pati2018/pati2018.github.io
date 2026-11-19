@@ -30,6 +30,7 @@ Repo, neue Regel), diese Datei mit aktualisieren.**
 | Repo | Inhalt | Online |
 |------|--------|--------|
 | `pati2018/pati2018.github.io` | **Hauptseite „Meine Web-Apps“** mit allen Musik-Apps | https://pati2018.github.io/ |
+| `pati2018/pati2018.github.io` → Ordner `schule/` | **„Meine Apps Schule“**: Lernseiten und Artefakte für den Unterricht | https://pati2018.github.io/schule/ |
 | `pati2018/midi-player` | MIDI-Player (`index.html`) und Groove-Werkstatt (`sequenzer.html`), MIDI-Demodateien | laut README für Vercel gedacht – noch nicht auf der Übersicht |
 | `pati2018/Gitarre` | Smart Instruments | https://pati2018.github.io/Gitarre/?gitarre |
 | `pati2018/soundwhacker-looper` | SoundWhacker Smart Control (`SoundWhacker_Spielen.html`), MIGA (`SoundWhacker_Kamera.html`) und Looper (`SoundWhacker_Looper.html`) | https://pati2018.github.io/soundwhacker-looper/ |
@@ -104,6 +105,24 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
   Dazu den Ordner in der Tabelle in der `README.md` ergänzen.
 - **Inhaltlich:** Auf die Übersicht gehören **nur Musik-Apps**. Andere Apps
   (z. B. das wieder gelöschte Quiz Taubenschutz) kommen woanders hin.
+  Schul-Apps und Lernseiten kommen nach **„Meine Apps Schule“** (siehe unten).
+
+## Unterseite „Meine Apps Schule“ (`schule/`)
+
+- **Adresse:** https://pati2018.github.io/schule/, gleicher Aufbau wie die Hauptseite:
+  `schule/index.html` (Übersicht), `schule/app.html` (Anleitung), `schule/apps.js`
+  (**Liste der Schul-Apps**), `schule/anleitungen/<id>.md`, eigenes `schule/manifest.webmanifest`.
+  Nutzt `../style.css`, `../theme.js`, `../lib/` und `../icons/` der Hauptseite mit.
+- **Artefakt von claude.ai hier hosten:** Ordner `schule/<name>/index.html` anlegen. Die Artefakt-Datei
+  braucht einen vollständigen Rahmen (`<!doctype html>`, `<html lang="de">`, `<head>` mit charset und
+  `viewport … viewport-fit=cover`), dazu `body{margin:0}`, `[hidden]{display:none!important}` und
+  `<script src="../../theme.js">` (Hell/Dunkel-Schalter; bei eigenem Kopf unten links platzieren).
+  Dann in `schule/apps.js` eintragen und `schule/anleitungen/<id>.md` schreiben.
+- **Lernseiten:**
+  - `schule/datenschutz-tom/` – TOM-Rundgang: 14 Kontrollziele (§ 64 Abs. 3 BDSG / Art. 32 DSGVO)
+    mit Beispielen aus Arzt- und Tierarztpraxis (Azubis Lena und Jonas), Präsentationsmodus, Übersicht, Quiz.
+    Sprungmarken `#station-1` … `#station-14`, `#uebersicht`, `#quiz`. Gleiche Seite auch als claude.ai-Artefakt:
+    https://claude.ai/artifact/B5WHTm5WpCgsVAJSuLsvei
 
 ## Repo `soundwhacker-looper`
 

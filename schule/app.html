@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Anleitung</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#2f5bd3">
+  <meta name="apple-mobile-web-app-title" content="Apps Schule">
+  <link rel="stylesheet" href="../style.css">
+  <script src="../theme.js"></script>
+</head>
+<body>
+  <main class="wrap">
+    <a class="back" href="./">← Alle Schul-Apps</a>
+    <div id="inhalt"><p class="empty">Lade …</p></div>
+  </main>
+  <footer class="site wrap"><a href="./">Zurück zur Übersicht</a></footer>
+
+  <script src="../lib/marked.min.js"></script>
+  <script src="../lib/purify.min.js"></script>
+  <script>document.write('<script src="apps.js?v=' + Date.now() + '"><\/script>');</script>
+  <script>
+    const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const raw = new URLSearchParams(location.search).get("id"), id = raw;
+    const app = (window.APPS || []).find(a => a.id === id);
+    const box = document.getElementById("inhalt");
+
+    if (!app) {
+      box.innerHTML = `<p class="empty">Diese Seite gibt es nicht. <a href="./">Zur Übersicht</a></p>`;
+    } else {
+      document.title = `${app.titel} – Anleitung`;
+      box.innerHTML = `
+        <div class="app-head">
+          ${app.bild ? `<div class="icon" aria-hidden="true" style="background:none;overflow:hidden"><img src="${esc(app.bild)}" alt="" style="width:100%;height:100%;border-radius:inherit"></div>` : `<div class="icon" aria-hidden="true"${[...(app.symbol || "")].length > 1 ? ' style="font-size:24px;letter-spacing:-2px"' : ""}>${esc(app.symbol || "🧩")}</div>`}
+          <h1>${esc(app.titel)}</h1>
+        </div>
+        <p class="lead">${esc(app.kurz)}</p>
+        <div class="actions">
+          ${(app.links || [{ label: "Öffnen", url: app.link }]).map(l => `<a class="btn primary" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>`).join("")}
+          ${app.repo ? `<a class="btn" href="${esc(app.repo)}" target="_blank" rel="noopener">Quellcode</a>` : ""}
+        </div>
+        <article class="guide" id="anleitung"><p class="empty">Lade Anleitung …</p></article>`;
+
+      fetch(`anleitungen/${encodeURIComponent(app.id)}.md`)
+        .then(r => r.ok ? r.text() : Promise.reject())
+        .then(md => {
+          const html = window.marked ? marked.parse(md) : `<pre>${esc(md)}</pre>`;
+          document.getElementById("anleitung").innerHTML = window.DOMPurify ? DOMPurify.sanitize(html) : html;
+        })
+        .catch(() => {
+          document.getElementById("anleitung").innerHTML = `<p>Für diese Seite gibt es noch keine ausführliche Anleitung.</p>`;
+        });
+    }
+  </script>
+</body>
+</html>

@@ -44,3 +44,11 @@ Speichern, committen – nach ca. einer Minute ist die App auf der Seite.
 | `ki-betriebssystem/` | Erklärseite „So entstehen meine Apps“ (Schaubild, verlinkt alle Musik-Apps); keine App, darum nicht in `apps.js` |
 | `tischharfe/` | Tischharfe mit Unterlegnoten; `lieder.js` enthält die Lieder, `kopf.js` die Kopfsteuerung, `aufnahme.js` die Video-Aufnahme |
 | `veranstaltungen/praesentationen/` | Vortrag „Selbstgebaute barrierefreie digitale Musikinstrumente“ als Folien-App mit Videos (Bilder in `slides/`, Videos in `video/`); keine Musik-App, darum nicht in `apps.js`; nicht für Suchmaschinen (noindex) |
+
+## Meine Apps Schule (`schule/`)
+
+Eigene Übersicht für Lernseiten und Schul-Apps: https://pati2018.github.io/schule/ – gleicher Aufbau wie oben, die Liste steht in `schule/apps.js`, die Anleitungen in `schule/anleitungen/`.
+
+| Ordner | Seite |
+|---|---|
+| `schule/datenschutz-tom/` | TOM-Rundgang: technische und organisatorische Maßnahmen im Datenschutz für MFA und TFA |

@@ -24,7 +24,8 @@ Die linke Hand hält den SoundWhacker unten am **schwarzen Teil**. Zum Spielen g
 | Mitspielen neu beginnen | **↺ Von vorne** |
 | Tempo | Regler von **40 %** („langsam zum Üben“) über **100 %** („normal“) bis 130 % |
 | Aufstellung | **Reihe, Halbkreis** (Standard), **Kreis** oder **offenes U** – die Figuren laufen sanft an ihren neuen Platz |
-| Klang | Marimba, Klavier, Vibraphon, Xylophon, Spieluhr, Kalimba, Steeldrums, E-Piano, Gitarre, Koto, Harfe – und **verzerrte Gitarren**: Overdrive, Distortion, Feedback und Wah-Wah |
+| Klang | Marimba, Klavier, Vibraphon, Xylophon, Spieluhr, Kalimba, Steeldrums, E-Piano, Gitarre, Koto, Harfe – **verzerrte Gitarren**: Overdrive, Distortion, Feedback und Wah-Wah – **Flöten**: Querflöte, Blockflöte, Panflöte, Piccoloflöte, Okarina – **Klarinette** und **Saxophon** (Sopran, Alt, Tenor) |
+| Hall | Regler von **0 %** (trocken) über kleiner Raum und Saal bis **Kirche** (100 %) – die App merkt sich die Einstellung |
 | Vollbild | **⛶ Vollbild** – ideal für den Beamer |
 
 **Tonlänge:** Ein Ton klingt so lange, wie der SoundWhacker (oder die Taste, die Figur, die Klaviertaste) **gehalten** wird – mindestens eine Viertelsekunde. Beim Vorspielen klingt jeder Ton so lang wie seine Note.
@@ -76,7 +77,7 @@ Die Lieder werden **nur in diesem Browser** gespeichert. Für ein anderes Gerät
 
 Die App funktioniert auch **offline**:
 
-1. Die App **einmal mit Internet öffnen**. Sie speichert dann alles im Gerät: alle Lieder und alle Klänge (ungefähr 9 MB). Danach erscheint „✓ Jetzt auch ohne Internet spielbar“.
+1. Die App **einmal mit Internet öffnen**. Sie speichert dann alles im Gerät: alle Lieder und alle Klänge (ungefähr 17 MB). Danach erscheint „✓ Jetzt auch ohne Internet spielbar“.
 2. Ab jetzt geht die App auch ohne WLAN, zum Beispiel im Workshop-Raum.
 3. **Tipp fürs iPad:** Über Teilen → **„Zum Home-Bildschirm“** gibt es ein eigenes App-Symbol.
 

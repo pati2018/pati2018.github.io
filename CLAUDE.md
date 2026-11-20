@@ -68,12 +68,12 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
     - `whacker-band/` – **SoundWhacker Band** (früher „Whacker-Band“, Ordner bleibt `whacker-band/`; Symbol = SW-Röhre mit zwei schwarzen Ringen): 5 animierte Figuren (SW-Farben) mit SoundWhacker (weiße Röhre, unten schwarz; linke Hand
       hält unten, rechte Hand berührt oben → Röhre leuchtet). Modi Vorspielen / Mitspielen (Tasten 1–5, nächste Figur leuchtet leicht) /
       Lied einspielen (Tasten oder Klaviatur g–c‴ mit Gleiten per Maus/Finger, Rhythmus + Haltedauer werden gespeichert). Aufstellung Reihe/Halbkreis/Kreis/U, Tempo 40–130 %.
-      Klänge aus `../tischharfe/klaenge/` + Harfe (dort auch verzerrte Gitarren overdrive/distortion/feedback/wah aus GeneralUser GS), Lieder aus `../tischharfe/lieder.js` (alle; ⭐ = ≤ 5 Töne, sonst Figuren reihum,
+      Klänge aus `../tischharfe/klaenge/` + Harfe (dort auch verzerrte Gitarren overdrive/distortion/feedback/wah sowie Flöten floete/blockfloete/panfloete/piccolo/okarina, klarinette, sopransax/altsax/tenorsax aus GeneralUser GS), Hallregler (`st.hall`), Lieder aus `../tischharfe/lieder.js` (alle; ⭐ = ≤ 5 Töne, sonst Figuren reihum,
       „Feste SW-Töne“ nur bei ⭐). Eigene Lieder in
       localStorage `whacker-band-lieder` (JSON-Export/Import). Auftrag kam als MD-Datei vom Nutzer.
       Mitspielen hat 3 Spielarten wie „Gemeinsame Melodie“ in Smart Control: SW spielt Melodie (reihum), Feste SW-Reihenfolge
       (SW1–n, Rest stumm), Feste SW-Töne (zeigt immer, wer dran ist – kein Schalter; nur wer dran ist, klingt, falsche SWs bleiben stumm). Einstellungen `spielart`, `reiheN`.
-      **Offline:** `whacker-band/sw.js` (Service Worker) speichert App, `lieder.js` und alle Klänge (≈ 9 MB). Bei neuen Dateien
+      **Offline:** `whacker-band/sw.js` (Service Worker) speichert App, `lieder.js` und alle Klänge (≈ 17 MB). Bei neuen Dateien
       oder neuer `lieder.js?v=…`-Nummer die Liste und `VERSION` in `sw.js` anpassen.
       Eine Jarvis-Sprachsteuerung (Web Speech API) wurde ausprobiert und auf Wunsch wieder entfernt – nicht erneut einbauen.
   - **Achtung:** `tischharfe/lieder.js` lädt auch SoundWhacker Spielen (Gemeinsame Melodie), das Fagott und die SoundWhacker Band.

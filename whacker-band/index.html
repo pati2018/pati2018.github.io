@@ -34,6 +34,7 @@
   .leiste label{display:flex;align-items:center;gap:8px;font-size:16px;color:var(--mut)}
   .leiste select{font-size:17px;min-height:46px;padding:6px 10px;border-radius:10px;border:1px solid var(--linie);background:#0f1730;max-width:330px}
   .leiste input[type=range]{width:170px;accent-color:var(--gold)}
+  @media (max-width:520px){ .leiste label{max-width:100%;min-width:0} .leiste select{max-width:calc(100vw - 130px);min-width:0} .leiste input[type=range]{width:min(170px,40vw)} }
   .gross{min-height:56px;padding:8px 22px;border-radius:14px;border:2px solid var(--gold);background:var(--gold);color:#111;font-size:20px;font-weight:800;cursor:pointer}
   .knopf{min-height:46px;padding:6px 14px;border-radius:10px;border:1px solid var(--linie);background:#0f1730;font-weight:700;cursor:pointer;font-size:16px}
   .knopf:disabled,.gross:disabled{opacity:.4;cursor:default}
@@ -93,6 +94,7 @@
     <label id="tempoLabel">Tempo <input type="range" id="tempo" min="40" max="130" step="5" value="100" aria-describedby="tempoWert"> <span id="tempoWert"></span></label>
     <label>Aufstellung <select id="aufstellung"><option value="reihe">Reihe</option><option value="halbkreis">Halbkreis</option><option value="kreis">Kreis</option><option value="u">offenes U</option></select></label>
     <label>Klang <select id="klang"></select></label>
+    <label>Hall <input type="range" id="hall" min="0" max="100" step="5" value="20" aria-describedby="hallWert"> <span id="hallWert"></span></label>
   </div>
 
   <div class="leiste" id="mitLeiste" hidden>
@@ -153,7 +155,7 @@ function el(t,a,p){ const e=document.createElementNS(NS,t); for(const k in a) e.
 
 // ---------- Einstellungen ----------
 const KEY='whacker-band', LKEY='whacker-band-lieder';
-let st={lied:'lied:freude',tempo:100,aufstellung:'halbkreis',klang:'marimba',modus:'vor',spielart:'fest',reiheN:5};
+let st={lied:'lied:freude',tempo:100,aufstellung:'halbkreis',klang:'marimba',modus:'vor',spielart:'fest',reiheN:5,hall:20};
 try{ Object.assign(st, JSON.parse(localStorage.getItem(KEY)||'{}')); }catch(e){}
 const merke=()=>{ try{ localStorage.setItem(KEY,JSON.stringify(st)); }catch(e){} };
 
@@ -165,17 +167,19 @@ const KLAENGE={
   gitarre:{n:'Gitarre',pegel:1.36}, koto:{n:'Koto',pegel:2.2},
   overdrive:{n:'Verzerrte Gitarre (Overdrive)',pegel:.46}, distortion:{n:'Verzerrte Gitarre (Distortion)',pegel:.46},
   feedback:{n:'Verzerrte Gitarre (Feedback)',pegel:.45}, wah:{n:'Wah-Wah-Gitarre',pegel:.52},
+  floete:{n:'Querflöte',pegel:.37}, blockfloete:{n:'Blockflöte',pegel:.2}, panfloete:{n:'Panflöte',pegel:.26}, piccolo:{n:'Piccoloflöte',pegel:.18}, okarina:{n:'Okarina',pegel:.19},
+  klarinette:{n:'Klarinette',pegel:.24}, sopransax:{n:'Sopransaxophon',pegel:.31}, altsax:{n:'Altsaxophon',pegel:.48}, tenorsax:{n:'Tenorsaxophon',pegel:.5},
   harfe:{n:'Harfe',pegel:1.05,pfad:'../tischharfe/samples/',toene:{E3:52,G3:55,B3:59,D4:62,F4:65,A4:69,C5:72,E5:76,G5:79,B5:83}},
 };
 for(const id in KLAENGE){ const K=KLAENGE[id]; if(!K.pfad){ K.pfad='../tischharfe/klaenge/'+id+'/'; K.toene=Object.fromEntries(ST_TOENE.map(m=>[m,m])); } }
-let ctx=null, master, dry, wet; const puffer={}, lade={};
+let ctx=null, master, dry, wet; const hallWert=()=>Math.pow(st.hall/100,1.3)*1.1; const puffer={}, lade={};
 function audio(){
   if(ctx){ if(ctx.state!=='running') ctx.resume(); return; }
   try{ if(navigator.audioSession) navigator.audioSession.type='playback'; }catch(e){}
   ctx=new (window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'});
   const comp=ctx.createDynamicsCompressor(); comp.threshold.value=-10; comp.ratio.value=3; comp.attack.value=.003; comp.release.value=.2;
   master=ctx.createGain(); master.gain.value=.9; master.connect(comp); comp.connect(ctx.destination);
-  dry=ctx.createGain(); wet=ctx.createGain(); dry.gain.value=.9; wet.gain.value=.2; dry.connect(master); wet.connect(master);
+  dry=ctx.createGain(); wet=ctx.createGain(); dry.gain.value=.9; wet.gain.value=hallWert(); dry.connect(master); wet.connect(master);
   const conv=ctx.createConvolver(), sr=ctx.sampleRate, n=Math.floor(sr*2.2), b=ctx.createBuffer(2,n,sr);
   for(let c=0;c<2;c++){ const d=b.getChannelData(c); for(let i=0;i<n;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/n,3.2); }
   conv.buffer=b; conv.connect(wet); wet._in=conv;
@@ -198,7 +202,7 @@ function ton(fig, midi, wann, dauer){   // wann = ctx-Zeit (optional), dauer in 
   src.connect(g); g.connect(dry); g.connect(wet._in); src.start(t);
   // alte Stimme dieser Figur sanft beenden
   const alt=stimmen[fig]; if(alt){ try{ alt.g.gain.setTargetAtTime(0,t,.06); alt.s.stop(t+.5); }catch(e){} }
-  const v={s:src,g,t0:t}; stimmen[fig]=v; try{ src.stop(t+4); }catch(e){}
+  const v={s:src,g,t0:t}; stimmen[fig]=v; try{ src.stop(t+src.buffer.duration/src.playbackRate.value+.05); }catch(e){}
   if(dauer) aus(v,t+Math.max(.12,dauer));
   return v;
 }
@@ -514,6 +518,8 @@ $('lied').onchange=()=>{ st.lied=$('lied').value; merke(); liedSetzen(); $('lied
 $('aufstellung').value=st.aufstellung; $('aufstellung').onchange=()=>{ st.aufstellung=$('aufstellung').value; merke(); aufstellen(false); $('aufstellung').blur(); };
 const ks=$('klang'); for(const id in KLAENGE) ks.appendChild(new Option(KLAENGE[id].n,id)); ks.value=st.klang;
 ks.onchange=()=>{ st.klang=ks.value; merke(); audio(); ladeKlang(st.klang); ks.blur(); };
+function hallZeigen(){ const v=st.hall; $('hallWert').textContent=v+' % '+(v===0?'(trocken)':v<=25?'(kleiner Raum)':v<=60?'(Saal)':'(Kirche)'); if(wet) wet.gain.setTargetAtTime(hallWert(),ctx.currentTime,.05); }
+$('hall').value=st.hall; hallZeigen(); $('hall').oninput=()=>{ st.hall=+$('hall').value; merke(); hallZeigen(); };
 function tempoZeigen(){ const v=st.tempo; $('tempoWert').textContent=v+' % '+(v<=60?'(langsam zum Üben)':v<=85?'(gemütlich)':v<=105?'(normal)':'(schnell)'); }
 $('tempo').value=st.tempo; tempoZeigen(); $('tempo').oninput=()=>{ st.tempo=+$('tempo').value; merke(); tempoZeigen(); };
 $('vollbild').onclick=()=>{ const b=$('buehne'), d=document; if(d.fullscreenElement||d.webkitFullscreenElement){ (d.exitFullscreen||d.webkitExitFullscreen).call(d); } else { const f=d.documentElement.requestFullscreen||d.documentElement.webkitRequestFullscreen; if(f) f.call(d.documentElement); } };

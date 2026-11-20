@@ -546,7 +546,17 @@ document.querySelector('.modi').onclick=e=>{ const b=e.target.closest('button');
 $('start').onclick=()=>{ if(st.modus==='mit'){ pos=0; zug=0; spieler=[]; bandBauen(); audio(); } else start(); };
 $('lied').onchange=()=>{ st.lied=$('lied').value; merke(); liedSetzen(); $('lied').blur(); };
 $('aufstellung').value=st.aufstellung; $('aufstellung').onchange=()=>{ st.aufstellung=$('aufstellung').value; merke(); aufstellen(false); $('aufstellung').blur(); };
-const ks=$('klang'), og=document.createElement('optgroup'), ogf=document.createElement('optgroup'); og.label='🥁 Schlagzeug'; ogf.label='✨ Geräusche'; for(const id in KLAENGE){ const S=KLAENGE[id].schlag; (S==='schlag'?og:S==='fx'?ogf:ks).appendChild(new Option(KLAENGE[id].n,id)); } ks.appendChild(og); ks.appendChild(ogf); ks.value=st.klang;
+// Klangauswahl in Rubriken
+const RUBRIKEN=[['🎹 Tasteninstrumente',['klavier','epiano']],
+  ['🎶 Schlaginstrumente (Xylophon & Co.)',['marimba','xylophon','vibraphon','spieluhr','kalimba','steeldrums']],
+  ['🎸 Gitarren & Zupfinstrumente',['gitarre','harfe','koto','overdrive','distortion','feedback','wah']],
+  ['🎺 Blasinstrumente',['floete','blockfloete','panfloete','piccolo','okarina','klarinette','sopransax','altsax','tenorsax']],
+  ['🥁 Schlagzeug',Object.keys(KLAENGE).filter(id=>KLAENGE[id].schlag==='schlag')],
+  ['✨ Geräusche & Effekte',['effekte']]];
+const ks=$('klang'), schonDrin=new Set();
+for(const [titel,ids] of RUBRIKEN){ const og=document.createElement('optgroup'); og.label=titel; ids.forEach(id=>{ if(KLAENGE[id]){ og.appendChild(new Option(KLAENGE[id].n,id)); schonDrin.add(id); } }); ks.appendChild(og); }
+for(const id in KLAENGE) if(!schonDrin.has(id)) ks.appendChild(new Option(KLAENGE[id].n,id));   /* falls ein neuer Klang noch keine Rubrik hat */
+ks.value=st.klang;
 ks.onchange=()=>{ st.klang=ks.value; merke(); audio(); ladeKlang(st.klang); klavierBeschriften(); info(); ks.blur(); };
 function hallZeigen(){ const v=st.hall; $('hallWert').textContent=v+' % '+(v===0?'(trocken)':v<=25?'(kleiner Raum)':v<=60?'(Saal)':'(Kirche)'); if(wet) wet.gain.setTargetAtTime(hallWert(),ctx.currentTime,.05); }
 $('hall').value=st.hall; hallZeigen(); $('hall').oninput=()=>{ st.hall=+$('hall').value; merke(); hallZeigen(); };

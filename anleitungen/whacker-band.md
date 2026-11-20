@@ -24,7 +24,7 @@ Die linke Hand hält den SoundWhacker unten am **schwarzen Teil**. Zum Spielen g
 | Mitspielen neu beginnen | **↺ Von vorne** |
 | Tempo | Regler von **40 %** („langsam zum Üben“) über **100 %** („normal“) bis 130 % |
 | Aufstellung | **Reihe, Halbkreis** (Standard), **Kreis** oder **offenes U** – die Figuren laufen sanft an ihren neuen Platz |
-| Klang | Marimba, Klavier, Vibraphon, Xylophon, Spieluhr, Kalimba, Steeldrums, E-Piano, Gitarre, Koto, Harfe – **verzerrte Gitarren**: Overdrive, Distortion, Feedback und Wah-Wah – **Flöten**: Querflöte, Blockflöte, Panflöte, Piccoloflöte, Okarina – **Klarinette** und **Saxophon** (Sopran, Alt, Tenor) |
+| Klang | Nach **Rubriken** sortiert: 🎹 Tasteninstrumente (Klavier, E-Piano) – 🎶 Schlaginstrumente (Marimba, Xylophon, Vibraphon, Spieluhr, Kalimba, Steeldrums) – 🎸 Gitarren & Zupfinstrumente (Gitarre, Harfe, Koto, verzerrte Gitarren) – 🎺 Blasinstrumente (Flöten, Klarinette, Saxophone) – 🥁 Schlagzeug – ✨ Geräusche & Effekte |
 | Schlagzeug | 6 Sets: **Standard, Rock, Elektro, 808, Jazz, Besen** (unten in der Klangauswahl) – siehe „Schlagzeug“ |
 | Geräusche | **✨ Geräusche & Effekte** (ganz unten in der Klangauswahl) – siehe „Geräusche & Effekte“ |
 | Hall | Regler von **0 %** (trocken) über kleiner Raum und Saal bis **Kirche** (100 %) – die App merkt sich die Einstellung |

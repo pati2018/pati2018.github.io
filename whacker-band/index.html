@@ -27,6 +27,8 @@
   .modi{display:flex;gap:8px;flex-wrap:wrap}
   .modi button{min-height:54px;padding:8px 18px;border-radius:14px;border:2px solid var(--linie);background:var(--karte);font-size:19px;font-weight:800;cursor:pointer}
   .modi button[aria-pressed="true"]{background:var(--gold);color:#111;border-color:var(--gold)}
+  #spielart button{min-height:50px;font-size:17px}
+  #reiheZeile .knopf[aria-pressed="true"],#zeigenBtn[aria-pressed="true"]{background:var(--gold);color:#111;border-color:var(--gold)}
   .leiste{display:flex;gap:10px 18px;flex-wrap:wrap;align-items:center;background:var(--karte);border:1px solid var(--linie);border-radius:14px;padding:8px 12px}
   .leiste label{display:flex;align-items:center;gap:8px;font-size:16px;color:var(--mut)}
   .leiste select{font-size:17px;min-height:46px;padding:6px 10px;border-radius:10px;border:1px solid var(--linie);background:#0f1730;max-width:330px}
@@ -85,6 +87,16 @@
     <label>Tonreihe <select id="reihe"><option value="springt">springt nur bei Bedarf</option><option value="mit">läuft bei jedem Ton mit</option></select></label>
   </div>
 
+  <div class="leiste" id="mitLeiste" hidden>
+    <div class="modi" id="spielart" role="group" aria-label="Spielart beim Mitspielen">
+      <button data-s="reihum" title="Jede Berührung (egal welcher SoundWhacker) spielt den nächsten Ton">🔁 SW spielt Melodie</button>
+      <button data-s="reihe" title="SW1 → SW2 → SW3 … – wer nicht dran ist, bleibt stumm">🔢 Feste SW-Reihenfolge</button>
+      <button data-s="fest" title="Jeder SoundWhacker hat seinen eigenen Ton: SW1 = tiefster … SW5 = höchster">🎯 Feste SW-Töne</button>
+    </div>
+    <div class="zeile" id="reiheZeile" hidden><span class="hinweis">Mitspieler:</span>
+      <button class="knopf" data-n="2">SW1–2</button><button class="knopf" data-n="3">SW1–3</button><button class="knopf" data-n="4">SW1–4</button><button class="knopf" data-n="5">SW1–5</button></div>
+    <button class="knopf" id="zeigenBtn" hidden aria-pressed="true">👀 Zeigen, wer dran ist: AN</button>
+  </div>
   <div id="band" aria-hidden="true"></div>
   <div class="buehne" id="buehne">
     <svg id="svg" viewBox="0 150 1600 760" role="img" aria-label="Fünf Figuren mit SoundWhackern"></svg>
@@ -132,7 +144,7 @@ function el(t,a,p){ const e=document.createElementNS(NS,t); for(const k in a) e.
 
 // ---------- Einstellungen ----------
 const KEY='whacker-band', LKEY='whacker-band-lieder';
-let st={lied:'lied:freude',tempo:100,aufstellung:'halbkreis',klang:'marimba',modus:'vor',reihe:'springt'};
+let st={lied:'lied:freude',tempo:100,aufstellung:'halbkreis',klang:'marimba',modus:'vor',reihe:'springt',spielart:'fest',reiheN:5,zeigen:true};
 try{ Object.assign(st, JSON.parse(localStorage.getItem(KEY)||'{}')); }catch(e){}
 const merke=()=>{ try{ localStorage.setItem(KEY,JSON.stringify(st)); }catch(e){} };
 
@@ -206,7 +218,7 @@ function liedSetzen(){
   stopp(); LIED=liedDaten(st.lied)||liedDaten('lied:freude');
   TOENE=toeneVon(LIED.noten);
   FIGTON=[0,1,2,3,4].map(i=>TOENE[i]!==undefined?TOENE[i]:null);
-  pos=0; bandBauen(); info();
+  pos=0; zug=0; spieler=[]; bandBauen(); info();
 }
 const figVon=m=>TOENE.indexOf(m);
 
@@ -265,7 +277,8 @@ function zeichne(now){
   F.forEach(f=>{ f.x+=(f.zx-f.x)*.08; f.y+=(f.zy-f.y)*.08; f.s+=(f.zs-f.s)*.08; f.g.setAttribute('transform','translate('+f.x.toFixed(1)+' '+f.y.toFixed(1)+') scale('+f.s.toFixed(3)+')'); });
   [...F].sort((a,b)=>a.y-b.y).forEach(f=>ebene.appendChild(f.g));
   F.forEach(f=>{
-    f.g.style.opacity=FIGTON[f.i]==null?.35:1;
+    const sa=spielart(); f.g.style.opacity= sa==='reihum'?1 : sa==='reihe'?(f.i<st.reiheN?1:.3) : (FIGTON[f.i]==null?.35:1);
+    if(f.nein&&now-f.nein<400){ const k=(now-f.nein)/400; f.g.setAttribute('transform',f.g.getAttribute('transform')+' rotate('+(Math.sin(k*Math.PI*4)*4*(1-k))+')'); }
     const dt=(now-f.hit)/1000, vor=f.live?0.06:0.18;   // Hand erreicht die Röhre genau beim Ton
     let reach=0; if(dt>-vor&&dt<0) reach=1-(-dt/vor); else if(dt>=0&&dt<0.12) reach=1; else if(dt>=0.12&&dt<0.42) reach=1-(dt-0.12)/0.3;
     reach=reach<0?0:reach; const e=reach<.5?2*reach*reach:1-Math.pow(-2*reach+2,2)/2;
@@ -285,7 +298,15 @@ function schlag(i, wannMs, live){ const f=F[i]; f.hit=wannMs; f.live=!!live; }
 
 // ---------- Notenband ----------
 let pos=0;
-function bandBauen(){ $('band').innerHTML=LIED.noten.map(n=>'<span style="background:'+FARBE[figVon(n.m)]+'"></span>').join(''); bandZeigen(); }
+let zug=0, spieler=[];   // Feste Reihenfolge: wer als Nächstes dran ist · SW spielt Melodie: wer welchen Ton gespielt hat
+const spielart=()=>st.modus==='mit'?st.spielart:'fest';
+function punktFarbe(k,n){
+  const a=spielart();
+  if(a==='reihum') return spieler[k]!=null?FARBE[spieler[k]]:'#c7d0e3';   // noch offen: hell-grau, gespielt: Farbe des Spielers
+  if(a==='reihe') return FARBE[k%st.reiheN];
+  return FARBE[figVon(n.m)];
+}
+function bandBauen(){ $('band').innerHTML=LIED.noten.map((n,k)=>'<span style="background:'+punktFarbe(k,n)+'"></span>').join(''); bandZeigen(); }
 function bandZeigen(){ const sp=$('band').children; [...sp].forEach((e,k)=>{ e.classList.toggle('jetzt',k===pos); e.classList.toggle('fertig',k<pos); });
   // Nur weiterschieben, wenn es nötig ist: erst wenn der aktuelle Ton fast am rechten Rand ist, springt die Reihe ein Stück weiter
   const b=$('band'), cur=sp[pos];
@@ -293,7 +314,8 @@ function bandZeigen(){ const sp=$('band').children; [...sp].forEach((e,k)=>{ e.c
   else if(cur){ const r=cur.getBoundingClientRect(), rb=b.getBoundingClientRect(), x=r.left-rb.left;
     if(st.reihe==='mit') b.scrollLeft=Math.max(0,b.scrollLeft+x-rb.width*0.3);   // läuft bei jedem Ton mit
     else if(x>rb.width*0.82||x<0) b.scrollLeft=Math.max(0,b.scrollLeft+x-rb.width*0.12); }
-  F.forEach((f,i)=>f.hint= st.modus==='mit' && LIED && LIED.noten[pos] && figVon(LIED.noten[pos].m)===i); }
+  const a=spielart(), soll=LIED&&LIED.noten[pos];
+  F.forEach((f,i)=>f.hint= st.modus==='mit' && !!soll && (a==='reihe'? i===zug%st.reiheN : a==='fest'? (st.zeigen&&figVon(soll.m)===i) : false)); }
 
 // ---------- Vorspielen ----------
 let laeuft=false, timer=0, plan=[];
@@ -313,11 +335,23 @@ function start(){
 function stopp(){ plan.forEach(p=>{ clearTimeout(p.to); clearTimeout(p.to2); }); plan=[]; if(ctx) stimmen.forEach((v,i)=>{ if(v){ try{ v.g.gain.setTargetAtTime(0,ctx.currentTime,.05); v.s.stop(ctx.currentTime+.3); }catch(e){} stimmen[i]=null; } }); clearTimeout(timer); laeuft=false; $('start').textContent=st.modus==='mit'?'↺ Von vorne':'▶ Start'; }
 
 // ---------- Mitspielen / Spieler ----------
+function liedRundeFertig(){ toast('🎉 Super gespielt!'); pos=0; zug=0; spieler=[]; bandBauen(); }
 function spielerTon(i){
-  audio(); const m=FIGTON[i]; if(m===null||m===undefined) return;
+  audio();
+  const a=spielart();
+  if(a!=='fest'){   // SW spielt Melodie / Feste SW-Reihenfolge: die Figur spielt den nächsten Ton des Liedes
+    if(!LIED||!LIED.noten.length) return;
+    if(a==='reihe'){ if(i>=st.reiheN) return; if(i!==zug%st.reiheN){ F[i].nein=performance.now(); return; } zug++; }   // wer nicht dran ist, bleibt stumm
+    if(pos>=LIED.noten.length) pos=0;
+    const n=LIED.noten[pos]; ton(i,n.m); schlag(i,performance.now(),true);
+    spieler[pos]=i; const sp=$('band').children[pos]; if(sp) sp.style.background=FARBE[i];
+    pos++; if(pos>=LIED.noten.length) return liedRundeFertig();
+    bandZeigen(); return;
+  }
+  const m=FIGTON[i]; if(m===null||m===undefined) return;
   if(st.modus==='auf' && rec.an){ recTon(m); }
   ton(i,m); schlag(i,performance.now(),true);
-  if(st.modus==='mit'){ const soll=LIED.noten[pos]; if(soll&&figVon(soll.m)===i){ pos++; if(pos>=LIED.noten.length){ toast('🎉 Super gespielt!'); pos=0; } bandZeigen(); } }
+  if(st.modus==='mit'&&st.zeigen){ const soll=LIED.noten[pos]; if(soll&&figVon(soll.m)===i){ pos++; if(pos>=LIED.noten.length) return liedRundeFertig(); bandZeigen(); } }
 }
 // SoundWhacker = Tasten 1–5 (auch Ziffernblock). Gehaltene Taste (Wiederholung) zählt nicht doppelt.
 const tasteNr=e=>{ const m=/^(Digit|Numpad)([1-5])$/.exec(e.code||''); if(m) return +m[2]; return (e.key>='1'&&e.key<='5'&&e.key.length===1)? +e.key : 0; };
@@ -411,7 +445,9 @@ $('datei').onchange=async()=>{
 // ---------- Bedienung ----------
 function info(){
   const t={vor:'Die Band spielt „'+LIED.titel+'“ vor. Start mit dem Knopf oder der Leertaste.',
-           mit:'Jetzt seid ihr dran! SoundWhacker 1–5 (oder Tasten 1–5, oder Figur antippen). Die Figur, die als Nächstes dran ist, leuchtet schon leicht.',
+           mit:{reihum:'SW spielt Melodie: Jede Berührung – egal welcher SoundWhacker – spielt den nächsten Ton. Die Punkte färben sich in der Farbe von dem, der gespielt hat.',
+                reihe:'Feste SW-Reihenfolge: SW1 → SW2 → … – wer dran ist, leuchtet schon leicht. Wer nicht dran ist, bleibt stumm.',
+                fest:'Feste SW-Töne: Jeder SoundWhacker hat seinen eigenen Ton.'+(st.zeigen?' Die Figur, die als Nächstes dran ist, leuchtet schon leicht.':' Freies Spielen – das Lied geht nicht weiter.')}[st.spielart],
            auf:'Spiele eine Melodie ein – mit höchstens 5 verschiedenen Tönen.'}[st.modus];
   $('info').textContent=t+'  Töne der Figuren: '+FIGTON.map((m,i)=>m===null?'–':tonName(m)).join(' · ');
 }
@@ -420,10 +456,20 @@ function modus(m){
   document.querySelectorAll('.modi button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===m));
   $('aufPanel').hidden=m!=='auf'; $('meinePanel').hidden=m!=='auf';
   $('start').hidden=m==='auf'; $('start').textContent=m==='mit'?'↺ Von vorne':'▶ Start';
-  pos=0; bandZeigen(); info();
+  $('mitLeiste').hidden=m!=='mit'; spielartZeigen();
+  pos=0; zug=0; spieler=[]; bandBauen(); info();
 }
+function spielartZeigen(){
+  document.querySelectorAll('#spielart button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.s===st.spielart));
+  $('reiheZeile').hidden=st.spielart!=='reihe'; $('zeigenBtn').hidden=st.spielart!=='fest';
+  document.querySelectorAll('#reiheZeile [data-n]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.n===st.reiheN));
+  $('zeigenBtn').setAttribute('aria-pressed',st.zeigen); $('zeigenBtn').textContent='👀 Zeigen, wer dran ist: '+(st.zeigen?'AN':'AUS');
+}
+$('spielart').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; b.blur(); st.spielart=b.dataset.s; merke(); spielartZeigen(); pos=0; zug=0; spieler=[]; bandBauen(); info(); };
+$('reiheZeile').onclick=e=>{ const b=e.target.closest('[data-n]'); if(!b) return; b.blur(); st.reiheN=+b.dataset.n; merke(); spielartZeigen(); pos=0; zug=0; bandBauen(); };
+$('zeigenBtn').onclick=()=>{ $('zeigenBtn').blur(); st.zeigen=!st.zeigen; merke(); spielartZeigen(); pos=0; bandZeigen(); info(); };
 document.querySelector('.modi').onclick=e=>{ const b=e.target.closest('button'); if(b) modus(b.dataset.m); };
-$('start').onclick=()=>{ if(st.modus==='mit'){ pos=0; bandZeigen(); audio(); } else start(); };
+$('start').onclick=()=>{ if(st.modus==='mit'){ pos=0; zug=0; spieler=[]; bandBauen(); audio(); } else start(); };
 $('lied').onchange=()=>{ st.lied=$('lied').value; merke(); liedSetzen(); $('lied').blur(); };
 $('aufstellung').value=st.aufstellung; $('aufstellung').onchange=()=>{ st.aufstellung=$('aufstellung').value; merke(); aufstellen(false); $('aufstellung').blur(); };
 $('reihe').value=st.reihe; $('reihe').onchange=()=>{ st.reihe=$('reihe').value; merke(); bandZeigen(); $('reihe').blur(); };

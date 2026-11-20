@@ -29,6 +29,18 @@ Die linke Hand hält den SoundWhacker unten am **schwarzen Teil**. Zum Spielen g
 
 Über der Bühne läuft ein **Notenband** aus farbigen Punkten mit: Jeder Punkt ist ein Ton in der Farbe der Figur, die ihn spielt. Beim Mitspielen geht es erst weiter, wenn die richtige Figur gespielt hat. Am Ende des Liedes geht es von vorne los.
 
+## Mitspielen: drei Spielarten
+
+Im Modus **🙌 Mitspielen** erscheint eine zweite Leiste mit drei Spielarten – genau wie bei „Gemeinsame Melodie“ in SoundWhacker Smart Control:
+
+| Spielart | So funktioniert's |
+|---|---|
+| 🔁 **SW spielt Melodie** | Jede Berührung – **egal welcher SoundWhacker** – spielt den nächsten Ton des Liedes. Die Figur des Spielers bewegt sich und leuchtet. Die Punkte oben sind erst hellgrau und färben sich in der Farbe von dem, der den Ton gespielt hat. |
+| 🔢 **Feste SW-Reihenfolge** | Reihum: SW1 → SW2 → SW3 … Wer dran ist, **leuchtet schon leicht**. Wer nicht dran ist, bleibt stumm (die Figur schüttelt kurz den Kopf). Mit **Mitspieler: SW1–2 … SW1–5** legst du fest, wie viele mitspielen – die anderen Figuren werden blass. |
+| 🎯 **Feste SW-Töne** | Jeder SoundWhacker hat seinen **eigenen Ton** (rot = tiefster … blau = höchster). Mit **👀 Zeigen, wer dran ist: AN** leuchtet die Figur, die als Nächstes dran ist, und das Lied geht weiter, sobald sie spielt. **AUS** = freies Spielen ohne Vorgabe. |
+
+Am Liedende kommt „🎉 Super gespielt!“ und es geht von vorne los. **↺ Von vorne** startet jederzeit neu. Die gewählte Spielart merkt sich die App.
+
 ## Lieder
 
 Die Lieder kommen aus der Tischharfe. Angeboten werden nur Lieder mit **höchstens fünf verschiedenen Tönen**, z. B. Ode an die Freude, Hänschen klein, Mary Had a Little Lamb, Jingle Bells, Old MacDonald. Der tiefste Ton gehört immer der **roten** Figur, der höchste der **blauen**.

@@ -290,13 +290,14 @@ for(let i=0;i<5;i++){
   el('path',{d:'M-54,-346 C-54,-404 -14,-406 0,-406 C24,-406 56,-396 54,-346 C46,-372 22,-380 0,-380 C-24,-380 -46,-374 -54,-346Z',fill:['#5a3b2a','#2b2b2b','#8a5a2b','#3b2a20','#c9973f'][i]},g);
   el('circle',{cx:-19,cy:-340,r:6.5,fill:'#1b2a3a'},g); el('circle',{cx:19,cy:-340,r:6.5,fill:'#1b2a3a'},g);
   f.mund=el('path',{d:'M-18,-316 Q0,-302 18,-316',stroke:'#7a2d2d','stroke-width':5,fill:'none','stroke-linecap':'round'},g);
-  // Whacker (vorne): weiße Röhre, unten schwarz
-  // linker Arm (vom Betrachter aus rechts) hält unten am schwarzen Teil – hinter der Röhre
+  // Whacker (vorne): weiße Röhre mit zwei breiten schwarzen Ringen (oben und unten) – wie der echte SoundWhacker
+  // linker Arm (vom Betrachter aus rechts) hält unten am schwarzen Ring – hinter der Röhre
   el('path',{d:'M52,-250 Q100,-150 62,-80',stroke:c,'stroke-width':26,fill:'none','stroke-linecap':'round',style:'filter:brightness(.8)'},g);
   f.halo=el('rect',{x:4,y:-258,width:72,height:226,rx:30,fill:c,filter:'url(#gl)',opacity:0},g);
   f.rohr=el('rect',{x:20,y:-240,width:40,height:196,rx:14,fill:'#f4f3ef',stroke:'#c9c6bd','stroke-width':2},g);
-  f.leucht=el('rect',{x:20,y:-240,width:40,height:136,rx:14,fill:c,opacity:0},g);
-  el('rect',{x:19,y:-108,width:42,height:64,rx:10,fill:'#15161a'},g);
+  f.leucht=el('rect',{x:20,y:-240,width:40,height:196,rx:14,fill:c,opacity:0},g);
+  el('rect',{x:18,y:-214,width:44,height:30,rx:4,fill:'#15161a'},g);   // oberer Ring
+  el('rect',{x:18,y:-94,width:44,height:30,rx:4,fill:'#15161a'},g);    // unterer Ring
   el('circle',{cx:56,cy:-76,r:17,fill:'#f2d4bd'},g);
   // rechter Arm (vom Betrachter aus links) – bewegt sich zur Röhre
   f.arm=el('path',{d:'',stroke:c,'stroke-width':26,fill:'none','stroke-linecap':'round',style:'filter:brightness(.8)'},g);
@@ -332,7 +333,7 @@ function zeichne(now){
     const dt=(now-f.hit)/1000, vor=f.live?0.06:0.18;   // Hand erreicht die Röhre genau beim Ton
     let reach=0; if(dt>-vor&&dt<0) reach=1-(-dt/vor); else if(dt>=0&&dt<0.12) reach=1; else if(dt>=0.12&&dt<0.42) reach=1-(dt-0.12)/0.3;
     reach=reach<0?0:reach; const e=reach<.5?2*reach*reach:1-Math.pow(-2*reach+2,2)/2;
-    const hx=-78+(30+78)*e, hy=-140+(-222+140)*e;   // Ruhe neben dem Körper → oben an die Röhre
+    const hx=-78+(30+78)*e, hy=-140+(-199+140)*e;   // Ruhe neben dem Körper → oben an den Ring
     f.arm.setAttribute('d','M-52,-250 Q'+(-94+60*e)+','+(-190-50*e)+' '+hx+','+hy); f.hand.setAttribute('cx',hx); f.hand.setAttribute('cy',hy);
     const gl=dt>=0&&dt<0.9?Math.exp(-dt*3.2):0;
     const hint=f.hint? (0.38+0.2*Math.sin(now/180)) : 0;

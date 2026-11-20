@@ -65,8 +65,8 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
     - `singen/` – Singen mit SoundWhackern
     - `atemklang/` – Atemklang
     - `fagott/` – Fagott (Klänge in `klang/`, Bassoon aus GeneralUser GS; Lied-Modus lädt `../tischharfe/lieder.js`)
-    - `whacker-band/` – **SoundWhacker Band** (früher „Whacker-Band“, Ordner bleibt `whacker-band/`; Symbol = SW-Röhre mit zwei schwarzen Ringen): 5 animierte Figuren (SW-Farben) mit SoundWhacker (weiße Röhre, unten schwarz; linke Hand
-      hält unten, rechte Hand berührt oben → Röhre leuchtet). Modi Vorspielen / Mitspielen (Tasten 1–5, nächste Figur leuchtet leicht) /
+    - `whacker-band/` – **SoundWhacker Band** (früher „Whacker-Band“, Ordner bleibt `whacker-band/`; Symbol = SW-Röhre mit zwei schwarzen Ringen): 5 animierte Figuren (SW-Farben) mit SoundWhacker (weiße Röhre mit zwei breiten schwarzen Ringen oben und unten – wie das echte Gerät; linke Hand
+      hält den unteren Ring, rechte Hand greift an den oberen → Röhre leuchtet). Modi Vorspielen / Mitspielen (Tasten 1–5, nächste Figur leuchtet leicht) /
       Lied einspielen (Tasten oder Klaviatur g–c‴ mit Gleiten per Maus/Finger, Rhythmus + Haltedauer werden gespeichert). Aufstellung Reihe/Halbkreis/Kreis/U, Tempo 40–130 %.
       Klänge aus `../tischharfe/klaenge/` + Harfe (dort auch verzerrte Gitarren overdrive/distortion/feedback/wah sowie Flöten floete/blockfloete/panfloete/piccolo/okarina, klarinette, sopransax/altsax/tenorsax aus GeneralUser GS), Hallregler (`st.hall`), 6 Schlagzeugsets `schlag-standard/rock/elektro/808/jazz/besen` (Dateien 55–84 = Klaviertasten g–c‴, je ein GM-Drum; SW1–5 = Bassdrum, Snare, Hi-Hat, Tom, Becken; Klaviatur dann mit Instrumentennamen beschriftet; eingespielte Lieder bekommen `schlag:true`), Klang `effekte` = „Geräusche & Effekte“ (30 Geräusche 55–84, Hupe + Fahrradklingel selbst synthetisiert, Rest GS-SFX; SW1–5 Telefon, Autobremse, Hupe, Applaus, Lachen; Sets in `SETS`); Klangauswahl in Rubriken (`RUBRIKEN` in index.html – neuen Klang dort einsortieren), Lieder aus `../tischharfe/lieder.js` (alle; ⭐ = ≤ 5 Töne, sonst Figuren reihum,
       „Feste SW-Töne“ nur bei ⭐). Eigene Lieder in
@@ -141,7 +141,7 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
   Englische Fassung `soundwhacker-en.mp4` (1:39, Stimme „Brian“ `nPczCjzI2devNBz1zQrb`).
   Chinesische Fassung `soundwhacker-zh.mp4` (1:46, Mandarin, Stimme „Haoran“ `pU9NaAwkoR3v0Mrg3uKz`, Schrift Noto Sans CJK –
   im Container mit `apt-get install fonts-noto-cjk` nachinstallieren).
-  **SoundWhacker-Technik (für Texte):** Kunststoffröhre, zwei Ringe aus leitendem Filament, innen ESP32-C3 Mini, Akku (USB-C),
+  **SoundWhacker-Technik (für Texte):** Kunststoffröhre, zwei breite schwarze Ringe aus leitendem Filament (einer oben, einer unten – in Zeichnungen immer so darstellen), innen ESP32-C3 Mini, Akku (USB-C),
   Farb-LED im Rohr (leuchtet bei Berührung, z. B. grün), kleine LED vorne = nur Status (an/verbunden). Touch-Sensor unter dem
   kleinen Punkt; Body Touch = beide Ringe halten (auch im Kreis mit mehreren Menschen). Verbindet sich per Bluetooth direkt mit
   iPad/PC, wirkt wie eine Bluetooth-Tastatur (SW1 = Taste 1). Hub/Master-Slave nicht erwähnen – zu technisch.

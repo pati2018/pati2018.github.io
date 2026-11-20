@@ -13,7 +13,7 @@ Gedacht für den **Beamer im Workshop**: große Figuren, kräftige Farben, stark
 
 ## So spielt eine Figur
 
-Die linke Hand hält den SoundWhacker unten am **schwarzen Teil**. Zum Spielen geht die rechte Hand nach oben an die **weiße Röhre** – in diesem Moment **leuchtet die Röhre in der Farbe der Figur** und der Ton erklingt.
+Der SoundWhacker ist eine weiße Röhre mit **zwei schwarzen Ringen** – einer oben, einer unten. Die linke Hand hält den unteren Ring. Zum Spielen greift die rechte Hand an den **oberen Ring** – in diesem Moment **leuchtet die Röhre in der Farbe der Figur** und der Ton erklingt.
 
 ## Bedienung
 

@@ -469,74 +469,114 @@ let tT=0; function toast(t){ let e=document.querySelector('.toast'); if(!e){ e=d
     speechSynthesis.speak(u);
   }
   const norm=t=>t.toLowerCase().replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss').replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();
-  const WACH=/\b(jarvis|javis|jarvi|jarwis|charvis|dschavis|dschawis|schavis|jervis|jarves|travis|davis)\b/;
   function liedTitel(){ return [...$('lied').options].map(o=>({v:o.value,t:o.textContent})); }
-  function findeLied(q){
+  const FUELL=new Set(['der','die','das','den','dem','ein','eine','an','am','a','the','had','has','is','und','von','vom','zum','mal','bitte','lied','song']);
+  function findeLied(q,streng){
     q=norm(q).replace(/^(das |die |den |der |lied |bitte |mal |uns |ein )+/,'').replace(/ (vor|bitte|ab)$/,'').trim(); if(!q) return null;
-    const qw=q.split(' ').filter(w=>w.length>1); let best=null, bp=0;
+    const qw=q.split(' ').filter(w=>w.length>1&&!FUELL.has(w)); let best=null, bp=0;
     liedTitel().forEach(o=>{ const t=norm(o.t.replace(/[–-].*$/,'')), tw=t.split(' ');
       let p=0; if(t===q) p=100; else if(t.includes(q)||q.includes(t)) p=60;
       qw.forEach(w=>{ if(w.length>2&&tw.some(x=>x===w)) p+=10; else if(w.length>3&&tw.some(x=>x.startsWith(w.slice(0,4)))) p+=6; });
       if(p>bp){ bp=p; best=o; } });
-    return bp>=10?best:null;
+    return bp>=(streng?20:10)?best:null;
   }
   const HILFE='Sag zum Beispiel: Spiel Ode an die Freude. Stopp. Langsamer oder schneller. Übetempo. Aufstellung Kreis. Mitspielmodus. Oder: Welche Lieder gibt es?';
-  function befehl(roh){
-    const t=norm(roh);
-    // Stopp zuerst – funktioniert immer
-    if(/\b(stop+|halt|anhalten|aufhoeren|hoer auf|pause|ruhe)\b/.test(t)){ stopp(); zeigen('■ Stopp'); return sag('Gestoppt.'); }
-    if(/\b(hilfe|was kannst du|welche befehle|befehle)\b/.test(t)){ zeigen('❓ Hilfe',HILFE); return sag(HILFE); }
-    if(/welche lieder|lieder gibt|was fuer lieder|liederliste|lieder kennst|alle lieder/.test(t)){ const l=liedTitel().map(o=>o.t.replace(/\s*[–-]\s*\d.*$/,'')); zeigen('🎵 Lieder',l.join(' · ')); return sag('Ich kenne: '+l.join(', ')+'.'); }
-    if(/uebe ?tempo|uebungstempo|zum ueben|ganz langsam/.test(t)) return tempo(50,'Übetempo.');
-    if(/normal(es)? tempo|tempo normal|normale geschwindigkeit/.test(t)) return tempo(100,'Normales Tempo.');
-    if(/\blangsamer\b/.test(t)) return tempo(st.tempo-10,'Etwas langsamer.');
-    if(/\bschneller\b/.test(t)) return tempo(st.tempo+10,'Etwas schneller.');
-    if(/aufstellung|stellt euch|\bin (einer |einem |die |den )?(reihe|kreis|halbkreis)|\b(halbkreis|offenes u)\b/.test(t)){
-      const a=/halb ?kreis/.test(t)?'halbkreis':/\bkreis\b/.test(t)?'kreis':/\breihe\b/.test(t)?'reihe':/(offen|\bu\b|\buh\b|\bhu\b|\bu form)/.test(t)?'u':null;
-      if(!a){ zeigen('🤔 '+roh); return sag('Welche Aufstellung? Reihe, Halbkreis, Kreis oder U.'); }
-      st.aufstellung=a; $('aufstellung').value=a; merke(); aufstellen(false);
-      const n={reihe:'Reihe',halbkreis:'Halbkreis',kreis:'Kreis',u:'offenes U'}[a]; zeigen('🧍 Aufstellung '+n); return sag('Aufstellung '+n+'.'); }
-    if(/mit ?spiel|mitmach|ihr seid dran|jetzt seid ihr/.test(t)){ modus('mit'); zeigen('🙌 Mitspielmodus'); return sag('Mitspielmodus. Ihr seid dran!'); }
-    if(/vor ?spiel ?(modus|en)?\b|vorspielmodus/.test(t)&&!/^spiel/.test(t)){ modus('vor'); zeigen('▶ Vorspielen'); return sag('Vorspielen.'); }
-    const m=/^(spiel|spiele|spielt|spiel mal|spiel uns|starte|start)\b ?(.*)$/.exec(t);
-    if(m||/^(los|leg los|weiter|nochmal|noch mal)$/.test(t)){
-      const rest=m?m[2]:''; let o=null;
-      if(rest&&!/^(los|ab|das lied|es|nochmal|noch mal|weiter|bitte)$/.test(rest)){ o=findeLied(rest); if(!o){ zeigen('🤔 '+roh); return sag('Das Lied kenne ich nicht. Frag mich: Welche Lieder gibt es?'); } }
+  // Befehl erkennen (ohne ihn auszuführen) – so können mehrere Erkennungs-Vorschläge geprüft werden
+  function erkenne(roh){
+    let t=norm(roh).replace(/^(bitte|mal|jetzt|und|ok|okay|so|hey|hallo|kannst du|koenntest du)\s+/g,'').replace(/\s+bitte$/,'').trim();
+    if(!t) return null;
+    if(/\b(stop+|stoppen|halt|anhalten|aufhoeren|hoer auf|pause|ruhe|schluss)\b/.test(t)) return ()=>{ stopp(); zeigen('■ Stopp'); sag('Gestoppt.'); };
+    if(/\b(hilfe|was kannst du|welche befehle|befehle)\b/.test(t)) return ()=>{ zeigen('❓ Hilfe',HILFE); sag(HILFE); };
+    if(/welche lieder|lieder gibt|was fuer lieder|liederliste|lieder kennst|alle lieder|lieder hast|lieder vor/.test(t)) return ()=>{ const l=liedTitel().map(o=>o.t.replace(/\s*[–-]\s*\d.*$/,'')); zeigen('🎵 Lieder',l.join(' · ')); sag('Ich kenne: '+l.join(', ')+'.'); };
+    if(/(uebe|ueben|ueber|uebungs|ueb) ?tempo|zum ueben|ganz langsam|sehr langsam|uebungsmodus/.test(t)) return ()=>tempo(50,'Übetempo.');
+    if(/normal(es|e|en)? (tempo|geschwindigkeit)|tempo normal|\bnormal\b/.test(t)) return ()=>tempo(100,'Normales Tempo.');
+    if(/\b(langsamer|langsam|ruhiger)\b/.test(t)) return ()=>tempo(st.tempo-10,'Etwas langsamer.');
+    if(/\b(schneller|schnell|flotter|zuegiger)\b/.test(t)) return ()=>tempo(st.tempo+10,'Etwas schneller.');
+    if(/aufstellung|stellt euch|stell dich|\b(reihe|kreis|halbkreis|halb kreis|u form|offenes u)\b/.test(t)){
+      const a=/halb ?kreis/.test(t)?'halbkreis':/\bkreis\b/.test(t)?'kreis':/\breihe\b/.test(t)?'reihe':/(offen|\bu\b|\buh\b|\bhu\b|\bu form|\bju\b)/.test(t)?'u':null;
+      if(!a) return ()=>{ zeigen('🤔 Welche Aufstellung?'); sag('Welche Aufstellung? Reihe, Halbkreis, Kreis oder U.'); };
+      return ()=>{ st.aufstellung=a; $('aufstellung').value=a; merke(); aufstellen(false);
+        const n={reihe:'Reihe',halbkreis:'Halbkreis',kreis:'Kreis',u:'offenes U'}[a]; zeigen('🧍 Aufstellung '+n); sag('Aufstellung '+n+'.'); };
+    }
+    if(/mit ?spiel|mitmach|ihr seid dran|jetzt seid ihr|wir spielen/.test(t)) return ()=>{ modus('mit'); zeigen('🙌 Mitspielmodus'); sag('Mitspielmodus. Ihr seid dran!'); };
+    if(/\bvor ?spiel(en|modus)?\b|vorspielmodus|zuhoeren/.test(t)&&!/^spiel/.test(t)) return ()=>{ modus('vor'); zeigen('▶ Vorspielen'); sag('Vorspielen.'); };
+    const m=/^(spiel|spiele|spielt|spielen|spiel mal|spiel uns|starte|start|starten|los mit)\b ?(.*)$/.exec(t);
+    let o=null;
+    if(m&&m[2]&&!/^(los|ab|das lied|es|nochmal|noch mal|weiter|bitte|mal|was)$/.test(m[2])){ o=findeLied(m[2]); if(!o) return {unbekanntesLied:true}; }
+    if(!m&&!/^(los|leg los|weiter|nochmal|noch mal|start|play)$/.test(t)){ o=findeLied(t,true); if(!o) return null; }   // nur der Liedname
+    return ()=>{
       if(o){ st.lied=o.v; $('lied').value=o.v; merke(); liedSetzen(); }
       if(st.modus!=='vor') modus('vor'); stopp();
       const name=(o?o.t:LIED.titel).replace(/\s*[–-]\s*\d.*$/,'');
-      zeigen('▶ '+name); return sag('Okay, ich spiele '+name+'.',()=>{ if(!laeuft) start(); });
-    }
-    zeigen('🤔 „'+roh+'“','Nicht verstanden – sag „Hilfe“'); sag('Das habe ich nicht verstanden. Sag Hilfe für alle Befehle.');
+      zeigen('▶ '+name); sag('Okay, ich spiele '+name+'.',()=>{ if(!laeuft) start(); });
+    };
   }
   function tempo(v,antwort){ v=Math.max(40,Math.min(130,Math.round(v/5)*5)); st.tempo=v; $('tempo').value=v; merke(); tempoZeigen(); zeigen('⏱ '+antwort.replace('.',''),'Tempo '+v+' %'); sag(antwort); }
-  function gehoert(text){
-    if(Date.now()<sprichtBis) return;                         // eigene Stimme ignorieren
-    let t=norm(text); if(!t) return;
-    if(st.jarvisWort){
-      const w=WACH.exec(t);
-      if(w){ t=t.slice(w.index+w[0].length).trim(); if(!t){ wachBis=Date.now()+7000; zeigen('🎙 Ja?'); return sag('Ja?'); } }
-      else if(Date.now()>wachBis) return;                     // ohne „Jarvis“ wird nichts ausgeführt
-      wachBis=0; befehl(text.replace(/^.*?\b(jarvis|javis|jarvi|jarwis|charvis|dschavis|dschawis|schavis|jervis|jarves|travis|davis)\b[,.!]?\s*/i,'')||t);
-    } else befehl(text);
+  // Aktivierungswort tolerant finden: „Jarvis“ wird oft als Javis, Jervis, Charvis, Travis … erkannt
+  function lev(a,b){ const d=[]; for(let i=0;i<=a.length;i++){ d[i]=[i]; for(let j=1;j<=b.length;j++) d[i][j]=i?Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1)):j; } return d[a.length][b.length]; }
+  function wachwort(t){
+    const w=t.split(' ');
+    for(let i=0;i<Math.min(4,w.length);i++){
+      const ein=w[i], zwei=(w[i]||'')+(w[i+1]||'');
+      const passt=x=>x.length>=4&&x.length<=9&&(/^(travis|davis|jarvi|jarvy|javi|jervis|jarwis|tschavis|chavis|jabis|jaabis)$/.test(x)||lev(x,'jarvis')<=2||lev(x,'dschawis')<=2||/^(j|ch|dsch|sch|sh|g)(a|e|aa|ae)r?(w|v|f|b)i?e?s+$/.test(x));
+      if(passt(ein)) return {rest:w.slice(i+1).join(' ')};
+      if(i<w.length-1&&passt(zwei)) return {rest:w.slice(i+2).join(' ')};
+    }
+    return null;
   }
+  let letzteVerarb='';
+  function gehoert(texte){
+    if(typeof texte==='string') texte=[texte];
+    if(Date.now()<sprichtBis) return;                          // eigene Stimme ignorieren
+    const alle=texte.map(norm).filter(Boolean); if(!alle.length) return;
+    if(alle[0]===letzteVerarb) return; letzteVerarb=alle[0];
+    let kand=alle, wach=!st.jarvisWort;
+    if(st.jarvisWort){
+      const mitWort=alle.map(wachwort).filter(Boolean);
+      if(mitWort.length){ wach=true; kand=mitWort.map(x=>x.rest).filter(Boolean);
+        if(!kand.length){ wachBis=Date.now()+8000; zeigen('🎙 Ja?','Jetzt den Befehl sagen'); return sag('Ja?'); } }
+      else if(Date.now()<wachBis) wach=true;
+    }
+    if(!wach){ zeigen('👂 „'+texte[0]+'“','Sag zuerst „Jarvis“ – oder nimm den Haken „nur mit Jarvis“ weg'); return; }
+    wachBis=0;
+    let unbekLied=false;
+    for(const k of kand){ const r=erkenne(k); if(typeof r==='function'){ r(); return; } if(r&&r.unbekanntesLied) unbekLied=true; }
+    if(unbekLied){ zeigen('🤔 „'+texte[0]+'“','Dieses Lied kenne ich nicht'); return sag('Das Lied kenne ich nicht. Frag mich: Welche Lieder gibt es?'); }
+    zeigen('🤔 „'+texte[0]+'“','Nicht verstanden – sag „Hilfe“');
+    if(st.jarvisWort) sag('Das habe ich nicht verstanden. Sag Hilfe für alle Befehle.');   // ohne Aktivierungswort nur anzeigen – sonst redet Jarvis bei jedem Gespräch dazwischen
+  }
+  // Zuhören: Zwischenergebnisse sofort anzeigen; kommt kein „fertig“ (Safari), nach kurzer Pause selbst auswerten
+  let pauseT=0, schonStarts=0;
   function starten(){
-    rec=new SR(); rec.lang='de-DE'; rec.continuous=true; rec.interimResults=false; rec.maxAlternatives=1;
-    rec.onresult=e=>{ for(let i=e.resultIndex;i<e.results.length;i++) if(e.results[i].isFinal) gehoert(e.results[i][0].transcript); };
-    rec.onerror=e=>{ if(e.error==='not-allowed'||e.error==='service-not-allowed'){ aus(); zeigen('🎙 Kein Mikrofon','Bitte im Browser das Mikrofon erlauben.'); } };
-    rec.onend=()=>{ if(an) setTimeout(()=>{ if(an) try{ rec.start(); }catch(e){} },250); };   // Browser beendet nach Stille – automatisch weiter zuhören
+    rec=new SR(); rec.lang='de-DE'; rec.continuous=true; rec.interimResults=true; rec.maxAlternatives=5;
+    rec.onstart=()=>{ schonStarts++; };
+    rec.onresult=e=>{
+      for(let i=e.resultIndex;i<e.results.length;i++){
+        const r=e.results[i], alts=[...r].map(a=>a.transcript).filter(Boolean);
+        clearTimeout(pauseT);
+        if(r.isFinal){ gehoert(alts); }
+        else if(alts[0]&&Date.now()>=sprichtBis){ zeile.hidden=false; zeile.innerHTML=''; zeile.append('🎙 '+alts[0]+' …'); clearTimeout(zT); zT=setTimeout(()=>zeile.hidden=true,4000);
+          pauseT=setTimeout(()=>gehoert(alts),1300); }
+      }
+    };
+    rec.onerror=e=>{
+      if(e.error==='not-allowed'||e.error==='service-not-allowed'){ aus(); zeigen('🎙 Jarvis hört nicht mehr zu', schonStarts>1?'Bitte noch einmal auf „🎙 Jarvis“ tippen.':'Bitte im Browser das Mikrofon erlauben.'); }
+      else if(e.error==='network'){ zeigen('🎙 Keine Verbindung','Die Spracherkennung braucht Internet.'); }
+      else if(e.error==='audio-capture'){ aus(); zeigen('🎙 Kein Mikrofon gefunden','Ist ein Mikrofon angeschlossen und frei?'); }
+    };
+    rec.onend=()=>{ if(an) setTimeout(()=>{ if(an) try{ rec.start(); }catch(e){} },200); };   // Browser beendet nach Stille – automatisch weiter zuhören
     try{ rec.start(); }catch(e){}
   }
-  function aus(){ an=false; btn.setAttribute('aria-pressed','false'); btn.textContent='🎙 Jarvis'; try{ rec&&rec.stop(); }catch(e){} }
+  function aus(){ an=false; btn.setAttribute('aria-pressed','false'); btn.textContent='🎙 Jarvis'; try{ rec&&rec.abort(); }catch(e){} }
   btn.onclick=()=>{
     btn.blur();
     if(!SR){ zeigen('🎙 Sprachsteuerung','Die Sprachsteuerung funktioniert am besten in Chrome oder Edge.'); return sag('Die Sprachsteuerung funktioniert am besten in Chrome oder Edge.'); }
     if(an){ aus(); zeigen('🎙 Jarvis aus'); return; }
-    an=true; btn.setAttribute('aria-pressed','true'); btn.textContent='🎙 Jarvis hört zu'; audio(); starten();
+    an=true; schonStarts=0; btn.setAttribute('aria-pressed','true'); btn.textContent='🎙 Jarvis hört zu'; audio(); starten();
     zeigen('🎙 Jarvis hört zu', st.jarvisWort?'Sag zum Beispiel: „Jarvis, spiel Ode an die Freude“':'Sag zum Beispiel: „Spiel Ode an die Freude“');
     sag(st.jarvisWort?'Ich höre zu. Sag Jarvis und dann deinen Befehl.':'Ich höre zu.');
   };
-  window.jarvisTest=(t)=>gehoert(t);   // für Tests
+  window.jarvisTest=(t)=>{ letzteVerarb=''; gehoert(t); };   // für Tests
 })();
 
 liedListe(); liedSetzen(); aufstellen(true); modus(st.modus); meineZeigen();

@@ -53,6 +53,13 @@ Mit der Sprachsteuerung hast du im Workshop **beide Hände frei**: Du sprichst e
 
 Versteht Jarvis etwas nicht, sagt er: „Das habe ich nicht verstanden. Sag Hilfe für alle Befehle.“ Während Jarvis selbst spricht, hört er nicht zu – so hält er seine eigene Stimme nicht für einen Befehl.
 
+**Was hat Jarvis verstanden?** Während du sprichst, erscheint unten live, was Jarvis hört („🎙 Jarvis Aufstellung …“). Hörst du keine Antwort, steht dort z. B. „👂 … – Sag zuerst Jarvis“. So siehst du sofort, ob das Mikrofon dich hört und wie er dich verstanden hat.
+
+**Tipps, wenn er dich nicht versteht:**
+- Kurz und deutlich sprechen, z. B. „Jarvis … Stopp“ mit einer winzigen Pause nach „Jarvis“.
+- Es reicht oft ein Wort: „Jarvis, Kreis“, „Jarvis, langsamer“ – oder einfach nur den Liednamen: „Jarvis, Hänschen klein“.
+- Wird „Jarvis“ oft falsch verstanden: Haken bei „nur mit ‚Jarvis …‘“ wegnehmen. Dann wirkt jeder Befehl direkt; Unverstandenes wird nur angezeigt, nicht laut kommentiert.
+
 **Gut zu wissen:**
 - Am besten funktioniert die Sprachsteuerung in **Chrome oder Edge** (am Computer) und in **Safari** (iPad/iPhone). In Firefox gibt es sie nicht – dann erscheint ein Hinweis.
 - Die Spracherkennung macht der Browser. Dabei schickt er das Gesprochene meist an den Dienst seines Herstellers (Google, Microsoft oder Apple). Mehr dazu in der Datenschutzerklärung.

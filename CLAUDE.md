@@ -128,6 +128,8 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
   (Hell/Dunkel), `manifest.webmanifest` (Home-Bildschirm), `lib/` (marked, DOMPurify).
 - **Videos auf den Anleitungsseiten:** In `apps.js` je App optional `video: { src, bild, titel, datei }`; `app.html`
   zeigt dann den Player und den Knopf „⬇ Video herunterladen“ (`download`-Attribut, Dateiname = `datei`).
+  **Feste Regel:** Jedes neue Video zu einer App kommt **immer** auf die Anleitungsseite dieser App – mit Download-Knopf
+  (Datei nach `videos/`, Vorschaubild `.jpg`, Eintrag `video` in `apps.js`). Dazu einen YouTube-Text (Titel, Beschreibung, Kapitel, Tags) liefern.
   Die Videos liegen in `videos/`: `soundwhacker-smart-control.mp4` (Werbevideo, 1:34) und `miga.mp4` (1:30), je mit
   Vorschaubild `.jpg`. Gebaut wie das KI-Erklärvideo (animierte HTML-Seite + Playwright + ffmpeg), Stimme ElevenLabs
   „Alexander – Deep TV Narrator“ (deutsche Bibliotheksstimme, ID `kkJxCnlRCckmfFvzDW5Q`), Musik aus dem Loop-Generator

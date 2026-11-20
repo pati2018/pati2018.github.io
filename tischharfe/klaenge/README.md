@@ -22,3 +22,6 @@ gleiche Aufbereitung wie oben. Die Tischharfe nutzt sie (noch) nicht; die SoundW
 **Schlagzeug (SoundWhacker Band):** `schlag-standard/` (Kit 0), `schlag-rock/` (Power, 16), `schlag-elektro/` (Electronic, 24),
 `schlag-808/` (808/909, 25), `schlag-jazz/` (32), `schlag-besen/` (Brush, 40) – aus **GeneralUser GS v2.0**. Anders als oben:
 Dateien `55.mp3` … `84.mp3` = Klaviertasten g bis c‴, jede Taste ein Schlaginstrument (Liste `SCHLAG_NAME` in `whacker-band/index.html`).
+
+**Geräusche (SoundWhacker Band):** `effekte/55.mp3` … `84.mp3` – GM/GS-Effekte (Programme 122–127 mit Varianten) aus
+**GeneralUser GS v2.0**, dazu **Hupe** (60) und **Fahrradklingel** (74) selbst synthetisiert. Namen: `FX_NAME` in `whacker-band/index.html`.

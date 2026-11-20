@@ -26,6 +26,7 @@ Die linke Hand hält den SoundWhacker unten am **schwarzen Teil**. Zum Spielen g
 | Aufstellung | **Reihe, Halbkreis** (Standard), **Kreis** oder **offenes U** – die Figuren laufen sanft an ihren neuen Platz |
 | Klang | Marimba, Klavier, Vibraphon, Xylophon, Spieluhr, Kalimba, Steeldrums, E-Piano, Gitarre, Koto, Harfe – **verzerrte Gitarren**: Overdrive, Distortion, Feedback und Wah-Wah – **Flöten**: Querflöte, Blockflöte, Panflöte, Piccoloflöte, Okarina – **Klarinette** und **Saxophon** (Sopran, Alt, Tenor) |
 | Schlagzeug | 6 Sets: **Standard, Rock, Elektro, 808, Jazz, Besen** (unten in der Klangauswahl) – siehe „Schlagzeug“ |
+| Geräusche | **✨ Geräusche & Effekte** (ganz unten in der Klangauswahl) – siehe „Geräusche & Effekte“ |
 | Hall | Regler von **0 %** (trocken) über kleiner Raum und Saal bis **Kirche** (100 %) – die App merkt sich die Einstellung |
 | Vollbild | **⛶ Vollbild** – ideal für den Beamer |
 
@@ -82,11 +83,20 @@ Unten in der Klangauswahl stehen **6 Schlagzeugsets**: Standard, Rock, Elektro, 
 - Die **Klaviatur** (bei „● Lied einspielen“) ist **beschriftet**: Jede Taste ist ein anderes Schlaginstrument – Bassdrum, Snare, Hi-Hat, sechs Toms, Becken, Ride, Splash, Tamburin, Kuhglocke, Maracas, Bongos, Congas und mehr.
 - Ein Lied, das mit Schlagzeug eingespielt wurde, merkt sich die Schlaginstrumente und wird später als **Rhythmus** wieder abgespielt.
 
+## Geräusche & Effekte
+
+Ganz unten in der Klangauswahl steht **✨ Geräusche & Effekte** – für Spaß und Geräusch-Geschichten.
+
+- **SoundWhacker:** **SW1 Telefon, SW2 Autobremse, SW3 Hupe, SW4 Applaus, SW5 Lachen**.
+- **Klaviatur** (bei „● Lied einspielen“), jede Taste beschriftet: Telefon, Autobremse, Auto vorbei, Automotor, Hupe, Autounfall, Sirene, Zug, Hubschrauber, Düsenjet, Raumschiff, Applaus, Lachen, Herzschlag, Schritte, Hund, Pferd, Vögel, Fahrradklingel, Meer, Regen, Donner, Wind, Blubbern, Tür knarrt, Tür zu, Windspiel, Laser, Explosion.
+- Ein Geräusch klingt immer ganz aus. Wird derselbe SoundWhacker noch einmal berührt, beginnt das Geräusch neu.
+- Eingespielte Geräusch-Geschichten lassen sich wie Lieder speichern.
+
 ## Ohne Internet spielen
 
 Die App funktioniert auch **offline**:
 
-1. Die App **einmal mit Internet öffnen**. Sie speichert dann alles im Gerät: alle Lieder und alle Klänge (ungefähr 20 MB). Danach erscheint „✓ Jetzt auch ohne Internet spielbar“.
+1. Die App **einmal mit Internet öffnen**. Sie speichert dann alles im Gerät: alle Lieder und alle Klänge (ungefähr 21 MB). Danach erscheint „✓ Jetzt auch ohne Internet spielbar“.
 2. Ab jetzt geht die App auch ohne WLAN, zum Beispiel im Workshop-Raum.
 3. **Tipp fürs iPad:** Über Teilen → **„Zum Home-Bildschirm“** gibt es ein eigenes App-Symbol.
 

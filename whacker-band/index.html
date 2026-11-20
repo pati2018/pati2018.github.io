@@ -168,7 +168,13 @@ const ST_TOENE=[54,57,60,63,66,69,72,75,78,81];
 // Schlagzeug: jede Klaviertaste g (55) … c‴ (84) ist ein Schlaginstrument; SW1–5 spielen Bassdrum, Snare, Hi-Hat, Tom, Becken
 const SCHLAG_NAME=['Bassdrum','Bassdrum 2','Snare','Snare 2','Rimshot','Klatschen','Hi-Hat zu','Hi-Hat Fuß','Hi-Hat offen','Tom 1 tief','Tom 2','Tom 3','Tom 4','Tom 5','Tom 6 hoch','Becken','Becken 2','Ride','Ride-Glocke','Splash','China','Tamburin','Kuhglocke','Cabasa','Maracas','Claves','Bongo hoch','Bongo tief','Conga hoch','Conga tief'];
 const SW_SCHLAG=[55,57,61,67,70];
-const istSchlag=()=>!!(KLAENGE[st.klang]&&KLAENGE[st.klang].schlag);
+// Geräusche & Effekte: ebenfalls je Klaviertaste ein Geräusch (Hupe und Fahrradklingel selbst erzeugt, Rest aus GeneralUser GS)
+const FX_NAME=['Telefon','Telefon 2','Autobremse','Auto vorbei','Automotor','Hupe','Autounfall','Sirene','Zug','Hubschrauber','Düsenjet','Raumschiff',
+  'Applaus','Lachen','Herzschlag','Schritte','Hund','Pferd','Vögel','Fahrradklingel','Meer','Regen','Donner','Wind','Blubbern','Tür knarrt','Tür zu','Windspiel','Laser','Explosion'];
+const SW_FX=[55,57,60,67,68];
+const SETS={schlag:{namen:SCHLAG_NAME,sw:SW_SCHLAG,icon:'🥁'},fx:{namen:FX_NAME,sw:SW_FX,icon:'✨'}};
+const setVon=()=>{ const K=KLAENGE[st.klang]; return K&&K.schlag?SETS[K.schlag]:null; };
+const istSchlag=()=>!!setVon();
 const KLAENGE={
   marimba:{n:'Marimba',pegel:.96}, klavier:{n:'Klavier',pegel:.84}, vibraphon:{n:'Vibraphon',pegel:.68}, xylophon:{n:'Xylophon',pegel:2.18},
   spieluhr:{n:'Spieluhr',pegel:1.12}, kalimba:{n:'Kalimba',pegel:1.31}, steeldrums:{n:'Steeldrums',pegel:1.34}, epiano:{n:'E-Piano',pegel:.4},
@@ -177,8 +183,9 @@ const KLAENGE={
   feedback:{n:'Verzerrte Gitarre (Feedback)',pegel:.45}, wah:{n:'Wah-Wah-Gitarre',pegel:.52},
   floete:{n:'Querflöte',pegel:.37}, blockfloete:{n:'Blockflöte',pegel:.2}, panfloete:{n:'Panflöte',pegel:.26}, piccolo:{n:'Piccoloflöte',pegel:.18}, okarina:{n:'Okarina',pegel:.19},
   klarinette:{n:'Klarinette',pegel:.24}, sopransax:{n:'Sopransaxophon',pegel:.31}, altsax:{n:'Altsaxophon',pegel:.48}, tenorsax:{n:'Tenorsaxophon',pegel:.5},
-  'schlag-standard':{n:'Schlagzeug Standard',schlag:1,pegel:.75}, 'schlag-rock':{n:'Schlagzeug Rock',schlag:1,pegel:.75}, 'schlag-elektro':{n:'Schlagzeug Elektro',schlag:1,pegel:.75},
-  'schlag-808':{n:'Schlagzeug 808',schlag:1,pegel:.75}, 'schlag-jazz':{n:'Schlagzeug Jazz',schlag:1,pegel:.75}, 'schlag-besen':{n:'Schlagzeug Besen',schlag:1,pegel:.8},
+  effekte:{n:'Geräusche & Effekte',schlag:'fx',pegel:.55},
+  'schlag-standard':{n:'Schlagzeug Standard',schlag:'schlag',pegel:.75}, 'schlag-rock':{n:'Schlagzeug Rock',schlag:'schlag',pegel:.75}, 'schlag-elektro':{n:'Schlagzeug Elektro',schlag:'schlag',pegel:.75},
+  'schlag-808':{n:'Schlagzeug 808',schlag:'schlag',pegel:.75}, 'schlag-jazz':{n:'Schlagzeug Jazz',schlag:'schlag',pegel:.75}, 'schlag-besen':{n:'Schlagzeug Besen',schlag:'schlag',pegel:.8},
   harfe:{n:'Harfe',pegel:1.05,pfad:'../tischharfe/samples/',toene:{E3:52,G3:55,B3:59,D4:62,F4:65,A4:69,C5:72,E5:76,G5:79,B5:83}},
 };
 for(const id in KLAENGE){ const K=KLAENGE[id]; if(!K.pfad){ K.pfad='../tischharfe/klaenge/'+id+'/'; K.toene=Object.fromEntries((K.schlag?SCHLAG_NAME.map((x,i)=>55+i):ST_TOENE).map(m=>[m,m])); } }
@@ -201,18 +208,20 @@ async function ladeKlang(id){
     puffer[id]=b; lade[id]='fertig'; }
   catch(e){ lade[id]='fehler'; toast('Klang konnte nicht geladen werden'); }
 }
-const stimmen=[null,null,null,null,null];
+const stimmen=[null,null,null,null,null], fxStimme={};
 // Ein Ton klingt so lange, wie der SoundWhacker / die Taste gehalten wird (wie in Smart Control) – beim Vorspielen so lange wie die Note
 function ton(fig, midi, wann, dauer, frei){   // wann = ctx-Zeit (optional), dauer in Sekunden (optional), frei = Klaviertaste
   audio(); const B=puffer[st.klang]||puffer.marimba; if(!B){ ladeKlang(st.klang); return; }
   const dr=istSchlag()&&puffer[st.klang]===B;
-  if(dr){ if(!frei&&!(LIED&&LIED.schlag)) midi=SW_SCHLAG[fig]||55; while(midi<55) midi+=12; while(midi>84) midi-=12; }
+  if(dr){ if(!frei&&!(LIED&&LIED.schlag)) midi=setVon().sw[fig]||55; while(midi<55) midi+=12; while(midi>84) midi-=12; }
   let best=null; for(const k in B){ const v=+k; if(best===null||Math.abs(v-midi)<Math.abs(best-midi)) best=v; }
   const t=Math.max(ctx.currentTime+.005, wann||0), src=ctx.createBufferSource(), g=ctx.createGain();
   src.buffer=B[best]; src.playbackRate.value=Math.pow(2,(midi-best)/12);
   const p=(KLAENGE[st.klang]||KLAENGE.marimba).pegel*.8; g.gain.setValueAtTime(p,t);
   src.connect(g); g.connect(dry); g.connect(wet._in); src.start(t);
-  if(dr) return {s:src,g,t0:t,los:true};   // Schlagzeug klingt immer aus (wie ein echtes Becken)
+  if(dr){ const v={s:src,g,t0:t,los:true};   // Schlagzeug/Geräusche klingen immer aus (wie ein echtes Becken)
+    if(setVon()===SETS.fx){ const fx=frei?'k':fig, alt=fxStimme[fx]; if(alt){ try{ alt.g.gain.setTargetAtTime(0,t,.05); alt.s.stop(t+.4); }catch(e){} } fxStimme[fx]=v; }   // lange Geräusche nicht übereinander stapeln
+    return v; }
   // alte Stimme dieser Figur sanft beenden
   const alt=stimmen[fig]; if(alt){ try{ alt.g.gain.setTargetAtTime(0,t,.06); alt.s.stop(t+.5); }catch(e){} }
   const v={s:src,g,t0:t}; stimmen[fig]=v; try{ src.stop(t+src.buffer.duration/src.playbackRate.value+.05); }catch(e){}
@@ -391,7 +400,7 @@ function spielerTon(i){
   const m=FIGTON[i]; if(m===null||m===undefined) return;
   // Feste SW-Töne beim Mitspielen: nur wer dran ist, klingt – ein falscher SoundWhacker bleibt stumm (Figur schüttelt kurz den Kopf)
   if(st.modus==='mit'){ if(!LIED.noten[pos]||figFuer(pos)!==i){ F[i].nein=performance.now(); return; } }
-  if(st.modus==='auf' && rec.an){ recIdx[i]=recTon(istSchlag()?SW_SCHLAG[i]:m); }
+  if(st.modus==='auf' && rec.an){ recIdx[i]=recTon(istSchlag()?setVon().sw[i]:m); }
   ton(i,m); schlag(i,performance.now(),true);
   if(st.modus==='mit'){ pos++; if(pos>=LIED.noten.length) return liedRundeFertig(); bandZeigen(); }
 }
@@ -447,12 +456,12 @@ $('recSpeichern').onclick=()=>{
     else { const j=weiss.indexOf(m-1); d.style.left=((j+1)*w-w*.32)+'%'; d.style.width=(w*.64)+'%'; }
     k.appendChild(d); }
   // Beschriftung: Tonnamen – oder beim Schlagzeug die Schlaginstrumente
-  window.klavierBeschriften=()=>{ const dr=istSchlag(); k.classList.toggle('dr',dr);
-    k.querySelectorAll('[data-m]').forEach(d=>{ const m=+d.dataset.m, n=SCHLAG_NAME[m-55];
+  window.klavierBeschriften=()=>{ const S=setVon(), dr=!!S; k.classList.toggle('dr',dr);
+    k.querySelectorAll('[data-m]').forEach(d=>{ const m=+d.dataset.m, n=dr?S.namen[m-55]:'';
       if(dr){ d.innerHTML='<span class="dn"></span>'; d.firstChild.textContent=n; d.setAttribute('aria-label',n); }
       else { d.textContent=d.classList.contains('w')?tonName(m):''; d.removeAttribute('aria-label'); } });
     const si=$('schlagInfo'); si.hidden=!dr;
-    if(dr) si.innerHTML='🥁 '+SW_SCHLAG.map((m,i)=>'<span style="background:'+FARBE[i]+'">SW'+(i+1)+' '+SCHLAG_NAME[m-55]+'</span>').join(''); };
+    if(dr) si.innerHTML=S.icon+' '+S.sw.map((m,i)=>'<span style="background:'+FARBE[i]+'">SW'+(i+1)+' '+S.namen[m-55]+'</span>').join(''); };
   const an=new Map();
   // Taste anschlagen (auch beim Gleiten)
   function rein(d,id){ const m=+d.dataset.m; d.classList.add('an'); an.set(id,d);
@@ -513,7 +522,7 @@ function info(){
                 reihe:'Feste SW-Reihenfolge: SW1 → SW2 → … – wer dran ist, leuchtet schon leicht. Wer nicht dran ist, bleibt stumm.',
                 fest:'Feste SW-Töne: Jeder SoundWhacker hat seinen eigenen Ton. Die Figur, die als Nächstes dran ist, leuchtet schon leicht – nur sie klingt, alle anderen bleiben stumm.'}[spielart()]+(st.spielart==='fest'&&!fuenf()?' (Dieses Lied hat mehr als 5 Töne – „Feste SW-Töne“ geht nur mit ⭐-Liedern.)':''),
            auf:'Spiele eine Melodie ein. Mit höchstens 5 verschiedenen Tönen wird sie ein ⭐-Lied.'}[st.modus];
-  if(istSchlag()&&st.modus==='auf'){ $('info').textContent='Spiele einen Rhythmus ein – mit SW1–5 oder auf der Klaviatur. Jede Taste ist ein anderes Schlaginstrument.'; return; }
+  if(istSchlag()&&st.modus==='auf'){ $('info').textContent=setVon()===SETS.fx?'Spiele eine Geräusch-Geschichte ein – mit SW1–5 oder auf der Klaviatur. Jede Taste ist ein anderes Geräusch.':'Spiele einen Rhythmus ein – mit SW1–5 oder auf der Klaviatur. Jede Taste ist ein anderes Schlaginstrument.'; return; }
   $('info').textContent=t+(fuenf()?'  Töne der Figuren: '+FIGTON.map((m,i)=>m===null?'–':tonName(m)).join(' · '):'  Dieses Lied hat '+TOENE.length+' verschiedene Töne – die Figuren spielen reihum.');
 }
 function modus(m){
@@ -537,7 +546,7 @@ document.querySelector('.modi').onclick=e=>{ const b=e.target.closest('button');
 $('start').onclick=()=>{ if(st.modus==='mit'){ pos=0; zug=0; spieler=[]; bandBauen(); audio(); } else start(); };
 $('lied').onchange=()=>{ st.lied=$('lied').value; merke(); liedSetzen(); $('lied').blur(); };
 $('aufstellung').value=st.aufstellung; $('aufstellung').onchange=()=>{ st.aufstellung=$('aufstellung').value; merke(); aufstellen(false); $('aufstellung').blur(); };
-const ks=$('klang'), og=document.createElement('optgroup'); og.label='🥁 Schlagzeug'; for(const id in KLAENGE) (KLAENGE[id].schlag?og:ks).appendChild(new Option(KLAENGE[id].n,id)); ks.appendChild(og); ks.value=st.klang;
+const ks=$('klang'), og=document.createElement('optgroup'), ogf=document.createElement('optgroup'); og.label='🥁 Schlagzeug'; ogf.label='✨ Geräusche'; for(const id in KLAENGE){ const S=KLAENGE[id].schlag; (S==='schlag'?og:S==='fx'?ogf:ks).appendChild(new Option(KLAENGE[id].n,id)); } ks.appendChild(og); ks.appendChild(ogf); ks.value=st.klang;
 ks.onchange=()=>{ st.klang=ks.value; merke(); audio(); ladeKlang(st.klang); klavierBeschriften(); info(); ks.blur(); };
 function hallZeigen(){ const v=st.hall; $('hallWert').textContent=v+' % '+(v===0?'(trocken)':v<=25?'(kleiner Raum)':v<=60?'(Saal)':'(Kirche)'); if(wet) wet.gain.setTargetAtTime(hallWert(),ctx.currentTime,.05); }
 $('hall').value=st.hall; hallZeigen(); $('hall').oninput=()=>{ st.hall=+$('hall').value; merke(); hallZeigen(); };

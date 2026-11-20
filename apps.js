@@ -96,7 +96,8 @@ window.APPS = [
   {
     id: "soundwhacker-spielen",
     video: [
-      { src: "videos/soundwhacker-smart-control.mp4", bild: "videos/soundwhacker-smart-control.jpg", titel: "Die App: SoundWhacker Smart Control", datei: "SoundWhacker-Smart-Control.mp4" }
+      { src: "videos/soundwhacker-smart-control.mp4", bild: "videos/soundwhacker-smart-control.jpg", titel: "Die App: SoundWhacker Smart Control", datei: "SoundWhacker-Smart-Control.mp4" },
+      { src: "videos/soundwhacker.mp4", bild: "videos/soundwhacker.jpg", titel: "Der SoundWhacker: berühren, verbinden, Musik machen", datei: "SoundWhacker.mp4" }
     ],
     zaehler: "/soundwhacker-looper/SoundWhacker_Spielen.html",
     titel: "SoundWhacker Smart Control",

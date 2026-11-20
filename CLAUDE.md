@@ -121,6 +121,11 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
   Vorschaubild `.jpg`. Gebaut wie das KI-Erklärvideo (animierte HTML-Seite + Playwright + ffmpeg), Stimme ElevenLabs
   „Alexander – Deep TV Narrator“ (deutsche Bibliotheksstimme, ID `kkJxCnlRCckmfFvzDW5Q`), Musik aus dem Loop-Generator
   der App (Pop 104 BPM bzw. Lo-Fi 90 BPM). Botschaft: inklusiv musizieren, „Damit alle Musik machen können.“
+  Dazu `soundwhacker.mp4` (Hardware-Video, 1:47, aus den Fotos des Nutzers + Zeichnungen). `video` darf auch eine Liste sein.
+  **SoundWhacker-Technik (für Texte):** Kunststoffröhre, zwei Ringe aus leitendem Filament, innen ESP32-C3 Mini, Akku (USB-C),
+  Farb-LED im Rohr (leuchtet bei Berührung, z. B. grün), kleine LED vorne = nur Status (an/verbunden). Touch-Sensor unter dem
+  kleinen Punkt; Body Touch = beide Ringe halten (auch im Kreis mit mehreren Menschen). Verbindet sich per Bluetooth direkt mit
+  iPad/PC, wirkt wie eine Bluetooth-Tastatur (SW1 = Taste 1). Hub/Master-Slave nicht erwähnen – zu technisch.
   **Offen:** Shop-Link für die SoundWhacker in der YouTube-Beschreibung (Nutzer liefert ihn später).
 - **Neue App hinzufügen (2 Schritte):**
   1. In `apps.js` einen neuen Block in `window.APPS` eintragen

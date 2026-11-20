@@ -65,7 +65,12 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
     - `singen/` – Singen mit SoundWhackern
     - `atemklang/` – Atemklang
     - `fagott/` – Fagott (Klänge in `klang/`, Bassoon aus GeneralUser GS; Lied-Modus lädt `../tischharfe/lieder.js`)
-  - **Achtung:** `tischharfe/lieder.js` lädt auch SoundWhacker Spielen (Gemeinsame Melodie) und das Fagott.
+    - `whacker-band/` – Whacker-Band: 5 animierte Figuren (SW-Farben) mit SoundWhacker (weiße Röhre, unten schwarz; linke Hand
+      hält unten, rechte Hand berührt oben → Röhre leuchtet). Modi Vorspielen / Mitspielen (Tasten 1–5, nächste Figur leuchtet leicht) /
+      Lied einspielen (Tasten oder Klaviatur g–c‴, Rhythmus wird gespeichert). Aufstellung Reihe/Halbkreis/Kreis/U, Tempo 40–130 %.
+      Klänge aus `../tischharfe/klaenge/` + Harfe, Lieder aus `../tischharfe/lieder.js` (nur ≤ 5 Töne). Eigene Lieder in
+      localStorage `whacker-band-lieder` (JSON-Export/Import). Auftrag kam als MD-Datei vom Nutzer.
+  - **Achtung:** `tischharfe/lieder.js` lädt auch SoundWhacker Spielen (Gemeinsame Melodie), das Fagott und die Whacker-Band.
     Wer Lieder ändert, ändert sie in beiden Apps – und erhöht in `SoundWhacker_Spielen.html`
     die Nummer bei `../tischharfe/lieder.js?v=…`, sonst bleibt dort die alte Liste im Speicher.
   - **Reihenfolge auf der Übersicht:** 1. SoundWhacker Smart Control, 2. MIGA,

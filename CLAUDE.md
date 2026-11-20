@@ -68,7 +68,8 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
     - `whacker-band/` – Whacker-Band: 5 animierte Figuren (SW-Farben) mit SoundWhacker (weiße Röhre, unten schwarz; linke Hand
       hält unten, rechte Hand berührt oben → Röhre leuchtet). Modi Vorspielen / Mitspielen (Tasten 1–5, nächste Figur leuchtet leicht) /
       Lied einspielen (Tasten oder Klaviatur g–c‴, Rhythmus wird gespeichert). Aufstellung Reihe/Halbkreis/Kreis/U, Tempo 40–130 %.
-      Klänge aus `../tischharfe/klaenge/` + Harfe, Lieder aus `../tischharfe/lieder.js` (nur ≤ 5 Töne). Eigene Lieder in
+      Klänge aus `../tischharfe/klaenge/` + Harfe, Lieder aus `../tischharfe/lieder.js` (alle; ⭐ = ≤ 5 Töne, sonst Figuren reihum,
+      „Feste SW-Töne“ nur bei ⭐). Eigene Lieder in
       localStorage `whacker-band-lieder` (JSON-Export/Import). Auftrag kam als MD-Datei vom Nutzer.
       Mitspielen hat 3 Spielarten wie „Gemeinsame Melodie“ in Smart Control: SW spielt Melodie (reihum), Feste SW-Reihenfolge
       (SW1–n, Rest stumm), Feste SW-Töne (zeigt immer, wer dran ist – kein Schalter, auf Wunsch). Einstellungen `spielart`, `reiheN`.

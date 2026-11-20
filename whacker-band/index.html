@@ -28,6 +28,7 @@
   .modi button{min-height:54px;padding:8px 18px;border-radius:14px;border:2px solid var(--linie);background:var(--karte);font-size:19px;font-weight:800;cursor:pointer}
   .modi button[aria-pressed="true"]{background:var(--gold);color:#111;border-color:var(--gold)}
   #spielart button{min-height:50px;font-size:17px}
+  #spielart button:disabled{opacity:.4;cursor:not-allowed}
   #reiheZeile .knopf[aria-pressed="true"]{background:var(--gold);color:#111;border-color:var(--gold)}
   .leiste{display:flex;gap:10px 18px;flex-wrap:wrap;align-items:center;background:var(--karte);border:1px solid var(--linie);border-radius:14px;padding:8px 12px}
   .leiste label{display:flex;align-items:center;gap:8px;font-size:16px;color:var(--mut)}
@@ -205,10 +206,12 @@ function liedDaten(id){
 function toeneVon(noten){ return [...new Set(noten.map(x=>x.m))].sort((a,b)=>a-b); }
 function liedListe(){
   const s=$('lied'); s.innerHTML='';
-  const g1=document.createElement('optgroup'); g1.label='Lieder (höchstens 5 Töne)';
-  (window.HARFE?HARFE.LIEDER:[]).filter(l=>!l.eigen).forEach(l=>{ try{ const d=liedDaten('lied:'+l.id); if(d&&toeneVon(d.noten).length<=5){ const o=new Option(l.titel,'lied:'+l.id); g1.appendChild(o);} }catch(e){} });
+  // ⭐ = höchstens 5 Töne: jede Figur hat ihren eigenen Ton (Vorspielen nach Tonhöhe, „Feste SW-Töne“ möglich)
+  const stern=(titel,d)=>(toeneVon(d.noten).length<=5?'⭐ ':'')+titel;
+  const g1=document.createElement('optgroup'); g1.label='Lieder (⭐ = höchstens 5 Töne)';
+  (window.HARFE?HARFE.LIEDER:[]).filter(l=>!l.eigen).forEach(l=>{ try{ const d=liedDaten('lied:'+l.id); if(d&&d.noten.length) g1.appendChild(new Option(stern(l.titel,d),'lied:'+l.id)); }catch(e){} });
   s.appendChild(g1);
-  const e=eigene(); if(e.length){ const g2=document.createElement('optgroup'); g2.label='Meine Lieder'; e.forEach(l=>g2.appendChild(new Option(l.name,'eigen:'+l.name))); s.appendChild(g2); }
+  const e=eigene(); if(e.length){ const g2=document.createElement('optgroup'); g2.label='Meine Lieder'; e.forEach(l=>{ const d=liedDaten('eigen:'+l.name); g2.appendChild(new Option(d?stern(l.name,d):l.name,'eigen:'+l.name)); }); s.appendChild(g2); }
   if(![...s.options].some(o=>o.value===st.lied)) st.lied='lied:freude';
   s.value=st.lied;
 }
@@ -217,9 +220,12 @@ function liedSetzen(){
   stopp(); LIED=liedDaten(st.lied)||liedDaten('lied:freude');
   TOENE=toeneVon(LIED.noten);
   FIGTON=[0,1,2,3,4].map(i=>TOENE[i]!==undefined?TOENE[i]:null);
-  pos=0; zug=0; spieler=[]; bandBauen(); info();
+  pos=0; zug=0; spieler=[]; if(typeof spielartZeigen==='function') spielartZeigen(); bandBauen(); info();
 }
 const figVon=m=>TOENE.indexOf(m);
+const fuenf=()=>TOENE.length<=5;
+// Welche Figur spielt Ton Nr. k? ⭐-Lieder: nach Tonhöhe (tiefster = rot). Mehr als 5 Töne: reihum rot, orange, gelb, grün, blau …
+const figFuer=k=>fuenf()?figVon(LIED.noten[k].m):k%5;
 
 // ---------- Figuren ----------
 const svg=$('svg');
@@ -298,12 +304,12 @@ function schlag(i, wannMs, live){ const f=F[i]; f.hit=wannMs; f.live=!!live; }
 // ---------- Notenband ----------
 let pos=0;
 let zug=0, spieler=[];   // Feste Reihenfolge: wer als Nächstes dran ist · SW spielt Melodie: wer welchen Ton gespielt hat
-const spielart=()=>st.modus==='mit'?st.spielart:'fest';
+const spielart=()=>st.modus!=='mit'?'fest':(st.spielart==='fest'&&!fuenf()?'reihum':st.spielart);   // Feste SW-Töne gehen nur mit ⭐-Liedern
 function punktFarbe(k,n){
   const a=spielart();
   if(a==='reihum') return spieler[k]!=null?FARBE[spieler[k]]:'#c7d0e3';   // noch offen: hell-grau, gespielt: Farbe des Spielers
   if(a==='reihe') return FARBE[k%st.reiheN];
-  return FARBE[figVon(n.m)];
+  return FARBE[figFuer(k)];
 }
 function bandBauen(){ $('band').innerHTML=LIED.noten.map((n,k)=>'<span style="background:'+punktFarbe(k,n)+'"></span>').join(''); bandZeigen(); }
 function bandZeigen(){ const sp=$('band').children; [...sp].forEach((e,k)=>{ e.classList.toggle('jetzt',k===pos); e.classList.toggle('fertig',k<pos); });
@@ -314,7 +320,7 @@ function bandZeigen(){ const sp=$('band').children; [...sp].forEach((e,k)=>{ e.c
     if(st.reihe==='mit') b.scrollLeft=Math.max(0,b.scrollLeft+x-rb.width*0.3);   // läuft bei jedem Ton mit
     else if(x>rb.width*0.82||x<0) b.scrollLeft=Math.max(0,b.scrollLeft+x-rb.width*0.12); }
   const a=spielart(), soll=LIED&&LIED.noten[pos];
-  F.forEach((f,i)=>f.hint= st.modus==='mit' && !!soll && (a==='reihe'? i===zug%st.reiheN : a==='fest'? figVon(soll.m)===i : false)); }
+  F.forEach((f,i)=>f.hint= st.modus==='mit' && !!soll && (a==='reihe'? i===zug%st.reiheN : a==='fest'? figFuer(pos)===i : false)); }
 
 // ---------- Vorspielen ----------
 let laeuft=false, timer=0, plan=[];
@@ -326,7 +332,7 @@ function start(){
   const VOR=.35, t0=ctx.currentTime+VOR, p0=performance.now()+VOR*1000; let t=0; const sp=sekProSchlag();
   plan=LIED.noten.map((n,k)=>{ const at=t; t+=n.dur*sp; return {k,n,at}; });
   // Jeder Ton wird kurz vorher genau geplant (so kann „Stopp“ alles sofort beenden)
-  plan.forEach(p=>{ const i=figVon(p.n.m);
+  plan.forEach(p=>{ const i=figFuer(p.k);
     p.to=setTimeout(()=>{ ton(i,p.n.m,t0+p.at); F[i].hit=p0+p.at*1000; F[i].live=false; },Math.max(0,(VOR+p.at)*1000-250));
     p.to2=setTimeout(()=>{ pos=p.k; bandZeigen(); },(VOR+p.at)*1000); });
   timer=setTimeout(()=>{ laeuft=false; $('start').textContent='▶ Start'; pos=LIED.noten.length; bandZeigen(); },(VOR+t)*1000+600);
@@ -350,7 +356,7 @@ function spielerTon(i){
   const m=FIGTON[i]; if(m===null||m===undefined) return;
   if(st.modus==='auf' && rec.an){ recTon(m); }
   ton(i,m); schlag(i,performance.now(),true);
-  if(st.modus==='mit'){ const soll=LIED.noten[pos]; if(soll&&figVon(soll.m)===i){ pos++; if(pos>=LIED.noten.length) return liedRundeFertig(); bandZeigen(); } }
+  if(st.modus==='mit'){ const soll=LIED.noten[pos]; if(soll&&figFuer(pos)===i){ pos++; if(pos>=LIED.noten.length) return liedRundeFertig(); bandZeigen(); } }
 }
 // SoundWhacker = Tasten 1–5 (auch Ziffernblock). Gehaltene Taste (Wiederholung) zählt nicht doppelt.
 const tasteNr=e=>{ const m=/^(Digit|Numpad)([1-5])$/.exec(e.code||''); if(m) return +m[2]; return (e.key>='1'&&e.key<='5'&&e.key.length===1)? +e.key : 0; };
@@ -368,8 +374,8 @@ function recInfo(){
   const toene=[...new Set(rec.ev.map(x=>x.m))].sort((a,b)=>a-b);
   let txt=rec.an? '<span id="recDot"></span>Aufnahme läuft – '+rec.ev.length+' Töne' : (rec.noten? rec.noten.length+' Töne aufgenommen':'');
   if(toene.length) txt+=' · Töne: '+toene.map(tonName).join(' ');
-  if(toene.length>5) txt+=' · <span class="warn">Mehr als 5 verschiedene Töne – die Band hat nur 5 Figuren. Bitte neu einspielen.</span>';
-  $('recInfo').innerHTML=txt; $('recSpeichern').disabled=toene.length>5||!rec.noten;
+  if(toene.length>5) txt+=' · <span class="ok">'+toene.length+' verschiedene Töne – geht mit „SW spielt Melodie“ und „Feste SW-Reihenfolge“ (ohne ⭐)</span>';
+  $('recInfo').innerHTML=txt; $('recSpeichern').disabled=!rec.noten;
 }
 $('recStart').onclick=()=>{
   audio();
@@ -380,7 +386,7 @@ $('recStart').onclick=()=>{
 };
 $('recWeg').onclick=()=>{ rec.ev=[]; rec.noten=null; $('recDanach').hidden=true; $('recStart').textContent='● Aufnahme starten'; recInfo(); };
 $('recHoeren').onclick=()=>{ if(!rec.noten) return; const alt=LIED, altT=TOENE, altF=FIGTON;
-  LIED={titel:'Aufnahme',tempo:60,noten:rec.noten.map(x=>({m:x.m,dur:x.d}))}; TOENE=toeneVon(LIED.noten).slice(0,5); FIGTON=[0,1,2,3,4].map(i=>TOENE[i]??null);
+  LIED={titel:'Aufnahme',tempo:60,noten:rec.noten.map(x=>({m:x.m,dur:x.d}))}; TOENE=toeneVon(LIED.noten); FIGTON=[0,1,2,3,4].map(i=>TOENE[i]??null);
   bandBauen(); const merkT=st.tempo; st.tempo=100; start(); st.tempo=merkT;
   const ende=LIED.noten.reduce((a,x)=>a+x.dur,0)*1000+1200; setTimeout(()=>{ LIED=alt; TOENE=altT; FIGTON=altF; bandBauen(); },ende); };
 $('recSpeichern').onclick=()=>{
@@ -446,9 +452,9 @@ function info(){
   const t={vor:'Die Band spielt „'+LIED.titel+'“ vor. Start mit dem Knopf oder der Leertaste.',
            mit:{reihum:'SW spielt Melodie: Jede Berührung – egal welcher SoundWhacker – spielt den nächsten Ton. Die Punkte färben sich in der Farbe von dem, der gespielt hat.',
                 reihe:'Feste SW-Reihenfolge: SW1 → SW2 → … – wer dran ist, leuchtet schon leicht. Wer nicht dran ist, bleibt stumm.',
-                fest:'Feste SW-Töne: Jeder SoundWhacker hat seinen eigenen Ton. Die Figur, die als Nächstes dran ist, leuchtet schon leicht.'}[st.spielart],
-           auf:'Spiele eine Melodie ein – mit höchstens 5 verschiedenen Tönen.'}[st.modus];
-  $('info').textContent=t+'  Töne der Figuren: '+FIGTON.map((m,i)=>m===null?'–':tonName(m)).join(' · ');
+                fest:'Feste SW-Töne: Jeder SoundWhacker hat seinen eigenen Ton. Die Figur, die als Nächstes dran ist, leuchtet schon leicht.'}[spielart()]+(st.spielart==='fest'&&!fuenf()?' (Dieses Lied hat mehr als 5 Töne – „Feste SW-Töne“ geht nur mit ⭐-Liedern.)':''),
+           auf:'Spiele eine Melodie ein. Mit höchstens 5 verschiedenen Tönen wird sie ein ⭐-Lied.'}[st.modus];
+  $('info').textContent=t+(fuenf()?'  Töne der Figuren: '+FIGTON.map((m,i)=>m===null?'–':tonName(m)).join(' · '):'  Dieses Lied hat '+TOENE.length+' verschiedene Töne – die Figuren spielen reihum.');
 }
 function modus(m){
   stopp(); st.modus=m; merke();
@@ -459,7 +465,9 @@ function modus(m){
   pos=0; zug=0; spieler=[]; bandBauen(); info();
 }
 function spielartZeigen(){
-  document.querySelectorAll('#spielart button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.s===st.spielart));
+  const eff=st.modus==='mit'?spielart():st.spielart;
+  document.querySelectorAll('#spielart button').forEach(b=>{ b.setAttribute('aria-pressed',b.dataset.s===eff);
+    if(b.dataset.s==='fest'){ b.disabled=!fuenf(); b.title=fuenf()?'Jeder SoundWhacker hat seinen eigenen Ton: SW1 = tiefster … SW5 = höchster':'Nur bei ⭐-Liedern (höchstens 5 Töne)'; } });
   $('reiheZeile').hidden=st.spielart!=='reihe';
   document.querySelectorAll('#reiheZeile [data-n]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.n===st.reiheN));
 }

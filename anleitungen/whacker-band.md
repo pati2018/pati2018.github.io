@@ -43,7 +43,10 @@ Am Liedende kommt „🎉 Super gespielt!“ und es geht von vorne los. **↺ Vo
 
 ## Lieder
 
-Die Lieder kommen aus der Tischharfe. Angeboten werden nur Lieder mit **höchstens fünf verschiedenen Tönen**, z. B. Ode an die Freude, Hänschen klein, Mary Had a Little Lamb, Jingle Bells, Old MacDonald. Der tiefste Ton gehört immer der **roten** Figur, der höchste der **blauen**.
+Die Lieder kommen aus der Tischharfe. In der Liedauswahl sind **alle Lieder** – Lieder mit **höchstens fünf verschiedenen Tönen** sind mit einem gelben **⭐** markiert (z. B. ⭐ Ode an die Freude, ⭐ Hänschen klein, ⭐ Jingle Bells).
+
+- **⭐-Lieder:** Jede Figur hat ihren eigenen Ton – der tiefste gehört der **roten**, der höchste der **blauen** Figur. Alle drei Spielarten gehen.
+- **Lieder mit mehr als 5 Tönen** (z. B. Alle meine Entchen, Bruder Jakob, Stille Nacht): Beim Vorspielen spielen die Figuren **reihum** (rot, orange, gelb, grün, blau, rot …). Beim Mitspielen gehen **„SW spielt Melodie“** und **„Feste SW-Reihenfolge“**; „Feste SW-Töne“ ist dann ausgegraut.
 
 ## Eigene Lieder einspielen
 
@@ -53,7 +56,7 @@ Die Lieder kommen aus der Tischharfe. Angeboten werden nur Lieder mit **höchste
 4. **▶ Anhören**, **✕ Verwerfen** oder einen **Namen** eingeben und **💾 Speichern**.
 
 - Die Töne werden automatisch den fünf Figuren zugeordnet (tiefster Ton = rot).
-- Bei **mehr als fünf verschiedenen Tönen** erscheint ein Hinweis – dann bitte neu einspielen.
+- Mit **höchstens fünf verschiedenen Tönen** wird es ein ⭐-Lied. **Mehr Töne gehen auch** – dann spielen die Figuren reihum (siehe „Lieder“).
 - Gespeicherte Lieder stehen in der Liedauswahl unter **„Meine Lieder“** und laufen mit dem Tempo-Regler.
 
 ## Meine Lieder: speichern, weitergeben, hochladen

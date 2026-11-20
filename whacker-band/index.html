@@ -485,7 +485,7 @@ function modus(m){
   stopp(); st.modus=m; merke();
   document.querySelectorAll('.modi button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===m));
   $('aufPanel').hidden=m!=='auf'; $('meinePanel').hidden=m!=='auf';
-  $('start').hidden=m!=='vor';   // Start nur beim Vorspielen $('tempoLabel').hidden=m!=='vor';   // Tempo nur beim Vorspielen $('start').textContent=m==='mit'?'↺ Von vorne':'▶ Start';
+  $('start').hidden=m!=='vor'; $('tempoLabel').hidden=m!=='vor';   /* Start und Tempo nur beim Vorspielen */ $('start').textContent='▶ Start';
   $('mitLeiste').hidden=m!=='mit'; spielartZeigen();
   pos=0; zug=0; spieler=[]; bandBauen(); info();
 }

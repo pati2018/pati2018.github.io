@@ -85,7 +85,6 @@
     <label>Tempo <input type="range" id="tempo" min="40" max="130" step="5" value="100" aria-describedby="tempoWert"> <span id="tempoWert"></span></label>
     <label>Aufstellung <select id="aufstellung"><option value="reihe">Reihe</option><option value="halbkreis">Halbkreis</option><option value="kreis">Kreis</option><option value="u">offenes U</option></select></label>
     <label>Klang <select id="klang"></select></label>
-    <label>Tonreihe <select id="reihe"><option value="springt">springt nur bei Bedarf</option><option value="mit">läuft bei jedem Ton mit</option></select></label>
   </div>
 
   <div class="leiste" id="mitLeiste" hidden>
@@ -144,7 +143,7 @@ function el(t,a,p){ const e=document.createElementNS(NS,t); for(const k in a) e.
 
 // ---------- Einstellungen ----------
 const KEY='whacker-band', LKEY='whacker-band-lieder';
-let st={lied:'lied:freude',tempo:100,aufstellung:'halbkreis',klang:'marimba',modus:'vor',reihe:'springt',spielart:'fest',reiheN:5};
+let st={lied:'lied:freude',tempo:100,aufstellung:'halbkreis',klang:'marimba',modus:'vor',spielart:'fest',reiheN:5};
 try{ Object.assign(st, JSON.parse(localStorage.getItem(KEY)||'{}')); }catch(e){}
 const merke=()=>{ try{ localStorage.setItem(KEY,JSON.stringify(st)); }catch(e){} };
 
@@ -323,12 +322,11 @@ function punktFarbe(k,n){
 }
 function bandBauen(){ $('band').innerHTML=LIED.noten.map((n,k)=>'<span style="background:'+punktFarbe(k,n)+'"></span>').join(''); bandZeigen(); }
 function bandZeigen(){ const sp=$('band').children; [...sp].forEach((e,k)=>{ e.classList.toggle('jetzt',k===pos); e.classList.toggle('fertig',k<pos); });
-  // Nur weiterschieben, wenn es nötig ist: erst wenn der aktuelle Ton fast am rechten Rand ist, springt die Reihe ein Stück weiter
+  // Die Tonreihe läuft bei jedem Ton mit
   const b=$('band'), cur=sp[pos];
   if(pos===0) b.scrollLeft=0;
   else if(cur){ const r=cur.getBoundingClientRect(), rb=b.getBoundingClientRect(), x=r.left-rb.left;
-    if(st.reihe==='mit') b.scrollLeft=Math.max(0,b.scrollLeft+x-rb.width*0.3);   // läuft bei jedem Ton mit
-    else if(x>rb.width*0.82||x<0) b.scrollLeft=Math.max(0,b.scrollLeft+x-rb.width*0.12); }
+    b.scrollLeft=Math.max(0,b.scrollLeft+x-rb.width*0.3); }   // läuft bei jedem Ton mit: der aktuelle Ton bleibt im vorderen Drittel
   const a=spielart(), soll=LIED&&LIED.noten[pos];
   F.forEach((f,i)=>f.hint= st.modus==='mit' && !!soll && (a==='reihe'? i===zug%st.reiheN : a==='fest'? figFuer(pos)===i : false)); }
 
@@ -504,7 +502,6 @@ document.querySelector('.modi').onclick=e=>{ const b=e.target.closest('button');
 $('start').onclick=()=>{ if(st.modus==='mit'){ pos=0; zug=0; spieler=[]; bandBauen(); audio(); } else start(); };
 $('lied').onchange=()=>{ st.lied=$('lied').value; merke(); liedSetzen(); $('lied').blur(); };
 $('aufstellung').value=st.aufstellung; $('aufstellung').onchange=()=>{ st.aufstellung=$('aufstellung').value; merke(); aufstellen(false); $('aufstellung').blur(); };
-$('reihe').value=st.reihe; $('reihe').onchange=()=>{ st.reihe=$('reihe').value; merke(); bandZeigen(); $('reihe').blur(); };
 const ks=$('klang'); for(const id in KLAENGE) ks.appendChild(new Option(KLAENGE[id].n,id)); ks.value=st.klang;
 ks.onchange=()=>{ st.klang=ks.value; merke(); audio(); ladeKlang(st.klang); ks.blur(); };
 function tempoZeigen(){ const v=st.tempo; $('tempoWert').textContent=v+' % '+(v<=60?'(langsam zum Üben)':v<=85?'(gemütlich)':v<=105?'(normal)':'(schnell)'); }

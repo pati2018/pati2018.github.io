@@ -82,7 +82,7 @@
   <div class="leiste">
     <label>Lied <select id="lied"></select></label>
     <button class="gross" id="start">▶ Start</button>
-    <label>Tempo <input type="range" id="tempo" min="40" max="130" step="5" value="100" aria-describedby="tempoWert"> <span id="tempoWert"></span></label>
+    <label id="tempoLabel">Tempo <input type="range" id="tempo" min="40" max="130" step="5" value="100" aria-describedby="tempoWert"> <span id="tempoWert"></span></label>
     <label>Aufstellung <select id="aufstellung"><option value="reihe">Reihe</option><option value="halbkreis">Halbkreis</option><option value="kreis">Kreis</option><option value="u">offenes U</option></select></label>
     <label>Klang <select id="klang"></select></label>
   </div>
@@ -485,7 +485,7 @@ function modus(m){
   stopp(); st.modus=m; merke();
   document.querySelectorAll('.modi button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===m));
   $('aufPanel').hidden=m!=='auf'; $('meinePanel').hidden=m!=='auf';
-  $('start').hidden=m==='auf'; $('start').textContent=m==='mit'?'↺ Von vorne':'▶ Start';
+  $('start').hidden=m==='auf'; $('tempoLabel').hidden=m!=='vor';   // Tempo nur beim Vorspielen $('start').textContent=m==='mit'?'↺ Von vorne':'▶ Start';
   $('mitLeiste').hidden=m!=='mit'; spielartZeigen();
   pos=0; zug=0; spieler=[]; bandBauen(); info();
 }

@@ -34,6 +34,7 @@ window.APPS = [
     kategorie: "Musik",
     symbol: "🎶",
     bild: "whacker-band/icons/icon-192.png",
+    video: { src: "videos/soundwhacker-band.mp4", bild: "videos/soundwhacker-band.jpg", titel: "Die SoundWhacker Band im Video", datei: "SoundWhacker-Band.mp4" },
     datum: "2026-11-20"
   },
   {

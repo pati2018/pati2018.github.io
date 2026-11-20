@@ -46,6 +46,14 @@
   #band span.fertig{opacity:.3}
   @media (max-width:700px){#band span{width:40px;height:40px}#band{min-height:70px;gap:9px}}
   .hinweis{color:var(--mut);font-size:16px;margin:0}
+  /* Lied einspielen: Bühne und Tonreihe schieben sich sanft zusammen – dann ist nur noch die Klaviatur zu sehen */
+  #buehnenBox{display:grid;grid-template-rows:1fr;opacity:1;transition:grid-template-rows .6s ease,opacity .45s ease,margin .6s ease}
+  #buehnenBox>.innen{overflow:hidden;min-height:0;display:flex;flex-direction:column;gap:10px}
+  body.einspielen #buehnenBox{grid-template-rows:0fr;opacity:0;margin-bottom:-10px}
+  body.einspielen #klavier{height:220px}
+  body.einspielen #klavier .w{height:220px;font-size:17px}
+  body.einspielen #klavier .s{height:136px}
+  @media (prefers-reduced-motion:reduce){#buehnenBox{transition:none}}
   .panel{background:var(--karte);border:1px solid var(--linie);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
   .panel h2{margin:0;font-size:20px}
   .zeile{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
@@ -96,10 +104,12 @@
     <div class="zeile" id="reiheZeile" hidden><span class="hinweis">Mitspieler:</span>
       <button class="knopf" data-n="2">SW1–2</button><button class="knopf" data-n="3">SW1–3</button><button class="knopf" data-n="4">SW1–4</button><button class="knopf" data-n="5">SW1–5</button></div>
   </div>
+  <div id="buehnenBox"><div class="innen">
   <div id="band" aria-hidden="true"></div>
   <div class="buehne" id="buehne">
     <svg id="svg" viewBox="0 150 1600 760" role="img" aria-label="Fünf Figuren mit SoundWhackern"></svg>
   </div>
+  </div></div>
   <p class="hinweis" id="info"></p>
 
   <!-- Lied einspielen -->
@@ -484,7 +494,7 @@ function info(){
 function modus(m){
   stopp(); st.modus=m; merke();
   document.querySelectorAll('.modi button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===m));
-  $('aufPanel').hidden=m!=='auf'; $('meinePanel').hidden=m!=='auf';
+  $('aufPanel').hidden=m!=='auf'; document.body.classList.toggle('einspielen',m==='auf'); $('buehnenBox').setAttribute('aria-hidden',m==='auf'); $('meinePanel').hidden=m!=='auf';
   $('start').hidden=m!=='vor'; $('tempoLabel').hidden=m!=='vor';   /* Start und Tempo nur beim Vorspielen */ $('start').textContent='▶ Start';
   $('mitLeiste').hidden=m!=='mit'; spielartZeigen();
   pos=0; zug=0; spieler=[]; bandBauen(); info();

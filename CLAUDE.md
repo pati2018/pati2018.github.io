@@ -122,6 +122,7 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
   „Alexander – Deep TV Narrator“ (deutsche Bibliotheksstimme, ID `kkJxCnlRCckmfFvzDW5Q`), Musik aus dem Loop-Generator
   der App (Pop 104 BPM bzw. Lo-Fi 90 BPM). Botschaft: inklusiv musizieren, „Damit alle Musik machen können.“
   Dazu `soundwhacker.mp4` (Hardware-Video, 1:47, aus den Fotos des Nutzers + Zeichnungen). `video` darf auch eine Liste sein.
+  Englische Fassung `soundwhacker-en.mp4` (1:39, Stimme „Brian“ `nPczCjzI2devNBz1zQrb`).
   **SoundWhacker-Technik (für Texte):** Kunststoffröhre, zwei Ringe aus leitendem Filament, innen ESP32-C3 Mini, Akku (USB-C),
   Farb-LED im Rohr (leuchtet bei Berührung, z. B. grün), kleine LED vorne = nur Status (an/verbunden). Touch-Sensor unter dem
   kleinen Punkt; Body Touch = beide Ringe halten (auch im Kreis mit mehreren Menschen). Verbindet sich per Bluetooth direkt mit

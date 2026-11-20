@@ -422,12 +422,23 @@ $('recSpeichern').onclick=()=>{
     else { const j=weiss.indexOf(m-1); d.style.left=((j+1)*w-w*.32)+'%'; d.style.width=(w*.64)+'%'; }
     k.appendChild(d); }
   const an=new Map();
-  k.addEventListener('pointerdown',e=>{ const d=e.target.closest('[data-m]'); if(!d) return; e.preventDefault(); audio(); const m=+d.dataset.m;
-    d.classList.add('an'); an.set(e.pointerId,d);
+  // Taste anschlagen (auch beim Gleiten)
+  function rein(d,id){ const m=+d.dataset.m; d.classList.add('an'); an.set(id,d);
     let i=TOENE.indexOf(m); if(i<0||i>4) i=Math.min(4,[...new Set(rec.ev.map(x=>x.m).concat(m))].sort((a,b)=>a-b).indexOf(m));
-    d._v=ton(i<0?0:i,m); schlag(i<0?0:i,performance.now(),true); d._k=rec.an?recTon(m):null; });
-  const los=e=>{ const d=an.get(e.pointerId); if(d){ d.classList.remove('an'); an.delete(e.pointerId); if(d._v&&ctx) aus(d._v,Math.max(ctx.currentTime,d._v.t0+.25)); recLos(d._k); d._k=null; } };
+    d._v=ton(i<0?0:i,m); schlag(i<0?0:i,performance.now(),true); d._k=rec.an?recTon(m):null; }
+  function raus(id,sofort){ const d=an.get(id); if(!d) return; d.classList.remove('an'); an.delete(id);
+    if(d._v&&ctx) aus(d._v,sofort?ctx.currentTime:Math.max(ctx.currentTime,d._v.t0+.25)); recLos(d._k); d._k=null; }
+  k.addEventListener('pointerdown',e=>{ const d=e.target.closest('[data-m]'); if(!d) return; e.preventDefault(); audio();
+    try{ e.target.releasePointerCapture&&e.target.releasePointerCapture(e.pointerId); }catch(x){}   // iPad: Finger darf über andere Tasten gleiten
+    raus(e.pointerId,true); rein(d,e.pointerId); });
+  // Gleiten: mit gedrückter Maustaste / Finger über die Tasten ziehen – jede neue Taste klingt, die vorige hört auf
+  k.addEventListener('pointermove',e=>{ if(!an.has(e.pointerId)) return; e.preventDefault();
+    const el=document.elementFromPoint(e.clientX,e.clientY), d=el&&el.closest&&el.closest('#klavier [data-m]');
+    if(!d){ return; } if(d===an.get(e.pointerId)) return;
+    raus(e.pointerId,true); rein(d,e.pointerId); });
+  const los=e=>raus(e.pointerId,false);
   k.addEventListener('pointerup',los); k.addEventListener('pointercancel',los); k.addEventListener('pointerleave',los);
+  window.addEventListener('pointerup',los);
 })();
 
 // ---------- Meine Lieder (Presets) ----------

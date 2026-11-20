@@ -54,6 +54,7 @@ Die Lieder kommen aus der Tischharfe. In der Liedauswahl sind **alle Lieder** �
 
 1. **● Lied einspielen** wählen.
 2. **● Aufnahme starten** und die Melodie spielen – mit den SoundWhackern (Tasten 1–5) **oder** auf der **Klaviatur** (g bis c‴, alle Töne frei wählbar).
+   **↔ Gleiten:** Auf der Klaviatur mit **gedrückter Maustaste** oder mit dem **Finger** (iPad) über die Tasten ziehen – jede Taste, über die du gleitest, klingt und wird aufgenommen.
 3. **■ Aufnahme beenden**. Die App merkt sich **Reihenfolge, Rhythmus und wie lange jeder Ton gehalten wurde**.
 4. **▶ Anhören**, **✕ Verwerfen** oder einen **Namen** eingeben und **💾 Speichern**.
 

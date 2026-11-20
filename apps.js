@@ -95,6 +95,7 @@ window.APPS = [
   },
   {
     id: "soundwhacker-spielen",
+    video: { src: "videos/soundwhacker-smart-control.mp4", bild: "videos/soundwhacker-smart-control.jpg", titel: "Werbevideo SoundWhacker Smart Control", datei: "SoundWhacker-Smart-Control.mp4" },
     zaehler: "/soundwhacker-looper/SoundWhacker_Spielen.html",
     titel: "SoundWhacker Smart Control",
     kurz: "Mit den SoundWhackern (oder den Tasten 1–5) Akkorde, Töne, Melodien und Arpeggios spielen, improvisieren und Loops steuern – mit eingebauten Instrumenten.",
@@ -107,6 +108,7 @@ window.APPS = [
   },
   {
     id: "miga",
+    video: { src: "videos/miga.mp4", bild: "videos/miga.jpg", titel: "Werbevideo MIGA", datei: "MIGA-Mimik-Gestik-Augensteuerung.mp4" },
     zaehler: "/soundwhacker-looper/SoundWhacker_Kamera.html",
     titel: "MIGA – Mimik, Gestik, Augensteuerung",
     kurz: "Musik machen mit Mimik, Gesten und Augen: Die Kamera erkennt Hände, Kopf, Gesicht, Augen oder den ganzen Körper und spielt dazu Akkorde, Töne oder Loops.",

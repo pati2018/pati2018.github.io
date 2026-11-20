@@ -115,6 +115,13 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
 - **Weitere Dateien:** `index.html` (Übersicht), `app.html` (zeigt die Anleitung
   einer App), `anleitungen/<id>.md` (Anleitungen), `style.css`, `theme.js`
   (Hell/Dunkel), `manifest.webmanifest` (Home-Bildschirm), `lib/` (marked, DOMPurify).
+- **Videos auf den Anleitungsseiten:** In `apps.js` je App optional `video: { src, bild, titel, datei }`; `app.html`
+  zeigt dann den Player und den Knopf „⬇ Video herunterladen“ (`download`-Attribut, Dateiname = `datei`).
+  Die Videos liegen in `videos/`: `soundwhacker-smart-control.mp4` (Werbevideo, 1:34) und `miga.mp4` (1:30), je mit
+  Vorschaubild `.jpg`. Gebaut wie das KI-Erklärvideo (animierte HTML-Seite + Playwright + ffmpeg), Stimme ElevenLabs
+  „Alexander – Deep TV Narrator“ (deutsche Bibliotheksstimme, ID `kkJxCnlRCckmfFvzDW5Q`), Musik aus dem Loop-Generator
+  der App (Pop 104 BPM bzw. Lo-Fi 90 BPM). Botschaft: inklusiv musizieren, „Damit alle Musik machen können.“
+  **Offen:** Shop-Link für die SoundWhacker in der YouTube-Beschreibung (Nutzer liefert ihn später).
 - **Neue App hinzufügen (2 Schritte):**
   1. In `apps.js` einen neuen Block in `window.APPS` eintragen
      (`id`, `titel`, `kurz`, `link`, `repo`, `kategorie`, `symbol`, `datum`).

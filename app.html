@@ -10,6 +10,12 @@
   <meta name="theme-color" content="#2f5bd3">
   <meta name="apple-mobile-web-app-title" content="Web-Apps">
   <link rel="stylesheet" href="style.css">
+  <style>
+    .appvideo { margin: 22px 0 6px; display: flex; flex-direction: column; gap: 10px; }
+    .appvideo video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; border-radius: 14px; background: #0b0f14; }
+    .appvideo .actions { align-items: center; }
+    .appvideo .hint { color: var(--muted); font-size: 15px; }
+  </style>
   <script src="theme.js"></script>
 <!-- Aufrufe zählen: GoatCounter (datenschutzfreundlich, ohne Cookies) – Zähler auf der Übersicht -->
 <script data-goatcounter="https://pati2018.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
@@ -45,6 +51,10 @@
           ${(app.links || [{ label: "App öffnen", url: app.link }]).map(l => `<a class="btn primary" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>`).join("")}
           ${app.repo ? `<a class="btn" href="${esc(app.repo)}" target="_blank" rel="noopener">Quellcode</a>` : ""}
         </div>
+        ${app.video ? `<section class="appvideo" aria-label="${esc(app.video.titel || "Video")}">
+          <video controls playsinline preload="none"${app.video.bild ? ` poster="${esc(app.video.bild)}"` : ""}><source src="${esc(app.video.src)}" type="video/mp4"></video>
+          <div class="actions"><a class="btn" href="${esc(app.video.src)}" download="${esc(app.video.datei || "")}">⬇ Video herunterladen</a><span class="hint">am iPad: Video öffnen → Teilen → „Video sichern“</span></div>
+        </section>` : ""}
         <article class="guide" id="anleitung"><p class="empty">Lade Anleitung …</p></article>`;
 
       fetch(`anleitungen/${encodeURIComponent(app.id)}.md`)

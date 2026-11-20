@@ -286,7 +286,11 @@ function schlag(i, wannMs, live){ const f=F[i]; f.hit=wannMs; f.live=!!live; }
 let pos=0;
 function bandBauen(){ $('band').innerHTML=LIED.noten.map(n=>'<span style="background:'+FARBE[figVon(n.m)]+'"></span>').join(''); bandZeigen(); }
 function bandZeigen(){ const sp=$('band').children; [...sp].forEach((e,k)=>{ e.classList.toggle('jetzt',k===pos); e.classList.toggle('fertig',k<pos); });
-  const cur=sp[pos]; if(cur){ const b=$('band'), r=cur.getBoundingClientRect(), rb=b.getBoundingClientRect(); b.scrollLeft=Math.max(0,b.scrollLeft+(r.left-rb.left)-rb.width*0.3); }
+  // Nur weiterschieben, wenn es nötig ist: erst wenn der aktuelle Ton fast am rechten Rand ist, springt die Reihe ein Stück weiter
+  const b=$('band'), cur=sp[pos];
+  if(pos===0) b.scrollLeft=0;
+  else if(cur){ const r=cur.getBoundingClientRect(), rb=b.getBoundingClientRect(), x=r.left-rb.left;
+    if(x>rb.width*0.82||x<0) b.scrollLeft=Math.max(0,b.scrollLeft+x-rb.width*0.12); }
   F.forEach((f,i)=>f.hint= st.modus==='mit' && LIED && LIED.noten[pos] && figVon(LIED.noten[pos].m)===i); }
 
 // ---------- Vorspielen ----------

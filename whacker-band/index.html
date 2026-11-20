@@ -522,6 +522,8 @@ let tT=0; function toast(t){ let e=document.querySelector('.toast'); if(!e){ e=d
 ['pointerdown','keydown','touchstart'].forEach(ev=>window.addEventListener(ev,()=>audio(),{once:true,passive:true}));
 
 liedListe(); liedSetzen(); aufstellen(true); modus(st.modus); meineZeigen();
+// Offline: App und alle Klänge im Gerät speichern (Service Worker)
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').then(()=>navigator.serviceWorker.ready).then(()=>{ let neu=true; try{ neu=!localStorage.getItem('whacker-band-offline'); localStorage.setItem('whacker-band-offline','1'); }catch(e){} if(neu) setTimeout(()=>toast('✓ Jetzt auch ohne Internet spielbar'),1500); }).catch(()=>{}); }
 })();
 </script>
 </body>

@@ -72,6 +72,16 @@ Im Bereich **💾 Meine Lieder** (unter „● Lied einspielen“):
 
 Die Lieder werden **nur in diesem Browser** gespeichert. Für ein anderes Gerät die Datei herunterladen und dort hochladen.
 
+## Ohne Internet spielen
+
+Die App funktioniert auch **offline**:
+
+1. Die App **einmal mit Internet öffnen**. Sie speichert dann alles im Gerät: alle Lieder und alle Klänge (ungefähr 9 MB). Danach erscheint „✓ Jetzt auch ohne Internet spielbar“.
+2. Ab jetzt geht die App auch ohne WLAN, zum Beispiel im Workshop-Raum.
+3. **Tipp fürs iPad:** Über Teilen → **„Zum Home-Bildschirm“** gibt es ein eigenes App-Symbol.
+
+Mit Internet holt sich die App automatisch die neueste Fassung.
+
 ## Tipps & Probleme
 
 - **Kein Ton?** Einmal auf den Bildschirm tippen. Am iPad den Stummschalter prüfen.

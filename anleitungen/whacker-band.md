@@ -27,6 +27,8 @@ Die linke Hand hält den SoundWhacker unten am **schwarzen Teil**. Zum Spielen g
 | Klang | Marimba, Klavier, Vibraphon, Xylophon, Spieluhr, Kalimba, Steeldrums, E-Piano, Gitarre, Koto, Harfe – und **verzerrte Gitarren**: Overdrive, Distortion, Feedback und Wah-Wah |
 | Vollbild | **⛶ Vollbild** – ideal für den Beamer |
 
+**Tonlänge:** Ein Ton klingt so lange, wie der SoundWhacker (oder die Taste, die Figur, die Klaviertaste) **gehalten** wird – mindestens eine Viertelsekunde. Beim Vorspielen klingt jeder Ton so lang wie seine Note.
+
 Über der Bühne läuft ein **Notenband** aus farbigen Punkten mit: Jeder Punkt ist ein Ton in der Farbe der Figur, die ihn spielt. Beim Mitspielen geht es erst weiter, wenn die richtige Figur gespielt hat. Am Ende des Liedes geht es von vorne los.
 
 ## Mitspielen: drei Spielarten
@@ -52,7 +54,7 @@ Die Lieder kommen aus der Tischharfe. In der Liedauswahl sind **alle Lieder** �
 
 1. **● Lied einspielen** wählen.
 2. **● Aufnahme starten** und die Melodie spielen – mit den SoundWhackern (Tasten 1–5) **oder** auf der **Klaviatur** (g bis c‴, alle Töne frei wählbar).
-3. **■ Aufnahme beenden**. Die App merkt sich **Reihenfolge und Rhythmus**.
+3. **■ Aufnahme beenden**. Die App merkt sich **Reihenfolge, Rhythmus und wie lange jeder Ton gehalten wurde**.
 4. **▶ Anhören**, **✕ Verwerfen** oder einen **Namen** eingeben und **💾 Speichern**.
 
 - Die Töne werden automatisch den fünf Figuren zugeordnet (tiefster Ton = rot).

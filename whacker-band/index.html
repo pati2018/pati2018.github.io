@@ -179,7 +179,8 @@ async function ladeKlang(id){
   catch(e){ lade[id]='fehler'; toast('Klang konnte nicht geladen werden'); }
 }
 const stimmen=[null,null,null,null,null];
-function ton(fig, midi, wann){   // wann = ctx-Zeit (optional)
+// Ein Ton klingt so lange, wie der SoundWhacker / die Taste gehalten wird (wie in Smart Control) – beim Vorspielen so lange wie die Note
+function ton(fig, midi, wann, dauer){   // wann = ctx-Zeit (optional), dauer in Sekunden (optional)
   audio(); const B=puffer[st.klang]||puffer.marimba; if(!B){ ladeKlang(st.klang); return; }
   let best=null; for(const k in B){ const v=+k; if(best===null||Math.abs(v-midi)<Math.abs(best-midi)) best=v; }
   const t=Math.max(ctx.currentTime+.005, wann||0), src=ctx.createBufferSource(), g=ctx.createGain();
@@ -188,8 +189,14 @@ function ton(fig, midi, wann){   // wann = ctx-Zeit (optional)
   src.connect(g); g.connect(dry); g.connect(wet._in); src.start(t);
   // alte Stimme dieser Figur sanft beenden
   const alt=stimmen[fig]; if(alt){ try{ alt.g.gain.setTargetAtTime(0,t,.06); alt.s.stop(t+.5); }catch(e){} }
-  stimmen[fig]={s:src,g}; try{ src.stop(t+4); }catch(e){}
+  const v={s:src,g,t0:t}; stimmen[fig]=v; try{ src.stop(t+4); }catch(e){}
+  if(dauer) aus(v,t+Math.max(.12,dauer));
+  return v;
 }
+function aus(v,wann){ if(!v||v.los) return; v.los=true; const t=Math.max(wann||0,ctx.currentTime);
+  try{ v.g.gain.setTargetAtTime(0,t,.07); v.s.stop(t+.6); }catch(e){} }
+// Loslassen: mindestens 0,25 s klingen lassen, damit kurze Berührungen hörbar bleiben
+function loslassen(fig){ const v=stimmen[fig]; if(v&&ctx) aus(v,Math.max(ctx.currentTime,v.t0+.25)); if(typeof recLos==='function'){ recLos(recIdx[fig]); recIdx[fig]=null; } }
 
 // ---------- Lieder ----------
 function eigene(){ try{ const l=JSON.parse(localStorage.getItem(LKEY)||'[]'); return Array.isArray(l)?l.filter(x=>x&&x.name&&x.noten):[]; }catch(e){ return []; } }
@@ -202,7 +209,7 @@ function liedDaten(id){
     // in den Klangbereich schieben (ganze Oktaven)
     const ms=n.map(x=>x.m); let s=0; while(Math.min(...ms)+s<55) s+=12; while(Math.max(...ms)+s>84) s-=12; n.forEach(x=>x.m+=s);
     return {titel:l.titel,tempo:l.tempo||100,noten:n}; }
-  if(id.startsWith('eigen:')){ const l=eigene().find(x=>x.name===id.slice(6)); if(!l) return null; return {titel:l.name,tempo:60,noten:l.noten.map(x=>({m:x.m,dur:x.d}))}; }
+  if(id.startsWith('eigen:')){ const l=eigene().find(x=>x.name===id.slice(6)); if(!l) return null; return {titel:l.name,tempo:60,noten:l.noten.map(x=>({m:x.m,dur:x.d,l:x.l}))}; }
   return null;
 }
 function toeneVon(noten){ return [...new Set(noten.map(x=>x.m))].sort((a,b)=>a-b); }
@@ -262,6 +269,7 @@ for(let i=0;i<5;i++){
   f.nr=el('text',{x:0,y:44,'text-anchor':'middle','font-size':30,'font-weight':800,fill:c},g); f.nr.textContent=i+1;
   g.style.cursor='pointer';
   g.addEventListener('pointerdown',e=>{ e.preventDefault(); spielerTon(i); });
+  ['pointerup','pointercancel','pointerleave'].forEach(ev=>g.addEventListener(ev,()=>loslassen(i)));
   F.push(f);
 }
 function positionen(art){
@@ -335,7 +343,7 @@ function start(){
   plan=LIED.noten.map((n,k)=>{ const at=t; t+=n.dur*sp; return {k,n,at}; });
   // Jeder Ton wird kurz vorher genau geplant (so kann „Stopp“ alles sofort beenden)
   plan.forEach(p=>{ const i=figFuer(p.k);
-    p.to=setTimeout(()=>{ ton(i,p.n.m,t0+p.at); F[i].hit=p0+p.at*1000; F[i].live=false; },Math.max(0,(VOR+p.at)*1000-250));
+    p.to=setTimeout(()=>{ ton(i,p.n.m,t0+p.at,Math.min(p.n.dur*.92,p.n.l||99)*sp); F[i].hit=p0+p.at*1000; F[i].live=false; },Math.max(0,(VOR+p.at)*1000-250));
     p.to2=setTimeout(()=>{ pos=p.k; bandZeigen(); },(VOR+p.at)*1000); });
   timer=setTimeout(()=>{ laeuft=false; $('start').textContent='▶ Start'; pos=LIED.noten.length; bandZeigen(); },(VOR+t)*1000+600);
 }
@@ -356,12 +364,13 @@ function spielerTon(i){
     bandZeigen(); return;
   }
   const m=FIGTON[i]; if(m===null||m===undefined) return;
-  if(st.modus==='auf' && rec.an){ recTon(m); }
+  if(st.modus==='auf' && rec.an){ recIdx[i]=recTon(m); }
   ton(i,m); schlag(i,performance.now(),true);
   if(st.modus==='mit'){ const soll=LIED.noten[pos]; if(soll&&figFuer(pos)===i){ pos++; if(pos>=LIED.noten.length) return liedRundeFertig(); bandZeigen(); } }
 }
 // SoundWhacker = Tasten 1–5 (auch Ziffernblock). Gehaltene Taste (Wiederholung) zählt nicht doppelt.
 const tasteNr=e=>{ const m=/^(Digit|Numpad)([1-5])$/.exec(e.code||''); if(m) return +m[2]; return (e.key>='1'&&e.key<='5'&&e.key.length===1)? +e.key : 0; };
+window.addEventListener('keyup',e=>{ const n=tasteNr(e); if(n) loslassen(n-1); });
 window.addEventListener('keydown',e=>{
   if(e.target.tagName==='INPUT') return;
   const n=tasteNr(e);
@@ -371,7 +380,10 @@ window.addEventListener('keydown',e=>{
 
 // ---------- Aufnahme ----------
 const rec={an:false,t0:0,ev:[],noten:null};
-function recTon(m){ const t=performance.now(); if(!rec.ev.length) rec.t0=t; rec.ev.push({m,t:t-rec.t0}); recInfo(); }
+function recTon(m){ const t=performance.now(); if(!rec.ev.length) rec.t0=t; rec.ev.push({m,t:t-rec.t0}); recInfo(); return rec.ev.length-1; }
+// Loslassen während der Aufnahme: merkt sich, wie lange der Ton gehalten wurde
+function recLos(k){ if(!rec.an||k==null||!rec.ev[k]||rec.ev[k].l!=null) return; rec.ev[k].l=Math.max(.15,(performance.now()-rec.t0-rec.ev[k].t)/1000); }
+const recIdx=[null,null,null,null,null];
 function recInfo(){
   const toene=[...new Set(rec.ev.map(x=>x.m))].sort((a,b)=>a-b);
   let txt=rec.an? '<span id="recDot"></span>Aufnahme läuft – '+rec.ev.length+' Töne' : (rec.noten? rec.noten.length+' Töne aufgenommen':'');
@@ -383,12 +395,12 @@ $('recStart').onclick=()=>{
   audio();
   if(!rec.an){ rec.an=true; rec.ev=[]; rec.noten=null; $('recStart').textContent='■ Aufnahme beenden'; $('recDanach').hidden=true; recInfo(); }
   else { rec.an=false; $('recStart').textContent='● Neu aufnehmen';
-    if(rec.ev.length){ rec.noten=rec.ev.map((x,k)=>({m:x.m,d:+(k<rec.ev.length-1?(rec.ev[k+1].t-x.t)/1000:1).toFixed(3)})); $('recDanach').hidden=false; }
+    if(rec.ev.length){ rec.noten=rec.ev.map((x,k)=>{ const d=+(k<rec.ev.length-1?(rec.ev[k+1].t-x.t)/1000:Math.max(1,x.l||0)).toFixed(3); const n={m:x.m,d}; if(x.l!=null&&x.l<d*.9) n.l=+x.l.toFixed(3); return n; }); $('recDanach').hidden=false; }
     recInfo(); }
 };
 $('recWeg').onclick=()=>{ rec.ev=[]; rec.noten=null; $('recDanach').hidden=true; $('recStart').textContent='● Aufnahme starten'; recInfo(); };
 $('recHoeren').onclick=()=>{ if(!rec.noten) return; const alt=LIED, altT=TOENE, altF=FIGTON;
-  LIED={titel:'Aufnahme',tempo:60,noten:rec.noten.map(x=>({m:x.m,dur:x.d}))}; TOENE=toeneVon(LIED.noten); FIGTON=[0,1,2,3,4].map(i=>TOENE[i]??null);
+  LIED={titel:'Aufnahme',tempo:60,noten:rec.noten.map(x=>({m:x.m,dur:x.d,l:x.l}))}; TOENE=toeneVon(LIED.noten); FIGTON=[0,1,2,3,4].map(i=>TOENE[i]??null);
   bandBauen(); const merkT=st.tempo; st.tempo=100; start(); st.tempo=merkT;
   const ende=LIED.noten.reduce((a,x)=>a+x.dur,0)*1000+1200; setTimeout(()=>{ LIED=alt; TOENE=altT; FIGTON=altF; bandBauen(); },ende); };
 $('recSpeichern').onclick=()=>{
@@ -411,8 +423,8 @@ $('recSpeichern').onclick=()=>{
   k.addEventListener('pointerdown',e=>{ const d=e.target.closest('[data-m]'); if(!d) return; e.preventDefault(); audio(); const m=+d.dataset.m;
     d.classList.add('an'); an.set(e.pointerId,d);
     let i=TOENE.indexOf(m); if(i<0||i>4) i=Math.min(4,[...new Set(rec.ev.map(x=>x.m).concat(m))].sort((a,b)=>a-b).indexOf(m));
-    ton(i<0?0:i,m); schlag(i<0?0:i,performance.now(),true); if(rec.an) recTon(m); });
-  const los=e=>{ const d=an.get(e.pointerId); if(d){ d.classList.remove('an'); an.delete(e.pointerId); } };
+    d._v=ton(i<0?0:i,m); schlag(i<0?0:i,performance.now(),true); d._k=rec.an?recTon(m):null; });
+  const los=e=>{ const d=an.get(e.pointerId); if(d){ d.classList.remove('an'); an.delete(e.pointerId); if(d._v&&ctx) aus(d._v,Math.max(ctx.currentTime,d._v.t0+.25)); recLos(d._k); d._k=null; } };
   k.addEventListener('pointerup',los); k.addEventListener('pointercancel',los); k.addEventListener('pointerleave',los);
 })();
 

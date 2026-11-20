@@ -39,7 +39,7 @@ Im Modus **🙌 Mitspielen** erscheint eine zweite Leiste mit drei Spielarten �
 |---|---|
 | 🔁 **SW spielt Melodie** | Jede Berührung – **egal welcher SoundWhacker** – spielt den nächsten Ton des Liedes. Die Figur des Spielers bewegt sich und leuchtet. Die Punkte oben sind erst hellgrau und färben sich in der Farbe von dem, der den Ton gespielt hat. |
 | 🔢 **Feste SW-Reihenfolge** | Reihum: SW1 → SW2 → SW3 … Wer dran ist, **leuchtet schon leicht**. Wer nicht dran ist, bleibt stumm (die Figur schüttelt kurz den Kopf). Mit **Mitspieler: SW1–2 … SW1–5** legst du fest, wie viele mitspielen – die anderen Figuren werden blass. |
-| 🎯 **Feste SW-Töne** | Jeder SoundWhacker hat seinen **eigenen Ton** (rot = tiefster … blau = höchster). Die Figur, die als Nächstes dran ist, **leuchtet schon leicht**; das Lied geht weiter, sobald sie spielt. |
+| 🎯 **Feste SW-Töne** | Jeder SoundWhacker hat seinen **eigenen Ton** (rot = tiefster … blau = höchster). Die Figur, die als Nächstes dran ist, **leuchtet schon leicht**. **Nur sie klingt** – ein SoundWhacker, der nicht dran ist, bleibt stumm (die Figur schüttelt kurz den Kopf). Das Lied geht weiter, sobald die richtige Figur gespielt hat. |
 
 Am Liedende kommt „🎉 Super gespielt!“ und es geht von vorne los. **↺ Von vorne** startet jederzeit neu. Die gewählte Spielart merkt sich die App.
 

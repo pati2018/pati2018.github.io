@@ -364,9 +364,11 @@ function spielerTon(i){
     bandZeigen(); return;
   }
   const m=FIGTON[i]; if(m===null||m===undefined) return;
+  // Feste SW-Töne beim Mitspielen: nur wer dran ist, klingt – ein falscher SoundWhacker bleibt stumm (Figur schüttelt kurz den Kopf)
+  if(st.modus==='mit'){ if(!LIED.noten[pos]||figFuer(pos)!==i){ F[i].nein=performance.now(); return; } }
   if(st.modus==='auf' && rec.an){ recIdx[i]=recTon(m); }
   ton(i,m); schlag(i,performance.now(),true);
-  if(st.modus==='mit'){ const soll=LIED.noten[pos]; if(soll&&figFuer(pos)===i){ pos++; if(pos>=LIED.noten.length) return liedRundeFertig(); bandZeigen(); } }
+  if(st.modus==='mit'){ pos++; if(pos>=LIED.noten.length) return liedRundeFertig(); bandZeigen(); }
 }
 // SoundWhacker = Tasten 1–5 (auch Ziffernblock). Gehaltene Taste (Wiederholung) zählt nicht doppelt.
 const tasteNr=e=>{ const m=/^(Digit|Numpad)([1-5])$/.exec(e.code||''); if(m) return +m[2]; return (e.key>='1'&&e.key<='5'&&e.key.length===1)? +e.key : 0; };
@@ -466,7 +468,7 @@ function info(){
   const t={vor:'Die Band spielt „'+LIED.titel+'“ vor. Start mit dem Knopf oder der Leertaste.',
            mit:{reihum:'SW spielt Melodie: Jede Berührung – egal welcher SoundWhacker – spielt den nächsten Ton. Die Punkte färben sich in der Farbe von dem, der gespielt hat.',
                 reihe:'Feste SW-Reihenfolge: SW1 → SW2 → … – wer dran ist, leuchtet schon leicht. Wer nicht dran ist, bleibt stumm.',
-                fest:'Feste SW-Töne: Jeder SoundWhacker hat seinen eigenen Ton. Die Figur, die als Nächstes dran ist, leuchtet schon leicht.'}[spielart()]+(st.spielart==='fest'&&!fuenf()?' (Dieses Lied hat mehr als 5 Töne – „Feste SW-Töne“ geht nur mit ⭐-Liedern.)':''),
+                fest:'Feste SW-Töne: Jeder SoundWhacker hat seinen eigenen Ton. Die Figur, die als Nächstes dran ist, leuchtet schon leicht – nur sie klingt, alle anderen bleiben stumm.'}[spielart()]+(st.spielart==='fest'&&!fuenf()?' (Dieses Lied hat mehr als 5 Töne – „Feste SW-Töne“ geht nur mit ⭐-Liedern.)':''),
            auf:'Spiele eine Melodie ein. Mit höchstens 5 verschiedenen Tönen wird sie ein ⭐-Lied.'}[st.modus];
   $('info').textContent=t+(fuenf()?'  Töne der Figuren: '+FIGTON.map((m,i)=>m===null?'–':tonName(m)).join(' · '):'  Dieses Lied hat '+TOENE.length+' verschiedene Töne – die Figuren spielen reihum.');
 }

@@ -37,10 +37,11 @@
   #tempoWert{min-width:150px;color:var(--text);font-weight:700}
   .buehne{position:relative;border-radius:18px;overflow:hidden;background:radial-gradient(1200px 600px at 50% 110%,#26365f 0%,#121a33 55%,#0a0f1f 100%);border:1px solid var(--linie);touch-action:manipulation}
   .buehne svg{display:block;width:100%;height:min(calc(100vh - 250px),47.5vw);min-height:260px}
-  #band{display:flex;gap:6px;align-items:center;overflow:hidden;min-height:44px;padding:4px 6px;mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
-  #band span{flex:0 0 auto;width:30px;height:30px;border-radius:50%;opacity:.45;transition:transform .15s,opacity .15s}
-  #band span.jetzt{opacity:1;transform:scale(1.35);box-shadow:0 0 0 4px #fff}
-  #band span.fertig{opacity:.18}
+  #band{display:flex;gap:12px;align-items:center;overflow:hidden;min-height:92px;padding:10px 18px;scroll-behavior:smooth;mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent)}
+  #band span{flex:0 0 auto;width:56px;height:56px;border-radius:50%;opacity:.9;transition:transform .15s,opacity .15s;box-shadow:inset 0 -6px 0 rgba(0,0,0,.18)}
+  #band span.jetzt{opacity:1;transform:scale(1.28);box-shadow:0 0 0 5px #fff,0 0 22px 6px rgba(255,255,255,.45)}
+  #band span.fertig{opacity:.3}
+  @media (max-width:700px){#band span{width:40px;height:40px}#band{min-height:70px;gap:9px}}
   .hinweis{color:var(--mut);font-size:16px;margin:0}
   .panel{background:var(--karte);border:1px solid var(--linie);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
   .panel h2{margin:0;font-size:20px}
@@ -285,7 +286,7 @@ function schlag(i, wannMs, live){ const f=F[i]; f.hit=wannMs; f.live=!!live; }
 let pos=0;
 function bandBauen(){ $('band').innerHTML=LIED.noten.map(n=>'<span style="background:'+FARBE[figVon(n.m)]+'"></span>').join(''); bandZeigen(); }
 function bandZeigen(){ const sp=$('band').children; [...sp].forEach((e,k)=>{ e.classList.toggle('jetzt',k===pos); e.classList.toggle('fertig',k<pos); });
-  const cur=sp[pos]; if(cur){ const b=$('band'); b.scrollLeft=cur.offsetLeft-b.clientWidth/2; }
+  const cur=sp[pos]; if(cur){ const b=$('band'), r=cur.getBoundingClientRect(), rb=b.getBoundingClientRect(); b.scrollLeft=Math.max(0,b.scrollLeft+(r.left-rb.left)-rb.width*0.3); }
   F.forEach((f,i)=>f.hint= st.modus==='mit' && LIED && LIED.noten[pos] && figVon(LIED.noten[pos].m)===i); }
 
 // ---------- Vorspielen ----------
@@ -312,13 +313,14 @@ function spielerTon(i){
   ton(i,m); schlag(i,performance.now(),true);
   if(st.modus==='mit'){ const soll=LIED.noten[pos]; if(soll&&figVon(soll.m)===i){ pos++; if(pos>=LIED.noten.length){ toast('🎉 Super gespielt!'); pos=0; } bandZeigen(); } }
 }
-const gedrueckt=new Set();
+// SoundWhacker = Tasten 1–5 (auch Ziffernblock). Gehaltene Taste (Wiederholung) zählt nicht doppelt.
+const tasteNr=e=>{ const m=/^(Digit|Numpad)([1-5])$/.exec(e.code||''); if(m) return +m[2]; return (e.key>='1'&&e.key<='5'&&e.key.length===1)? +e.key : 0; };
 window.addEventListener('keydown',e=>{
-  if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT') return;
-  const k=e.key; if(k>='1'&&k<='5'){ e.preventDefault(); if(gedrueckt.has(k)) return; gedrueckt.add(k); spielerTon(+k-1); }
-  else if(k===' '&&st.modus!=='auf'){ e.preventDefault(); $('start').click(); }
+  if(e.target.tagName==='INPUT') return;
+  const n=tasteNr(e);
+  if(n){ e.preventDefault(); if(e.target.tagName==='SELECT') e.target.blur(); if(!e.repeat) spielerTon(n-1); }
+  else if(e.key===' '&&st.modus!=='auf'&&e.target.tagName!=='SELECT'){ e.preventDefault(); $('start').click(); }
 });
-window.addEventListener('keyup',e=>gedrueckt.delete(e.key));
 
 // ---------- Aufnahme ----------
 const rec={an:false,t0:0,ev:[],noten:null};

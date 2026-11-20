@@ -496,7 +496,7 @@ function modus(m){
   document.querySelectorAll('.modi button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===m));
   $('aufPanel').hidden=m!=='auf'; document.body.classList.toggle('einspielen',m==='auf'); $('buehnenBox').setAttribute('aria-hidden',m==='auf'); $('meinePanel').hidden=m!=='auf';
   $('start').hidden=m!=='vor'; $('tempoLabel').hidden=m!=='vor';   /* Start und Tempo nur beim Vorspielen */ $('start').textContent='▶ Start';
-  $('mitLeiste').hidden=m!=='mit'; spielartZeigen();
+  $('mitLeiste').hidden=m==='vor'; /* Spielarten bleiben auch beim Lied einspielen sichtbar */ spielartZeigen();
   pos=0; zug=0; spieler=[]; bandBauen(); info();
 }
 function spielartZeigen(){

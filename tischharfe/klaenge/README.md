@@ -18,3 +18,7 @@ gleiche Aufbereitung wie oben. Die Tischharfe nutzt sie (noch) nicht; die SoundW
 **Blasinstrumente (SoundWhacker Band):** `floete/` (Flute, 0:73), `blockfloete/` (Recorder, 0:74), `panfloete/` (Pan Flute, 0:75),
 `piccolo/` (Piccolo, 0:72), `okarina/` (Ocarina, 0:79), `klarinette/` (Clarinet, 0:71), `sopransax/` (0:64), `altsax/` (0:65),
 `tenorsax/` (0:66) – aus **GeneralUser GS v2.0**, gleiche Töne (54–81), je ca. 6 s lang (damit gehaltene Töne lange klingen).
+
+**Schlagzeug (SoundWhacker Band):** `schlag-standard/` (Kit 0), `schlag-rock/` (Power, 16), `schlag-elektro/` (Electronic, 24),
+`schlag-808/` (808/909, 25), `schlag-jazz/` (32), `schlag-besen/` (Brush, 40) – aus **GeneralUser GS v2.0**. Anders als oben:
+Dateien `55.mp3` … `84.mp3` = Klaviertasten g bis c‴, jede Taste ein Schlaginstrument (Liste `SCHLAG_NAME` in `whacker-band/index.html`).

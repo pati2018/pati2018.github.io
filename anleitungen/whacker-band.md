@@ -25,6 +25,7 @@ Die linke Hand hält den SoundWhacker unten am **schwarzen Teil**. Zum Spielen g
 | Tempo | Regler von **40 %** („langsam zum Üben“) über **100 %** („normal“) bis 130 % |
 | Aufstellung | **Reihe, Halbkreis** (Standard), **Kreis** oder **offenes U** – die Figuren laufen sanft an ihren neuen Platz |
 | Klang | Marimba, Klavier, Vibraphon, Xylophon, Spieluhr, Kalimba, Steeldrums, E-Piano, Gitarre, Koto, Harfe – **verzerrte Gitarren**: Overdrive, Distortion, Feedback und Wah-Wah – **Flöten**: Querflöte, Blockflöte, Panflöte, Piccoloflöte, Okarina – **Klarinette** und **Saxophon** (Sopran, Alt, Tenor) |
+| Schlagzeug | 6 Sets: **Standard, Rock, Elektro, 808, Jazz, Besen** (unten in der Klangauswahl) – siehe „Schlagzeug“ |
 | Hall | Regler von **0 %** (trocken) über kleiner Raum und Saal bis **Kirche** (100 %) – die App merkt sich die Einstellung |
 | Vollbild | **⛶ Vollbild** – ideal für den Beamer |
 
@@ -73,11 +74,19 @@ Im Bereich **💾 Meine Lieder** (unter „● Lied einspielen“):
 
 Die Lieder werden **nur in diesem Browser** gespeichert. Für ein anderes Gerät die Datei herunterladen und dort hochladen.
 
+## Schlagzeug
+
+Unten in der Klangauswahl stehen **6 Schlagzeugsets**: Standard, Rock, Elektro, 808, Jazz und Besen.
+
+- Die **SoundWhacker** spielen dann feste Schlaginstrumente: **SW1 Bassdrum, SW2 Snare, SW3 Hi-Hat, SW4 Tom, SW5 Becken**. Das steht auch farbig unter der Leiste.
+- Die **Klaviatur** (bei „● Lied einspielen“) ist **beschriftet**: Jede Taste ist ein anderes Schlaginstrument – Bassdrum, Snare, Hi-Hat, sechs Toms, Becken, Ride, Splash, Tamburin, Kuhglocke, Maracas, Bongos, Congas und mehr.
+- Ein Lied, das mit Schlagzeug eingespielt wurde, merkt sich die Schlaginstrumente und wird später als **Rhythmus** wieder abgespielt.
+
 ## Ohne Internet spielen
 
 Die App funktioniert auch **offline**:
 
-1. Die App **einmal mit Internet öffnen**. Sie speichert dann alles im Gerät: alle Lieder und alle Klänge (ungefähr 17 MB). Danach erscheint „✓ Jetzt auch ohne Internet spielbar“.
+1. Die App **einmal mit Internet öffnen**. Sie speichert dann alles im Gerät: alle Lieder und alle Klänge (ungefähr 20 MB). Danach erscheint „✓ Jetzt auch ohne Internet spielbar“.
 2. Ab jetzt geht die App auch ohne WLAN, zum Beispiel im Workshop-Raum.
 3. **Tipp fürs iPad:** Über Teilen → **„Zum Home-Bildschirm“** gibt es ein eigenes App-Symbol.
 

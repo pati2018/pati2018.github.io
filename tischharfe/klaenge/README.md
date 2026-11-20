@@ -9,8 +9,8 @@ Lizenz: `LIZENZ-GeneralUser-GS.txt` (erlaubt die Nutzung und Veränderung in eig
 Gerendert mit spessasynth_core (ohne Halleffekte; der Hall kommt in der Tischharfe dazu), pro Instrument gemeinsam
 auf −3 dBFS normalisiert, Anfangsstille entfernt, als Mono-MP3 (112 kbit/s) gespeichert. Dateiname = MIDI-Tonnummer.
 
-## Verzerrte Gitarren (für die Whacker-Band)
+## Verzerrte Gitarren (für die SoundWhacker Band)
 
 `overdrive/` (Overdrive Guitar, Bank 0 Programm 29), `distortion/` (Distortion Guitar, 0:30), `feedback/` (Feedback Guitar, 8:30)
 und `wah/` (Wah Guitar, 11:29, CC21 = 90) – direkt aus **GeneralUser GS v2.0** gerendert, gleiche Töne (54–81, Abstand 3) und
-gleiche Aufbereitung wie oben. Die Tischharfe nutzt sie (noch) nicht; die Whacker-Band bietet sie in der Klangauswahl an.
+gleiche Aufbereitung wie oben. Die Tischharfe nutzt sie (noch) nicht; die SoundWhacker Band bietet sie in der Klangauswahl an.

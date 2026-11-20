@@ -65,7 +65,7 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
     - `singen/` – Singen mit SoundWhackern
     - `atemklang/` – Atemklang
     - `fagott/` – Fagott (Klänge in `klang/`, Bassoon aus GeneralUser GS; Lied-Modus lädt `../tischharfe/lieder.js`)
-    - `whacker-band/` – Whacker-Band: 5 animierte Figuren (SW-Farben) mit SoundWhacker (weiße Röhre, unten schwarz; linke Hand
+    - `whacker-band/` – **SoundWhacker Band** (früher „Whacker-Band“, Ordner bleibt `whacker-band/`; Symbol = SW-Röhre mit zwei schwarzen Ringen): 5 animierte Figuren (SW-Farben) mit SoundWhacker (weiße Röhre, unten schwarz; linke Hand
       hält unten, rechte Hand berührt oben → Röhre leuchtet). Modi Vorspielen / Mitspielen (Tasten 1–5, nächste Figur leuchtet leicht) /
       Lied einspielen (Tasten oder Klaviatur g–c‴ mit Gleiten per Maus/Finger, Rhythmus + Haltedauer werden gespeichert). Aufstellung Reihe/Halbkreis/Kreis/U, Tempo 40–130 %.
       Klänge aus `../tischharfe/klaenge/` + Harfe (dort auch verzerrte Gitarren overdrive/distortion/feedback/wah aus GeneralUser GS), Lieder aus `../tischharfe/lieder.js` (alle; ⭐ = ≤ 5 Töne, sonst Figuren reihum,
@@ -74,7 +74,7 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
       Mitspielen hat 3 Spielarten wie „Gemeinsame Melodie“ in Smart Control: SW spielt Melodie (reihum), Feste SW-Reihenfolge
       (SW1–n, Rest stumm), Feste SW-Töne (zeigt immer, wer dran ist – kein Schalter; nur wer dran ist, klingt, falsche SWs bleiben stumm). Einstellungen `spielart`, `reiheN`.
       Eine Jarvis-Sprachsteuerung (Web Speech API) wurde ausprobiert und auf Wunsch wieder entfernt – nicht erneut einbauen.
-  - **Achtung:** `tischharfe/lieder.js` lädt auch SoundWhacker Spielen (Gemeinsame Melodie), das Fagott und die Whacker-Band.
+  - **Achtung:** `tischharfe/lieder.js` lädt auch SoundWhacker Spielen (Gemeinsame Melodie), das Fagott und die SoundWhacker Band.
     Wer Lieder ändert, ändert sie in beiden Apps – und erhöht in `SoundWhacker_Spielen.html`
     die Nummer bei `../tischharfe/lieder.js?v=…`, sonst bleibt dort die alte Liste im Speicher.
   - **Reihenfolge auf der Übersicht:** 1. SoundWhacker Smart Control, 2. MIGA,

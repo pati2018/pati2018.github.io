@@ -37,7 +37,7 @@ Speichern, committen – nach ca. einer Minute ist die App auf der Seite.
 
 | Ordner | App |
 |---|---|
-| `whacker-band/` | Whacker-Band – fünf animierte Figuren mit SoundWhackern (Vorspielen, Mitspielen, Lieder einspielen); Klänge aus `../tischharfe/klaenge/`, Lieder aus `../tischharfe/lieder.js` |
+| `whacker-band/` | SoundWhacker Band – fünf animierte Figuren mit SoundWhackern (Vorspielen, Mitspielen, Lieder einspielen); Klänge aus `../tischharfe/klaenge/`, Lieder aus `../tischharfe/lieder.js` |
 | `fagott/` | Fagott – Klänge in `klang/` (GeneralUser GS, Bassoon); Lieder kommen aus `../tischharfe/lieder.js` |
 | `singen/` | Singen mit SoundWhackern; `stimme.js` ist die künstliche Singstimme (Formant-Synthese) |
 | `atemklang/` | Blasinstrument mit Atemsteuerung über das Mikrofon |

@@ -27,12 +27,12 @@ window.APPS = [
   {
     id: "whacker-band",
     zaehler: "/whacker-band/",
-    titel: "Whacker-Band",
+    titel: "SoundWhacker Band",
     kurz: "Fünf animierte Figuren spielen mit SoundWhackern ein Lied vor – danach spielen die Teilnehmer live mit (Tasten 1–5). Eigene Lieder einspielen, speichern und als Datei weitergeben. Für den Beamer im Workshop.",
     link: "https://pati2018.github.io/whacker-band/",
     repo: "https://github.com/pati2018/pati2018.github.io/tree/main/whacker-band",
     kategorie: "Musik",
-    symbol: "🥁",
+    symbol: "🎶",
     bild: "whacker-band/icons/icon-192.png",
     datum: "2026-11-20"
   },

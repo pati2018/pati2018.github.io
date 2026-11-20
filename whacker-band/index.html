@@ -375,7 +375,7 @@ function start(){
 function stopp(){ plan.forEach(p=>{ clearTimeout(p.to); clearTimeout(p.to2); }); plan=[]; if(ctx) stimmen.forEach((v,i)=>{ if(v){ try{ v.g.gain.setTargetAtTime(0,ctx.currentTime,.05); v.s.stop(ctx.currentTime+.3); }catch(e){} stimmen[i]=null; } }); clearTimeout(timer); laeuft=false; $('start').textContent=st.modus==='mit'?'↺ Von vorne':'▶ Start'; }
 
 // ---------- Mitspielen / Spieler ----------
-function liedRundeFertig(){ toast('🎉 Super gespielt!'); pos=0; zug=0; spieler=[]; bandBauen(); }
+function liedRundeFertig(){ pos=0; zug=0; spieler=[]; bandBauen(); }
 function spielerTon(i){
   audio();
   const a=spielart();

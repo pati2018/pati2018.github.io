@@ -24,7 +24,7 @@ Die linke Hand hält den SoundWhacker unten am **schwarzen Teil**. Zum Spielen g
 | Mitspielen neu beginnen | **↺ Von vorne** |
 | Tempo | Regler von **40 %** („langsam zum Üben“) über **100 %** („normal“) bis 130 % |
 | Aufstellung | **Reihe, Halbkreis** (Standard), **Kreis** oder **offenes U** – die Figuren laufen sanft an ihren neuen Platz |
-| Klang | Marimba, Klavier, Vibraphon, Xylophon, Spieluhr, Kalimba, Steeldrums, E-Piano, Gitarre, Koto oder Harfe |
+| Klang | Marimba, Klavier, Vibraphon, Xylophon, Spieluhr, Kalimba, Steeldrums, E-Piano, Gitarre, Koto, Harfe – und **verzerrte Gitarren**: Overdrive, Distortion, Feedback und Wah-Wah |
 | Vollbild | **⛶ Vollbild** – ideal für den Beamer |
 
 Über der Bühne läuft ein **Notenband** aus farbigen Punkten mit: Jeder Punkt ist ein Ton in der Farbe der Figur, die ihn spielt. Beim Mitspielen geht es erst weiter, wenn die richtige Figur gespielt hat. Am Ende des Liedes geht es von vorne los.

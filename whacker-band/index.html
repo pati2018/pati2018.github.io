@@ -154,6 +154,8 @@ const KLAENGE={
   marimba:{n:'Marimba',pegel:.96}, klavier:{n:'Klavier',pegel:.84}, vibraphon:{n:'Vibraphon',pegel:.68}, xylophon:{n:'Xylophon',pegel:2.18},
   spieluhr:{n:'Spieluhr',pegel:1.12}, kalimba:{n:'Kalimba',pegel:1.31}, steeldrums:{n:'Steeldrums',pegel:1.34}, epiano:{n:'E-Piano',pegel:.4},
   gitarre:{n:'Gitarre',pegel:1.36}, koto:{n:'Koto',pegel:2.2},
+  overdrive:{n:'Verzerrte Gitarre (Overdrive)',pegel:.46}, distortion:{n:'Verzerrte Gitarre (Distortion)',pegel:.46},
+  feedback:{n:'Verzerrte Gitarre (Feedback)',pegel:.45}, wah:{n:'Wah-Wah-Gitarre',pegel:.52},
   harfe:{n:'Harfe',pegel:1.05,pfad:'../tischharfe/samples/',toene:{E3:52,G3:55,B3:59,D4:62,F4:65,A4:69,C5:72,E5:76,G5:79,B5:83}},
 };
 for(const id in KLAENGE){ const K=KLAENGE[id]; if(!K.pfad){ K.pfad='../tischharfe/klaenge/'+id+'/'; K.toene=Object.fromEntries(ST_TOENE.map(m=>[m,m])); } }

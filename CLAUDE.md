@@ -70,6 +70,9 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
       Lied einspielen (Tasten oder Klaviatur g–c‴, Rhythmus wird gespeichert). Aufstellung Reihe/Halbkreis/Kreis/U, Tempo 40–130 %.
       Klänge aus `../tischharfe/klaenge/` + Harfe, Lieder aus `../tischharfe/lieder.js` (nur ≤ 5 Töne). Eigene Lieder in
       localStorage `whacker-band-lieder` (JSON-Export/Import). Auftrag kam als MD-Datei vom Nutzer.
+      **Jarvis-Sprachsteuerung** (Knopf „🎙 Jarvis“): Web Speech API de-DE + speechSynthesis, Aktivierungswort „Jarvis“ abschaltbar,
+      Befehle Spiel <Lied>/Stopp/Langsamer/Schneller/Übetempo/Normales Tempo/Aufstellung …/Mitspielmodus/Vorspielen/Welche Lieder/Hilfe.
+      Testhaken `window.jarvisTest(text)`. Browser schickt Sprache an Google/Microsoft/Apple → in der Datenschutzerklärung vermerkt.
   - **Achtung:** `tischharfe/lieder.js` lädt auch SoundWhacker Spielen (Gemeinsame Melodie), das Fagott und die Whacker-Band.
     Wer Lieder ändert, ändert sie in beiden Apps – und erhöht in `SoundWhacker_Spielen.html`
     die Nummer bei `../tischharfe/lieder.js?v=…`, sonst bleibt dort die alte Liste im Speicher.

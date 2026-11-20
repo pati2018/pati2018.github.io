@@ -61,9 +61,19 @@
   .liste .eintrag b{flex:1;min-width:160px}
   .toast{position:fixed;left:50%;top:18px;transform:translateX(-50%);background:#111a33;border:2px solid var(--gold);color:#fff;padding:10px 20px;border-radius:14px;font-weight:800;font-size:20px;z-index:50}
   @media (prefers-reduced-motion:reduce){#recDot{animation:none}}
+  /* Jarvis */
+  #jarvisBtn{min-height:54px;padding:8px 18px;border-radius:14px;border:2px solid var(--linie);background:var(--karte);font-size:19px;font-weight:800;cursor:pointer}
+  #jarvisBtn[aria-pressed="true"]{background:#e5484d;border-color:#ff8a8f;color:#fff;animation:hoer 1.6s ease-in-out infinite}
+  @keyframes hoer{50%{box-shadow:0 0 0 8px rgba(229,72,77,.35)}}
+  .jwort{display:flex;align-items:center;gap:6px;font-size:15px;color:var(--mut)}
+  .jwort input{width:22px;height:22px;accent-color:var(--gold)}
+  #jarvisZeile{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:60;max-width:calc(100% - 32px);background:rgba(8,12,26,.92);border:3px solid var(--gold);border-radius:18px;padding:12px 26px;font-size:clamp(22px,3vw,36px);font-weight:800;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+  #jarvisZeile small{display:block;font-size:.6em;font-weight:700;color:var(--mut);margin-top:2px}
+  @media (prefers-reduced-motion:reduce){#jarvisBtn[aria-pressed="true"]{animation:none}}
 </style>
 </head>
 <body>
+<div id="jarvisZeile" role="status" aria-live="polite" hidden></div>
 <div class="wrap">
   <div class="top">
     <h1>🥁 Whacker-Band</h1>
@@ -72,6 +82,8 @@
       <button data-m="mit" aria-pressed="false">🙌 Mitspielen</button>
       <button data-m="auf" aria-pressed="false">● Lied einspielen</button>
     </div>
+    <button id="jarvisBtn" aria-pressed="false" title="Sprachsteuerung ein- und ausschalten">🎙 Jarvis</button>
+    <label class="jwort"><input type="checkbox" id="jarvisWort"> nur mit „Jarvis …“</label>
     <button class="knopf" id="vollbild" title="Vollbild für den Beamer">⛶ Vollbild</button>
     <a href="../app.html?id=whacker-band">Anleitung</a>
   </div>
@@ -435,6 +447,97 @@ $('vollbild').onclick=()=>{ const b=$('buehne'), d=document; if(d.fullscreenElem
 let tT=0; function toast(t){ let e=document.querySelector('.toast'); if(!e){ e=document.createElement('div'); e.className='toast'; e.setAttribute('role','status'); document.body.appendChild(e); } e.textContent=t; e.hidden=false; clearTimeout(tT); tT=setTimeout(()=>e.hidden=true,2200); }
 // Ton erst nach der ersten Berührung (Browser-Regel) – jede Berührung startet den Klang
 ['pointerdown','keydown','touchstart'].forEach(ev=>window.addEventListener(ev,()=>audio(),{once:true,passive:true}));
+
+
+// ---------- Jarvis: Sprachsteuerung (Web Speech API, Deutsch) ----------
+(function(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  const btn=$('jarvisBtn'), zeile=$('jarvisZeile'), wortBox=$('jarvisWort');
+  if(st.jarvisWort===undefined) st.jarvisWort=true; wortBox.checked=st.jarvisWort;
+  wortBox.onchange=()=>{ st.jarvisWort=wortBox.checked; merke(); };
+  let an=false, rec=null, sprichtBis=0, wachBis=0, zT=0;
+  function zeigen(txt,klein){ zeile.innerHTML=''; zeile.append(txt); if(klein){ const s=document.createElement('small'); s.textContent=klein; zeile.append(s); } zeile.hidden=false; clearTimeout(zT); zT=setTimeout(()=>zeile.hidden=true,4000); }
+  // Sprachausgabe mit deutscher Stimme; solange sie spricht (plus Nachhall), wird nichts erkannt
+  let stimme=null; function stimmeWaehlen(){ const v=(window.speechSynthesis&&speechSynthesis.getVoices())||[]; stimme=v.find(x=>/^de(-|_)DE/i.test(x.lang)&&/google|anna|helena|katja|markus|petra|yannick/i.test(x.name))||v.find(x=>/^de/i.test(x.lang))||null; }
+  if(window.speechSynthesis){ stimmeWaehlen(); speechSynthesis.onvoiceschanged=stimmeWaehlen; }
+  function sag(t,danach){
+    if(!window.speechSynthesis){ if(danach) danach(); return; }
+    speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(t); u.lang='de-DE'; if(stimme) u.voice=stimme; u.rate=1.02;
+    sprichtBis=Date.now()+15000; let fertig=false;
+    const ende=()=>{ if(fertig) return; fertig=true; sprichtBis=Date.now()+400; if(danach) danach(); };
+    u.onend=ende; u.onerror=ende; setTimeout(ende,Math.min(12000,1200+t.length*85));
+    speechSynthesis.speak(u);
+  }
+  const norm=t=>t.toLowerCase().replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss').replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();
+  const WACH=/\b(jarvis|javis|jarvi|jarwis|charvis|dschavis|dschawis|schavis|jervis|jarves|travis|davis)\b/;
+  function liedTitel(){ return [...$('lied').options].map(o=>({v:o.value,t:o.textContent})); }
+  function findeLied(q){
+    q=norm(q).replace(/^(das |die |den |der |lied |bitte |mal |uns |ein )+/,'').replace(/ (vor|bitte|ab)$/,'').trim(); if(!q) return null;
+    const qw=q.split(' ').filter(w=>w.length>1); let best=null, bp=0;
+    liedTitel().forEach(o=>{ const t=norm(o.t.replace(/[–-].*$/,'')), tw=t.split(' ');
+      let p=0; if(t===q) p=100; else if(t.includes(q)||q.includes(t)) p=60;
+      qw.forEach(w=>{ if(w.length>2&&tw.some(x=>x===w)) p+=10; else if(w.length>3&&tw.some(x=>x.startsWith(w.slice(0,4)))) p+=6; });
+      if(p>bp){ bp=p; best=o; } });
+    return bp>=10?best:null;
+  }
+  const HILFE='Sag zum Beispiel: Spiel Ode an die Freude. Stopp. Langsamer oder schneller. Übetempo. Aufstellung Kreis. Mitspielmodus. Oder: Welche Lieder gibt es?';
+  function befehl(roh){
+    const t=norm(roh);
+    // Stopp zuerst – funktioniert immer
+    if(/\b(stop+|halt|anhalten|aufhoeren|hoer auf|pause|ruhe)\b/.test(t)){ stopp(); zeigen('■ Stopp'); return sag('Gestoppt.'); }
+    if(/\b(hilfe|was kannst du|welche befehle|befehle)\b/.test(t)){ zeigen('❓ Hilfe',HILFE); return sag(HILFE); }
+    if(/welche lieder|lieder gibt|was fuer lieder|liederliste|lieder kennst|alle lieder/.test(t)){ const l=liedTitel().map(o=>o.t.replace(/\s*[–-]\s*\d.*$/,'')); zeigen('🎵 Lieder',l.join(' · ')); return sag('Ich kenne: '+l.join(', ')+'.'); }
+    if(/uebe ?tempo|uebungstempo|zum ueben|ganz langsam/.test(t)) return tempo(50,'Übetempo.');
+    if(/normal(es)? tempo|tempo normal|normale geschwindigkeit/.test(t)) return tempo(100,'Normales Tempo.');
+    if(/\blangsamer\b/.test(t)) return tempo(st.tempo-10,'Etwas langsamer.');
+    if(/\bschneller\b/.test(t)) return tempo(st.tempo+10,'Etwas schneller.');
+    if(/aufstellung|stellt euch|\bin (einer |einem |die |den )?(reihe|kreis|halbkreis)|\b(halbkreis|offenes u)\b/.test(t)){
+      const a=/halb ?kreis/.test(t)?'halbkreis':/\bkreis\b/.test(t)?'kreis':/\breihe\b/.test(t)?'reihe':/(offen|\bu\b|\buh\b|\bhu\b|\bu form)/.test(t)?'u':null;
+      if(!a){ zeigen('🤔 '+roh); return sag('Welche Aufstellung? Reihe, Halbkreis, Kreis oder U.'); }
+      st.aufstellung=a; $('aufstellung').value=a; merke(); aufstellen(false);
+      const n={reihe:'Reihe',halbkreis:'Halbkreis',kreis:'Kreis',u:'offenes U'}[a]; zeigen('🧍 Aufstellung '+n); return sag('Aufstellung '+n+'.'); }
+    if(/mit ?spiel|mitmach|ihr seid dran|jetzt seid ihr/.test(t)){ modus('mit'); zeigen('🙌 Mitspielmodus'); return sag('Mitspielmodus. Ihr seid dran!'); }
+    if(/vor ?spiel ?(modus|en)?\b|vorspielmodus/.test(t)&&!/^spiel/.test(t)){ modus('vor'); zeigen('▶ Vorspielen'); return sag('Vorspielen.'); }
+    const m=/^(spiel|spiele|spielt|spiel mal|spiel uns|starte|start)\b ?(.*)$/.exec(t);
+    if(m||/^(los|leg los|weiter|nochmal|noch mal)$/.test(t)){
+      const rest=m?m[2]:''; let o=null;
+      if(rest&&!/^(los|ab|das lied|es|nochmal|noch mal|weiter|bitte)$/.test(rest)){ o=findeLied(rest); if(!o){ zeigen('🤔 '+roh); return sag('Das Lied kenne ich nicht. Frag mich: Welche Lieder gibt es?'); } }
+      if(o){ st.lied=o.v; $('lied').value=o.v; merke(); liedSetzen(); }
+      if(st.modus!=='vor') modus('vor'); stopp();
+      const name=(o?o.t:LIED.titel).replace(/\s*[–-]\s*\d.*$/,'');
+      zeigen('▶ '+name); return sag('Okay, ich spiele '+name+'.',()=>{ if(!laeuft) start(); });
+    }
+    zeigen('🤔 „'+roh+'“','Nicht verstanden – sag „Hilfe“'); sag('Das habe ich nicht verstanden. Sag Hilfe für alle Befehle.');
+  }
+  function tempo(v,antwort){ v=Math.max(40,Math.min(130,Math.round(v/5)*5)); st.tempo=v; $('tempo').value=v; merke(); tempoZeigen(); zeigen('⏱ '+antwort.replace('.',''),'Tempo '+v+' %'); sag(antwort); }
+  function gehoert(text){
+    if(Date.now()<sprichtBis) return;                         // eigene Stimme ignorieren
+    let t=norm(text); if(!t) return;
+    if(st.jarvisWort){
+      const w=WACH.exec(t);
+      if(w){ t=t.slice(w.index+w[0].length).trim(); if(!t){ wachBis=Date.now()+7000; zeigen('🎙 Ja?'); return sag('Ja?'); } }
+      else if(Date.now()>wachBis) return;                     // ohne „Jarvis“ wird nichts ausgeführt
+      wachBis=0; befehl(text.replace(/^.*?\b(jarvis|javis|jarvi|jarwis|charvis|dschavis|dschawis|schavis|jervis|jarves|travis|davis)\b[,.!]?\s*/i,'')||t);
+    } else befehl(text);
+  }
+  function starten(){
+    rec=new SR(); rec.lang='de-DE'; rec.continuous=true; rec.interimResults=false; rec.maxAlternatives=1;
+    rec.onresult=e=>{ for(let i=e.resultIndex;i<e.results.length;i++) if(e.results[i].isFinal) gehoert(e.results[i][0].transcript); };
+    rec.onerror=e=>{ if(e.error==='not-allowed'||e.error==='service-not-allowed'){ aus(); zeigen('🎙 Kein Mikrofon','Bitte im Browser das Mikrofon erlauben.'); } };
+    rec.onend=()=>{ if(an) setTimeout(()=>{ if(an) try{ rec.start(); }catch(e){} },250); };   // Browser beendet nach Stille – automatisch weiter zuhören
+    try{ rec.start(); }catch(e){}
+  }
+  function aus(){ an=false; btn.setAttribute('aria-pressed','false'); btn.textContent='🎙 Jarvis'; try{ rec&&rec.stop(); }catch(e){} }
+  btn.onclick=()=>{
+    btn.blur();
+    if(!SR){ zeigen('🎙 Sprachsteuerung','Die Sprachsteuerung funktioniert am besten in Chrome oder Edge.'); return sag('Die Sprachsteuerung funktioniert am besten in Chrome oder Edge.'); }
+    if(an){ aus(); zeigen('🎙 Jarvis aus'); return; }
+    an=true; btn.setAttribute('aria-pressed','true'); btn.textContent='🎙 Jarvis hört zu'; audio(); starten();
+    zeigen('🎙 Jarvis hört zu', st.jarvisWort?'Sag zum Beispiel: „Jarvis, spiel Ode an die Freude“':'Sag zum Beispiel: „Spiel Ode an die Freude“');
+    sag(st.jarvisWort?'Ich höre zu. Sag Jarvis und dann deinen Befehl.':'Ich höre zu.');
+  };
+  window.jarvisTest=(t)=>gehoert(t);   // für Tests
+})();
 
 liedListe(); liedSetzen(); aufstellen(true); modus(st.modus); meineZeigen();
 })();

@@ -29,6 +29,35 @@ Die linke Hand hält den SoundWhacker unten am **schwarzen Teil**. Zum Spielen g
 
 Über der Bühne läuft ein **Notenband** aus farbigen Punkten mit: Jeder Punkt ist ein Ton in der Farbe der Figur, die ihn spielt. Beim Mitspielen geht es erst weiter, wenn die richtige Figur gespielt hat. Am Ende des Liedes geht es von vorne los.
 
+## Sprachsteuerung („Jarvis“)
+
+Mit der Sprachsteuerung hast du im Workshop **beide Hände frei**: Du sprichst einen Befehl, die App führt ihn aus und antwortet mit Stimme. Der erkannte Befehl erscheint zusätzlich groß unten am Bildschirm.
+
+**Einschalten:** Oben auf **🎙 Jarvis** tippen und das Mikrofon erlauben. Solange Jarvis zuhört, leuchtet der Knopf rot („Jarvis hört zu“). Noch einmal tippen schaltet ihn aus.
+
+**Aktivierungswort:** Ist **„nur mit ‚Jarvis …‘“** angehakt (Standard), reagiert die App nur, wenn du zuerst „Jarvis“ sagst – z. B. „**Jarvis, Stopp**“. So gilt nicht jedes Gespräch im Raum als Befehl. Du kannst auch nur „Jarvis“ sagen, auf das „Ja?“ warten und dann den Befehl sprechen. Ohne Haken wird jeder Satz als Befehl verstanden.
+
+| Befehl (Beispiele) | Was passiert | Antwort |
+|---|---|---|
+| „Spiel Ode an die Freude“, „Spiel Hänschen klein“ | Lied wählen und vorspielen | „Okay, ich spiele Ode an die Freude.“ |
+| „Spiel“, „Los“, „Nochmal“ | aktuelles Lied vorspielen | „Okay, ich spiele …“ |
+| „Stopp“, „Halt“ | alles sofort anhalten | „Gestoppt.“ |
+| „Langsamer“ / „Schneller“ | Tempo eine Stufe (10 %) langsamer bzw. schneller | „Etwas langsamer.“ |
+| „Übetempo“ | Tempo 50 % | „Übetempo.“ |
+| „Normales Tempo“ | Tempo 100 % | „Normales Tempo.“ |
+| „Aufstellung Reihe / Halbkreis / Kreis / offenes U“ | Figuren laufen in die neue Aufstellung | „Aufstellung Kreis.“ |
+| „Mitspielmodus“ | zum Mitspielen wechseln | „Mitspielmodus. Ihr seid dran!“ |
+| „Vorspielen“ | zum Vorspielen wechseln | „Vorspielen.“ |
+| „Welche Lieder gibt es?“ | liest alle Lieder vor (auch eigene) | „Ich kenne: …“ |
+| „Hilfe“ | nennt die wichtigsten Befehle | |
+
+Versteht Jarvis etwas nicht, sagt er: „Das habe ich nicht verstanden. Sag Hilfe für alle Befehle.“ Während Jarvis selbst spricht, hört er nicht zu – so hält er seine eigene Stimme nicht für einen Befehl.
+
+**Gut zu wissen:**
+- Am besten funktioniert die Sprachsteuerung in **Chrome oder Edge** (am Computer) und in **Safari** (iPad/iPhone). In Firefox gibt es sie nicht – dann erscheint ein Hinweis.
+- Die Spracherkennung macht der Browser. Dabei schickt er das Gesprochene meist an den Dienst seines Herstellers (Google, Microsoft oder Apple). Mehr dazu in der Datenschutzerklärung.
+- Am Beamer mit Lautsprechern: Mikrofon möglichst nah bei dir, Lautsprecher etwas entfernt. Bei lauter Musik klar und kurz sprechen, z. B. „Jarvis, Stopp“.
+
 ## Lieder
 
 Die Lieder kommen aus der Tischharfe. Angeboten werden nur Lieder mit **höchstens fünf verschiedenen Tönen**, z. B. Ode an die Freude, Hänschen klein, Mary Had a Little Lamb, Jingle Bells, Old MacDonald. Der tiefste Ton gehört immer der **roten** Figur, der höchste der **blauen**.

@@ -619,6 +619,8 @@ function modus(m){
   $('aufPanel').hidden=m!=='auf'; $('akkPanel').hidden=m!=='akk'; document.body.classList.toggle('einspielen',ein); $('buehnenBox').setAttribute('aria-hidden',ein); $('meinePanel').hidden=!ein;
   // Aufnahme-Knöpfe wandern in das gerade offene Feld
   if(rec.an) $('recStart').click();
+  // eine fertige Aufnahme gehört zu ihrem Modus: beim Wechsel Melodie ↔ Akkorde nicht mitnehmen
+  if(rec.noten&&ein&&(m==='akk')!==!!rec.akk) $('recWeg').click();
   if(m==='auf'){ $('klavier').before($('recZeile')); $('klavier').after($('recDanach')); }
   if(m==='akk'){ $('akkPanel').append($('recZeile'),$('recDanach')); }
   nummernZeigen();

@@ -55,7 +55,7 @@ Die Lieder kommen aus der Tischharfe. In der Liedauswahl sind **alle Lieder** �
 
 ## Eigene Lieder einspielen
 
-1. **● Lied einspielen** wählen. Bühne, Tonreihe und alle Einstellungen verschwinden – jetzt ist nur noch die große Klaviatur zu sehen. (Klang vorher unter ▶ Vorspielen wählen.)
+1. **● Lied einspielen** wählen. Bühne, Tonreihe und die Einstellungen verschwinden – zu sehen sind nur noch die **Klangauswahl** und die große Klaviatur.
 2. **● Aufnahme starten** und die Melodie spielen – mit den SoundWhackern (Tasten 1–5) **oder** auf der **Klaviatur** (g bis c‴, alle Töne frei wählbar).
    **↔ Gleiten:** Auf der Klaviatur mit **gedrückter Maustaste** oder mit dem **Finger** (iPad) über die Tasten ziehen – jede Taste, über die du gleitest, klingt und wird aufgenommen.
 3. **■ Aufnahme beenden**. Die App merkt sich **Reihenfolge, Rhythmus und wie lange jeder Ton gehalten wurde**.
@@ -69,7 +69,7 @@ Die Lieder kommen aus der Tischharfe. In der Liedauswahl sind **alle Lieder** �
 
 Statt einer Melodie kann die Band auch **Akkorde** spielen – zum Begleiten von Liedern.
 
-1. **🎸 Akkorde einspielen** wählen. Es erscheint nur noch die Akkord-Übersicht.
+1. **🎸 Akkorde einspielen** wählen. Es erscheinen nur noch die **Klangauswahl** und die Akkord-Übersicht.
 2. Jedem SoundWhacker einen Akkord geben: **Grundton** (C, Cis, D, Dis, E, F, Fis, G, Gis, A, B, H) und **Art** (**Dur**, **Moll** oder **Septim**). Am Anfang: SW1 C · SW2 F · SW3 G · SW4 Am · SW5 G7.
 3. Zum Ausprobieren die großen **farbigen Knöpfe** antippen, die SoundWhacker berühren oder die Tasten 1–5 drücken – der Akkord klingt sofort.
 4. **● Aufnahme starten**, die Akkordfolge mit SW1–5 spielen, **■ Aufnahme beenden**. Die App merkt sich Reihenfolge, Rhythmus und Haltedauer. Während der Aufnahme lassen sich die Akkorde nicht umstellen.

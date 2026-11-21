@@ -80,6 +80,7 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
       Sicherung vor diesem Umbau: Branch `stabil-v8`.
       **Wunsch:** In „Lied einspielen“ und „Akkorde einspielen“ nur Klaviatur bzw. Akkord-Übersicht (+ Meine Lieder) zeigen – keine Leiste
       (Lied/Aufstellung/Klang/Hall), keine Spielarten. Spielart-Knöpfe heißen „SW spielt Melodie / Akkorde“, „Feste SW-Reihenfolge“, „Feste SW-Töne / Akkorde“.
+      **Notenband** läuft bei jedem Ton mit (aktueller Ton im vorderen Drittel) – seitenweises Springen wurde ausprobiert und auf Wunsch zurückgenommen.
       **Bühnenhöhe** passt sich per JS (`buehneAnpassen`) dem freien Bildschirm an – alle Figuren ohne Scrollen (Wunsch iPad). **⛶ Vollbild** = Klasse
       `body.vollbild`: nur Notenband + Bühne (+ echtes Vollbild, wo möglich; iPhone nur Bühnenansicht), Knopf „✕ Vollbild aus“ unten rechts (nicht oben – liegt sonst in den Noten; gut sichtbar, aber dezent – kein grelles Gelb, Wunsch Nutzer), Esc;
       **Kein echtes Vollbild auf iPad/iPhone** (nur am PC): Safari zeigt sonst bei jedem SW-Druck die Warnung „Eingabe im Vollbildmodus“

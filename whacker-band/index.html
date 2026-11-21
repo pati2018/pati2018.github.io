@@ -71,7 +71,6 @@
   .top h1{order:0;flex:1 1 calc(100% - 420px)} .top > a{order:1;margin-left:auto} #vollbild{order:2}
   .top .modi{order:3;flex:1 1 100%}   /* Titel, Anleitung, Vollbild in einer Reihe – darunter alle Modi */
   @media (min-width:900px){ .top .modi{flex-wrap:nowrap} .top .modi button{flex:1 1 auto;padding:8px 10px;font-size:clamp(13px,1.3vw,19px);white-space:nowrap} }
-  #impTempo .knopf[aria-pressed="true"]{background:var(--gold);color:#111;border-color:var(--gold)}
   .impZeile label{display:flex;align-items:center;gap:8px;color:var(--mut)} .impZeile select{font-size:18px;min-height:50px;padding:6px 10px;border-radius:10px;border:1.5px solid var(--gold);background:#0f1730;color:var(--text)}
   .impZeile input[type=range]{width:180px;accent-color:var(--gold)}
   body.vollbild .wrap{padding-top:8px}
@@ -146,7 +145,7 @@
       <button data-s="reihum" title="Jede Berührung (egal welcher SoundWhacker) spielt den nächsten Ton oder Akkord">🔁 SW spielt Melodie / Akkorde</button>
       <button data-s="reihe" title="SW1 → SW2 → SW3 … – wer nicht dran ist, bleibt stumm">🔢 Feste SW-Reihenfolge</button>
       <button data-s="fest" title="Jeder SoundWhacker hat seinen eigenen Ton oder Akkord">🎯 Feste SW-Töne / Akkorde</button>
-      <button data-s="imp" title="Halten = Zufallstöne aus der eingestellten Skala – ein anderer SoundWhacker übernimmt jederzeit">🎲 Improvisieren</button>
+      <button data-s="imp" title="Jede Berührung = ein Zufallston aus der eingestellten Skala – alle dürfen jederzeit spielen">🎲 Improvisieren</button>
     </div>
     <div class="zeile" id="reiheZeile" hidden><span class="hinweis">Mitspieler:</span>
       <button class="knopf" data-n="2">SW1–2</button><button class="knopf" data-n="3">SW1–3</button><button class="knopf" data-n="4">SW1–4</button><button class="knopf" data-n="5">SW1–5</button></div>
@@ -190,13 +189,12 @@
   <!-- Improvisation einstellen -->
   <div class="panel" id="impPanel" hidden>
     <h2>🎲 Improvisation einstellen</h2>
-    <p class="hinweis">Beim Mitspielen mit „🎲 Improvisieren“ spielt ein gehaltener SoundWhacker Zufallstöne aus dieser Tonart und Skala – mit seinem eigenen Instrument. Ein anderer SoundWhacker übernimmt jederzeit.</p>
+    <p class="hinweis">Beim Mitspielen mit „🎲 Improvisieren“ spielt jede Berührung eines SoundWhackers einen Zufallston aus dieser Tonart und Skala – jeder SoundWhacker mit seinem eigenen Instrument. Alle dürfen jederzeit spielen.</p>
     <div class="zeile impZeile">
       <label>Tonart <select id="impWurzel"></select></label>
       <label>Skala <select id="impSkala"></select></label>
       <label>Anzahl Töne <input type="range" id="impAnzahl" min="3" max="15" step="1"> <b id="impAnzahlWert"></b></label>
     </div>
-    <div class="zeile" id="impTempo"><span class="hinweis">Tempo:</span><button class="knopf" data-t="langsam">🐢 langsam</button><button class="knopf" data-t="mittel">🚶 mittel</button><button class="knopf" data-t="schnell">🐇 schnell</button></div>
     <div class="hinweis" id="impToeneInfo"></div>
     <div id="impWahl"></div>
   </div>
@@ -244,8 +242,7 @@ const AKK_DEMOS=[
 // ---------- Improvisieren ----------
 const SKALEN={dur:{n:'Dur',iv:[0,2,4,5,7,9,11]},moll:{n:'Moll',iv:[0,2,3,5,7,8,10]},durpenta:{n:'Dur-Pentatonik',iv:[0,2,4,7,9]},
   mollpenta:{n:'Moll-Pentatonik',iv:[0,3,5,7,10]},orient:{n:'Orientalisch',iv:[0,1,4,5,7,8,11]}};
-const IMP_TEMPO={langsam:.6,mittel:.4,schnell:.26};
-if(!st.imp||!Array.isArray(st.imp.klang)) st.imp={wurzel:0,skala:'durpenta',anzahl:10,tempo:'mittel',klang:['marimba','floete','vibraphon','gitarre','klavier']};
+if(!st.imp||!Array.isArray(st.imp.klang)) st.imp={wurzel:0,skala:'durpenta',anzahl:10,klang:['marimba','floete','vibraphon','gitarre','klavier']};
 const merke=()=>{ try{ localStorage.setItem(KEY,JSON.stringify(st)); }catch(e){} };
 
 // ---------- Klang: Instrumente der Tischharfe ----------
@@ -330,18 +327,16 @@ function aus(v,wann){ if(!v||v.los) return; v.los=true; const t=Math.max(wann||0
 // Loslassen: mindestens 0,25 s klingen lassen, damit kurze Berührungen hörbar bleiben
 function loslassen(fig){ impStop(fig); const v=stimmen[fig]; if(v&&ctx) aus(v,Math.max(ctx.currentTime,v.t0+.25)); if(typeof recLos==='function'){ recLos(recIdx[fig]); recIdx[fig]=null; } }
 
-// Zufallstöne aus der eingestellten Skala – nur einer improvisiert, ein anderer SoundWhacker übernimmt jederzeit
+// Zufallstöne aus der eingestellten Skala – jede Berührung eines SoundWhackers spielt einen Ton, jeder darf jederzeit
 function impToene(){ const sk=SKALEN[st.imp.skala]||SKALEN.durpenta; let b=60+(+st.imp.wurzel||0); if(b>64) b-=12; const t=[];
   for(let o=0;t.length<st.imp.anzahl;o++) for(const iv of sk.iv){ if(t.length<st.imp.anzahl) t.push(b+12*o+iv); } return t; }
-let impWer=-1, impT=0, impIdx=-1;
+let impIdx=-1;
 function impNote(i){ const T=impToene(); let k;
   if(impIdx<0||impIdx>=T.length||Math.random()<.3) k=Math.floor(Math.random()*T.length);
   else k=Math.max(0,Math.min(T.length-1,impIdx+[-2,-1,-1,1,1,2][Math.floor(Math.random()*6)]));
-  impIdx=k; const b=IMP_TEMPO[st.imp.tempo]||.4, d=b*[1,1,.5,.5,1.5,2][Math.floor(Math.random()*6)];
-  ton(i,T[k],0,d*.95,false,st.imp.klang[i]); schlag(i,performance.now(),true);
-  impT=setTimeout(()=>{ if(impWer===i) impNote(i); },d*1000); }
-function impStart(i){ impStop(); impWer=i; impLaden(); impNote(i); }
-function impStop(i){ if(i!==undefined&&i!==impWer) return; clearTimeout(impT); impWer=-1; }
+  impIdx=k; ton(i,T[k],0,undefined,false,st.imp.klang[i]); schlag(i,performance.now(),true); }
+function impStart(i){ impLaden(); impNote(i); }   /* jede Berührung = genau ein Zufallston */
+function impStop(){}
 function impLaden(){ if(ctx) st.imp.klang.forEach(k=>ladeKlang(k)); }
 
 // ---------- Lieder ----------
@@ -656,7 +651,7 @@ function info(){
            auf:'Spiele eine Melodie ein. Mit höchstens 5 verschiedenen Tönen wird sie ein ⭐-Lied.',
            akk:'Gib jedem SoundWhacker einen Akkord und spiele die Akkordfolge ein.',
            lieder:'Meine Lieder: auswählen, umbenennen, herunterladen, hochladen.', imp:'Improvisation einstellen.'}[st.modus];
-  if(st.modus==='mit'&&st.spielart==='imp'){ $('info').textContent='🎲 Improvisieren: Halte deinen SoundWhacker – er spielt Zufallstöne aus '+(SKALEN[st.imp.skala]||SKALEN.durpenta).n+' in '+WURZEL[st.imp.wurzel]+' mit seinem eigenen Instrument. Ein anderer SoundWhacker übernimmt jederzeit.'; return; }
+  if(st.modus==='mit'&&st.spielart==='imp'){ $('info').textContent='🎲 Improvisieren: Jede Berührung spielt einen Zufallston aus '+(SKALEN[st.imp.skala]||SKALEN.durpenta).n+' in '+WURZEL[st.imp.wurzel]+' – jeder SoundWhacker mit seinem eigenen Instrument. Alle dürfen jederzeit spielen.'; return; }
   if(st.modus==='akk'){ $('info').textContent=t+'  Akkorde: '+st.akkSet.map((a,i)=>'SW'+(i+1)+' '+akkName(a)).join(' · '); return; }
   if(LIED.akk&&st.modus!=='auf'){ $('info').textContent=t+'  Akkorde der Figuren: '+FIGTON.map((a,i)=>'SW'+(i+1)+' '+akkName(a)).join(' · '); return; }
   if(istSchlag()&&st.modus==='auf'){ $('info').textContent=setVon()===SETS.fx?'Spiele eine Geräusch-Geschichte ein – mit SW1–5 oder auf der Klaviatur. Jede Taste ist ein anderes Geräusch.':'Spiele einen Rhythmus ein – mit SW1–5 oder auf der Klaviatur. Jede Taste ist ein anderes Schlaginstrument.'; return; }
@@ -697,15 +692,13 @@ function impWahlBauen(){
   const w=$('impWurzel'); WURZEL.forEach((n,j)=>w.appendChild(new Option(n,j))); w.value=st.imp.wurzel;
   const sk=$('impSkala'); for(const k in SKALEN) sk.appendChild(new Option(SKALEN[k].n,k)); sk.value=st.imp.skala;
   const an=$('impAnzahl'); an.value=st.imp.anzahl;
-  const zeig=()=>{ $('impAnzahlWert').textContent=st.imp.anzahl; $('impToeneInfo').textContent='Töne: '+impToene().map(tonName).join(' · ');
-    document.querySelectorAll('#impTempo [data-t]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.t===st.imp.tempo)); };
+  const zeig=()=>{ $('impAnzahlWert').textContent=st.imp.anzahl; $('impToeneInfo').textContent='Töne: '+impToene().map(tonName).join(' · '); };
   w.onchange=()=>{ st.imp.wurzel=+w.value; merke(); zeig(); w.blur(); }; sk.onchange=()=>{ st.imp.skala=sk.value; merke(); zeig(); sk.blur(); };
   an.oninput=()=>{ st.imp.anzahl=+an.value; merke(); zeig(); };
-  $('impTempo').onclick=e=>{ const b=e.target.closest('[data-t]'); if(!b) return; b.blur(); st.imp.tempo=b.dataset.t; merke(); zeig(); };
   const box=$('impWahl'); box.innerHTML='';
   st.imp.klang.forEach((k,i)=>{ const z=document.createElement('div'); z.className='akkZeile';
     const kn=document.createElement('button'); kn.className='swk imp'; kn.style.background=FARBE[i]; kn.dataset.i=i; kn.textContent='SW'+(i+1)+' 🎲';
-    kn.title='Gedrückt halten = improvisieren';
+    kn.title='Antippen = ein Zufallston zur Probe';
     const sel=document.createElement('select'); sel.setAttribute('aria-label','Instrument für SW'+(i+1));
     RUBRIKEN.filter(rb=>!/Schlagzeug|Geräusche/.test(rb[0])).forEach(([titel,ids])=>{ const og=document.createElement('optgroup'); og.label=titel; ids.forEach(id=>KLAENGE[id]&&og.appendChild(new Option(KLAENGE[id].n,id))); sel.appendChild(og); });
     sel.value=k; sel.onchange=()=>{ st.imp.klang[i]=sel.value; merke(); ladeKlang(sel.value); nummernZeigen(); sel.blur(); };

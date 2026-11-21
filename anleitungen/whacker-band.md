@@ -43,7 +43,7 @@ Im Modus **🙌 Mitspielen** erscheint eine zweite Leiste mit vier Spielarten �
 | 🔁 **SW spielt Melodie / Akkorde** | Jede Berührung – **egal welcher SoundWhacker** – spielt den nächsten Ton des Liedes. Die Figur des Spielers bewegt sich und leuchtet. Weil jeder darf, gibt es hier **keine Punkte** oben – dafür ist die Bühne größer. Nur bei **Akkordfolgen** bleiben die Punkte mit den Akkordnamen (färben sich in der Farbe dessen, der gespielt hat). |
 | 🔢 **Feste SW-Reihenfolge** | Reihum: SW1 → SW2 → SW3 … Wer dran ist, **leuchtet schon leicht**. Wer nicht dran ist, bleibt stumm (die Figur schüttelt kurz den Kopf). Mit **Mitspieler: SW1–2 … SW1–5** legst du fest, wie viele mitspielen – die anderen Figuren werden blass. |
 | 🎯 **Feste SW-Töne / Akkorde** | Jeder SoundWhacker hat seinen **eigenen Ton** (rot = tiefster … blau = höchster). Die Figur, die als Nächstes dran ist, **leuchtet schon leicht**. **Nur sie klingt** – ein SoundWhacker, der nicht dran ist, bleibt stumm (die Figur schüttelt kurz den Kopf). Das Lied geht weiter, sobald die richtige Figur gespielt hat. | **Wer darf spielen?** – 🎯 *Nur wer dran ist* (wie beschrieben) oder 🎶 *Alle jederzeit*: Jeder SoundWhacker klingt sofort mit seinem Ton/Akkord, das Lied geht aber erst weiter, wenn der Richtige spielt.
-| 🎲 **Improvisieren** | Solange ein SoundWhacker **gehalten** wird, spielt seine Figur **Zufallstöne** aus der eingestellten Skala – mit ihrem **eigenen Instrument**. Loslassen = Stille. Jeder andere SoundWhacker kann **jederzeit übernehmen**. Einstellen kannst du das unter **🎲 Improvisation einstellen**. |
+| 🎲 **Improvisieren** | **Jede Berührung** eines SoundWhackers spielt **einen Zufallston** aus der eingestellten Skala – mit seinem **eigenen Instrument**. Der Spieler bestimmt, wann ein Ton kommt. **Alle dürfen jederzeit** spielen. Einstellen kannst du das unter **🎲 Improvisation einstellen**. |
 
 Am Liedende geht es von vorne los. **↺ Von vorne** startet jederzeit neu. Die gewählte Spielart merkt sich die App.
 
@@ -87,8 +87,7 @@ Oben im Menü (zwischen „🎸 Akkorde einspielen“ und „💾 Meine Lieder�
 - **Grundton**: C, C♯, D … H.
 - **Skala**: Dur, Moll, **Dur-Pentatonik**, **Moll-Pentatonik** oder **orientalisch**. Es kommen immer nur Töne aus dieser Skala – so klingt es nie falsch.
 - **Anzahl der Töne**: 3 bis 15 – wie viele Töne der Skala zur Auswahl stehen (wenige = ruhig, viele = großer Tonumfang). Die Töne werden darunter angezeigt.
-- **Tempo**: langsam, mittel, schnell.
-- **Instrument je SoundWhacker**: SW1 bis SW5 bekommen je ein eigenes Instrument (z. B. Marimba, Flöte, Saxophon). Antippen des Farbknopfs spielt zur Probe.
+- **Instrument je SoundWhacker**: SW1 bis SW5 bekommen je ein eigenes Instrument (z. B. Marimba, Flöte, Saxophon). Antippen des Farbknopfs spielt einen Ton zur Probe.
 
 Dann **🙌 Mitspielen** → **🎲 Improvisieren** wählen und los geht's.
 

@@ -78,7 +78,9 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
       `ton()` spielt dann den Akkord (Bass + Dreiklang/Vierklang, leicht gestaffelt). Fertige Folgen in `AKK_DEMOS` (Pop, Kadenz, Blues).
       Vorspielen/Mitspielen (alle 3 Spielarten) gehen auch mit Akkordfolgen; Punkte zeigen Akkordnamen, Figuren „Nr · Akkord“.
       Sicherung vor diesem Umbau: Branch `stabil-v8`.
-      **Wunsch:** In „Lied einspielen“ und „Akkorde einspielen“ nur Klaviatur bzw. Akkord-Übersicht (+ Meine Lieder) und die **Klangauswahl** zeigen –
+      **Menü „💾 Meine Lieder“** (5. Modus `lieder`, Knopf nach „Akkorde einspielen“): nur der Bereich Meine Lieder (Alle herunterladen, Datei hochladen,
+      je Lied Auswählen/Umbenennen/Herunterladen/Löschen) – nicht mehr unter dem Einspielen.
+      **Wunsch:** In „Lied einspielen“ und „Akkorde einspielen“ nur Klaviatur bzw. Akkord-Übersicht und die **Klangauswahl** zeigen –
       kein Lied/Aufstellung/Hall, keine Spielarten (CSS `body.einspielen #hauptLeiste > :not(#klangLabel)`). Spielart-Knöpfe heißen „SW spielt Melodie / Akkorde“, „Feste SW-Reihenfolge“, „Feste SW-Töne / Akkorde“.
       **Kein Markier-Menü am iPad:** `user-select:none` + `-webkit-touch-callout:none` auf `body`, Kontextmenü unterdrückt (nur Eingabefelder ausgenommen).
       **Gestaltung:** nicht aktive Knöpfe und alle Auswahlfelder haben einen zarten gelben Rand (1,5 px, `--gold`) – Wunsch Nutzer.

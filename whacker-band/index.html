@@ -118,6 +118,7 @@
       <button data-m="mit" aria-pressed="false">🙌 Mitspielen</button>
       <button data-m="auf" aria-pressed="false">● Lied einspielen</button>
       <button data-m="akk" aria-pressed="false">🎸 Akkorde einspielen</button>
+      <button data-m="lieder" aria-pressed="false">💾 Meine Lieder</button>
     </div>
     <button class="knopf" id="vollbild" title="Nur die Bühne zeigen – für iPad und Beamer">⛶ Vollbild</button>
     <a href="../app.html?id=whacker-band">Anleitung</a>
@@ -547,7 +548,7 @@ $('recSpeichern').onclick=()=>{
     k.querySelectorAll('[data-m]').forEach(d=>{ const m=+d.dataset.m, n=dr?S.namen[m-55]:'';
       if(dr){ d.innerHTML='<span class="dn"></span>'; d.firstChild.textContent=n; d.setAttribute('aria-label',n); }
       else { d.textContent=d.classList.contains('w')?tonName(m):''; d.removeAttribute('aria-label'); } });
-    const si=$('schlagInfo'); si.hidden=!dr||st.modus==='auf'||st.modus==='akk';
+    const si=$('schlagInfo'); si.hidden=!dr||st.modus==='auf'||st.modus==='akk'||st.modus==='lieder';
     if(dr) si.innerHTML=S.icon+' '+S.sw.map((m,i)=>'<span style="background:'+FARBE[i]+'">SW'+(i+1)+' '+S.namen[m-55]+'</span>').join(''); };
   const an=new Map();
   // Taste anschlagen (auch beim Gleiten)
@@ -572,7 +573,7 @@ $('recSpeichern').onclick=()=>{
 // ---------- Meine Lieder (Presets) ----------
 function meineZeigen(){
   const l=eigene(), box=$('meineListe');
-  box.innerHTML=l.length?'':'<p class="hinweis">Noch keine eigenen Lieder. Unter „● Lied einspielen“ oder „🎸 Akkorde einspielen“ aufnehmen oder eine Datei hochladen.</p>';
+  box.innerHTML=l.length?'':'<p class="hinweis">Noch keine eigenen Lieder. Unter „● Lied einspielen“ oder „🎸 Akkorde einspielen“ aufnehmen oder hier eine Datei hochladen.</p>';
   l.forEach(x=>{ const z=document.createElement('div'); z.className='eintrag';
     z.innerHTML='<b></b><button class="knopf" data-a="spielen">▶ Auswählen</button><button class="knopf" data-a="umbenennen">✎ Umbenennen</button><button class="knopf" data-a="laden">⬇ Herunterladen</button><button class="knopf" data-a="loeschen">🗑 Löschen</button>';
     z.querySelector('b').textContent=(x.akk?'🎸 ':'')+x.name+' ('+x.noten.length+(x.akk?' Akkorde)':' Töne)');
@@ -609,7 +610,8 @@ function info(){
                 reihe:'Feste SW-Reihenfolge: SW1 → SW2 → … – wer dran ist, leuchtet schon leicht. Wer nicht dran ist, bleibt stumm.',
                 fest:'Feste SW-Töne / Akkorde: Jeder SoundWhacker hat seinen eigenen Ton oder Akkord. Die Figur, die als Nächstes dran ist, leuchtet schon leicht'+(st.festFrei?' – alle dürfen jederzeit mitspielen, das Lied geht weiter, wenn die Richtige spielt.':' – nur sie klingt, alle anderen bleiben stumm.')}[spielart()]+(st.spielart==='fest'&&!fuenf()?' (Dieses Lied hat mehr als 5 Töne – „Feste SW-Töne / Akkorde“ geht nur mit ⭐-Liedern und Akkordfolgen.)':''),
            auf:'Spiele eine Melodie ein. Mit höchstens 5 verschiedenen Tönen wird sie ein ⭐-Lied.',
-           akk:'Gib jedem SoundWhacker einen Akkord und spiele die Akkordfolge ein.'}[st.modus];
+           akk:'Gib jedem SoundWhacker einen Akkord und spiele die Akkordfolge ein.',
+           lieder:'Meine Lieder: auswählen, umbenennen, herunterladen, hochladen.'}[st.modus];
   if(st.modus==='akk'){ $('info').textContent=t+'  Akkorde: '+st.akkSet.map((a,i)=>'SW'+(i+1)+' '+akkName(a)).join(' · '); return; }
   if(LIED.akk&&st.modus!=='auf'){ $('info').textContent=t+'  Akkorde der Figuren: '+FIGTON.map((a,i)=>'SW'+(i+1)+' '+akkName(a)).join(' · '); return; }
   if(istSchlag()&&st.modus==='auf'){ $('info').textContent=setVon()===SETS.fx?'Spiele eine Geräusch-Geschichte ein – mit SW1–5 oder auf der Klaviatur. Jede Taste ist ein anderes Geräusch.':'Spiele einen Rhythmus ein – mit SW1–5 oder auf der Klaviatur. Jede Taste ist ein anderes Schlaginstrument.'; return; }
@@ -618,18 +620,18 @@ function info(){
 function modus(m){
   stopp(); st.modus=m; merke();
   document.querySelectorAll('.modi button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===m));
-  const ein=m==='auf'||m==='akk';
-  $('aufPanel').hidden=m!=='auf'; $('akkPanel').hidden=m!=='akk'; document.body.classList.toggle('einspielen',ein); $('buehnenBox').setAttribute('aria-hidden',ein); $('meinePanel').hidden=!ein;
+  const ein=m==='auf'||m==='akk'||m==='lieder';
+  $('aufPanel').hidden=m!=='auf'; $('akkPanel').hidden=m!=='akk'; document.body.classList.toggle('einspielen',ein); $('buehnenBox').setAttribute('aria-hidden',ein); $('meinePanel').hidden=m!=='lieder';
   // Aufnahme-Knöpfe wandern in das gerade offene Feld
   if(rec.an) $('recStart').click();
   // eine fertige Aufnahme gehört zu ihrem Modus: beim Wechsel Melodie ↔ Akkorde nicht mitnehmen
-  if(rec.noten&&ein&&(m==='akk')!==!!rec.akk) $('recWeg').click();
+  if(rec.noten&&(m==='auf'||m==='akk')&&(m==='akk')!==!!rec.akk) $('recWeg').click();
   if(m==='auf'){ $('klavier').before($('recZeile')); $('klavier').after($('recDanach')); }
   if(m==='akk'){ $('akkPanel').append($('recZeile'),$('recDanach')); }
   nummernZeigen();
   $('start').hidden=m!=='vor'; $('tempoLabel').hidden=m!=='vor';   /* Start und Tempo nur beim Vorspielen */ $('start').textContent='▶ Start';
   /* Beim Einspielen nur das Nötige zeigen: Klaviatur bzw. Akkordwahl – keine Leisten, keine Spielarten */
-  $('hauptLeiste').hidden=false;   /* beim Einspielen nur der Klang (CSS) */ $('mitLeiste').hidden=m!=='mit'; $('info').hidden=ein; $('schlagInfo').hidden=ein||!istSchlag(); spielartZeigen();
+  $('hauptLeiste').hidden=m==='lieder';   /* beim Einspielen nur der Klang (CSS), bei „Meine Lieder“ gar nichts */ $('mitLeiste').hidden=m!=='mit'; $('info').hidden=ein; $('schlagInfo').hidden=ein||!istSchlag(); spielartZeigen();
   pos=0; zug=0; spieler=[]; bandBauen(); info(); setTimeout(buehneAnpassen,30); setTimeout(buehneAnpassen,700);
 }
 // Akkordwahl: für jeden SoundWhacker ein großer Farbknopf, Grundton und Art

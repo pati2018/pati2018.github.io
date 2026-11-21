@@ -63,7 +63,7 @@ Die Lieder kommen aus der Tischharfe. In der Liedauswahl sind **alle Lieder** �
 
 - Die Töne werden automatisch den fünf Figuren zugeordnet (tiefster Ton = rot).
 - Mit **höchstens fünf verschiedenen Tönen** wird es ein ⭐-Lied. **Mehr Töne gehen auch** – dann spielen die Figuren reihum (siehe „Lieder“).
-- Gespeicherte Lieder stehen in der Liedauswahl unter **„Meine Lieder“** und laufen mit dem Tempo-Regler.
+- Gespeicherte Lieder stehen in der Liedauswahl unter **„Meine Lieder“** und im Menü **💾 Meine Lieder** und laufen mit dem Tempo-Regler.
 
 ## 🎸 Akkorde einspielen
 
@@ -81,7 +81,7 @@ Gespeicherte Akkordfolgen stehen in der Liedauswahl unter **„Meine Akkordfolge
 
 ## Meine Lieder: speichern, weitergeben, hochladen
 
-Im Bereich **💾 Meine Lieder** (unter „● Lied einspielen“):
+Oben im Menü gibt es den Knopf **💾 Meine Lieder** (neben „🎸 Akkorde einspielen“). Dort stehen alle eigenen Lieder und Akkordfolgen:
 
 - **▶ Auswählen**, **✎ Umbenennen**, **🗑 Löschen**
 - **⬇ Herunterladen**: ein Lied als Datei (JSON) – oder **⬇ Alle herunterladen**

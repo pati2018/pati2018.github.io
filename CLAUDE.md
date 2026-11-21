@@ -151,7 +151,7 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
   „Alexander – Deep TV Narrator“ (deutsche Bibliotheksstimme, ID `kkJxCnlRCckmfFvzDW5Q`), Musik aus dem Loop-Generator
   der App (Pop 104 BPM bzw. Lo-Fi 90 BPM). Botschaft: inklusiv musizieren, „Damit alle Musik machen können.“
   Dazu `soundwhacker.mp4` (Hardware-Video, 1:47, aus den Fotos des Nutzers + Zeichnungen). `video` darf auch eine Liste sein.
-  `soundwhacker-band.mp4` (1:40, Schluss: inklusiv + PC/iPad/Tablet statt Beamer, Stimme Alexander, Pop 96 BPM in C passend zu „Ode an die Freude“): zeigt die **echte App** – Bild für Bild
+  `soundwhacker-band.mp4` (1:57, mit Szenen Vollbild und Akkorde einspielen; Schluss: inklusiv + PC/iPad/Tablet statt Beamer, Stimme Alexander, Pop 96 BPM in C passend zu „Ode an die Freude“): zeigt die **echte App** – Bild für Bild
   mit Playwright-Uhr (`page.clock`) gefilmt, Aktionen synchron zu Wörtern, Töne der App mitgeschnitten und als Band-Tonspur gemischt.
   **Wunsch des Nutzers:** Wo im Video die Klänge der App zu hören sind (Instrumente, Klaviatur), Hintergrundmusik ganz leise/aus.
   Englische Fassung `soundwhacker-en.mp4` (1:39, Stimme „Brian“ `nPczCjzI2devNBz1zQrb`).

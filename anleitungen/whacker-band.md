@@ -1,6 +1,6 @@
 ## Worum geht es?
 
-Fünf freundliche Figuren stehen auf einer Bühne. Jede hält einen **SoundWhacker** und hat eine eigene Farbe: **rot, orange, gelb, grün, blau**. Zuerst **spielt die Band ein Lied vor**, danach **spielen die Teilnehmerinnen und Teilnehmer live mit** – mit den echten SoundWhackern oder den Tasten 1–5.
+Fünf freundliche Figuren stehen auf einer Bühne. Jede hält einen **SoundWhacker** und hat eine eigene Farbe: **rot, lila, gelb, grün, blau**. Zuerst **spielt die Band ein Lied vor**, danach **spielen die Teilnehmerinnen und Teilnehmer live mit** – mit den echten SoundWhackern oder den Tasten 1–5.
 
 Gedacht für den **Beamer im Workshop**: große Figuren, kräftige Farben, starke Kontraste. Jede Person merkt sich einfach „Ich bin die Grüne“.
 
@@ -51,7 +51,7 @@ Am Liedende geht es von vorne los. **↺ Von vorne** startet jederzeit neu. Die 
 Die Lieder kommen aus der Tischharfe. In der Liedauswahl sind **alle Lieder** – Lieder mit **höchstens fünf verschiedenen Tönen** sind mit einem gelben **⭐** markiert (z. B. ⭐ Ode an die Freude, ⭐ Hänschen klein, ⭐ Jingle Bells).
 
 - **⭐-Lieder:** Jede Figur hat ihren eigenen Ton – der tiefste gehört der **roten**, der höchste der **blauen** Figur. Alle drei Spielarten gehen.
-- **Lieder mit mehr als 5 Tönen** (z. B. Alle meine Entchen, Bruder Jakob, Stille Nacht): Beim Vorspielen spielen die Figuren **reihum** (rot, orange, gelb, grün, blau, rot …). Beim Mitspielen gehen **„SW spielt Melodie / Akkorde“** und **„Feste SW-Reihenfolge“**; „Feste SW-Töne / Akkorde“ ist dann ausgegraut.
+- **Lieder mit mehr als 5 Tönen** (z. B. Alle meine Entchen, Bruder Jakob, Stille Nacht): Beim Vorspielen spielen die Figuren **reihum** (rot, lila, gelb, grün, blau, rot …). Beim Mitspielen gehen **„SW spielt Melodie / Akkorde“** und **„Feste SW-Reihenfolge“**; „Feste SW-Töne / Akkorde“ ist dann ausgegraut.
 
 ## Eigene Lieder einspielen
 

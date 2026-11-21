@@ -13,7 +13,7 @@
   <rect x="14" y="-6" width="20" height="96" rx="9" fill="#f4f3ef"/>
   <rect x="13" y="6" width="22" height="13" rx="2" fill="#15161a"/><rect x="13" y="64" width="22" height="13" rx="2" fill="#15161a"/>
 </g><g transform="translate(167 212) scale(1.04)">
-  <rect x="-30" y="0" width="60" height="96" rx="26" fill="#f08c2e"/>
+  <rect x="-30" y="0" width="60" height="96" rx="26" fill="#9b5de5"/>
   <rect x="-20" y="84" width="16" height="70" rx="8" fill="#2a3352"/><rect x="4" y="84" width="16" height="70" rx="8" fill="#2a3352"/>
   <circle cx="0" cy="-34" r="32" fill="#f2d4bd"/>
   <path d="M-32,-38 C-32,-74 32,-74 32,-38 C24,-56 -24,-56 -32,-38Z" fill="#2b2b2b"/>

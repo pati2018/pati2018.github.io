@@ -1,7 +1,7 @@
 // SoundWhacker Band – Offline-Speicher (Service Worker)
 // Beim ersten Öffnen mit Internet werden App, Lieder und alle Klänge gespeichert.
 // Danach läuft die App auch ohne Internet. Bei Änderungen VERSION erhöhen.
-const VERSION='sw-band-v34';
+const VERSION='sw-band-v35';
 const DATEIEN=[
 "./",
 "index.html",

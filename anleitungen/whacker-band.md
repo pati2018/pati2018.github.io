@@ -32,7 +32,7 @@ Der SoundWhacker ist eine weiße Röhre mit **zwei schwarzen Ringen** – einer 
 
 **Tonlänge:** Ein Ton klingt so lange, wie der SoundWhacker (oder die Taste, die Figur, die Klaviertaste) **gehalten** wird – mindestens eine Viertelsekunde. Beim Vorspielen klingt jeder Ton so lang wie seine Note.
 
-Über der Bühne läuft ein **Notenband** aus farbigen Punkten mit: Jeder Punkt ist ein Ton in der Farbe der Figur, die ihn spielt. Beim Mitspielen geht es erst weiter, wenn die richtige Figur gespielt hat. Am Ende des Liedes geht es von vorne los.
+Über der Bühne steht ein **Notenband** aus farbigen Punkten. Es bleibt ruhig stehen und gleitet erst, wenn der aktuelle Ton weit rechts ist, in einem Zug wieder nach vorne: Jeder Punkt ist ein Ton in der Farbe der Figur, die ihn spielt. Beim Mitspielen geht es erst weiter, wenn die richtige Figur gespielt hat. Am Ende des Liedes geht es von vorne los.
 
 ## Mitspielen: drei Spielarten
 

@@ -43,7 +43,7 @@
   #tempoWert{min-width:150px;color:var(--text);font-weight:700}
   .buehne{position:relative;border-radius:18px;overflow:hidden;background:radial-gradient(1200px 600px at 50% 110%,#26365f 0%,#121a33 55%,#0a0f1f 100%);border:1px solid var(--linie);touch-action:manipulation}
   .buehne svg{display:block;width:100%;height:min(calc(100vh - 250px),47.5vw);min-height:260px}
-  #band{display:flex;gap:12px;align-items:center;overflow:hidden;min-height:92px;padding:10px 18px;scroll-behavior:smooth;mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent)}
+  #band{display:flex;gap:12px;align-items:center;overflow:hidden;min-height:92px;padding:10px 18px;scroll-behavior:auto;mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent)}
   #band span{flex:0 0 auto;width:56px;height:56px;border-radius:50%;opacity:.9;transition:transform .15s,opacity .15s;box-shadow:inset 0 -6px 0 rgba(0,0,0,.18)}
   #band span.jetzt{opacity:1;transform:scale(1.28);box-shadow:0 0 0 5px #fff,0 0 22px 6px rgba(255,255,255,.45)}
   #band span.fertig{opacity:.3}
@@ -424,12 +424,18 @@ function punktFarbe(k,n){
   return FARBE[figFuer(k)];
 }
 function bandBauen(){ $('band').innerHTML=LIED.noten.map((n,k)=>istAkk(n.m)?'<span class="akk" style="background:'+punktFarbe(k,n)+'">'+akkName(n.m)+'</span>':'<span style="background:'+punktFarbe(k,n)+'"></span>').join(''); bandZeigen(); }
+let scrollAnim=0;
+function sanftScrollen(b,ziel){ cancelAnimationFrame(scrollAnim); const start=b.scrollLeft, weg=ziel-start; if(Math.abs(weg)<2) return;
+  const t0=performance.now(), dauer=650;
+  const schritt=now=>{ const f=Math.min(1,(now-t0)/dauer), e=f<.5?2*f*f:1-Math.pow(-2*f+2,2)/2; b.scrollLeft=start+weg*e; if(f<1) scrollAnim=requestAnimationFrame(schritt); };
+  scrollAnim=requestAnimationFrame(schritt); }
 function bandZeigen(){ const sp=$('band').children; [...sp].forEach((e,k)=>{ e.classList.toggle('jetzt',k===pos); e.classList.toggle('fertig',k<pos); });
   // Die Tonreihe läuft bei jedem Ton mit
   const b=$('band'), cur=sp[pos];
-  if(pos===0) b.scrollLeft=0;
+  if(pos===0) sanftScrollen(b,0);
   else if(cur){ const r=cur.getBoundingClientRect(), rb=b.getBoundingClientRect(), x=r.left-rb.left;
-    b.scrollLeft=Math.max(0,b.scrollLeft+x-rb.width*0.3); }   // läuft bei jedem Ton mit: der aktuelle Ton bleibt im vorderen Drittel
+    // ruhig: die Reihe bleibt stehen, bis der aktuelle Ton weit rechts ist – dann gleitet sie in einem Zug zurück nach vorne
+    if(x>rb.width*0.72||x<0) sanftScrollen(b,Math.max(0,b.scrollLeft+x-rb.width*0.12)); }
   const a=spielart(), soll=LIED&&LIED.noten[pos];
   F.forEach((f,i)=>f.hint= st.modus==='mit' && !!soll && (a==='reihe'? i===zug%st.reiheN : a==='fest'? figFuer(pos)===i : false)); }
 

@@ -73,6 +73,7 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
       localStorage `whacker-band-lieder` (JSON-Export/Import). Auftrag kam als MD-Datei vom Nutzer.
       Mitspielen hat 3 Spielarten wie „Gemeinsame Melodie“ in Smart Control: SW spielt Melodie (reihum), Feste SW-Reihenfolge
       (SW1–n, Rest stumm), Feste SW-Töne (zeigt immer, wer dran ist – kein Schalter; nur wer dran ist, klingt, falsche SWs bleiben stumm). Einstellungen `spielart`, `reiheN`.
+      Bei „Feste SW-Töne / Akkorde“ Schalter **„Wer darf spielen?“**: 🎯 Nur wer dran ist | 🎶 Alle jederzeit (`st.festFrei`: alle klingen, Lied geht nur mit dem Richtigen weiter).
       **Akkorde einspielen** (4. Modus `akk`): jedem SW einen Akkord geben (12 Grundtöne C…H, Dur/Moll/Septim; `st.akkSet`), Folge aufnehmen,
       speichern als eigenes Lied mit `akk:true` + `set` (5 Akkorde). Akkord-Nummer `1000 + Grundton·3 + Art` steht in `noten[].m`;
       `ton()` spielt dann den Akkord (Bass + Dreiklang/Vierklang, leicht gestaffelt). Fertige Folgen in `AKK_DEMOS` (Pop, Kadenz, Blues).

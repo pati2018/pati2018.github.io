@@ -31,7 +31,7 @@
   .modi button[aria-pressed="true"]{background:var(--gold);color:#111;border-color:var(--gold)}
   #spielart button{min-height:50px;font-size:17px}
   #spielart button:disabled{opacity:.4;cursor:not-allowed}
-  #reiheZeile .knopf[aria-pressed="true"]{background:var(--gold);color:#111;border-color:var(--gold)}
+  #reiheZeile .knopf[aria-pressed="true"],#festZeile .knopf[aria-pressed="true"]{background:var(--gold);color:#111;border-color:var(--gold)}
   .leiste{display:flex;gap:10px 18px;flex-wrap:wrap;align-items:center;background:var(--karte);border:1px solid var(--linie);border-radius:14px;padding:8px 12px}
   .leiste label{display:flex;align-items:center;gap:8px;font-size:16px;color:var(--mut)}
   .leiste select{font-size:17px;min-height:46px;padding:6px 10px;border-radius:10px;border:1px solid var(--linie);background:#0f1730;max-width:330px}
@@ -131,6 +131,8 @@
     </div>
     <div class="zeile" id="reiheZeile" hidden><span class="hinweis">Mitspieler:</span>
       <button class="knopf" data-n="2">SW1–2</button><button class="knopf" data-n="3">SW1–3</button><button class="knopf" data-n="4">SW1–4</button><button class="knopf" data-n="5">SW1–5</button></div>
+    <div class="zeile" id="festZeile" hidden><span class="hinweis">Wer darf spielen?</span>
+      <button class="knopf" data-f="0" title="Nur der SoundWhacker, der dran ist, klingt – die anderen bleiben stumm">🎯 Nur wer dran ist</button><button class="knopf" data-f="1" title="Jeder SoundWhacker klingt jederzeit mit seinem Ton/Akkord – das Lied geht weiter, wenn der Richtige spielt">🎶 Alle jederzeit</button></div>
   </div>
   <div id="buehnenBox"><div class="innen">
   <div id="band" aria-hidden="true"></div>
@@ -190,7 +192,7 @@ function el(t,a,p){ const e=document.createElementNS(NS,t); for(const k in a) e.
 
 // ---------- Einstellungen ----------
 const KEY='whacker-band', LKEY='whacker-band-lieder';
-let st={lied:'lied:freude',tempo:100,aufstellung:'halbkreis',klang:'marimba',modus:'vor',spielart:'fest',reiheN:5,hall:20,akkSet:null};
+let st={lied:'lied:freude',tempo:100,aufstellung:'halbkreis',klang:'marimba',modus:'vor',spielart:'fest',reiheN:5,hall:20,akkSet:null,festFrei:false};
 try{ Object.assign(st, JSON.parse(localStorage.getItem(KEY)||'{}')); }catch(e){}
 // ---------- Akkorde ----------
 // Akkord-Nummer: 1000 + Grundton·3 + Art (0 = Dur, 1 = Moll, 2 = Septim)
@@ -469,7 +471,9 @@ function spielerTon(i){
   }
   const m=FIGTON[i]; if(m===null||m===undefined) return;
   // Feste SW-Töne beim Mitspielen: nur wer dran ist, klingt – ein falscher SoundWhacker bleibt stumm (Figur schüttelt kurz den Kopf)
-  if(st.modus==='mit'){ if(!LIED.noten[pos]||figFuer(pos)!==i){ F[i].nein=performance.now(); return; } }
+  if(st.modus==='mit'){ if(!LIED.noten[pos]||figFuer(pos)!==i){
+      if(!st.festFrei){ F[i].nein=performance.now(); return; }
+      ton(i,m); schlag(i,performance.now(),true); return; } }   // „Alle jederzeit“: klingt, aber das Lied geht erst mit dem Richtigen weiter
   if(st.modus==='auf' && rec.an){ recIdx[i]=recTon(istSchlag()?setVon().sw[i]:m); }
   ton(i,m); schlag(i,performance.now(),true);
   if(st.modus==='mit'){ pos++; if(pos>=LIED.noten.length) return liedRundeFertig(); bandZeigen(); }
@@ -592,7 +596,7 @@ function info(){
   const t={vor:'Die Band spielt „'+LIED.titel+'“ vor. Start mit dem Knopf oder der Leertaste.',
            mit:{reihum:'SW spielt Melodie / Akkorde: Jede Berührung – egal welcher SoundWhacker – spielt den nächsten Ton oder Akkord. Die Punkte färben sich in der Farbe von dem, der gespielt hat.',
                 reihe:'Feste SW-Reihenfolge: SW1 → SW2 → … – wer dran ist, leuchtet schon leicht. Wer nicht dran ist, bleibt stumm.',
-                fest:'Feste SW-Töne / Akkorde: Jeder SoundWhacker hat seinen eigenen Ton oder Akkord. Die Figur, die als Nächstes dran ist, leuchtet schon leicht – nur sie klingt, alle anderen bleiben stumm.'}[spielart()]+(st.spielart==='fest'&&!fuenf()?' (Dieses Lied hat mehr als 5 Töne – „Feste SW-Töne / Akkorde“ geht nur mit ⭐-Liedern und Akkordfolgen.)':''),
+                fest:'Feste SW-Töne / Akkorde: Jeder SoundWhacker hat seinen eigenen Ton oder Akkord. Die Figur, die als Nächstes dran ist, leuchtet schon leicht'+(st.festFrei?' – alle dürfen jederzeit mitspielen, das Lied geht weiter, wenn die Richtige spielt.':' – nur sie klingt, alle anderen bleiben stumm.')}[spielart()]+(st.spielart==='fest'&&!fuenf()?' (Dieses Lied hat mehr als 5 Töne – „Feste SW-Töne / Akkorde“ geht nur mit ⭐-Liedern und Akkordfolgen.)':''),
            auf:'Spiele eine Melodie ein. Mit höchstens 5 verschiedenen Tönen wird sie ein ⭐-Lied.',
            akk:'Gib jedem SoundWhacker einen Akkord und spiele die Akkordfolge ein.'}[st.modus];
   if(st.modus==='akk'){ $('info').textContent=t+'  Akkorde: '+st.akkSet.map((a,i)=>'SW'+(i+1)+' '+akkName(a)).join(' · '); return; }
@@ -635,10 +639,13 @@ function spielartZeigen(){
   const eff=st.modus==='mit'?spielart():st.spielart;
   document.querySelectorAll('#spielart button').forEach(b=>{ b.setAttribute('aria-pressed',b.dataset.s===eff);
     if(b.dataset.s==='fest'){ b.disabled=!fuenf(); b.title=fuenf()?'Jeder SoundWhacker hat seinen eigenen Ton oder Akkord':'Nur bei ⭐-Liedern (höchstens 5 Töne)'; } });
-  $('reiheZeile').hidden=st.spielart!=='reihe'; spaeterAnpassen();
+  $('reiheZeile').hidden=st.spielart!=='reihe';
+  $('festZeile').hidden=!(st.modus==='mit'&&eff==='fest');
+  document.querySelectorAll('#festZeile [data-f]').forEach(b=>b.setAttribute('aria-pressed',(b.dataset.f==='1')===!!st.festFrei)); spaeterAnpassen();
   document.querySelectorAll('#reiheZeile [data-n]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.n===st.reiheN));
 }
 $('spielart').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; b.blur(); st.spielart=b.dataset.s; merke(); spielartZeigen(); pos=0; zug=0; spieler=[]; bandBauen(); info(); };
+$('festZeile').onclick=e=>{ const b=e.target.closest('[data-f]'); if(!b) return; b.blur(); st.festFrei=b.dataset.f==='1'; merke(); spielartZeigen(); info(); };
 $('reiheZeile').onclick=e=>{ const b=e.target.closest('[data-n]'); if(!b) return; b.blur(); st.reiheN=+b.dataset.n; merke(); spielartZeigen(); pos=0; zug=0; bandBauen(); };
 document.querySelector('.modi').onclick=e=>{ const b=e.target.closest('button'); if(b) modus(b.dataset.m); };
 $('start').onclick=()=>{ if(st.modus==='mit'){ pos=0; zug=0; spieler=[]; bandBauen(); audio(); } else start(); };

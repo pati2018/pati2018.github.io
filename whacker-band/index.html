@@ -57,7 +57,10 @@
   body.vollbild .top, body.vollbild #hauptLeiste, body.vollbild #mitLeiste, body.vollbild #info, body.vollbild #schlagInfo{display:none!important}
   body.vollbild .buehne svg{min-height:0}
   @media (max-height:500px){body.vollbild #band{min-height:56px;padding:4px 12px} body.vollbild #band span{width:36px;height:36px} body.vollbild #band span.akk{font-size:16px;min-width:36px}}
-  #vollAus{display:none;position:fixed;top:max(10px,env(safe-area-inset-top));right:max(10px,env(safe-area-inset-right));z-index:60;min-height:48px;padding:6px 16px;font-size:18px;background:rgba(15,23,48,.92)}
+  #vollAus{display:none;position:fixed;bottom:max(6px,env(safe-area-inset-bottom));right:max(8px,env(safe-area-inset-right));z-index:60;min-height:34px;padding:2px 10px;font-size:14px;opacity:.55;background:rgba(15,23,48,.85)}
+  #vollAus:hover,#vollAus:focus{opacity:1}
+  /* echtes Vollbild am iPad: oben links liegt das Schließen-Kreuz von Safari – Noten etwas nach rechts */
+  body.vollbild.echt #band{margin-left:64px}
   body.vollbild #vollAus{display:block}
   body.vollbild .wrap{padding-top:8px}
   /* Lied einspielen: Bühne und Tonreihe schieben sich sanft zusammen – dann ist nur noch die Klaviatur zu sehen */
@@ -130,7 +133,7 @@
   </div>
   </div></div>
   <p class="hinweis" id="schlagInfo" hidden></p>
-  <button class="knopf" id="vollAus" title="Vollbild beenden (Esc)">✕ Vollbild beenden</button>
+  <button class="knopf" id="vollAus" title="Vollbild beenden (Esc)" aria-label="Vollbild beenden">✕</button>
   <p class="hinweis" id="info"></p>
 
   <!-- Lied einspielen -->
@@ -670,7 +673,7 @@ function vollbild(an){
 }
 $('vollbild').onclick=()=>{ $('vollbild').blur(); vollbild(true); };
 $('vollAus').onclick=()=>{ $('vollAus').blur(); vollbild(false); };
-['fullscreenchange','webkitfullscreenchange'].forEach(ev=>document.addEventListener(ev,()=>{ if(!(document.fullscreenElement||document.webkitFullscreenElement)) document.body.classList.remove('vollbild'); spaeterAnpassen(); setTimeout(buehneAnpassen,450); }));
+['fullscreenchange','webkitfullscreenchange'].forEach(ev=>document.addEventListener(ev,()=>{ const echt=!!(document.fullscreenElement||document.webkitFullscreenElement); document.body.classList.toggle('echt',echt&&navigator.maxTouchPoints>0); if(!echt) document.body.classList.remove('vollbild'); spaeterAnpassen(); setTimeout(buehneAnpassen,450); }));
 window.addEventListener('keydown',e=>{ if(e.key==='Escape'&&document.body.classList.contains('vollbild')) vollbild(false); });
 let tT=0; function toast(t){ let e=document.querySelector('.toast'); if(!e){ e=document.createElement('div'); e.className='toast'; e.setAttribute('role','status'); document.body.appendChild(e); } e.textContent=t; e.hidden=false; clearTimeout(tT); tT=setTimeout(()=>e.hidden=true,2200); }
 // Ton erst nach der ersten Berührung (Browser-Regel) – jede Berührung startet den Klang

@@ -120,7 +120,8 @@ window.APPS = [
     link: "https://pati2018.github.io/soundwhacker-looper/SoundWhacker_Spielen.html",
     repo: "https://github.com/pati2018/soundwhacker-looper",
     kategorie: "Musik",
-    symbol: "🥁",
+    symbol: "🎚️",
+    bild: "icons/smart-control-192.png",
     datum: "2026-11-05",
     ganzOben: 1
   },

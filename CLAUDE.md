@@ -103,6 +103,7 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
     - Smart Instruments → Repo `pati2018/Gitarre`
     - SoundWhacker Smart Control und MIGA (Mimik, Gestik, Augensteuerung)
       → Repo `pati2018/soundwhacker-looper`
+      Symbol von Smart Control auf der Übersicht: `icons/smart-control.svg`/`-192.png` = fünf Schieberegler in SW-Farben (wie die Regler der App) – keine Trommel.
 - **Erklärseite** `ki-betriebssystem/index.html`: Schaubild „Mein KI-Betriebssystem für
   Musik-Apps“, oben auf der Übersicht verlinkt. Keine App, steht nicht in `apps.js`.
   Kommt eine neue App dazu, dort die App-Kachel (klickbarer Link) ergänzen.

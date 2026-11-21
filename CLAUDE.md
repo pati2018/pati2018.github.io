@@ -139,6 +139,9 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
   Kontakt-E-Mail laut Nutzer: schaeferkbbz@googlemail.com. Unten auf beiden Übersichten verlinkt.
   **Kommt ein neuer externer Dienst dazu (Server, CDN, Zähler), dort ergänzen.**
 - **Schriften** liegen lokal in `fonts/` (`/fonts/fonts.css`) – **keine Google Fonts** einbinden.
+- **Als App installieren (PC/Chrome):** Jede App hat ein Manifest (`display: standalone`, Symbole 192 + 512) und ist installierbar
+  (geprüft mit Chrome `Page.getInstallabilityErrors`). MIGA hat `miga.webmanifest`, Smart Control `spielen.webmanifest` (Repo soundwhacker-looper).
+  In Chrome: Symbol rechts in der Adressleiste oder Menü ⋮ → „Streamen, speichern und teilen“ → „Seite als App installieren …“.
 - **Kein „Quellcode“-Knopf** auf den Anleitungsseiten (`app.html`, `schule/app.html`) – Wunsch Nutzer; `repo` in `apps.js` bleibt nur als Notiz.
 - **Weitere Dateien:** `index.html` (Übersicht), `app.html` (zeigt die Anleitung
   einer App), `anleitungen/<id>.md` (Anleitungen), `style.css`, `theme.js`

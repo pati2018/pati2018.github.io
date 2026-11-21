@@ -68,7 +68,7 @@
   body.vollbild.echt #band{margin-left:64px}
   body.vollbild #vollAus{display:block}
   #vollbild{background:#3f8ee8;color:#fff;border-color:#3f8ee8;font-weight:800}   /* hellblau wie SW5, rechts in der Titelzeile */
-  .top h1{order:0;flex:1 1 calc(100% - 420px)} .top > a{order:1;margin-left:auto} #vollbild{order:2}
+  .top h1{order:0;flex:1 1 calc(100% - 560px)} #sprache{order:1;margin-left:auto} .top > a{order:1} #vollbild{order:2}
   .top .modi{order:3;flex:1 1 100%}   /* Titel, Anleitung, Vollbild in einer Reihe – darunter alle Modi */
   @media (min-width:900px){ .top .modi{flex-wrap:nowrap} .top .modi button{flex:1 1 auto;padding:8px 10px;font-size:clamp(13px,1.3vw,19px);white-space:nowrap} }
   .impZeile label{display:flex;align-items:center;gap:8px;color:var(--mut)} .impZeile select{font-size:18px;min-height:50px;padding:6px 10px;border-radius:10px;border:1.5px solid var(--gold);background:#0f1730;color:var(--text)}
@@ -129,6 +129,7 @@
       <button data-m="lieder" aria-pressed="false">💾 Meine Lieder</button>
     </div>
     <button class="knopf" id="vollbild" title="Nur die Bühne zeigen – für iPad und Beamer">⛶ Vollbild</button>
+    <button class="knopf" id="sprache" lang="en" title="Switch the app to English">🌐 English</button>
     <a href="../app.html?id=whacker-band">Anleitung</a>
   </div>
 
@@ -219,14 +220,15 @@
 const $=id=>document.getElementById(id);
 const FARBE=['#e5484d','#9b5de5','#f2cf3a','#46b37b','#3f8ee8'];
 const NAMEN=['c','cis','d','dis','e','f','fis','g','gis','a','b','h'];
-function tonName(m){ const o=Math.floor(m/12)-1, n=NAMEN[((m%12)+12)%12]; return o>=4? n+['′','″','‴','⁗'][o-4] : (o===3? n : n[0].toUpperCase()+n.slice(1)); }
+function tonName(m){ if(st.sprache==='en'){ return ['C','C#','D','Eb','E','F','F#','G','Ab','A','Bb','B'][((m%12)+12)%12]+(Math.floor(m/12)-1); } const o=Math.floor(m/12)-1, n=NAMEN[((m%12)+12)%12]; return o>=4? n+['′','″','‴','⁗'][o-4] : (o===3? n : n[0].toUpperCase()+n.slice(1)); }
 const NS='http://www.w3.org/2000/svg';
 function el(t,a,p){ const e=document.createElementNS(NS,t); for(const k in a) e.setAttribute(k,a[k]); if(p) p.appendChild(e); return e; }
 
 // ---------- Einstellungen ----------
 const KEY='whacker-band', LKEY='whacker-band-lieder';
-let st={lied:'lied:freude',tempo:100,aufstellung:'halbkreis',klang:'marimba',modus:'vor',spielart:'fest',reiheN:5,hall:20,akkSet:null,festFrei:false,imp:null,mischen:false};
+let st={lied:'lied:freude',tempo:100,aufstellung:'halbkreis',klang:'marimba',modus:'vor',spielart:'fest',reiheN:5,hall:20,akkSet:null,festFrei:false,imp:null,mischen:false,sprache:'de'};
 try{ Object.assign(st, JSON.parse(localStorage.getItem(KEY)||'{}')); }catch(e){}
+const EN=st.sprache==='en', L=(de,en)=>EN?en:de;   /* Sprache: Deutsch / English (Schalter oben, Seite lädt neu) */
 // ---------- Akkorde ----------
 // Akkord-Nummer: 1000 + Grundton·3 + Art (0 = Dur, 1 = Moll, 2 = Septim)
 const WURZEL=['C','Cis','D','Dis','E','F','Fis','G','Gis','A','B','H'], ART=['','m','7'], ARTNAME=['Dur','Moll','Septim (7)'];
@@ -272,6 +274,21 @@ const KLAENGE={
   'schlag-808':{n:'Schlagzeug 808',schlag:'schlag',pegel:.75}, 'schlag-jazz':{n:'Schlagzeug Jazz',schlag:'schlag',pegel:.75}, 'schlag-besen':{n:'Schlagzeug Besen',schlag:'schlag',pegel:.8},
   harfe:{n:'Harfe',pegel:1.05,pfad:'../tischharfe/samples/',toene:{E3:52,G3:55,B3:59,D4:62,F4:65,A4:69,C5:72,E5:76,G5:79,B5:83}},
 };
+if(EN){   /* Namen auf Englisch – die Kennungen (ids) bleiben deutsch */
+  WURZEL.splice(0,12,'C','C#','D','Eb','E','F','F#','G','Ab','A','Bb','B'); ARTNAME.splice(0,3,'Major','Minor','Seventh (7)');
+  Object.assign(SKALEN.dur,{n:'Major'}); SKALEN.moll.n='Minor'; SKALEN.durpenta.n='Major pentatonic'; SKALEN.mollpenta.n='Minor pentatonic'; SKALEN.orient.n='Oriental';
+  SCHLAG_NAME.splice(0,30,'Bass drum','Bass drum 2','Snare','Snare 2','Rimshot','Clap','Hi-hat closed','Hi-hat pedal','Hi-hat open','Tom 1 low','Tom 2','Tom 3','Tom 4','Tom 5','Tom 6 high','Cymbal','Cymbal 2','Ride','Ride bell','Splash','China','Tambourine','Cowbell','Cabasa','Maracas','Claves','Bongo high','Bongo low','Conga high','Conga low');
+  FX_NAME.splice(0,30,'Phone','Phone 2','Car brakes','Car passing','Car engine','Horn','Car crash','Siren','Train','Helicopter','Jet','Spaceship','Applause','Laughter','Heartbeat','Footsteps','Dog','Horse','Birds','Bicycle bell','Sea','Rain','Thunder','Wind','Bubbles','Creaking door','Door slam','Wind chimes','Laser','Explosion');
+  const KN={klavier:'Piano',vibraphon:'Vibraphone',xylophon:'Xylophone',spieluhr:'Music box',steeldrums:'Steel drums',epiano:'Electric piano',gitarre:'Guitar',
+    overdrive:'Distorted guitar (Overdrive)',distortion:'Distorted guitar (Distortion)',feedback:'Distorted guitar (Feedback)',wah:'Wah-wah guitar',floete:'Flute',blockfloete:'Recorder',
+    panfloete:'Pan flute',piccolo:'Piccolo',okarina:'Ocarina',klarinette:'Clarinet',sopransax:'Soprano saxophone',altsax:'Alto saxophone',tenorsax:'Tenor saxophone',
+    effekte:'Noises & effects','schlag-standard':'Drums Standard','schlag-rock':'Drums Rock','schlag-elektro':'Drums Electronic','schlag-808':'Drums 808','schlag-jazz':'Drums Jazz','schlag-besen':'Drums Brushes',harfe:'Harp'};
+  for(const id in KN) if(KLAENGE[id]) KLAENGE[id].n=KN[id];
+  AKK_DEMOS[0].titel='Pop chords (C – G – Am – F)'; AKK_DEMOS[1].titel='Cadence (C – F – G7 – C)';
+}
+const LIED_EN={leiter:'Exercise: scale up and down',entchen:'All My Little Ducklings',haenschen:'Little Hans',jakob:'Are You Sleeping, Brother John?',
+  weihnachtsmann:'Twinkle, Twinkle, Little Star',stillenacht:'Silent Night',geburtstag:'Happy Birthday',freude:'Ode to Joy',elise:'Für Elise (theme)'};
+const liedTitel=l=>EN&&LIED_EN[l.id]||l.titel;
 for(const id in KLAENGE){ const K=KLAENGE[id]; if(!K.pfad){ K.pfad='../tischharfe/klaenge/'+id+'/'; K.toene=Object.fromEntries((K.schlag?SCHLAG_NAME.map((x,i)=>55+i):ST_TOENE).map(m=>[m,m])); } }
 let ctx=null, master, dry, wet; const hallWert=()=>Math.pow(st.hall/100,1.3)*1.1; const puffer={}, lade={};
 /* iPad/iPhone: 'playback' = die App klingt allein (auch bei Stummschalter), 'ambient' = mischt sich mit anderen Apps,
@@ -354,7 +371,7 @@ function liedDaten(id){
     n.forEach(x=>{ x.dur+=x.pause||0; delete x.pause; });
     // in den Klangbereich schieben (ganze Oktaven)
     const ms=n.map(x=>x.m); let s=0; while(Math.min(...ms)+s<55) s+=12; while(Math.max(...ms)+s>84) s-=12; n.forEach(x=>x.m+=s);
-    return {titel:l.titel,tempo:l.tempo||100,noten:n}; }
+    return {titel:liedTitel(l),tempo:l.tempo||100,noten:n}; }
   if(id.startsWith('akk:')){ const d=AKK_DEMOS.find(x=>x.id===id.slice(4)); if(!d) return null;
     return {titel:d.titel,tempo:d.tempo,akk:true,set:d.set.slice(),noten:d.folge.map(([f,du])=>({m:d.set[f-1],dur:du}))}; }
   if(id.startsWith('eigen:')){ const l=eigene().find(x=>x.name===id.slice(6)); if(!l) return null; return {titel:l.name,tempo:60,schlag:!!l.schlag,akk:!!l.akk,set:l.akk?(l.set||[]).slice(0,5):null,noten:l.noten.map(x=>({m:x.m,dur:x.d,l:x.l}))}; }
@@ -366,7 +383,7 @@ function liedListe(){
   // ⭐ = höchstens 5 Töne: jede Figur hat ihren eigenen Ton (Vorspielen nach Tonhöhe, „Feste SW-Töne“ möglich)
   const stern=(titel,d)=>(toeneVon(d.noten).length<=5?'⭐ ':'')+titel;
   const g1=document.createElement('optgroup'); g1.label='Lieder (⭐ = höchstens 5 Töne)';
-  (window.HARFE?HARFE.LIEDER:[]).filter(l=>!l.eigen).forEach(l=>{ try{ const d=liedDaten('lied:'+l.id); if(d&&d.noten.length) g1.appendChild(new Option(stern(l.titel,d),'lied:'+l.id)); }catch(e){} });
+  (window.HARFE?HARFE.LIEDER:[]).filter(l=>!l.eigen).forEach(l=>{ try{ const d=liedDaten('lied:'+l.id); if(d&&d.noten.length) g1.appendChild(new Option(stern(liedTitel(l),d),'lied:'+l.id)); }catch(e){} });
   s.appendChild(g1);
   const ga=document.createElement('optgroup'); ga.label='🎸 Akkordfolgen'; AKK_DEMOS.forEach(d=>ga.appendChild(new Option('🎸 '+d.titel,'akk:'+d.id))); s.appendChild(ga);
   const e=eigene(), el_=e.filter(l=>!l.akk), ea=e.filter(l=>l.akk);
@@ -574,7 +591,7 @@ $('recHoeren').onclick=()=>{ if(!rec.noten) return; const alt=LIED, altT=TOENE, 
 $('recSpeichern').onclick=()=>{
   const name=$('recName').value.trim(); if(!name){ $('recName').focus(); return toast('Bitte einen Namen eingeben'); }
   const l=eigene(); const i=l.findIndex(x=>x.name===name);
-  if(i>=0&&!confirm('„'+name+'“ gibt es schon. Überschreiben?')) return;
+  if(i>=0&&!confirm(L('„'+name+'“ gibt es schon. Überschreiben?','“'+name+'” already exists. Overwrite?'))) return;
   const neu={name,noten:rec.noten}; if(rec.schlag) neu.schlag=true; if(rec.akk){ neu.akk=true; neu.set=rec.set.slice(); } if(i>=0) l[i]=neu; else l.push(neu); eigeneSpeichern(l);
   st.lied='eigen:'+name; merke(); liedListe(); liedSetzen(); meineZeigen(); toast('💾 „'+name+'“ gespeichert'+(rec.akk?' – zum Spielen „🙌 Mitspielen“ wählen':''));
   $('recWeg').click(); $('recName').value='';
@@ -620,12 +637,12 @@ function meineZeigen(){
   box.innerHTML=l.length?'':'<p class="hinweis">Noch keine eigenen Lieder. Unter „● Lied einspielen“ oder „🎸 Akkorde einspielen“ aufnehmen oder hier eine Datei hochladen.</p>';
   l.forEach(x=>{ const z=document.createElement('div'); z.className='eintrag';
     z.innerHTML='<b></b><button class="knopf" data-a="spielen">▶ Auswählen</button><button class="knopf" data-a="umbenennen">✎ Umbenennen</button><button class="knopf" data-a="laden">⬇ Herunterladen</button><button class="knopf" data-a="loeschen">🗑 Löschen</button>';
-    z.querySelector('b').textContent=(x.akk?'🎸 ':'')+x.name+' ('+x.noten.length+(x.akk?' Akkorde)':' Töne)');
+    const bb=z.querySelector('b'); bb.dataset.notr=1; bb.textContent=(x.akk?'🎸 ':'')+x.name+' ('+x.noten.length+(x.akk?L(' Akkorde)',' chords)'):L(' Töne)',' notes)'));
     z.onclick=e=>{ const a=e.target.dataset.a; if(!a) return; const L=eigene(), i=L.findIndex(y=>y.name===x.name);
       if(a==='spielen'){ st.lied='eigen:'+x.name; merke(); liedListe(); liedSetzen(); modus('vor'); }
-      if(a==='umbenennen'){ const n=(prompt('Neuer Name:',x.name)||'').trim(); if(!n||n===x.name) return; if(L.some(y=>y.name===n)) return toast('Diesen Namen gibt es schon'); L[i].name=n; eigeneSpeichern(L); if(st.lied==='eigen:'+x.name) st.lied='eigen:'+n; merke(); liedListe(); meineZeigen(); }
+      if(a==='umbenennen'){ const n=(prompt(L('Neuer Name:','New name:'),x.name)||'').trim(); if(!n||n===x.name) return; if(L.some(y=>y.name===n)) return toast('Diesen Namen gibt es schon'); L[i].name=n; eigeneSpeichern(L); if(st.lied==='eigen:'+x.name) st.lied='eigen:'+n; merke(); liedListe(); meineZeigen(); }
       if(a==='laden') herunter([L[i]],x.name);
-      if(a==='loeschen'){ if(!confirm('„'+x.name+'“ wirklich löschen?')) return; L.splice(i,1); eigeneSpeichern(L); liedListe(); liedSetzen(); meineZeigen(); } };
+      if(a==='loeschen'){ if(!confirm(L('„'+x.name+'“ wirklich löschen?','Really delete “'+x.name+'”?'))) return; L.splice(i,1); eigeneSpeichern(L); liedListe(); liedSetzen(); meineZeigen(); } };
     box.appendChild(z); });
 }
 function herunter(lieder,name){
@@ -642,7 +659,7 @@ $('datei').onchange=async()=>{
   const L=eigene(); let n=0;
   neu.forEach(x=>{ const i=L.findIndex(y=>y.name===x.name);
     const sx=Object.assign({},x.schlag?{schlag:true}:{},x.akk&&Array.isArray(x.set)?{akk:true,set:x.set.slice(0,5).map(v=>typeof v==='number'?v:null)}:{}); if(i<0){ L.push({name:x.name,noten:x.noten,...sx}); n++; return; }
-    if(confirm('„'+x.name+'“ gibt es schon.\nOK = überschreiben, Abbrechen = als Kopie behalten')){ L[i]={name:x.name,noten:x.noten,...sx}; n++; }
+    if(confirm(L('„'+x.name+'“ gibt es schon.\nOK = überschreiben, Abbrechen = als Kopie behalten','“'+x.name+'” already exists.\nOK = overwrite, Cancel = keep as a copy'))){ L[i]={name:x.name,noten:x.noten,...sx}; n++; }
     else { let k=2; while(L.some(y=>y.name===x.name+' ('+k+')')) k++; L.push({name:x.name+' ('+k+')',noten:x.noten,...sx}); n++; } });
   eigeneSpeichern(L); liedListe(); meineZeigen(); toast(n+' Lied'+(n===1?'':'er')+' hochgeladen');
 };
@@ -705,7 +722,7 @@ function impWahlBauen(){
     const kn=document.createElement('button'); kn.className='swk imp'; kn.style.background=FARBE[i]; kn.dataset.i=i; kn.textContent='SW'+(i+1)+' 🎲';
     kn.title='Antippen = ein Zufallston zur Probe';
     const sel=document.createElement('select'); sel.setAttribute('aria-label','Instrument für SW'+(i+1));
-    RUBRIKEN.filter(rb=>!/Schlagzeug|Geräusche/.test(rb[0])).forEach(([titel,ids])=>{ const og=document.createElement('optgroup'); og.label=titel; ids.forEach(id=>KLAENGE[id]&&og.appendChild(new Option(KLAENGE[id].n,id))); sel.appendChild(og); });
+    RUBRIKEN.filter(rb=>!rb[1].some(id=>KLAENGE[id]&&KLAENGE[id].schlag)).forEach(([titel,ids])=>{ const og=document.createElement('optgroup'); og.label=titel; ids.forEach(id=>KLAENGE[id]&&og.appendChild(new Option(KLAENGE[id].n,id))); sel.appendChild(og); });
     sel.value=k; sel.onchange=()=>{ st.imp.klang[i]=sel.value; merke(); ladeKlang(sel.value); nummernZeigen(); sel.blur(); };
     kn.addEventListener('pointerdown',e=>{ e.preventDefault(); spielerTon(i); });
     ['pointerup','pointercancel','pointerleave'].forEach(ev=>kn.addEventListener(ev,()=>{ loslassen(i); impKnopf(i,false); }));
@@ -738,6 +755,7 @@ const RUBRIKEN=[['🎹 Tasteninstrumente',['klavier','epiano']],
   ['🎺 Blasinstrumente',['floete','blockfloete','panfloete','piccolo','okarina','klarinette','sopransax','altsax','tenorsax']],
   ['🥁 Schlagzeug',Object.keys(KLAENGE).filter(id=>KLAENGE[id].schlag==='schlag')],
   ['✨ Geräusche & Effekte',['effekte']]];
+if(EN) ['🎹 Keyboards','🎶 Mallets (xylophone & co.)','🎸 Guitars & plucked strings','🎺 Wind instruments','🥁 Drums','✨ Noises & effects'].forEach((t,i)=>RUBRIKEN[i][0]=t);
 const ks=$('klang'), schonDrin=new Set();
 for(const [titel,ids] of RUBRIKEN){ const og=document.createElement('optgroup'); og.label=titel; ids.forEach(id=>{ if(KLAENGE[id]){ og.appendChild(new Option(KLAENGE[id].n,id)); schonDrin.add(id); } }); ks.appendChild(og); }
 for(const id in KLAENGE) if(!schonDrin.has(id)) ks.appendChild(new Option(KLAENGE[id].n,id));   /* falls ein neuer Klang noch keine Rubrik hat */
@@ -784,7 +802,70 @@ let tT=0; function toast(t){ let e=document.querySelector('.toast'); if(!e){ e=d
 // Kein Kontextmenü bei langem Drücken (außer im Namensfeld)
 document.addEventListener('contextmenu',e=>{ if(!e.target.closest('input,textarea')) e.preventDefault(); });
 
-akkWahlBauen(); impWahlBauen(); liedListe(); liedSetzen(); aufstellen(true); modus(st.modus); meineZeigen(); klavierBeschriften(); buehneAnpassen(); if(document.fonts) document.fonts.ready.then(buehneAnpassen);
+// ---------- English: alle Texte der Oberfläche (Knöpfe, Hinweise, Meldungen) ----------
+const UE={'▶ Vorspielen':'▶ Band plays','🙌 Mitspielen':'🙌 Play along','● Lied einspielen':'● Record a song','🎸 Akkorde einspielen':'🎸 Record chords',
+  '🎲 Improvisation einstellen':'🎲 Improvisation settings','💾 Meine Lieder':'💾 My songs','⛶ Vollbild':'⛶ Full screen','Anleitung':'Guide (German)',
+  'Lied':'Song','Aufstellung':'Formation','Reihe':'Row','Halbkreis':'Semicircle','Kreis':'Circle','offenes U':'Open U','Klang':'Sound','🎧 Mit GarageBand':'🎧 With GarageBand','Hall':'Reverb',
+  '🔁 SW spielt Melodie / Akkorde':'🔁 Any SW plays melody / chords','🔢 Feste SW-Reihenfolge':'🔢 Fixed SW order','🎯 Feste SW-Töne / Akkorde':'🎯 Fixed SW notes / chords','🎲 Improvisieren':'🎲 Improvise',
+  'Mitspieler:':'Players:','Wer darf spielen?':'Who may play?','🎯 Nur wer dran ist':'🎯 Only whose turn it is','🎶 Alle jederzeit':'🎶 Everyone, any time','✕ Vollbild aus':'✕ Exit full screen',
+  '● Eigenes Lied einspielen':'● Record your own song',
+  'Mit den SoundWhackern (Tasten 1–5) oder auf der Klaviatur spielen. Die App merkt sich Reihenfolge und Rhythmus.':'Play with the SoundWhackers (keys 1–5) or on the keyboard. The app remembers the order and the rhythm.',
+  '● Aufnahme starten':'● Start recording','■ Aufnahme beenden':'■ Stop recording','● Neu aufnehmen':'● Record again','▶ Anhören':'▶ Listen','✕ Verwerfen':'✕ Discard','💾 Speichern':'💾 Save',
+  'Gib jedem SoundWhacker einen Akkord (Dur, Moll oder Septim). Dann „● Aufnahme starten“ und die Akkordfolge mit SW1–5 spielen – mit den SoundWhackern, den Tasten 1–5 oder den farbigen Knöpfen.':'Give each SoundWhacker a chord (major, minor or seventh). Then press “● Start recording” and play the chord progression with SW1–5 – with the SoundWhackers, the keys 1–5 or the colored buttons.',
+  'Beim Mitspielen mit „🎲 Improvisieren“ spielt jede Berührung eines SoundWhackers einen Zufallston aus dieser Tonart und Skala – jeder SoundWhacker mit seinem eigenen Instrument. Alle dürfen jederzeit spielen.':'When playing along with “🎲 Improvise”, every touch of a SoundWhacker plays a random note from this key and scale – each SoundWhacker with its own instrument. Everyone may play at any time.',
+  'Tonart':'Key','Skala':'Scale','Anzahl Töne':'Number of notes','⬇ Alle herunterladen':'⬇ Download all','⬆ Datei hochladen':'⬆ Upload file',
+  '■ Stopp':'■ Stop','↺ Von vorne':'↺ From the start','▶ Auswählen':'▶ Select','✎ Umbenennen':'✎ Rename','⬇ Herunterladen':'⬇ Download','🗑 Löschen':'🗑 Delete',
+  'Noch keine eigenen Lieder. Unter „● Lied einspielen“ oder „🎸 Akkorde einspielen“ aufnehmen oder hier eine Datei hochladen.':'No songs of your own yet. Record them under “● Record a song” or “🎸 Record chords”, or upload a file here.',
+  'Klang konnte nicht geladen werden':'The sound could not be loaded','Speichern nicht möglich':'Saving is not possible','Bitte einen Namen eingeben':'Please enter a name','Diesen Namen gibt es schon':'This name already exists',
+  'Noch keine eigenen Lieder':'No songs of your own yet','Diese Datei passt nicht':'This file does not fit','Keine Lieder in der Datei gefunden':'No songs found in the file',
+  '🎧 Die Band klingt jetzt zusammen mit GarageBand. Stummschalter am iPhone aus!':'🎧 The band now plays together with GarageBand. Turn off silent mode on the iPhone!',
+  'Die Band klingt wieder allein':'The band plays on its own again','✓ Jetzt auch ohne Internet spielbar':'✓ Now playable without internet too',
+  'Spiele eine Melodie ein. Mit höchstens 5 verschiedenen Tönen wird sie ein ⭐-Lied.':'Record a melody. With at most 5 different notes it becomes a ⭐ song.',
+  'Meine Lieder: auswählen, umbenennen, herunterladen, hochladen.':'My songs: select, rename, download, upload.','Improvisation einstellen.':'Improvisation settings.',
+  'Spiele eine Geräusch-Geschichte ein – mit SW1–5 oder auf der Klaviatur. Jede Taste ist ein anderes Geräusch.':'Record a noise story – with SW1–5 or on the keyboard. Every key is a different noise.',
+  'Spiele einen Rhythmus ein – mit SW1–5 oder auf der Klaviatur. Jede Taste ist ein anderes Schlaginstrument.':'Record a rhythm – with SW1–5 or on the keyboard. Every key is a different drum.',
+  'Modus':'Mode','Nur die Bühne zeigen – für iPad und Beamer':'Show only the stage – for iPad and projector',
+  'Damit die Band zusammen mit einem Backing-Track aus GarageBand oder einer anderen App klingt':'So the band plays together with a backing track from GarageBand or another app',
+  'Spielart beim Mitspielen':'Way of playing along','Jede Berührung (egal welcher SoundWhacker) spielt den nächsten Ton oder Akkord':'Every touch (any SoundWhacker) plays the next note or chord',
+  'SW1 → SW2 → SW3 … – wer nicht dran ist, bleibt stumm':'SW1 → SW2 → SW3 … – whoever is not next stays silent','Jeder SoundWhacker hat seinen eigenen Ton oder Akkord':'Every SoundWhacker has its own note or chord',
+  'Jede Berührung = ein Zufallston aus der eingestellten Skala – alle dürfen jederzeit spielen':'Every touch = a random note from the chosen scale – everyone may play at any time',
+  'Nur der SoundWhacker, der dran ist, klingt – die anderen bleiben stumm':'Only the SoundWhacker whose turn it is sounds – the others stay silent',
+  'Jeder SoundWhacker klingt jederzeit mit seinem Ton/Akkord – das Lied geht weiter, wenn der Richtige spielt':'Every SoundWhacker sounds at any time with its note/chord – the song continues when the right one plays',
+  'Nur bei ⭐-Liedern (höchstens 5 Töne)':'Only for ⭐ songs (at most 5 notes)','Fünf Figuren mit SoundWhackern':'Five figures with SoundWhackers',
+  'Vollbild beenden (Esc)':'Exit full screen (Esc)','Vollbild beenden':'Exit full screen','Klaviatur':'Keyboard','Name des Liedes':'Name of the song','Antippen = ein Zufallston zur Probe':'Tap = one random note to try',
+  'Lieder (⭐ = höchstens 5 Töne)':'Songs (⭐ = at most 5 notes)','🎸 Akkordfolgen':'🎸 Chord progressions','Meine Lieder':'My songs','Meine Akkordfolgen':'My chord progressions'};
+const UE_RE=[
+  [/Die Band spielt „(.*?)“ vor\. Start mit dem Knopf oder der Leertaste\./,'The band plays “$1”. Start with the button or the space bar.'],
+  ['SW spielt Melodie / Akkorde: Jede Berührung – egal welcher SoundWhacker – spielt den nächsten Ton oder Akkord. Die Punkte färben sich in der Farbe von dem, der gespielt hat.','Any SW plays melody / chords: every touch – no matter which SoundWhacker – plays the next note or chord. The dots take the color of whoever played.'],
+  ['Feste SW-Reihenfolge: SW1 → SW2 → … – wer dran ist, leuchtet schon leicht. Wer nicht dran ist, bleibt stumm.','Fixed SW order: SW1 → SW2 → … – whoever is next already glows softly. Whoever is not next stays silent.'],
+  ['Feste SW-Töne / Akkorde: Jeder SoundWhacker hat seinen eigenen Ton oder Akkord. Die Figur, die als Nächstes dran ist, leuchtet schon leicht','Fixed SW notes / chords: every SoundWhacker has its own note or chord. The figure that is next already glows softly'],
+  [' – alle dürfen jederzeit mitspielen, das Lied geht weiter, wenn die Richtige spielt.',' – everyone may play along at any time, the song continues when the right one plays.'],
+  [' – nur sie klingt, alle anderen bleiben stumm.',' – only it sounds, all others stay silent.'],
+  [' (Dieses Lied hat mehr als 5 Töne – „Feste SW-Töne / Akkorde“ geht nur mit ⭐-Liedern und Akkordfolgen.)',' (This song has more than 5 notes – “Fixed SW notes / chords” only works with ⭐ songs and chord progressions.)'],
+  ['Gib jedem SoundWhacker einen Akkord und spiele die Akkordfolge ein.','Give each SoundWhacker a chord and record the chord progression.'],
+  ['  Akkorde der Figuren: ','  Chords of the figures: '],['  Akkorde: ','  Chords: '],['  Töne der Figuren: ','  Notes of the figures: '],
+  [/ {2}Dieses Lied hat (\d+) verschiedene Töne – die Figuren spielen reihum\./,'  This song has $1 different notes – the figures take turns.'],
+  [/🎲 Improvisieren: Jede Berührung spielt einen Zufallston aus (.*?) in (\S+) – jeder SoundWhacker mit seinem eigenen Instrument\. Alle dürfen jederzeit spielen\./,'🎲 Improvise: every touch plays a random note from $1 in $2 – each SoundWhacker with its own instrument. Everyone may play at any time.'],
+  ['Aufnahme läuft – ','Recording – '],[/(\d+) verschiedene Töne – geht mit „SW spielt Melodie \/ Akkorde“ und „Feste SW-Reihenfolge“ \(ohne ⭐\)/,'$1 different notes – works with “Any SW plays melody / chords” and “Fixed SW order” (without ⭐)'],
+  [' Akkorde aufgenommen',' chords recorded'],[' Töne aufgenommen',' notes recorded'],[' · Töne: ',' · Notes: '],[/(\d+) Akkorde/g,'$1 chords'],[/(\d+) Töne/g,'$1 notes'],
+  [/^💾 „(.*)“ gespeichert/,'💾 “$1” saved'],[' – zum Spielen „🙌 Mitspielen“ wählen',' – choose “🙌 Play along” to play it'],
+  [/^(\d+) Lieder? hochgeladen$/,(x,n)=>n+(n==='1'?' song':' songs')+' uploaded'],[/^Töne: /,'Notes: '],
+  ['(langsam zum Üben)','(slow, for practice)'],['(gemütlich)','(relaxed)'],['(schnell)','(fast)'],['(trocken)','(dry)'],['(kleiner Raum)','(small room)'],['(Saal)','(hall)'],['(Kirche)','(church)'],
+  [/^Grundton für SW/,'Root note for SW'],[/^Akkordart für SW/,'Chord type for SW'],[/^Instrument für SW/,'Instrument for SW']];
+function ue(s){ if(!s) return s; const k=s.trim(); if(!k) return s; if(UE[k]) return s.replace(k,UE[k]); let x=s; for(const [a,b] of UE_RE) x=x.replace(a,b); return x; }
+const UE_ATTR=['title','aria-label','placeholder','label'];
+function ueAttr(n,a){ if(!n.hasAttribute(a)) return; const v=n.getAttribute(a), t=ue(v); if(t!==v) n.setAttribute(a,t); }
+function ueKnoten(n){
+  if(n.nodeType===3){ const p=n.parentElement; if(!p||p.closest('#lied,[data-notr],script,style')) return; const t=ue(n.data); if(t!==n.data) n.data=t; }
+  else if(n.nodeType===1&&!n.matches('script,style')){ if(n.id==='sprache') return; UE_ATTR.forEach(a=>ueAttr(n,a)); n.childNodes.forEach(ueKnoten); } }
+if(EN){ document.documentElement.lang='en';
+  new MutationObserver(ms=>ms.forEach(m=>{ if(m.type==='childList') m.addedNodes.forEach(ueKnoten); else if(m.type==='characterData') ueKnoten(m.target); else if(m.target.id!=='sprache') ueAttr(m.target,m.attributeName); }))
+    .observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:UE_ATTR}); }
+// Sprachschalter: merken und neu laden (so ist sicher alles in der neuen Sprache)
+$('sprache').textContent=EN?'🌐 Deutsch':'🌐 English'; $('sprache').lang=EN?'de':'en'; $('sprache').title=EN?'App auf Deutsch umstellen':'Switch the app to English';
+$('sprache').onclick=()=>{ stopp(); st.sprache=EN?'de':'en'; merke(); location.reload(); };
+
+akkWahlBauen(); impWahlBauen(); liedListe(); liedSetzen(); aufstellen(true); modus(st.modus); meineZeigen(); klavierBeschriften(); buehneAnpassen(); if(EN) ueKnoten(document.body); if(document.fonts) document.fonts.ready.then(buehneAnpassen);
 // Offline: App und alle Klänge im Gerät speichern (Service Worker)
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').then(()=>navigator.serviceWorker.ready).then(()=>{ let neu=true; try{ neu=!localStorage.getItem('whacker-band-offline'); localStorage.setItem('whacker-band-offline','1'); }catch(e){} if(neu) setTimeout(()=>toast('✓ Jetzt auch ohne Internet spielbar'),1500); }).catch(()=>{}); }
 })();

@@ -118,6 +118,10 @@ Ganz unten in der Klangauswahl steht **✨ Geräusche & Effekte** – für Spaß
 - Ein Geräusch klingt immer ganz aus. Wird derselbe SoundWhacker noch einmal berührt, beginnt das Geräusch neu.
 - Eingespielte Geräusch-Geschichten lassen sich wie Lieder speichern.
 
+## Auf Englisch spielen (English)
+
+Oben rechts neben „Anleitung“ steht der Knopf **🌐 English**. Ein Tipp – und die ganze App ist auf Englisch: Knöpfe, Hinweise, Instrumente, Skalen, Liedtitel (z. B. „Ode to Joy“) und Tonnamen (C4, D4 …). Mit **🌐 Deutsch** geht es zurück. Die App merkt sich die Sprache.
+
 ## Zusammen mit GarageBand (Backing-Track)
 
 Läuft auf dem iPad oder iPhone im Hintergrund Musik, z. B. ein Backing-Track aus **GarageBand**, dann das Häkchen **🎧 Mit GarageBand** setzen (in der Leiste bei Vorspielen und Mitspielen). Dann klingt die Band **zusammen** mit der anderen Musik.

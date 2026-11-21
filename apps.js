@@ -135,6 +135,7 @@ window.APPS = [
     repo: "https://github.com/pati2018/soundwhacker-looper",
     kategorie: "Musik",
     symbol: "📷",
+    bild: "icons/miga-192.png",
     datum: "2026-11-05",
     ganzOben: 2
   }

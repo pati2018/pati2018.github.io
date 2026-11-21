@@ -103,6 +103,9 @@
   .leiste select, .akkZeile select, #recName{border:1.5px solid var(--gold)}
   /* Lied/Akkorde einspielen: von der Leiste bleibt nur die Klangauswahl */
   body.einspielen #hauptLeiste > :not(#klangLabel){display:none!important}
+  /* iPad: langes Drücken soll kein Markier-Menü (Kopieren, Nachschlagen …) öffnen */
+  body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+  input,textarea{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
 </style>
 </head>
 <body>
@@ -700,6 +703,8 @@ document.addEventListener('touchmove',e=>{ if(document.body.classList.contains('
 let tT=0; function toast(t){ let e=document.querySelector('.toast'); if(!e){ e=document.createElement('div'); e.className='toast'; e.setAttribute('role','status'); document.body.appendChild(e); } e.textContent=t; e.hidden=false; clearTimeout(tT); tT=setTimeout(()=>e.hidden=true,2200); }
 // Ton erst nach der ersten Berührung (Browser-Regel) – jede Berührung startet den Klang
 ['pointerdown','keydown','touchstart'].forEach(ev=>window.addEventListener(ev,()=>audio(),{once:true,passive:true}));
+// Kein Kontextmenü bei langem Drücken (außer im Namensfeld)
+document.addEventListener('contextmenu',e=>{ if(!e.target.closest('input,textarea')) e.preventDefault(); });
 
 akkWahlBauen(); liedListe(); liedSetzen(); aufstellen(true); modus(st.modus); meineZeigen(); klavierBeschriften(); buehneAnpassen(); if(document.fonts) document.fonts.ready.then(buehneAnpassen);
 // Offline: App und alle Klänge im Gerät speichern (Service Worker)

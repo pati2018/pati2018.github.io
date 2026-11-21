@@ -53,6 +53,13 @@
   .akkZeile select{font-size:18px;min-height:52px;padding:6px 10px;border-radius:10px;border:1px solid var(--linie);background:#0f1730;color:var(--text)}
   @media (max-width:700px){#band span{width:40px;height:40px}#band{min-height:70px;gap:9px}}
   .hinweis{color:var(--mut);font-size:16px;margin:0}
+  /* Vollbild / Bühnenansicht: nur Spielarten, Notenband und Bühne – Höhe passt sich dem Bildschirm an */
+  body.vollbild .top, body.vollbild #hauptLeiste, body.vollbild #mitLeiste, body.vollbild #info, body.vollbild #schlagInfo{display:none!important}
+  body.vollbild .buehne svg{min-height:0}
+  @media (max-height:500px){body.vollbild #band{min-height:56px;padding:4px 12px} body.vollbild #band span{width:36px;height:36px} body.vollbild #band span.akk{font-size:16px;min-width:36px}}
+  #vollAus{display:none;position:fixed;top:max(10px,env(safe-area-inset-top));right:max(10px,env(safe-area-inset-right));z-index:60;min-height:48px;padding:6px 16px;font-size:18px;background:rgba(15,23,48,.92)}
+  body.vollbild #vollAus{display:block}
+  body.vollbild .wrap{padding-top:8px}
   /* Lied einspielen: Bühne und Tonreihe schieben sich sanft zusammen – dann ist nur noch die Klaviatur zu sehen */
   #buehnenBox{display:grid;grid-template-rows:1fr;opacity:1;transition:grid-template-rows .6s ease,opacity .45s ease,margin .6s ease}
   #buehnenBox>.innen{overflow:hidden;min-height:0;display:flex;flex-direction:column;gap:10px}
@@ -94,7 +101,7 @@
       <button data-m="auf" aria-pressed="false">● Lied einspielen</button>
       <button data-m="akk" aria-pressed="false">🎸 Akkorde einspielen</button>
     </div>
-    <button class="knopf" id="vollbild" title="Vollbild für den Beamer">⛶ Vollbild</button>
+    <button class="knopf" id="vollbild" title="Nur die Bühne zeigen – für iPad und Beamer">⛶ Vollbild</button>
     <a href="../app.html?id=whacker-band">Anleitung</a>
   </div>
 
@@ -123,6 +130,7 @@
   </div>
   </div></div>
   <p class="hinweis" id="schlagInfo" hidden></p>
+  <button class="knopf" id="vollAus" title="Vollbild beenden (Esc)">✕ Vollbild beenden</button>
   <p class="hinweis" id="info"></p>
 
   <!-- Lied einspielen -->
@@ -596,7 +604,7 @@ function modus(m){
   $('start').hidden=m!=='vor'; $('tempoLabel').hidden=m!=='vor';   /* Start und Tempo nur beim Vorspielen */ $('start').textContent='▶ Start';
   /* Beim Einspielen nur das Nötige zeigen: Klaviatur bzw. Akkordwahl – keine Leisten, keine Spielarten */
   $('hauptLeiste').hidden=ein; $('mitLeiste').hidden=m!=='mit'; $('info').hidden=ein; $('schlagInfo').hidden=ein||!istSchlag(); spielartZeigen();
-  pos=0; zug=0; spieler=[]; bandBauen(); info();
+  pos=0; zug=0; spieler=[]; bandBauen(); info(); setTimeout(buehneAnpassen,30); setTimeout(buehneAnpassen,700);
 }
 // Akkordwahl: für jeden SoundWhacker ein großer Farbknopf, Grundton und Art
 function akkWahlBauen(){
@@ -618,7 +626,7 @@ function spielartZeigen(){
   const eff=st.modus==='mit'?spielart():st.spielart;
   document.querySelectorAll('#spielart button').forEach(b=>{ b.setAttribute('aria-pressed',b.dataset.s===eff);
     if(b.dataset.s==='fest'){ b.disabled=!fuenf(); b.title=fuenf()?'Jeder SoundWhacker hat seinen eigenen Ton oder Akkord':'Nur bei ⭐-Liedern (höchstens 5 Töne)'; } });
-  $('reiheZeile').hidden=st.spielart!=='reihe';
+  $('reiheZeile').hidden=st.spielart!=='reihe'; spaeterAnpassen();
   document.querySelectorAll('#reiheZeile [data-n]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.n===st.reiheN));
 }
 $('spielart').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; b.blur(); st.spielart=b.dataset.s; merke(); spielartZeigen(); pos=0; zug=0; spieler=[]; bandBauen(); info(); };
@@ -643,12 +651,32 @@ function hallZeigen(){ const v=st.hall; $('hallWert').textContent=v+' % '+(v===0
 $('hall').value=st.hall; hallZeigen(); $('hall').oninput=()=>{ st.hall=+$('hall').value; merke(); hallZeigen(); };
 function tempoZeigen(){ const v=st.tempo; $('tempoWert').textContent=v+' % '+(v<=60?'(langsam zum Üben)':v<=85?'(gemütlich)':v<=105?'(normal)':'(schnell)'); }
 $('tempo').value=st.tempo; tempoZeigen(); $('tempo').oninput=()=>{ st.tempo=+$('tempo').value; merke(); tempoZeigen(); };
-$('vollbild').onclick=()=>{ const b=$('buehne'), d=document; if(d.fullscreenElement||d.webkitFullscreenElement){ (d.exitFullscreen||d.webkitExitFullscreen).call(d); } else { const f=d.documentElement.requestFullscreen||d.documentElement.webkitRequestFullscreen; if(f) f.call(d.documentElement); } };
+// Bühne passt sich dem freien Platz an: alle Figuren sind ohne Scrollen zu sehen (iPad, iPhone, PC)
+function buehneAnpassen(){
+  const sv=$('svg'); if(!sv||document.body.classList.contains('einspielen')) return;
+  const r=sv.getBoundingClientRect(), oben=r.top+window.scrollY, vh=window.visualViewport?visualViewport.height:innerHeight;
+  const maxH=r.width*760/1600;   // mehr Höhe bringt nichts: die Bühne ist 1600 × 760 groß
+  sv.style.height=Math.round(Math.max(document.body.classList.contains('vollbild')?150:200,Math.min(vh-oben-14,maxH)))+'px';
+}
+var anpT=0; function spaeterAnpassen(){ clearTimeout(anpT); anpT=setTimeout(buehneAnpassen,60); }
+window.addEventListener('resize',spaeterAnpassen); window.addEventListener('orientationchange',()=>setTimeout(buehneAnpassen,350));
+if(window.visualViewport) visualViewport.addEventListener('resize',spaeterAnpassen);
+// Vollbild: echtes Vollbild, wo der Browser es kann (PC, iPad) – sonst (iPhone) nur die Bühnenansicht
+function vollbild(an){
+  const d=document, de=d.documentElement; document.body.classList.toggle('vollbild',an);
+  try{ if(an){ const f=de.requestFullscreen||de.webkitRequestFullscreen; if(f&&!(d.fullscreenElement||d.webkitFullscreenElement)){ const x=f.call(de); if(x&&x.catch) x.catch(()=>{}); } }
+       else if(d.fullscreenElement||d.webkitFullscreenElement){ (d.exitFullscreen||d.webkitExitFullscreen).call(d); } }catch(e){}
+  window.scrollTo(0,0); spaeterAnpassen(); setTimeout(buehneAnpassen,450);
+}
+$('vollbild').onclick=()=>{ $('vollbild').blur(); vollbild(true); };
+$('vollAus').onclick=()=>{ $('vollAus').blur(); vollbild(false); };
+['fullscreenchange','webkitfullscreenchange'].forEach(ev=>document.addEventListener(ev,()=>{ if(!(document.fullscreenElement||document.webkitFullscreenElement)) document.body.classList.remove('vollbild'); spaeterAnpassen(); setTimeout(buehneAnpassen,450); }));
+window.addEventListener('keydown',e=>{ if(e.key==='Escape'&&document.body.classList.contains('vollbild')) vollbild(false); });
 let tT=0; function toast(t){ let e=document.querySelector('.toast'); if(!e){ e=document.createElement('div'); e.className='toast'; e.setAttribute('role','status'); document.body.appendChild(e); } e.textContent=t; e.hidden=false; clearTimeout(tT); tT=setTimeout(()=>e.hidden=true,2200); }
 // Ton erst nach der ersten Berührung (Browser-Regel) – jede Berührung startet den Klang
 ['pointerdown','keydown','touchstart'].forEach(ev=>window.addEventListener(ev,()=>audio(),{once:true,passive:true}));
 
-akkWahlBauen(); liedListe(); liedSetzen(); aufstellen(true); modus(st.modus); meineZeigen(); klavierBeschriften();
+akkWahlBauen(); liedListe(); liedSetzen(); aufstellen(true); modus(st.modus); meineZeigen(); klavierBeschriften(); buehneAnpassen(); if(document.fonts) document.fonts.ready.then(buehneAnpassen);
 // Offline: App und alle Klänge im Gerät speichern (Service Worker)
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').then(()=>navigator.serviceWorker.ready).then(()=>{ let neu=true; try{ neu=!localStorage.getItem('whacker-band-offline'); localStorage.setItem('whacker-band-offline','1'); }catch(e){} if(neu) setTimeout(()=>toast('✓ Jetzt auch ohne Internet spielbar'),1500); }).catch(()=>{}); }
 })();

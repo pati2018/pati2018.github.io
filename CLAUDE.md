@@ -80,6 +80,8 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
       Sicherung vor diesem Umbau: Branch `stabil-v8`.
       **Wunsch:** In „Lied einspielen“ und „Akkorde einspielen“ nur Klaviatur bzw. Akkord-Übersicht (+ Meine Lieder) zeigen – keine Leiste
       (Lied/Aufstellung/Klang/Hall), keine Spielarten. Spielart-Knöpfe heißen „SW spielt Melodie / Akkorde“, „Feste SW-Reihenfolge“, „Feste SW-Töne / Akkorde“.
+      **Bühnenhöhe** passt sich per JS (`buehneAnpassen`) dem freien Bildschirm an – alle Figuren ohne Scrollen (Wunsch iPad). **⛶ Vollbild** = Klasse
+      `body.vollbild`: nur Notenband + Bühne (+ echtes Vollbild, wo möglich; iPhone nur Bühnenansicht), Knopf „✕ Vollbild beenden“, Esc.
       **Offline:** `whacker-band/sw.js` (Service Worker) speichert App, `lieder.js` und alle Klänge (≈ 21 MB). Bei neuen Dateien
       oder neuer `lieder.js?v=…`-Nummer die Liste und `VERSION` in `sw.js` anpassen.
       Eine Jarvis-Sprachsteuerung (Web Speech API) wurde ausprobiert und auf Wunsch wieder entfernt – nicht erneut einbauen.

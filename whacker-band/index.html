@@ -59,8 +59,7 @@
   body.vollbild .top, body.vollbild #hauptLeiste, body.vollbild #mitLeiste, body.vollbild #info, body.vollbild #schlagInfo{display:none!important}
   body.vollbild .buehne svg{min-height:0}
   @media (max-height:500px){body.vollbild #band{min-height:56px;padding:4px 12px} body.vollbild #band span{width:36px;height:36px} body.vollbild #band span.akk{font-size:16px;min-width:36px}}
-  #vollAus{display:none;position:fixed;bottom:max(6px,env(safe-area-inset-bottom));right:max(8px,env(safe-area-inset-right));z-index:60;min-height:34px;padding:2px 10px;font-size:14px;opacity:.55;background:rgba(15,23,48,.85)}
-  #vollAus:hover,#vollAus:focus{opacity:1}
+  #vollAus{display:none;position:fixed;bottom:max(10px,env(safe-area-inset-bottom));right:max(12px,env(safe-area-inset-right));z-index:60;min-height:52px;padding:6px 20px;font-size:20px;font-weight:800;color:#111;background:var(--gold);border:2px solid #fff;border-radius:14px;box-shadow:0 4px 16px rgba(0,0,0,.5)}
   /* echtes Vollbild am iPad: oben links liegt das Schließen-Kreuz von Safari – Noten etwas nach rechts */
   body.vollbild.echt #band{margin-left:64px}
   body.vollbild #vollAus{display:block}
@@ -135,7 +134,7 @@
   </div>
   </div></div>
   <p class="hinweis" id="schlagInfo" hidden></p>
-  <button class="knopf" id="vollAus" title="Vollbild beenden (Esc)" aria-label="Vollbild beenden">✕</button>
+  <button class="knopf" id="vollAus" title="Vollbild beenden (Esc)" aria-label="Vollbild beenden">✕ Vollbild aus</button>
   <p class="hinweis" id="info"></p>
 
   <!-- Lied einspielen -->
@@ -661,7 +660,7 @@ function buehneAnpassen(){
   const sv=$('svg'); if(!sv||document.body.classList.contains('einspielen')) return;
   const r=sv.getBoundingClientRect(), oben=r.top+window.scrollY, vh=window.visualViewport?visualViewport.height:innerHeight;
   const maxH=r.width*760/1600;   // mehr Höhe bringt nichts: die Bühne ist 1600 × 760 groß
-  sv.style.height=Math.round(Math.max(document.body.classList.contains('vollbild')?150:200,Math.min(vh-oben-14,maxH)))+'px';
+  sv.style.height=Math.round(Math.max(document.body.classList.contains('vollbild')?150:200,Math.min(vh-oben-(document.body.classList.contains('vollbild')?76:14),maxH)))+'px';
 }
 var anpT=0; function spaeterAnpassen(){ clearTimeout(anpT); anpT=setTimeout(buehneAnpassen,60); }
 window.addEventListener('resize',spaeterAnpassen); window.addEventListener('orientationchange',()=>setTimeout(buehneAnpassen,350));

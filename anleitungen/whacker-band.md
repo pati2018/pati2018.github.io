@@ -28,7 +28,7 @@ Der SoundWhacker ist eine weiße Röhre mit **zwei schwarzen Ringen** – einer 
 | Schlagzeug | 6 Sets: **Standard, Rock, Elektro, 808, Jazz, Besen** (unten in der Klangauswahl) – siehe „Schlagzeug“ |
 | Geräusche | **✨ Geräusche & Effekte** (ganz unten in der Klangauswahl) – siehe „Geräusche & Effekte“ |
 | Hall | Regler von **0 %** (trocken) über kleiner Raum und Saal bis **Kirche** (100 %) – die App merkt sich die Einstellung |
-| Vollbild | **⛶ Vollbild**: Nur noch Notenband und Bühne – die Figuren werden so groß wie möglich (iPad, iPhone, PC, Beamer). Vorher Lied, Klang und Spielart wählen. Zurück mit dem kleinen **✕ unten rechts** (am PC auch **Esc**). Am iPad/iPhone bleibt Safaris Leiste sichtbar – **ganz ohne Leiste:** App über Teilen → **„Zum Home-Bildschirm“** speichern und von dort starten. |
+| Vollbild | **⛶ Vollbild**: Nur noch Notenband und Bühne – die Figuren werden so groß wie möglich (iPad, iPhone, PC, Beamer). Vorher Lied, Klang und Spielart wählen. Zurück mit dem gelben Knopf **✕ Vollbild aus** unten rechts (am PC auch **Esc**). Am iPad/iPhone bleibt Safaris Leiste sichtbar – **ganz ohne Leiste:** App über Teilen → **„Zum Home-Bildschirm“** speichern und von dort starten. |
 
 **Tonlänge:** Ein Ton klingt so lange, wie der SoundWhacker (oder die Taste, die Figur, die Klaviertaste) **gehalten** wird – mindestens eine Viertelsekunde. Beim Vorspielen klingt jeder Ton so lang wie seine Note.
 

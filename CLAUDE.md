@@ -55,7 +55,7 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
 
 - **Veröffentlichung:** GitHub Pages direkt aus `main`. Nach dem Push ist die
   Änderung nach 1–2 Minuten online.
-- **Sicherungen:** Stabile Stände liegen als eigene Branches (`stabil-v1` bis `stabil-v7`,
+- **Sicherungen:** Stabile Stände liegen als eigene Branches (`stabil-v1` bis `stabil-v8`,
   `stabil/tischharfe-v1.0`).
   Vor größeren Umbauen einen neuen Stand sichern.
 - **Apps:** Die Liste aller Apps steht in `apps.js` (`window.APPS`).
@@ -73,6 +73,11 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
       localStorage `whacker-band-lieder` (JSON-Export/Import). Auftrag kam als MD-Datei vom Nutzer.
       Mitspielen hat 3 Spielarten wie „Gemeinsame Melodie“ in Smart Control: SW spielt Melodie (reihum), Feste SW-Reihenfolge
       (SW1–n, Rest stumm), Feste SW-Töne (zeigt immer, wer dran ist – kein Schalter; nur wer dran ist, klingt, falsche SWs bleiben stumm). Einstellungen `spielart`, `reiheN`.
+      **Akkorde einspielen** (4. Modus `akk`): jedem SW einen Akkord geben (12 Grundtöne C…H, Dur/Moll/Septim; `st.akkSet`), Folge aufnehmen,
+      speichern als eigenes Lied mit `akk:true` + `set` (5 Akkorde). Akkord-Nummer `1000 + Grundton·3 + Art` steht in `noten[].m`;
+      `ton()` spielt dann den Akkord (Bass + Dreiklang/Vierklang, leicht gestaffelt). Fertige Folgen in `AKK_DEMOS` (Pop, Kadenz, Blues).
+      Vorspielen/Mitspielen (alle 3 Spielarten) gehen auch mit Akkordfolgen; Punkte zeigen Akkordnamen, Figuren „Nr · Akkord“.
+      Sicherung vor diesem Umbau: Branch `stabil-v8`.
       **Offline:** `whacker-band/sw.js` (Service Worker) speichert App, `lieder.js` und alle Klänge (≈ 21 MB). Bei neuen Dateien
       oder neuer `lieder.js?v=…`-Nummer die Liste und `VERSION` in `sw.js` anpassen.
       Eine Jarvis-Sprachsteuerung (Web Speech API) wurde ausprobiert und auf Wunsch wieder entfernt – nicht erneut einbauen.

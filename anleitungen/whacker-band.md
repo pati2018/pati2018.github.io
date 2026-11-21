@@ -65,6 +65,20 @@ Die Lieder kommen aus der Tischharfe. In der Liedauswahl sind **alle Lieder** �
 - Mit **höchstens fünf verschiedenen Tönen** wird es ein ⭐-Lied. **Mehr Töne gehen auch** – dann spielen die Figuren reihum (siehe „Lieder“).
 - Gespeicherte Lieder stehen in der Liedauswahl unter **„Meine Lieder“** und laufen mit dem Tempo-Regler.
 
+## 🎸 Akkorde einspielen
+
+Statt einer Melodie kann die Band auch **Akkorde** spielen – zum Begleiten von Liedern.
+
+1. **🎸 Akkorde einspielen** wählen.
+2. Jedem SoundWhacker einen Akkord geben: **Grundton** (C, Cis, D, Dis, E, F, Fis, G, Gis, A, B, H) und **Art** (**Dur**, **Moll** oder **Septim**). Am Anfang: SW1 C · SW2 F · SW3 G · SW4 Am · SW5 G7.
+3. Zum Ausprobieren die großen **farbigen Knöpfe** antippen, die SoundWhacker berühren oder die Tasten 1–5 drücken – der Akkord klingt sofort.
+4. **● Aufnahme starten**, die Akkordfolge mit SW1–5 spielen, **■ Aufnahme beenden**. Die App merkt sich Reihenfolge, Rhythmus und Haltedauer. Während der Aufnahme lassen sich die Akkorde nicht umstellen.
+5. **▶ Anhören**, **✕ Verwerfen** oder Namen eingeben und **💾 Speichern**.
+
+Gespeicherte Akkordfolgen stehen in der Liedauswahl unter **„Meine Akkordfolgen“** (mit 🎸). Zum Ausprobieren gibt es fertige Folgen: **Pop-Akkorde (C – G – Am – F)**, **Kadenz (C – F – G7 – C)** und **Blues in C**.
+
+**Spielen:** Akkordfolgen gehen genau wie Lieder – **▶ Vorspielen** und **🙌 Mitspielen** mit allen drei Spielarten. Oben im Band stehen die Akkordnamen in den farbigen Punkten, unter den Figuren steht, welcher Akkord zu wem gehört (z. B. „2 · Dm“). Bei **🎯 Feste SW-Töne** hat jeder SoundWhacker seinen Akkord – nur wer dran ist, klingt.
+
 ## Meine Lieder: speichern, weitergeben, hochladen
 
 Im Bereich **💾 Meine Lieder** (unter „● Lied einspielen“):

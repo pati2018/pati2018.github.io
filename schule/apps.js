@@ -11,7 +11,7 @@
  *  kurz         – ein bis zwei Sätze für die Karte
  *  link         – Adresse, meist https://pati2018.github.io/schule/<ordner>/
  *  links        – (optional) mehrere „öffnen“-Knöpfe: [{ label, url }, …]
- *  repo         – (optional) Link zum Quellcode auf GitHub
+ *  repo         – (optional) Link zum Quellcode auf GitHub (wird nicht mehr angezeigt)
  *  kategorie    – z. B. "Datenschutz", "Abrechnung", "Tastschreiben"
  *  symbol       – ein Emoji als Bild für die Karte
  *  datum        – Veröffentlichungsdatum, Format JJJJ-MM-TT

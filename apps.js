@@ -10,7 +10,7 @@
  *  kurz         – ein bis zwei Sätze für die Karte auf der Startseite
  *  link         – Adresse der fertigen App (GitHub Pages)
  *  links        – (optional) mehrere „öffnen“-Knöpfe: [{ label, url }, …]
- *  repo         – (optional) Link zum Quellcode auf GitHub
+ *  repo         – (optional) Link zum Quellcode auf GitHub (wird nicht mehr angezeigt)
  *  kategorie    – z. B. "Musik", "Schule", "Werkzeug"
  *  symbol       – ein Emoji als Bild für die Karte
  *  bild         – (optional) Bilddatei statt Emoji, z. B. das App-Symbol

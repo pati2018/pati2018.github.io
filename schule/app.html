@@ -40,7 +40,6 @@
         <p class="lead">${esc(app.kurz)}</p>
         <div class="actions">
           ${(app.links || [{ label: "Öffnen", url: app.link }]).map(l => `<a class="btn primary" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>`).join("")}
-          ${app.repo ? `<a class="btn" href="${esc(app.repo)}" target="_blank" rel="noopener">Quellcode</a>` : ""}
         </div>
         <article class="guide" id="anleitung"><p class="empty">Lade Anleitung …</p></article>`;
 

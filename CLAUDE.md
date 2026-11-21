@@ -138,6 +138,7 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
   Kontakt-E-Mail laut Nutzer: schaeferkbbz@googlemail.com. Unten auf beiden Übersichten verlinkt.
   **Kommt ein neuer externer Dienst dazu (Server, CDN, Zähler), dort ergänzen.**
 - **Schriften** liegen lokal in `fonts/` (`/fonts/fonts.css`) – **keine Google Fonts** einbinden.
+- **Kein „Quellcode“-Knopf** auf den Anleitungsseiten (`app.html`, `schule/app.html`) – Wunsch Nutzer; `repo` in `apps.js` bleibt nur als Notiz.
 - **Weitere Dateien:** `index.html` (Übersicht), `app.html` (zeigt die Anleitung
   einer App), `anleitungen/<id>.md` (Anleitungen), `style.css`, `theme.js`
   (Hell/Dunkel), `manifest.webmanifest` (Home-Bildschirm), `lib/` (marked, DOMPurify).

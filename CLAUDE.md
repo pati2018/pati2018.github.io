@@ -94,6 +94,7 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
       `body.vollbild`: nur Notenband + Bühne (+ echtes Vollbild, wo möglich; iPhone nur Bühnenansicht), Knopf „✕ Vollbild aus“ unten rechts (nicht oben – liegt sonst in den Noten; dunkelblau-dezent #243052, kein grelles Gelb – Wunsch Nutzer); der Knopf „⛶ Vollbild“ steht in der Titelzeile ganz rechts (Titel links, Modus-Knöpfe darunter) und ist hellblau wie SW5 (#3f8ee8), Esc;
       **Kein echtes Vollbild auf iPad/iPhone** (nur am PC): Safari zeigt sonst bei jedem SW-Druck die Warnung „Eingabe im Vollbildmodus“
       (SW = Bluetooth-Tastatur). Im Vollbild ist die Seite festgestellt (`position:fixed`, touchmove unterdrückt) – sonst wackelt am iPad die Bühne beim Antippen der Figuren. Ohne Safari-Leiste: App zum Home-Bildschirm hinzufügen (manifest `standalone`, `apple-mobile-web-app-capable`).
+      **Mit GarageBand:** Häkchen „🎧 Mit GarageBand“ (`st.mischen`) stellt `navigator.audioSession.type` von `playback` (allein, ignoriert Stummschalter) auf `ambient` (mischt mit Backing-Track aus anderen Apps, Stummschalter muss aus sein) – Funktion `sitzung()`.
       **Offline:** `whacker-band/sw.js` (Service Worker) speichert App, `lieder.js` und alle Klänge (≈ 21 MB). Bei neuen Dateien
       oder neuer `lieder.js?v=…`-Nummer die Liste und `VERSION` in `sw.js` anpassen.
       Eine Jarvis-Sprachsteuerung (Web Speech API) wurde ausprobiert und auf Wunsch wieder entfernt – nicht erneut einbauen.

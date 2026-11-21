@@ -113,6 +113,7 @@
   input,textarea{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
   /* Improvisieren: Lied und Klang braucht es nicht – jeder SoundWhacker hat sein eigenes Instrument */
   body.impMit #hauptLeiste label:has(#lied), body.impMit #klangLabel{display:none}
+  #mischLabel input{width:26px;height:26px;accent-color:var(--gold);vertical-align:middle}
 </style>
 </head>
 <body>
@@ -137,6 +138,7 @@
     <label id="tempoLabel">Tempo <input type="range" id="tempo" min="40" max="130" step="5" value="100" aria-describedby="tempoWert"> <span id="tempoWert"></span></label>
     <label>Aufstellung <select id="aufstellung"><option value="reihe">Reihe</option><option value="halbkreis">Halbkreis</option><option value="kreis">Kreis</option><option value="u">offenes U</option></select></label>
     <label id="klangLabel">Klang <select id="klang"></select></label>
+    <label id="mischLabel" title="Damit die Band zusammen mit einem Backing-Track aus GarageBand oder einer anderen App klingt"><input type="checkbox" id="mischen"> 🎧 Mit GarageBand</label>
     <label>Hall <input type="range" id="hall" min="0" max="100" step="5" value="20" aria-describedby="hallWert"> <span id="hallWert"></span></label>
   </div>
 
@@ -223,7 +225,7 @@ function el(t,a,p){ const e=document.createElementNS(NS,t); for(const k in a) e.
 
 // ---------- Einstellungen ----------
 const KEY='whacker-band', LKEY='whacker-band-lieder';
-let st={lied:'lied:freude',tempo:100,aufstellung:'halbkreis',klang:'marimba',modus:'vor',spielart:'fest',reiheN:5,hall:20,akkSet:null,festFrei:false,imp:null};
+let st={lied:'lied:freude',tempo:100,aufstellung:'halbkreis',klang:'marimba',modus:'vor',spielart:'fest',reiheN:5,hall:20,akkSet:null,festFrei:false,imp:null,mischen:false};
 try{ Object.assign(st, JSON.parse(localStorage.getItem(KEY)||'{}')); }catch(e){}
 // ---------- Akkorde ----------
 // Akkord-Nummer: 1000 + Grundton·3 + Art (0 = Dur, 1 = Moll, 2 = Septim)
@@ -272,9 +274,12 @@ const KLAENGE={
 };
 for(const id in KLAENGE){ const K=KLAENGE[id]; if(!K.pfad){ K.pfad='../tischharfe/klaenge/'+id+'/'; K.toene=Object.fromEntries((K.schlag?SCHLAG_NAME.map((x,i)=>55+i):ST_TOENE).map(m=>[m,m])); } }
 let ctx=null, master, dry, wet; const hallWert=()=>Math.pow(st.hall/100,1.3)*1.1; const puffer={}, lade={};
+/* iPad/iPhone: 'playback' = die App klingt allein (auch bei Stummschalter), 'ambient' = mischt sich mit anderen Apps,
+   z. B. einem Backing-Track aus GarageBand, der im Hintergrund läuft (Schalter „Mit GarageBand“) */
+function sitzung(){ try{ if(navigator.audioSession) navigator.audioSession.type=st.mischen?'ambient':'playback'; }catch(e){} }
 function audio(){
-  if(ctx){ if(ctx.state!=='running') ctx.resume(); return; }
-  try{ if(navigator.audioSession) navigator.audioSession.type='playback'; }catch(e){}
+  if(ctx){ if(ctx.state!=='running') ctx.resume().catch(()=>{}); return; }
+  sitzung();
   ctx=new (window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'});
   const comp=ctx.createDynamicsCompressor(); comp.threshold.value=-10; comp.ratio.value=3; comp.attack.value=.003; comp.release.value=.2;
   master=ctx.createGain(); master.gain.value=.9; master.connect(comp); comp.connect(ctx.destination);
@@ -739,6 +744,12 @@ for(const id in KLAENGE) if(!schonDrin.has(id)) ks.appendChild(new Option(KLAENG
 ks.value=st.klang;
 ks.onchange=()=>{ st.klang=ks.value; merke(); audio(); ladeKlang(st.klang); klavierBeschriften(); info(); ks.blur(); };
 function hallZeigen(){ const v=st.hall; $('hallWert').textContent=v+' % '+(v===0?'(trocken)':v<=25?'(kleiner Raum)':v<=60?'(Saal)':'(Kirche)'); if(wet) wet.gain.setTargetAtTime(hallWert(),ctx.currentTime,.05); }
+$('mischen').checked=!!st.mischen;
+$('mischen').onchange=()=>{ st.mischen=$('mischen').checked; merke(); sitzung(); $('mischen').blur();
+  if(ctx) ctx.suspend().then(()=>ctx.resume()).catch(()=>{});   /* Audio neu anmelden, damit die Einstellung sofort gilt */
+  toast(st.mischen?'🎧 Die Band klingt jetzt zusammen mit GarageBand. Stummschalter am iPhone aus!':'Die Band klingt wieder allein'); };
+/* Nach einer Unterbrechung (Anruf, andere App, GarageBand) Ton wieder einschalten */
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden&&ctx&&ctx.state!=='running') ctx.resume().catch(()=>{}); });
 $('hall').value=st.hall; hallZeigen(); $('hall').oninput=()=>{ st.hall=+$('hall').value; merke(); hallZeigen(); };
 function tempoZeigen(){ const v=st.tempo; $('tempoWert').textContent=v+' % '+(v<=60?'(langsam zum Üben)':v<=85?'(gemütlich)':v<=105?'(normal)':'(schnell)'); }
 $('tempo').value=st.tempo; tempoZeigen(); $('tempo').oninput=()=>{ st.tempo=+$('tempo').value; merke(); tempoZeigen(); };

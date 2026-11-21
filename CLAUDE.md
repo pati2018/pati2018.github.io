@@ -78,6 +78,8 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
       `ton()` spielt dann den Akkord (Bass + Dreiklang/Vierklang, leicht gestaffelt). Fertige Folgen in `AKK_DEMOS` (Pop, Kadenz, Blues).
       Vorspielen/Mitspielen (alle 3 Spielarten) gehen auch mit Akkordfolgen; Punkte zeigen Akkordnamen, Figuren „Nr · Akkord“.
       Sicherung vor diesem Umbau: Branch `stabil-v8`.
+      **Wunsch:** In „Lied einspielen“ und „Akkorde einspielen“ nur Klaviatur bzw. Akkord-Übersicht (+ Meine Lieder) zeigen – keine Leiste
+      (Lied/Aufstellung/Klang/Hall), keine Spielarten. Spielart-Knöpfe heißen „SW spielt Melodie / Akkorde“, „Feste SW-Reihenfolge“, „Feste SW-Töne / Akkorde“.
       **Offline:** `whacker-band/sw.js` (Service Worker) speichert App, `lieder.js` und alle Klänge (≈ 21 MB). Bei neuen Dateien
       oder neuer `lieder.js?v=…`-Nummer die Liste und `VERSION` in `sw.js` anpassen.
       Eine Jarvis-Sprachsteuerung (Web Speech API) wurde ausprobiert und auf Wunsch wieder entfernt – nicht erneut einbauen.

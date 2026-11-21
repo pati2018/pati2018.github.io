@@ -40,9 +40,9 @@ Im Modus **🙌 Mitspielen** erscheint eine zweite Leiste mit drei Spielarten �
 
 | Spielart | So funktioniert's |
 |---|---|
-| 🔁 **SW spielt Melodie** | Jede Berührung – **egal welcher SoundWhacker** – spielt den nächsten Ton des Liedes. Die Figur des Spielers bewegt sich und leuchtet. Die Punkte oben sind erst hellgrau und färben sich in der Farbe von dem, der den Ton gespielt hat. |
+| 🔁 **SW spielt Melodie / Akkorde** | Jede Berührung – **egal welcher SoundWhacker** – spielt den nächsten Ton des Liedes. Die Figur des Spielers bewegt sich und leuchtet. Die Punkte oben sind erst hellgrau und färben sich in der Farbe von dem, der den Ton gespielt hat. |
 | 🔢 **Feste SW-Reihenfolge** | Reihum: SW1 → SW2 → SW3 … Wer dran ist, **leuchtet schon leicht**. Wer nicht dran ist, bleibt stumm (die Figur schüttelt kurz den Kopf). Mit **Mitspieler: SW1–2 … SW1–5** legst du fest, wie viele mitspielen – die anderen Figuren werden blass. |
-| 🎯 **Feste SW-Töne** | Jeder SoundWhacker hat seinen **eigenen Ton** (rot = tiefster … blau = höchster). Die Figur, die als Nächstes dran ist, **leuchtet schon leicht**. **Nur sie klingt** – ein SoundWhacker, der nicht dran ist, bleibt stumm (die Figur schüttelt kurz den Kopf). Das Lied geht weiter, sobald die richtige Figur gespielt hat. |
+| 🎯 **Feste SW-Töne / Akkorde** | Jeder SoundWhacker hat seinen **eigenen Ton** (rot = tiefster … blau = höchster). Die Figur, die als Nächstes dran ist, **leuchtet schon leicht**. **Nur sie klingt** – ein SoundWhacker, der nicht dran ist, bleibt stumm (die Figur schüttelt kurz den Kopf). Das Lied geht weiter, sobald die richtige Figur gespielt hat. |
 
 Am Liedende geht es von vorne los. **↺ Von vorne** startet jederzeit neu. Die gewählte Spielart merkt sich die App.
 
@@ -51,11 +51,11 @@ Am Liedende geht es von vorne los. **↺ Von vorne** startet jederzeit neu. Die 
 Die Lieder kommen aus der Tischharfe. In der Liedauswahl sind **alle Lieder** – Lieder mit **höchstens fünf verschiedenen Tönen** sind mit einem gelben **⭐** markiert (z. B. ⭐ Ode an die Freude, ⭐ Hänschen klein, ⭐ Jingle Bells).
 
 - **⭐-Lieder:** Jede Figur hat ihren eigenen Ton – der tiefste gehört der **roten**, der höchste der **blauen** Figur. Alle drei Spielarten gehen.
-- **Lieder mit mehr als 5 Tönen** (z. B. Alle meine Entchen, Bruder Jakob, Stille Nacht): Beim Vorspielen spielen die Figuren **reihum** (rot, orange, gelb, grün, blau, rot …). Beim Mitspielen gehen **„SW spielt Melodie“** und **„Feste SW-Reihenfolge“**; „Feste SW-Töne“ ist dann ausgegraut.
+- **Lieder mit mehr als 5 Tönen** (z. B. Alle meine Entchen, Bruder Jakob, Stille Nacht): Beim Vorspielen spielen die Figuren **reihum** (rot, orange, gelb, grün, blau, rot …). Beim Mitspielen gehen **„SW spielt Melodie / Akkorde“** und **„Feste SW-Reihenfolge“**; „Feste SW-Töne / Akkorde“ ist dann ausgegraut.
 
 ## Eigene Lieder einspielen
 
-1. **● Lied einspielen** wählen. Bühne und Tonreihe schieben sich zusammen – jetzt ist die große Klaviatur zu sehen.
+1. **● Lied einspielen** wählen. Bühne, Tonreihe und alle Einstellungen verschwinden – jetzt ist nur noch die große Klaviatur zu sehen. (Klang vorher unter ▶ Vorspielen wählen.)
 2. **● Aufnahme starten** und die Melodie spielen – mit den SoundWhackern (Tasten 1–5) **oder** auf der **Klaviatur** (g bis c‴, alle Töne frei wählbar).
    **↔ Gleiten:** Auf der Klaviatur mit **gedrückter Maustaste** oder mit dem **Finger** (iPad) über die Tasten ziehen – jede Taste, über die du gleitest, klingt und wird aufgenommen.
 3. **■ Aufnahme beenden**. Die App merkt sich **Reihenfolge, Rhythmus und wie lange jeder Ton gehalten wurde**.
@@ -69,7 +69,7 @@ Die Lieder kommen aus der Tischharfe. In der Liedauswahl sind **alle Lieder** �
 
 Statt einer Melodie kann die Band auch **Akkorde** spielen – zum Begleiten von Liedern.
 
-1. **🎸 Akkorde einspielen** wählen.
+1. **🎸 Akkorde einspielen** wählen. Es erscheint nur noch die Akkord-Übersicht.
 2. Jedem SoundWhacker einen Akkord geben: **Grundton** (C, Cis, D, Dis, E, F, Fis, G, Gis, A, B, H) und **Art** (**Dur**, **Moll** oder **Septim**). Am Anfang: SW1 C · SW2 F · SW3 G · SW4 Am · SW5 G7.
 3. Zum Ausprobieren die großen **farbigen Knöpfe** antippen, die SoundWhacker berühren oder die Tasten 1–5 drücken – der Akkord klingt sofort.
 4. **● Aufnahme starten**, die Akkordfolge mit SW1–5 spielen, **■ Aufnahme beenden**. Die App merkt sich Reihenfolge, Rhythmus und Haltedauer. Während der Aufnahme lassen sich die Akkorde nicht umstellen.
@@ -77,7 +77,7 @@ Statt einer Melodie kann die Band auch **Akkorde** spielen – zum Begleiten von
 
 Gespeicherte Akkordfolgen stehen in der Liedauswahl unter **„Meine Akkordfolgen“** (mit 🎸). Zum Ausprobieren gibt es fertige Folgen: **Pop-Akkorde (C – G – Am – F)**, **Kadenz (C – F – G7 – C)** und **Blues in C**.
 
-**Spielen:** Akkordfolgen gehen genau wie Lieder – **▶ Vorspielen** und **🙌 Mitspielen** mit allen drei Spielarten. Oben im Band stehen die Akkordnamen in den farbigen Punkten, unter den Figuren steht, welcher Akkord zu wem gehört (z. B. „2 · Dm“). Bei **🎯 Feste SW-Töne** hat jeder SoundWhacker seinen Akkord – nur wer dran ist, klingt.
+**Spielen:** Akkordfolgen gehen genau wie Lieder – **▶ Vorspielen** und **🙌 Mitspielen** mit allen drei Spielarten. Oben im Band stehen die Akkordnamen in den farbigen Punkten, unter den Figuren steht, welcher Akkord zu wem gehört (z. B. „2 · Dm“). Bei **🎯 Feste SW-Töne / Akkorde** hat jeder SoundWhacker seinen Akkord – nur wer dran ist, klingt.
 
 ## Meine Lieder: speichern, weitergeben, hochladen
 

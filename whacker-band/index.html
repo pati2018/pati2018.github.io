@@ -98,7 +98,7 @@
     <a href="../app.html?id=whacker-band">Anleitung</a>
   </div>
 
-  <div class="leiste">
+  <div class="leiste" id="hauptLeiste">
     <label>Lied <select id="lied"></select></label>
     <button class="gross" id="start">▶ Start</button>
     <label id="tempoLabel">Tempo <input type="range" id="tempo" min="40" max="130" step="5" value="100" aria-describedby="tempoWert"> <span id="tempoWert"></span></label>
@@ -109,9 +109,9 @@
 
   <div class="leiste" id="mitLeiste" hidden>
     <div class="modi" id="spielart" role="group" aria-label="Spielart beim Mitspielen">
-      <button data-s="reihum" title="Jede Berührung (egal welcher SoundWhacker) spielt den nächsten Ton">🔁 SW spielt Melodie</button>
+      <button data-s="reihum" title="Jede Berührung (egal welcher SoundWhacker) spielt den nächsten Ton oder Akkord">🔁 SW spielt Melodie / Akkorde</button>
       <button data-s="reihe" title="SW1 → SW2 → SW3 … – wer nicht dran ist, bleibt stumm">🔢 Feste SW-Reihenfolge</button>
-      <button data-s="fest" title="Jeder SoundWhacker hat seinen eigenen Ton: SW1 = tiefster … SW5 = höchster">🎯 Feste SW-Töne</button>
+      <button data-s="fest" title="Jeder SoundWhacker hat seinen eigenen Ton oder Akkord">🎯 Feste SW-Töne / Akkorde</button>
     </div>
     <div class="zeile" id="reiheZeile" hidden><span class="hinweis">Mitspieler:</span>
       <button class="knopf" data-n="2">SW1–2</button><button class="knopf" data-n="3">SW1–3</button><button class="knopf" data-n="4">SW1–4</button><button class="knopf" data-n="5">SW1–5</button></div>
@@ -479,7 +479,7 @@ function recInfo(){
   let txt=rec.an? '<span id="recDot"></span>Aufnahme läuft – '+rec.ev.length+wort : (rec.noten? rec.noten.length+wort+' aufgenommen':'');
   if(rec.akk){ if(rec.ev.length) txt+=' · '+rec.ev.slice(-8).map(x=>akkName(x.m)).join(' – '); }
   else if(toene.length) txt+=' · Töne: '+toene.map(tonName).join(' ');
-  if(!rec.akk&&toene.length>5) txt+=' · <span class="ok">'+toene.length+' verschiedene Töne – geht mit „SW spielt Melodie“ und „Feste SW-Reihenfolge“ (ohne ⭐)</span>';
+  if(!rec.akk&&toene.length>5) txt+=' · <span class="ok">'+toene.length+' verschiedene Töne – geht mit „SW spielt Melodie / Akkorde“ und „Feste SW-Reihenfolge“ (ohne ⭐)</span>';
   $('recInfo').innerHTML=txt; $('recSpeichern').disabled=!rec.noten;
 }
 $('recStart').onclick=()=>{
@@ -515,7 +515,7 @@ $('recSpeichern').onclick=()=>{
     k.querySelectorAll('[data-m]').forEach(d=>{ const m=+d.dataset.m, n=dr?S.namen[m-55]:'';
       if(dr){ d.innerHTML='<span class="dn"></span>'; d.firstChild.textContent=n; d.setAttribute('aria-label',n); }
       else { d.textContent=d.classList.contains('w')?tonName(m):''; d.removeAttribute('aria-label'); } });
-    const si=$('schlagInfo'); si.hidden=!dr;
+    const si=$('schlagInfo'); si.hidden=!dr||st.modus==='auf'||st.modus==='akk';
     if(dr) si.innerHTML=S.icon+' '+S.sw.map((m,i)=>'<span style="background:'+FARBE[i]+'">SW'+(i+1)+' '+S.namen[m-55]+'</span>').join(''); };
   const an=new Map();
   // Taste anschlagen (auch beim Gleiten)
@@ -573,9 +573,9 @@ $('datei').onchange=async()=>{
 // ---------- Bedienung ----------
 function info(){
   const t={vor:'Die Band spielt „'+LIED.titel+'“ vor. Start mit dem Knopf oder der Leertaste.',
-           mit:{reihum:'SW spielt Melodie: Jede Berührung – egal welcher SoundWhacker – spielt den nächsten Ton. Die Punkte färben sich in der Farbe von dem, der gespielt hat.',
+           mit:{reihum:'SW spielt Melodie / Akkorde: Jede Berührung – egal welcher SoundWhacker – spielt den nächsten Ton oder Akkord. Die Punkte färben sich in der Farbe von dem, der gespielt hat.',
                 reihe:'Feste SW-Reihenfolge: SW1 → SW2 → … – wer dran ist, leuchtet schon leicht. Wer nicht dran ist, bleibt stumm.',
-                fest:'Feste SW-Töne: Jeder SoundWhacker hat seinen eigenen Ton. Die Figur, die als Nächstes dran ist, leuchtet schon leicht – nur sie klingt, alle anderen bleiben stumm.'}[spielart()]+(st.spielart==='fest'&&!fuenf()?' (Dieses Lied hat mehr als 5 Töne – „Feste SW-Töne“ geht nur mit ⭐-Liedern.)':''),
+                fest:'Feste SW-Töne / Akkorde: Jeder SoundWhacker hat seinen eigenen Ton oder Akkord. Die Figur, die als Nächstes dran ist, leuchtet schon leicht – nur sie klingt, alle anderen bleiben stumm.'}[spielart()]+(st.spielart==='fest'&&!fuenf()?' (Dieses Lied hat mehr als 5 Töne – „Feste SW-Töne / Akkorde“ geht nur mit ⭐-Liedern und Akkordfolgen.)':''),
            auf:'Spiele eine Melodie ein. Mit höchstens 5 verschiedenen Tönen wird sie ein ⭐-Lied.',
            akk:'Gib jedem SoundWhacker einen Akkord und spiele die Akkordfolge ein.'}[st.modus];
   if(st.modus==='akk'){ $('info').textContent=t+'  Akkorde: '+st.akkSet.map((a,i)=>'SW'+(i+1)+' '+akkName(a)).join(' · '); return; }
@@ -594,7 +594,8 @@ function modus(m){
   if(m==='akk'){ $('akkPanel').append($('recZeile'),$('recDanach')); }
   nummernZeigen();
   $('start').hidden=m!=='vor'; $('tempoLabel').hidden=m!=='vor';   /* Start und Tempo nur beim Vorspielen */ $('start').textContent='▶ Start';
-  $('mitLeiste').hidden=m==='vor'; /* Spielarten bleiben auch beim Lied einspielen sichtbar */ spielartZeigen();
+  /* Beim Einspielen nur das Nötige zeigen: Klaviatur bzw. Akkordwahl – keine Leisten, keine Spielarten */
+  $('hauptLeiste').hidden=ein; $('mitLeiste').hidden=m!=='mit'; $('info').hidden=ein; $('schlagInfo').hidden=ein||!istSchlag(); spielartZeigen();
   pos=0; zug=0; spieler=[]; bandBauen(); info();
 }
 // Akkordwahl: für jeden SoundWhacker ein großer Farbknopf, Grundton und Art
@@ -616,7 +617,7 @@ function akkWahlSperren(j){ document.querySelectorAll('#akkWahl select').forEach
 function spielartZeigen(){
   const eff=st.modus==='mit'?spielart():st.spielart;
   document.querySelectorAll('#spielart button').forEach(b=>{ b.setAttribute('aria-pressed',b.dataset.s===eff);
-    if(b.dataset.s==='fest'){ b.disabled=!fuenf(); b.title=fuenf()?'Jeder SoundWhacker hat seinen eigenen Ton: SW1 = tiefster … SW5 = höchster':'Nur bei ⭐-Liedern (höchstens 5 Töne)'; } });
+    if(b.dataset.s==='fest'){ b.disabled=!fuenf(); b.title=fuenf()?'Jeder SoundWhacker hat seinen eigenen Ton oder Akkord':'Nur bei ⭐-Liedern (höchstens 5 Töne)'; } });
   $('reiheZeile').hidden=st.spielart!=='reihe';
   document.querySelectorAll('#reiheZeile [data-n]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.n===st.reiheN));
 }

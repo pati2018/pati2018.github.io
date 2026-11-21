@@ -98,6 +98,9 @@
   .liste .eintrag b{flex:1;min-width:160px}
   .toast{position:fixed;left:50%;top:18px;transform:translateX(-50%);background:#111a33;border:2px solid var(--gold);color:#fff;padding:10px 20px;border-radius:14px;font-weight:800;font-size:20px;z-index:50}
   @media (prefers-reduced-motion:reduce){#recDot{animation:none}}
+  /* Zarter gelber Rand für alle nicht aktiven Knöpfe und alle Auswahlfelder (Wunsch Nutzer) */
+  .modi button:not([aria-pressed="true"]), .knopf:not(#vollbild):not(#vollAus):not([aria-pressed="true"]){border:1.5px solid var(--gold)}
+  .leiste select, .akkZeile select, #recName{border:1.5px solid var(--gold)}
 </style>
 </head>
 <body>

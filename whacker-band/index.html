@@ -434,7 +434,9 @@ function punktFarbe(k,n){
   if(a==='reihe') return FARBE[k%st.reiheN];
   return FARBE[figFuer(k)];
 }
-function bandBauen(){ $('band').innerHTML=LIED.noten.map((n,k)=>istAkk(n.m)?'<span class="akk" style="background:'+punktFarbe(k,n)+'">'+akkName(n.m)+'</span>':'<span style="background:'+punktFarbe(k,n)+'"></span>').join(''); bandZeigen(); }
+function bandBauen(){ /* „SW spielt Melodie“: Punkte überflüssig (jeder darf) – nur bei Akkordfolgen bleiben sie wegen der Akkordnamen */
+  const ohne=st.modus==='mit'&&spielart()==='reihum'&&!(LIED&&LIED.akk); if($('band').hidden!==ohne){ $('band').hidden=ohne; spaeterAnpassen(); }
+  $('band').innerHTML=LIED.noten.map((n,k)=>istAkk(n.m)?'<span class="akk" style="background:'+punktFarbe(k,n)+'">'+akkName(n.m)+'</span>':'<span style="background:'+punktFarbe(k,n)+'"></span>').join(''); bandZeigen(); }
 function bandZeigen(){ const sp=$('band').children; [...sp].forEach((e,k)=>{ e.classList.toggle('jetzt',k===pos); e.classList.toggle('fertig',k<pos); });
   // Die Tonreihe läuft bei jedem Ton mit
   const b=$('band'), cur=sp[pos];

@@ -83,6 +83,7 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
       kein Lied/Aufstellung/Hall, keine Spielarten (CSS `body.einspielen #hauptLeiste > :not(#klangLabel)`). Spielart-Knöpfe heißen „SW spielt Melodie / Akkorde“, „Feste SW-Reihenfolge“, „Feste SW-Töne / Akkorde“.
       **Kein Markier-Menü am iPad:** `user-select:none` + `-webkit-touch-callout:none` auf `body`, Kontextmenü unterdrückt (nur Eingabefelder ausgenommen).
       **Gestaltung:** nicht aktive Knöpfe und alle Auswahlfelder haben einen zarten gelben Rand (1,5 px, `--gold`) – Wunsch Nutzer.
+      Bei „SW spielt Melodie / Akkorde“ ist das Notenband **ausgeblendet** (jeder darf – Bühne größer); bei Akkordfolgen bleibt es (Akkordnamen).
       **Notenband** läuft bei jedem Ton mit (aktueller Ton im vorderen Drittel) – seitenweises Springen wurde ausprobiert und auf Wunsch zurückgenommen.
       **Bühnenhöhe** passt sich per JS (`buehneAnpassen`) dem freien Bildschirm an – alle Figuren ohne Scrollen (Wunsch iPad). **⛶ Vollbild** = Klasse
       `body.vollbild`: nur Notenband + Bühne (+ echtes Vollbild, wo möglich; iPhone nur Bühnenansicht), Knopf „✕ Vollbild aus“ unten rechts (nicht oben – liegt sonst in den Noten; dunkelblau-dezent #243052, kein grelles Gelb – Wunsch Nutzer); der Knopf „⛶ Vollbild“ in der Kopfzeile ist hellblau wie SW5 (#3f8ee8), Esc;

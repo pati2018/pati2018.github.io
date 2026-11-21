@@ -85,7 +85,7 @@ Gespeicherte Akkordfolgen stehen in der Liedauswahl unter **„Meine Akkordfolge
 Oben im Menü (zwischen „🎸 Akkorde einspielen“ und „💾 Meine Lieder“). Hier legst du fest, was beim **🎲 Improvisieren** klingt:
 
 - **Grundton**: C, C♯, D … H.
-- **Skala**: Dur, Moll, **Dur-Pentatonik**, **Moll-Pentatonik** oder **orientalisch**. Es kommen immer nur Töne aus dieser Skala – so klingt es nie falsch.
+- **Skala**: Dur, Moll, **Dur-Pentatonik**, **Moll-Pentatonik**, **Blues** oder **orientalisch**. Es kommen immer nur Töne aus dieser Skala – so klingt es nie falsch.
 - **Anzahl der Töne**: 3 bis 15 – wie viele Töne der Skala zur Auswahl stehen (wenige = ruhig, viele = großer Tonumfang). Die Töne werden darunter angezeigt.
 - **Instrument je SoundWhacker**: SW1 bis SW5 bekommen je ein eigenes Instrument (z. B. Marimba, Flöte, Saxophon). Antippen des Farbknopfs spielt einen Ton zur Probe.
 

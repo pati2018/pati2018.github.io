@@ -10,6 +10,8 @@
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="SoundWhacker Band">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <script data-goatcounter="https://pati2018.goatcounter.com/count" data-goatcounter-settings='{"path":"/whacker-band/"}' async src="//gc.zgo.at/count.js"></script>
 <style>
   :root{--bg:#0b1020;--karte:#141c33;--linie:#2b3a62;--text:#f2f5fb;--mut:#aab6d3;--gold:#ffd23f;
@@ -664,10 +666,12 @@ function buehneAnpassen(){
 var anpT=0; function spaeterAnpassen(){ clearTimeout(anpT); anpT=setTimeout(buehneAnpassen,60); }
 window.addEventListener('resize',spaeterAnpassen); window.addEventListener('orientationchange',()=>setTimeout(buehneAnpassen,350));
 if(window.visualViewport) visualViewport.addEventListener('resize',spaeterAnpassen);
-// Vollbild: echtes Vollbild, wo der Browser es kann (PC, iPad) – sonst (iPhone) nur die Bühnenansicht
+// Vollbild: echtes Vollbild nur am PC. Auf iPad/iPhone nur die Bühnenansicht – im echten Vollbild warnt Safari bei jedem
+// Tastendruck („Eingabe im Vollbildmodus“), und SoundWhacker sind Bluetooth-Tastaturen.
 function vollbild(an){
   const d=document, de=d.documentElement; document.body.classList.toggle('vollbild',an);
-  try{ if(an){ const f=de.requestFullscreen||de.webkitRequestFullscreen; if(f&&!(d.fullscreenElement||d.webkitFullscreenElement)){ const x=f.call(de); if(x&&x.catch) x.catch(()=>{}); } }
+  const touch=navigator.maxTouchPoints>0||/iPad|iPhone|iPod/.test(navigator.userAgent);
+  try{ if(an&&!touch){ const f=de.requestFullscreen||de.webkitRequestFullscreen; if(f&&!(d.fullscreenElement||d.webkitFullscreenElement)){ const x=f.call(de); if(x&&x.catch) x.catch(()=>{}); } }
        else if(d.fullscreenElement||d.webkitFullscreenElement){ (d.exitFullscreen||d.webkitExitFullscreen).call(d); } }catch(e){}
   window.scrollTo(0,0); spaeterAnpassen(); setTimeout(buehneAnpassen,450);
 }

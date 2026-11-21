@@ -28,7 +28,7 @@ Der SoundWhacker ist eine weiße Röhre mit **zwei schwarzen Ringen** – einer 
 | Schlagzeug | 6 Sets: **Standard, Rock, Elektro, 808, Jazz, Besen** (unten in der Klangauswahl) – siehe „Schlagzeug“ |
 | Geräusche | **✨ Geräusche & Effekte** (ganz unten in der Klangauswahl) – siehe „Geräusche & Effekte“ |
 | Hall | Regler von **0 %** (trocken) über kleiner Raum und Saal bis **Kirche** (100 %) – die App merkt sich die Einstellung |
-| Vollbild | **⛶ Vollbild**: Nur noch Notenband und Bühne – die Figuren werden so groß wie möglich (iPad, iPhone, PC, Beamer). Vorher Lied, Klang und Spielart wählen. Zurück: am iPad **mit dem Finger von oben nach unten wischen** (oder Safaris ✕ oben links), sonst das kleine **✕ unten rechts** oder **Esc**. |
+| Vollbild | **⛶ Vollbild**: Nur noch Notenband und Bühne – die Figuren werden so groß wie möglich (iPad, iPhone, PC, Beamer). Vorher Lied, Klang und Spielart wählen. Zurück mit dem kleinen **✕ unten rechts** (am PC auch **Esc**). Am iPad/iPhone bleibt Safaris Leiste sichtbar – **ganz ohne Leiste:** App über Teilen → **„Zum Home-Bildschirm“** speichern und von dort starten. |
 
 **Tonlänge:** Ein Ton klingt so lange, wie der SoundWhacker (oder die Taste, die Figur, die Klaviertaste) **gehalten** wird – mindestens eine Viertelsekunde. Beim Vorspielen klingt jeder Ton so lang wie seine Note.
 
@@ -118,6 +118,7 @@ Mit Internet holt sich die App automatisch die neueste Fassung.
 
 ## Tipps & Probleme
 
+- **„Eingabe im Vollbildmodus“-Warnung am iPad?** Kommt nicht mehr: Am iPad schaltet die App kein echtes Safari-Vollbild mehr ein, weil Safari dort jeden SoundWhacker-Druck (= Tastatur) als verdächtig meldet.
 - **Bühne passt sich an:** Die Bühne wird automatisch so hoch, dass alle fünf Figuren ohne Scrollen zu sehen sind. Auf dem iPhone ist dafür **⛶ Vollbild** am besten.
 
 - **Kein Ton?** Einmal auf den Bildschirm tippen. Am iPad den Stummschalter prüfen.

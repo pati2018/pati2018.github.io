@@ -83,7 +83,7 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
       **Bühnenhöhe** passt sich per JS (`buehneAnpassen`) dem freien Bildschirm an – alle Figuren ohne Scrollen (Wunsch iPad). **⛶ Vollbild** = Klasse
       `body.vollbild`: nur Notenband + Bühne (+ echtes Vollbild, wo möglich; iPhone nur Bühnenansicht), Knopf „✕ Vollbild aus“ unten rechts (nicht oben – liegt sonst in den Noten; gut sichtbar, aber dezent – kein grelles Gelb, Wunsch Nutzer), Esc;
       **Kein echtes Vollbild auf iPad/iPhone** (nur am PC): Safari zeigt sonst bei jedem SW-Druck die Warnung „Eingabe im Vollbildmodus“
-      (SW = Bluetooth-Tastatur). Ohne Safari-Leiste: App zum Home-Bildschirm hinzufügen (manifest `standalone`, `apple-mobile-web-app-capable`).
+      (SW = Bluetooth-Tastatur). Im Vollbild ist die Seite festgestellt (`position:fixed`, touchmove unterdrückt) – sonst wackelt am iPad die Bühne beim Antippen der Figuren. Ohne Safari-Leiste: App zum Home-Bildschirm hinzufügen (manifest `standalone`, `apple-mobile-web-app-capable`).
       **Offline:** `whacker-band/sw.js` (Service Worker) speichert App, `lieder.js` und alle Klänge (≈ 21 MB). Bei neuen Dateien
       oder neuer `lieder.js?v=…`-Nummer die Liste und `VERSION` in `sw.js` anpassen.
       Eine Jarvis-Sprachsteuerung (Web Speech API) wurde ausprobiert und auf Wunsch wieder entfernt – nicht erneut einbauen.

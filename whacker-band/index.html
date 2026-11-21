@@ -58,6 +58,10 @@
   /* Vollbild / Bühnenansicht: nur Spielarten, Notenband und Bühne – Höhe passt sich dem Bildschirm an */
   body.vollbild .top, body.vollbild #hauptLeiste, body.vollbild #mitLeiste, body.vollbild #info, body.vollbild #schlagInfo{display:none!important}
   body.vollbild .buehne svg{min-height:0}
+  /* Vollbild: Seite festhalten – beim Antippen der Figuren darf nichts rutschen (iPad) */
+  html:has(body.vollbild){overflow:hidden;overscroll-behavior:none}
+  body.vollbild{position:fixed;inset:0;overflow:hidden;overscroll-behavior:none;touch-action:none}
+  body.vollbild .buehne, body.vollbild #band{touch-action:none}
   @media (max-height:500px){body.vollbild #band{min-height:56px;padding:4px 12px} body.vollbild #band span{width:36px;height:36px} body.vollbild #band span.akk{font-size:16px;min-width:36px}}
   #vollAus{display:none;position:fixed;bottom:max(10px,env(safe-area-inset-bottom));right:max(12px,env(safe-area-inset-right));z-index:60;min-height:52px;padding:6px 20px;font-size:19px;font-weight:700;color:#e8ecf6;background:#243052;border:2px solid #6f7fa8;border-radius:14px;box-shadow:0 4px 14px rgba(0,0,0,.45)}
   /* echtes Vollbild am iPad: oben links liegt das Schließen-Kreuz von Safari – Noten etwas nach rechts */
@@ -678,6 +682,8 @@ $('vollbild').onclick=()=>{ $('vollbild').blur(); vollbild(true); };
 $('vollAus').onclick=()=>{ $('vollAus').blur(); vollbild(false); };
 ['fullscreenchange','webkitfullscreenchange'].forEach(ev=>document.addEventListener(ev,()=>{ const echt=!!(document.fullscreenElement||document.webkitFullscreenElement); document.body.classList.toggle('echt',echt&&navigator.maxTouchPoints>0); if(!echt) document.body.classList.remove('vollbild'); spaeterAnpassen(); setTimeout(buehneAnpassen,450); }));
 window.addEventListener('keydown',e=>{ if(e.key==='Escape'&&document.body.classList.contains('vollbild')) vollbild(false); });
+// iPad: im Vollbild jedes Wischen unterdrücken, sonst wackelt die Seite beim Antippen der Figuren
+document.addEventListener('touchmove',e=>{ if(document.body.classList.contains('vollbild')&&!e.target.closest('#vollAus')) e.preventDefault(); },{passive:false});
 let tT=0; function toast(t){ let e=document.querySelector('.toast'); if(!e){ e=document.createElement('div'); e.className='toast'; e.setAttribute('role','status'); document.body.appendChild(e); } e.textContent=t; e.hidden=false; clearTimeout(tT); tT=setTimeout(()=>e.hidden=true,2200); }
 // Ton erst nach der ersten Berührung (Browser-Regel) – jede Berührung startet den Klang
 ['pointerdown','keydown','touchstart'].forEach(ev=>window.addEventListener(ev,()=>audio(),{once:true,passive:true}));

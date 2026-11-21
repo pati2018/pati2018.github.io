@@ -63,7 +63,6 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
     - `tischharfe/` – Tischharfe mit Unterlegnoten (`lieder.js` = Lieder,
       `kopf.js` = Kopfsteuerung, `aufnahme.js` = Video-Aufnahme)
     - `singen/` – Singen mit SoundWhackern
-    - `atemklang/` – Atemklang
     - `fagott/` – Fagott (Klänge in `klang/`, Bassoon aus GeneralUser GS; Lied-Modus lädt `../tischharfe/lieder.js`)
     - `whacker-band/` – **SoundWhacker Band** (früher „Whacker-Band“, Ordner bleibt `whacker-band/`; Symbol = die fünf Figuren in SW-Farben mit ihren SoundWhackern, gelbe Röhre leuchtet – `whacker-band/icons/icon.svg`): 5 animierte Figuren (SW-Farben) mit SoundWhacker (weiße Röhre mit zwei breiten schwarzen Ringen oben und unten – wie das echte Gerät; linke Hand
       hält den unteren Ring, rechte Hand greift an den oberen → Röhre leuchtet). Modi Vorspielen / Mitspielen (Tasten 1–5, nächste Figur leuchtet leicht) /
@@ -97,7 +96,7 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
     die Nummer bei `../tischharfe/lieder.js?v=…`, sonst bleibt dort die alte Liste im Speicher.
   - **Reihenfolge auf der Übersicht:** 1. SoundWhacker Smart Control, 2. MIGA,
     3. Tischharfe (`ganzOben: 1–3` in `apps.js`), danach die übrigen nach Datum
-    (neueste oben); Singen vorletzt (`ganzUnten: 1`), Atemklang ganz unten (`ganzUnten: 2`).
+    (neueste oben); Singen ganz unten (`ganzUnten: 1`). Die App **Atemklang** wurde auf Wunsch entfernt (Ordner und Eintrag gelöscht; steckt noch in der Git-Geschichte).
     Die Kacheln auf der Erklärseite `ki-betriebssystem/` stehen in derselben Reihenfolge.
   - In eigenen Repos (nur verlinkt):
     - Smart Instruments → Repo `pati2018/Gitarre`

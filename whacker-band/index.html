@@ -67,7 +67,8 @@
   /* echtes Vollbild am iPad: oben links liegt das Schließen-Kreuz von Safari – Noten etwas nach rechts */
   body.vollbild.echt #band{margin-left:64px}
   body.vollbild #vollAus{display:block}
-  #vollbild{background:#3f8ee8;color:#fff;border-color:#3f8ee8;font-weight:800;order:-1}   /* hellblau wie SW5, ganz links in der Kopfzeile */
+  #vollbild{background:#3f8ee8;color:#fff;border-color:#3f8ee8;font-weight:800;order:1;margin-left:auto}   /* hellblau wie SW5, rechts in der Titelzeile */
+  .top h1{order:0;flex:1 1 calc(100% - 240px)} .top .modi{order:2} .top > a{order:3}   /* Titel + Vollbild in einer Reihe, Modi darunter */
   body.vollbild .wrap{padding-top:8px}
   /* Lied einspielen: Bühne und Tonreihe schieben sich sanft zusammen – dann ist nur noch die Klaviatur zu sehen */
   #buehnenBox{display:grid;grid-template-rows:1fr;opacity:1;transition:grid-template-rows .6s ease,opacity .45s ease,margin .6s ease}

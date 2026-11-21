@@ -55,7 +55,7 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
 
 - **Veröffentlichung:** GitHub Pages direkt aus `main`. Nach dem Push ist die
   Änderung nach 1–2 Minuten online.
-- **Sicherungen:** Stabile Stände liegen als eigene Branches (`stabil-v1` bis `stabil-v8`,
+- **Sicherungen:** Stabile Stände liegen als eigene Branches (`stabil-v1` bis `stabil-v9`,
   `stabil/tischharfe-v1.0`).
   Vor größeren Umbauen einen neuen Stand sichern.
 - **Apps:** Die Liste aller Apps steht in `apps.js` (`window.APPS`).
@@ -78,6 +78,10 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
       `ton()` spielt dann den Akkord (Bass + Dreiklang/Vierklang, leicht gestaffelt). Fertige Folgen in `AKK_DEMOS` (Pop, Kadenz, Blues).
       Vorspielen/Mitspielen (alle 3 Spielarten) gehen auch mit Akkordfolgen; Punkte zeigen Akkordnamen, Figuren „Nr · Akkord“.
       Sicherung vor diesem Umbau: Branch `stabil-v8`.
+      **„🎲 Improvisation einstellen“** (6. Modus `imp`, zwischen „Akkorde einspielen“ und „Meine Lieder“): Grundton, Skala (`SKALEN`: dur, moll, durpenta, mollpenta, orient),
+      Anzahl Töne 3–15, Tempo, Instrument je SW (`st.imp`). In Mitspielen 4. Spielart **„🎲 Improvisieren“** (`spielart:'imp'`, rechts von „Feste SW-Töne / Akkorde“):
+      solange ein SW gehalten wird, spielt er Zufallstöne aus der Skala mit seinem Instrument (`impStart`/`impStop`), jeder andere kann jederzeit übernehmen; Lied/Klang ausgeblendet (`body.impMit`).
+      Kopfzeile: Modus-Knöpfe am PC/iPad quer in einer Zeile, „Anleitung“ in der Titelzeile links neben „⛶ Vollbild“. Sicherung vor diesem Umbau: Branch `stabil-v9`.
       **Menü „💾 Meine Lieder“** (5. Modus `lieder`, Knopf nach „Akkorde einspielen“): nur der Bereich Meine Lieder (Alle herunterladen, Datei hochladen,
       je Lied Auswählen/Umbenennen/Herunterladen/Löschen) – nicht mehr unter dem Einspielen.
       **Wunsch:** In „Lied einspielen“ und „Akkorde einspielen“ nur Klaviatur bzw. Akkord-Übersicht und die **Klangauswahl** zeigen –

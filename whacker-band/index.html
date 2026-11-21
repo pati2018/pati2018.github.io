@@ -67,8 +67,13 @@
   /* echtes Vollbild am iPad: oben links liegt das Schließen-Kreuz von Safari – Noten etwas nach rechts */
   body.vollbild.echt #band{margin-left:64px}
   body.vollbild #vollAus{display:block}
-  #vollbild{background:#3f8ee8;color:#fff;border-color:#3f8ee8;font-weight:800;order:1;margin-left:auto}   /* hellblau wie SW5, rechts in der Titelzeile */
-  .top h1{order:0;flex:1 1 calc(100% - 240px)} .top .modi{order:2} .top > a{order:3}   /* Titel + Vollbild in einer Reihe, Modi darunter */
+  #vollbild{background:#3f8ee8;color:#fff;border-color:#3f8ee8;font-weight:800}   /* hellblau wie SW5, rechts in der Titelzeile */
+  .top h1{order:0;flex:1 1 calc(100% - 420px)} .top > a{order:1;margin-left:auto} #vollbild{order:2}
+  .top .modi{order:3;flex:1 1 100%}   /* Titel, Anleitung, Vollbild in einer Reihe – darunter alle Modi */
+  @media (min-width:900px){ .top .modi{flex-wrap:nowrap} .top .modi button{flex:1 1 auto;padding:8px 10px;font-size:clamp(13px,1.3vw,19px);white-space:nowrap} }
+  #impTempo .knopf[aria-pressed="true"]{background:var(--gold);color:#111;border-color:var(--gold)}
+  .impZeile label{display:flex;align-items:center;gap:8px;color:var(--mut)} .impZeile select{font-size:18px;min-height:50px;padding:6px 10px;border-radius:10px;border:1.5px solid var(--gold);background:#0f1730;color:var(--text)}
+  .impZeile input[type=range]{width:180px;accent-color:var(--gold)}
   body.vollbild .wrap{padding-top:8px}
   /* Lied einspielen: Bühne und Tonreihe schieben sich sanft zusammen – dann ist nur noch die Klaviatur zu sehen */
   #buehnenBox{display:grid;grid-template-rows:1fr;opacity:1;transition:grid-template-rows .6s ease,opacity .45s ease,margin .6s ease}
@@ -107,6 +112,8 @@
   /* iPad: langes Drücken soll kein Markier-Menü (Kopieren, Nachschlagen …) öffnen */
   body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
   input,textarea{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+  /* Improvisieren: Lied und Klang braucht es nicht – jeder SoundWhacker hat sein eigenes Instrument */
+  body.impMit #hauptLeiste label:has(#lied), body.impMit #klangLabel{display:none}
 </style>
 </head>
 <body>
@@ -118,6 +125,7 @@
       <button data-m="mit" aria-pressed="false">🙌 Mitspielen</button>
       <button data-m="auf" aria-pressed="false">● Lied einspielen</button>
       <button data-m="akk" aria-pressed="false">🎸 Akkorde einspielen</button>
+      <button data-m="imp" aria-pressed="false">🎲 Improvisation einstellen</button>
       <button data-m="lieder" aria-pressed="false">💾 Meine Lieder</button>
     </div>
     <button class="knopf" id="vollbild" title="Nur die Bühne zeigen – für iPad und Beamer">⛶ Vollbild</button>
@@ -138,6 +146,7 @@
       <button data-s="reihum" title="Jede Berührung (egal welcher SoundWhacker) spielt den nächsten Ton oder Akkord">🔁 SW spielt Melodie / Akkorde</button>
       <button data-s="reihe" title="SW1 → SW2 → SW3 … – wer nicht dran ist, bleibt stumm">🔢 Feste SW-Reihenfolge</button>
       <button data-s="fest" title="Jeder SoundWhacker hat seinen eigenen Ton oder Akkord">🎯 Feste SW-Töne / Akkorde</button>
+      <button data-s="imp" title="Halten = Zufallstöne aus der eingestellten Skala – ein anderer SoundWhacker übernimmt jederzeit">🎲 Improvisieren</button>
     </div>
     <div class="zeile" id="reiheZeile" hidden><span class="hinweis">Mitspieler:</span>
       <button class="knopf" data-n="2">SW1–2</button><button class="knopf" data-n="3">SW1–3</button><button class="knopf" data-n="4">SW1–4</button><button class="knopf" data-n="5">SW1–5</button></div>
@@ -178,6 +187,20 @@
     <div id="akkWahl"></div>
   </div>
 
+  <!-- Improvisation einstellen -->
+  <div class="panel" id="impPanel" hidden>
+    <h2>🎲 Improvisation einstellen</h2>
+    <p class="hinweis">Beim Mitspielen mit „🎲 Improvisieren“ spielt ein gehaltener SoundWhacker Zufallstöne aus dieser Tonart und Skala – mit seinem eigenen Instrument. Ein anderer SoundWhacker übernimmt jederzeit.</p>
+    <div class="zeile impZeile">
+      <label>Tonart <select id="impWurzel"></select></label>
+      <label>Skala <select id="impSkala"></select></label>
+      <label>Anzahl Töne <input type="range" id="impAnzahl" min="3" max="15" step="1"> <b id="impAnzahlWert"></b></label>
+    </div>
+    <div class="zeile" id="impTempo"><span class="hinweis">Tempo:</span><button class="knopf" data-t="langsam">🐢 langsam</button><button class="knopf" data-t="mittel">🚶 mittel</button><button class="knopf" data-t="schnell">🐇 schnell</button></div>
+    <div class="hinweis" id="impToeneInfo"></div>
+    <div id="impWahl"></div>
+  </div>
+
   <!-- Meine Lieder -->
   <div class="panel" id="meinePanel" hidden>
     <h2>💾 Meine Lieder</h2>
@@ -202,7 +225,7 @@ function el(t,a,p){ const e=document.createElementNS(NS,t); for(const k in a) e.
 
 // ---------- Einstellungen ----------
 const KEY='whacker-band', LKEY='whacker-band-lieder';
-let st={lied:'lied:freude',tempo:100,aufstellung:'halbkreis',klang:'marimba',modus:'vor',spielart:'fest',reiheN:5,hall:20,akkSet:null,festFrei:false};
+let st={lied:'lied:freude',tempo:100,aufstellung:'halbkreis',klang:'marimba',modus:'vor',spielart:'fest',reiheN:5,hall:20,akkSet:null,festFrei:false,imp:null};
 try{ Object.assign(st, JSON.parse(localStorage.getItem(KEY)||'{}')); }catch(e){}
 // ---------- Akkorde ----------
 // Akkord-Nummer: 1000 + Grundton·3 + Art (0 = Dur, 1 = Moll, 2 = Septim)
@@ -218,6 +241,11 @@ const AKK_DEMOS=[
   {id:'kadenz',titel:'Kadenz (C – F – G7 – C)',tempo:90,set:[akkId(0,0),akkId(5,0),akkId(7,2),akkId(9,1),null],folge:[[1,2],[2,2],[3,2],[1,2],[4,2],[2,2],[3,2],[1,4]]},
   {id:'blues',titel:'Blues in C (C7 – F7 – G7)',tempo:100,set:[akkId(0,2),akkId(5,2),akkId(7,2),null,null],folge:[[1,2],[1,2],[1,2],[1,2],[2,2],[2,2],[1,2],[1,2],[3,2],[2,2],[1,2],[3,2]]},
 ];
+// ---------- Improvisieren ----------
+const SKALEN={dur:{n:'Dur',iv:[0,2,4,5,7,9,11]},moll:{n:'Moll',iv:[0,2,3,5,7,8,10]},durpenta:{n:'Dur-Pentatonik',iv:[0,2,4,7,9]},
+  mollpenta:{n:'Moll-Pentatonik',iv:[0,3,5,7,10]},orient:{n:'Orientalisch',iv:[0,1,4,5,7,8,11]}};
+const IMP_TEMPO={langsam:.6,mittel:.4,schnell:.26};
+if(!st.imp||!Array.isArray(st.imp.klang)) st.imp={wurzel:0,skala:'durpenta',anzahl:10,tempo:'mittel',klang:['marimba','floete','vibraphon','gitarre','klavier']};
 const merke=()=>{ try{ localStorage.setItem(KEY,JSON.stringify(st)); }catch(e){} };
 
 // ---------- Klang: Instrumente der Tischharfe ----------
@@ -257,7 +285,7 @@ function audio(){
   const conv=ctx.createConvolver(), sr=ctx.sampleRate, n=Math.floor(sr*2.2), b=ctx.createBuffer(2,n,sr);
   for(let c=0;c<2;c++){ const d=b.getChannelData(c); for(let i=0;i<n;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/n,3.2); }
   conv.buffer=b; conv.connect(wet); wet._in=conv;
-  ladeKlang(st.klang);
+  ladeKlang(st.klang); if(st.modus==='imp'||st.spielart==='imp') st.imp.klang.forEach(k=>ladeKlang(k));
 }
 async function ladeKlang(id){
   const K=KLAENGE[id]; if(!K||!ctx||lade[id]) return; lade[id]='laedt'; const b={};
@@ -267,13 +295,14 @@ async function ladeKlang(id){
 }
 const stimmen=[null,null,null,null,null], fxStimme={};
 // Ein Ton klingt so lange, wie der SoundWhacker / die Taste gehalten wird (wie in Smart Control) – beim Vorspielen so lange wie die Note
-function ton(fig, midi, wann, dauer, frei){   // wann = ctx-Zeit (optional), dauer in Sekunden (optional), frei = Klaviertaste
-  audio(); const B=puffer[st.klang]||puffer.marimba; if(!B){ ladeKlang(st.klang); return; }
-  const dr=istSchlag()&&puffer[st.klang]===B;
+function ton(fig, midi, wann, dauer, frei, kid){   // kid = eigenes Instrument (Improvisieren)
+  const kl=kid||st.klang;   // wann = ctx-Zeit (optional), dauer in Sekunden (optional), frei = Klaviertaste
+  audio(); const B=puffer[kl]||puffer.marimba; if(!B){ ladeKlang(kl); return; }
+  const dr=!!(KLAENGE[kl]&&KLAENGE[kl].schlag)&&puffer[kl]===B;
   if(dr){ if(!frei&&!(LIED&&LIED.schlag)) midi=setVon().sw[fig]||55; while(midi<55) midi+=12; while(midi>84) midi-=12; }
   const naechster=m=>{ let best=null; for(const k in B){ const v=+k; if(best===null||Math.abs(v-m)<Math.abs(best-m)) best=v; } return best; };
   const t=Math.max(ctx.currentTime+.005, wann||0), g=ctx.createGain();
-  const p=(KLAENGE[st.klang]||KLAENGE.marimba).pegel*.8;
+  const p=(KLAENGE[kl]||KLAENGE.marimba).pegel*.8;
   let src;
   if(!dr&&istAkk(midi)){   // Akkord: alle Töne leicht gestaffelt (wie angeschlagen), Bass etwas leiser
     const quellen=akkToene(midi).map((m,j)=>{ const b=naechster(m), q=ctx.createBufferSource(), gj=ctx.createGain();
@@ -299,7 +328,21 @@ function ton(fig, midi, wann, dauer, frei){   // wann = ctx-Zeit (optional), dau
 function aus(v,wann){ if(!v||v.los) return; v.los=true; const t=Math.max(wann||0,ctx.currentTime);
   try{ v.g.gain.setTargetAtTime(0,t,.07); v.s.stop(t+.6); }catch(e){} }
 // Loslassen: mindestens 0,25 s klingen lassen, damit kurze Berührungen hörbar bleiben
-function loslassen(fig){ const v=stimmen[fig]; if(v&&ctx) aus(v,Math.max(ctx.currentTime,v.t0+.25)); if(typeof recLos==='function'){ recLos(recIdx[fig]); recIdx[fig]=null; } }
+function loslassen(fig){ impStop(fig); const v=stimmen[fig]; if(v&&ctx) aus(v,Math.max(ctx.currentTime,v.t0+.25)); if(typeof recLos==='function'){ recLos(recIdx[fig]); recIdx[fig]=null; } }
+
+// Zufallstöne aus der eingestellten Skala – nur einer improvisiert, ein anderer SoundWhacker übernimmt jederzeit
+function impToene(){ const sk=SKALEN[st.imp.skala]||SKALEN.durpenta; let b=60+(+st.imp.wurzel||0); if(b>64) b-=12; const t=[];
+  for(let o=0;t.length<st.imp.anzahl;o++) for(const iv of sk.iv){ if(t.length<st.imp.anzahl) t.push(b+12*o+iv); } return t; }
+let impWer=-1, impT=0, impIdx=-1;
+function impNote(i){ const T=impToene(); let k;
+  if(impIdx<0||impIdx>=T.length||Math.random()<.3) k=Math.floor(Math.random()*T.length);
+  else k=Math.max(0,Math.min(T.length-1,impIdx+[-2,-1,-1,1,1,2][Math.floor(Math.random()*6)]));
+  impIdx=k; const b=IMP_TEMPO[st.imp.tempo]||.4, d=b*[1,1,.5,.5,1.5,2][Math.floor(Math.random()*6)];
+  ton(i,T[k],0,d*.95,false,st.imp.klang[i]); schlag(i,performance.now(),true);
+  impT=setTimeout(()=>{ if(impWer===i) impNote(i); },d*1000); }
+function impStart(i){ impStop(); impWer=i; impLaden(); impNote(i); }
+function impStop(i){ if(i!==undefined&&i!==impWer) return; clearTimeout(impT); impWer=-1; }
+function impLaden(){ if(ctx) st.imp.klang.forEach(k=>ladeKlang(k)); }
 
 // ---------- Lieder ----------
 function eigene(){ try{ const l=JSON.parse(localStorage.getItem(LKEY)||'[]'); return Array.isArray(l)?l.filter(x=>x&&x.name&&x.noten):[]; }catch(e){ return []; } }
@@ -422,14 +465,14 @@ function zeichne(now){
   requestAnimationFrame(zeichne);
 }
 requestAnimationFrame(zeichne);
-function nummernZeigen(){ const S=st.modus==='akk'?st.akkSet:(LIED&&LIED.akk?FIGTON:null);
-  F.forEach((f,i)=>{ f.nr.textContent=S&&S[i]!=null?(i+1)+' · '+akkName(S[i]):String(i+1); }); }
+function nummernZeigen(){ const S=st.modus==='akk'?st.akkSet:(LIED&&LIED.akk?FIGTON:null), imp=st.modus==='mit'&&st.spielart==='imp';
+  F.forEach((f,i)=>{ f.nr.textContent=imp?(i+1)+' · '+(KLAENGE[st.imp.klang[i]]||{n:''}).n.split(' (')[0]:S&&S[i]!=null?(i+1)+' · '+akkName(S[i]):String(i+1); }); }
 function schlag(i, wannMs, live){ const f=F[i]; f.hit=wannMs; f.live=!!live; }
 
 // ---------- Notenband ----------
 let pos=0;
 let zug=0, spieler=[];   // Feste Reihenfolge: wer als Nächstes dran ist · SW spielt Melodie: wer welchen Ton gespielt hat
-const spielart=()=>st.modus!=='mit'?'fest':(st.spielart==='fest'&&!fuenf()?'reihum':st.spielart);   // Feste SW-Töne gehen nur mit ⭐-Liedern
+const spielart=()=>st.modus!=='mit'?'fest':(st.spielart==='fest'&&!fuenf()?'reihum':st.spielart);   /* 'imp' = Improvisieren */   // Feste SW-Töne gehen nur mit ⭐-Liedern
 function punktFarbe(k,n){
   const a=spielart();
   if(a==='reihum') return spieler[k]!=null?FARBE[spieler[k]]:'#c7d0e3';   // noch offen: hell-grau, gespielt: Farbe des Spielers
@@ -437,7 +480,7 @@ function punktFarbe(k,n){
   return FARBE[figFuer(k)];
 }
 function bandBauen(){ /* „SW spielt Melodie“: Punkte überflüssig (jeder darf) – nur bei Akkordfolgen bleiben sie wegen der Akkordnamen */
-  const ohne=st.modus==='mit'&&spielart()==='reihum'&&!(LIED&&LIED.akk); if($('band').hidden!==ohne){ $('band').hidden=ohne; spaeterAnpassen(); }
+  const ohne=st.modus==='mit'&&(spielart()==='imp'||(spielart()==='reihum'&&!(LIED&&LIED.akk))); if($('band').hidden!==ohne){ $('band').hidden=ohne; spaeterAnpassen(); }
   $('band').innerHTML=LIED.noten.map((n,k)=>istAkk(n.m)?'<span class="akk" style="background:'+punktFarbe(k,n)+'">'+akkName(n.m)+'</span>':'<span style="background:'+punktFarbe(k,n)+'"></span>').join(''); bandZeigen(); }
 function bandZeigen(){ const sp=$('band').children; [...sp].forEach((e,k)=>{ e.classList.toggle('jetzt',k===pos); e.classList.toggle('fertig',k<pos); });
   // Die Tonreihe läuft bei jedem Ton mit
@@ -463,12 +506,13 @@ function start(){
     p.to2=setTimeout(()=>{ pos=p.k; bandZeigen(); },(VOR+p.at)*1000); });
   timer=setTimeout(()=>{ laeuft=false; $('start').textContent='▶ Start'; pos=LIED.noten.length; bandZeigen(); },(VOR+t)*1000+600);
 }
-function stopp(){ plan.forEach(p=>{ clearTimeout(p.to); clearTimeout(p.to2); }); plan=[]; if(ctx) stimmen.forEach((v,i)=>{ if(v){ try{ v.g.gain.setTargetAtTime(0,ctx.currentTime,.05); v.s.stop(ctx.currentTime+.3); }catch(e){} stimmen[i]=null; } }); clearTimeout(timer); laeuft=false; $('start').textContent=st.modus==='mit'?'↺ Von vorne':'▶ Start'; }
+function stopp(){ impStop(); plan.forEach(p=>{ clearTimeout(p.to); clearTimeout(p.to2); }); plan=[]; if(ctx) stimmen.forEach((v,i)=>{ if(v){ try{ v.g.gain.setTargetAtTime(0,ctx.currentTime,.05); v.s.stop(ctx.currentTime+.3); }catch(e){} stimmen[i]=null; } }); clearTimeout(timer); laeuft=false; $('start').textContent=st.modus==='mit'?'↺ Von vorne':'▶ Start'; }
 
 // ---------- Mitspielen / Spieler ----------
 function liedRundeFertig(){ pos=0; zug=0; spieler=[]; bandBauen(); }
 function spielerTon(i){
   audio();
+  if(st.modus==='imp'||(st.modus==='mit'&&st.spielart==='imp')){ impStart(i); impKnopf(i,true); return; }
   if(st.modus==='akk'){ const m=st.akkSet[i]; if(m==null) return;
     if(rec.an) recIdx[i]=recTon(m); ton(i,m); schlag(i,performance.now(),true); akkKnopf(i,true); return; }
   const a=spielart();
@@ -492,7 +536,7 @@ function spielerTon(i){
 }
 // SoundWhacker = Tasten 1–5 (auch Ziffernblock). Gehaltene Taste (Wiederholung) zählt nicht doppelt.
 const tasteNr=e=>{ const m=/^(Digit|Numpad)([1-5])$/.exec(e.code||''); if(m) return +m[2]; return (e.key>='1'&&e.key<='5'&&e.key.length===1)? +e.key : 0; };
-window.addEventListener('keyup',e=>{ const n=tasteNr(e); if(n){ loslassen(n-1); akkKnopf(n-1,false); } });
+window.addEventListener('keyup',e=>{ const n=tasteNr(e); if(n){ loslassen(n-1); akkKnopf(n-1,false); impKnopf(n-1,false); } });
 window.addEventListener('keydown',e=>{
   if(e.target.tagName==='INPUT') return;
   const n=tasteNr(e);
@@ -548,7 +592,7 @@ $('recSpeichern').onclick=()=>{
     k.querySelectorAll('[data-m]').forEach(d=>{ const m=+d.dataset.m, n=dr?S.namen[m-55]:'';
       if(dr){ d.innerHTML='<span class="dn"></span>'; d.firstChild.textContent=n; d.setAttribute('aria-label',n); }
       else { d.textContent=d.classList.contains('w')?tonName(m):''; d.removeAttribute('aria-label'); } });
-    const si=$('schlagInfo'); si.hidden=!dr||st.modus==='auf'||st.modus==='akk'||st.modus==='lieder';
+    const si=$('schlagInfo'); si.hidden=!dr||st.modus==='auf'||st.modus==='akk'||st.modus==='lieder'||st.modus==='imp';
     if(dr) si.innerHTML=S.icon+' '+S.sw.map((m,i)=>'<span style="background:'+FARBE[i]+'">SW'+(i+1)+' '+S.namen[m-55]+'</span>').join(''); };
   const an=new Map();
   // Taste anschlagen (auch beim Gleiten)
@@ -611,7 +655,8 @@ function info(){
                 fest:'Feste SW-Töne / Akkorde: Jeder SoundWhacker hat seinen eigenen Ton oder Akkord. Die Figur, die als Nächstes dran ist, leuchtet schon leicht'+(st.festFrei?' – alle dürfen jederzeit mitspielen, das Lied geht weiter, wenn die Richtige spielt.':' – nur sie klingt, alle anderen bleiben stumm.')}[spielart()]+(st.spielart==='fest'&&!fuenf()?' (Dieses Lied hat mehr als 5 Töne – „Feste SW-Töne / Akkorde“ geht nur mit ⭐-Liedern und Akkordfolgen.)':''),
            auf:'Spiele eine Melodie ein. Mit höchstens 5 verschiedenen Tönen wird sie ein ⭐-Lied.',
            akk:'Gib jedem SoundWhacker einen Akkord und spiele die Akkordfolge ein.',
-           lieder:'Meine Lieder: auswählen, umbenennen, herunterladen, hochladen.'}[st.modus];
+           lieder:'Meine Lieder: auswählen, umbenennen, herunterladen, hochladen.', imp:'Improvisation einstellen.'}[st.modus];
+  if(st.modus==='mit'&&st.spielart==='imp'){ $('info').textContent='🎲 Improvisieren: Halte deinen SoundWhacker – er spielt Zufallstöne aus '+(SKALEN[st.imp.skala]||SKALEN.durpenta).n+' in '+WURZEL[st.imp.wurzel]+' mit seinem eigenen Instrument. Ein anderer SoundWhacker übernimmt jederzeit.'; return; }
   if(st.modus==='akk'){ $('info').textContent=t+'  Akkorde: '+st.akkSet.map((a,i)=>'SW'+(i+1)+' '+akkName(a)).join(' · '); return; }
   if(LIED.akk&&st.modus!=='auf'){ $('info').textContent=t+'  Akkorde der Figuren: '+FIGTON.map((a,i)=>'SW'+(i+1)+' '+akkName(a)).join(' · '); return; }
   if(istSchlag()&&st.modus==='auf'){ $('info').textContent=setVon()===SETS.fx?'Spiele eine Geräusch-Geschichte ein – mit SW1–5 oder auf der Klaviatur. Jede Taste ist ein anderes Geräusch.':'Spiele einen Rhythmus ein – mit SW1–5 oder auf der Klaviatur. Jede Taste ist ein anderes Schlaginstrument.'; return; }
@@ -620,8 +665,8 @@ function info(){
 function modus(m){
   stopp(); st.modus=m; merke();
   document.querySelectorAll('.modi button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===m));
-  const ein=m==='auf'||m==='akk'||m==='lieder';
-  $('aufPanel').hidden=m!=='auf'; $('akkPanel').hidden=m!=='akk'; document.body.classList.toggle('einspielen',ein); $('buehnenBox').setAttribute('aria-hidden',ein); $('meinePanel').hidden=m!=='lieder';
+  impStop(); const ein=m==='auf'||m==='akk'||m==='lieder'||m==='imp';
+  $('aufPanel').hidden=m!=='auf'; $('akkPanel').hidden=m!=='akk'; $('impPanel').hidden=m!=='imp'; if(m==='imp') impLaden(); document.body.classList.toggle('einspielen',ein); $('buehnenBox').setAttribute('aria-hidden',ein); $('meinePanel').hidden=m!=='lieder';
   // Aufnahme-Knöpfe wandern in das gerade offene Feld
   if(rec.an) $('recStart').click();
   // eine fertige Aufnahme gehört zu ihrem Modus: beim Wechsel Melodie ↔ Akkorde nicht mitnehmen
@@ -631,7 +676,7 @@ function modus(m){
   nummernZeigen();
   $('start').hidden=m!=='vor'; $('tempoLabel').hidden=m!=='vor';   /* Start und Tempo nur beim Vorspielen */ $('start').textContent='▶ Start';
   /* Beim Einspielen nur das Nötige zeigen: Klaviatur bzw. Akkordwahl – keine Leisten, keine Spielarten */
-  $('hauptLeiste').hidden=m==='lieder';   /* beim Einspielen nur der Klang (CSS), bei „Meine Lieder“ gar nichts */ $('mitLeiste').hidden=m!=='mit'; $('info').hidden=ein; $('schlagInfo').hidden=ein||!istSchlag(); spielartZeigen();
+  $('hauptLeiste').hidden=m==='lieder'||m==='imp';   /* beim Einspielen nur der Klang (CSS), bei „Meine Lieder“ gar nichts */ $('mitLeiste').hidden=m!=='mit'; $('info').hidden=ein; $('schlagInfo').hidden=ein||!istSchlag(); spielartZeigen();
   pos=0; zug=0; spieler=[]; bandBauen(); info(); setTimeout(buehneAnpassen,30); setTimeout(buehneAnpassen,700);
 }
 // Akkordwahl: für jeden SoundWhacker ein großer Farbknopf, Grundton und Art
@@ -648,6 +693,28 @@ function akkWahlBauen(){
     ['pointerup','pointercancel','pointerleave'].forEach(ev=>k.addEventListener(ev,()=>{ loslassen(i); akkKnopf(i,false); }));
     z.append(k,w,ar); box.appendChild(z); });
 }
+function impWahlBauen(){
+  const w=$('impWurzel'); WURZEL.forEach((n,j)=>w.appendChild(new Option(n,j))); w.value=st.imp.wurzel;
+  const sk=$('impSkala'); for(const k in SKALEN) sk.appendChild(new Option(SKALEN[k].n,k)); sk.value=st.imp.skala;
+  const an=$('impAnzahl'); an.value=st.imp.anzahl;
+  const zeig=()=>{ $('impAnzahlWert').textContent=st.imp.anzahl; $('impToeneInfo').textContent='Töne: '+impToene().map(tonName).join(' · ');
+    document.querySelectorAll('#impTempo [data-t]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.t===st.imp.tempo)); };
+  w.onchange=()=>{ st.imp.wurzel=+w.value; merke(); zeig(); w.blur(); }; sk.onchange=()=>{ st.imp.skala=sk.value; merke(); zeig(); sk.blur(); };
+  an.oninput=()=>{ st.imp.anzahl=+an.value; merke(); zeig(); };
+  $('impTempo').onclick=e=>{ const b=e.target.closest('[data-t]'); if(!b) return; b.blur(); st.imp.tempo=b.dataset.t; merke(); zeig(); };
+  const box=$('impWahl'); box.innerHTML='';
+  st.imp.klang.forEach((k,i)=>{ const z=document.createElement('div'); z.className='akkZeile';
+    const kn=document.createElement('button'); kn.className='swk imp'; kn.style.background=FARBE[i]; kn.dataset.i=i; kn.textContent='SW'+(i+1)+' 🎲';
+    kn.title='Gedrückt halten = improvisieren';
+    const sel=document.createElement('select'); sel.setAttribute('aria-label','Instrument für SW'+(i+1));
+    RUBRIKEN.filter(rb=>!/Schlagzeug|Geräusche/.test(rb[0])).forEach(([titel,ids])=>{ const og=document.createElement('optgroup'); og.label=titel; ids.forEach(id=>KLAENGE[id]&&og.appendChild(new Option(KLAENGE[id].n,id))); sel.appendChild(og); });
+    sel.value=k; sel.onchange=()=>{ st.imp.klang[i]=sel.value; merke(); ladeKlang(sel.value); nummernZeigen(); sel.blur(); };
+    kn.addEventListener('pointerdown',e=>{ e.preventDefault(); spielerTon(i); });
+    ['pointerup','pointercancel','pointerleave'].forEach(ev=>kn.addEventListener(ev,()=>{ loslassen(i); impKnopf(i,false); }));
+    z.append(kn,sel); box.appendChild(z); });
+  zeig();
+}
+function impKnopf(i,an){ document.querySelectorAll('#impWahl .swk').forEach((k,j)=>k.classList.toggle('an',an&&j===i)); }
 function akkKnopf(i,an){ const k=document.querySelector('#akkWahl .swk[data-i="'+i+'"]'); if(k) k.classList.toggle('an',an); }
 function akkWahlSperren(j){ document.querySelectorAll('#akkWahl select').forEach(x=>x.disabled=j); }
 function spielartZeigen(){
@@ -655,7 +722,7 @@ function spielartZeigen(){
   document.querySelectorAll('#spielart button').forEach(b=>{ b.setAttribute('aria-pressed',b.dataset.s===eff);
     if(b.dataset.s==='fest'){ b.disabled=!fuenf(); b.title=fuenf()?'Jeder SoundWhacker hat seinen eigenen Ton oder Akkord':'Nur bei ⭐-Liedern (höchstens 5 Töne)'; } });
   $('reiheZeile').hidden=st.spielart!=='reihe';
-  $('festZeile').hidden=!(st.modus==='mit'&&eff==='fest');
+  $('festZeile').hidden=!(st.modus==='mit'&&eff==='fest'); nummernZeigen(); document.body.classList.toggle('impMit',st.modus==='mit'&&st.spielart==='imp');
   document.querySelectorAll('#festZeile [data-f]').forEach(b=>b.setAttribute('aria-pressed',(b.dataset.f==='1')===!!st.festFrei)); spaeterAnpassen();
   document.querySelectorAll('#reiheZeile [data-n]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.n===st.reiheN));
 }
@@ -713,7 +780,7 @@ let tT=0; function toast(t){ let e=document.querySelector('.toast'); if(!e){ e=d
 // Kein Kontextmenü bei langem Drücken (außer im Namensfeld)
 document.addEventListener('contextmenu',e=>{ if(!e.target.closest('input,textarea')) e.preventDefault(); });
 
-akkWahlBauen(); liedListe(); liedSetzen(); aufstellen(true); modus(st.modus); meineZeigen(); klavierBeschriften(); buehneAnpassen(); if(document.fonts) document.fonts.ready.then(buehneAnpassen);
+akkWahlBauen(); impWahlBauen(); liedListe(); liedSetzen(); aufstellen(true); modus(st.modus); meineZeigen(); klavierBeschriften(); buehneAnpassen(); if(document.fonts) document.fonts.ready.then(buehneAnpassen);
 // Offline: App und alle Klänge im Gerät speichern (Service Worker)
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').then(()=>navigator.serviceWorker.ready).then(()=>{ let neu=true; try{ neu=!localStorage.getItem('whacker-band-offline'); localStorage.setItem('whacker-band-offline','1'); }catch(e){} if(neu) setTimeout(()=>toast('✓ Jetzt auch ohne Internet spielbar'),1500); }).catch(()=>{}); }
 })();

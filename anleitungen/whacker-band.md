@@ -34,15 +34,16 @@ Der SoundWhacker ist eine weiße Röhre mit **zwei schwarzen Ringen** – einer 
 
 Über der Bühne läuft ein **Notenband** aus farbigen Punkten mit: Jeder Punkt ist ein Ton in der Farbe der Figur, die ihn spielt. Beim Mitspielen geht es erst weiter, wenn die richtige Figur gespielt hat. Am Ende des Liedes geht es von vorne los.
 
-## Mitspielen: drei Spielarten
+## Mitspielen: vier Spielarten
 
-Im Modus **🙌 Mitspielen** erscheint eine zweite Leiste mit drei Spielarten – genau wie bei „Gemeinsame Melodie“ in SoundWhacker Smart Control:
+Im Modus **🙌 Mitspielen** erscheint eine zweite Leiste mit vier Spielarten – genau wie bei „Gemeinsame Melodie“ in SoundWhacker Smart Control:
 
 | Spielart | So funktioniert's |
 |---|---|
 | 🔁 **SW spielt Melodie / Akkorde** | Jede Berührung – **egal welcher SoundWhacker** – spielt den nächsten Ton des Liedes. Die Figur des Spielers bewegt sich und leuchtet. Weil jeder darf, gibt es hier **keine Punkte** oben – dafür ist die Bühne größer. Nur bei **Akkordfolgen** bleiben die Punkte mit den Akkordnamen (färben sich in der Farbe dessen, der gespielt hat). |
 | 🔢 **Feste SW-Reihenfolge** | Reihum: SW1 → SW2 → SW3 … Wer dran ist, **leuchtet schon leicht**. Wer nicht dran ist, bleibt stumm (die Figur schüttelt kurz den Kopf). Mit **Mitspieler: SW1–2 … SW1–5** legst du fest, wie viele mitspielen – die anderen Figuren werden blass. |
 | 🎯 **Feste SW-Töne / Akkorde** | Jeder SoundWhacker hat seinen **eigenen Ton** (rot = tiefster … blau = höchster). Die Figur, die als Nächstes dran ist, **leuchtet schon leicht**. **Nur sie klingt** – ein SoundWhacker, der nicht dran ist, bleibt stumm (die Figur schüttelt kurz den Kopf). Das Lied geht weiter, sobald die richtige Figur gespielt hat. | **Wer darf spielen?** – 🎯 *Nur wer dran ist* (wie beschrieben) oder 🎶 *Alle jederzeit*: Jeder SoundWhacker klingt sofort mit seinem Ton/Akkord, das Lied geht aber erst weiter, wenn der Richtige spielt.
+| 🎲 **Improvisieren** | Solange ein SoundWhacker **gehalten** wird, spielt seine Figur **Zufallstöne** aus der eingestellten Skala – mit ihrem **eigenen Instrument**. Loslassen = Stille. Jeder andere SoundWhacker kann **jederzeit übernehmen**. Einstellen kannst du das unter **🎲 Improvisation einstellen**. |
 
 Am Liedende geht es von vorne los. **↺ Von vorne** startet jederzeit neu. Die gewählte Spielart merkt sich die App.
 
@@ -79,9 +80,21 @@ Gespeicherte Akkordfolgen stehen in der Liedauswahl unter **„Meine Akkordfolge
 
 **Spielen:** Akkordfolgen gehen genau wie Lieder – **▶ Vorspielen** und **🙌 Mitspielen** mit allen drei Spielarten. Oben im Band stehen die Akkordnamen in den farbigen Punkten, unter den Figuren steht, welcher Akkord zu wem gehört (z. B. „2 · Dm“). Bei **🎯 Feste SW-Töne / Akkorde** hat jeder SoundWhacker seinen Akkord – nur wer dran ist, klingt.
 
+## 🎲 Improvisation einstellen
+
+Oben im Menü (zwischen „🎸 Akkorde einspielen“ und „💾 Meine Lieder“). Hier legst du fest, was beim **🎲 Improvisieren** klingt:
+
+- **Grundton**: C, C♯, D … H.
+- **Skala**: Dur, Moll, **Dur-Pentatonik**, **Moll-Pentatonik** oder **orientalisch**. Es kommen immer nur Töne aus dieser Skala – so klingt es nie falsch.
+- **Anzahl der Töne**: 3 bis 15 – wie viele Töne der Skala zur Auswahl stehen (wenige = ruhig, viele = großer Tonumfang). Die Töne werden darunter angezeigt.
+- **Tempo**: langsam, mittel, schnell.
+- **Instrument je SoundWhacker**: SW1 bis SW5 bekommen je ein eigenes Instrument (z. B. Marimba, Flöte, Saxophon). Antippen des Farbknopfs spielt zur Probe.
+
+Dann **🙌 Mitspielen** → **🎲 Improvisieren** wählen und los geht's.
+
 ## Meine Lieder: speichern, weitergeben, hochladen
 
-Oben im Menü gibt es den Knopf **💾 Meine Lieder** (neben „🎸 Akkorde einspielen“). Dort stehen alle eigenen Lieder und Akkordfolgen:
+Oben im Menü gibt es den Knopf **💾 Meine Lieder** (neben „🎲 Improvisation einstellen“). Dort stehen alle eigenen Lieder und Akkordfolgen:
 
 - **▶ Auswählen**, **✎ Umbenennen**, **🗑 Löschen**
 - **⬇ Herunterladen**: ein Lied als Datei (JSON) – oder **⬇ Alle herunterladen**

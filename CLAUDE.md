@@ -213,6 +213,14 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
   - `schule/ki-agent-quiz/` – Zuordnungsquiz „KI-Agent zuordnen“: 8 KI-Begriffe (Sprachmodell, CLAUDE.md, Prompt,
     Skills & Plugins, Connectors, Routinen, Artefakt, Harness) den nummerierten Stellen der Menschenfigur aus
     `ki-mensch/` zuordnen (antippen statt ziehen, Prüfen-Knopf, Erklärung bei richtigen Antworten). Von `ki-mensch/` verlinkt.
+  - Eintrag `audioguide` (kein eigener Ordner): **OMIVARO Audioguide** – eigene Web-App des Nutzers unter https://guide.gueck.eu
+    (PHP-Server, Gemeinden `saarbruecken`, `castell-platja-daro`, `paula`; Vorführ-Code **123456** für Saarbrücken und Platja d'Aro,
+    darf öffentlich sein – Wunsch Nutzer). Links in `schule/apps.js` mit `?community=…&code=123456`.
+    **Werbevideo** `videos/audioguide.mp4` (1:51, Vorschaubild `audioguide.jpg`): zeigt die echte App im Handy-Rahmen (Playwright-Bildschirmaufnahme
+    per CDP-Screencast, GPS-Spaziergang mit `setGeolocation` → Station startet von selbst), Stimme „Alexander“, Untertitel im Bild,
+    Original-Hörstücke der App (Friedenskirche, Spanisch Playa de Aro), Hinweistöne nachgebaut, Musik C–Am–F–G leise und aus, wenn die App klingt.
+    `schule/app.html` kann dafür jetzt auch `video` aus `schule/apps.js` zeigen (wie die Hauptseite).
+    Netz in der Cloud-Umgebung „MP3“: `guide.gueck.eu` und `tile.openstreetmap.org` freigegeben.
 - **Urheberrecht:** Artefakte mit fremden Texten (Zeitungs-/Fachartikel, Schulbuchseiten) nicht öffentlich hosten.
   Stattdessen eigenen Text schreiben oder nur geschlossen (Moodle/OSS) teilen.
 

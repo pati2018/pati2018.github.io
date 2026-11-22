@@ -23,6 +23,20 @@
  */
 window.APPS = [
   {
+    id: "audioguide",
+    titel: "OMIVARO Audioguide",
+    kurz: "Audioguide fürs Handy: Stadtführungen mit Karte und Hörstücken, die per GPS von selbst starten, sobald man an einer Station ankommt. In fünf Sprachen, ohne App-Store. Mit Werbevideo zum Anschauen und Herunterladen.",
+    link: "https://guide.gueck.eu/login.html?community=saarbruecken&code=123456",
+    links: [
+      { label: "Stadtführung Saarbrücken", url: "https://guide.gueck.eu/login.html?community=saarbruecken&code=123456" },
+      { label: "Platja d'Aro (Spanien)", url: "https://guide.gueck.eu/login.html?community=castell-platja-daro&code=123456" }
+    ],
+    kategorie: "Tourismus",
+    symbol: "🎧",
+    datum: "2026-11-22",
+    video: { src: "../videos/audioguide.mp4", bild: "../videos/audioguide.jpg", titel: "Werbevideo (1:51)", datei: "OMIVARO-Audioguide-Werbevideo.mp4" }
+  },
+  {
     id: "ki-agent-quiz",
     titel: "KI-Agent zuordnen",
     kurz: "Zuordnungsquiz: Ein KI-Agent ist gebaut wie ein Mensch. Acht Fachbegriffe wie Sprachmodell, Harness, Prompt, Skills, Connectors und Routinen den passenden Körperteilen zuordnen – mit Erklärung bei jeder richtigen Antwort.",

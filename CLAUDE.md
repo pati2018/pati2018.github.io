@@ -231,6 +231,10 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
 
 - Veröffentlichung aus `main` über GitHub Actions („Seite veröffentlichen“).
 - **Sicherungen:** `stabil-1` bis `stabil-36` als Tags, ab `stabil-37` als Branches.
+- **Smart Control Deutsch/English:** Knopf „🌐 English“/„🌐 Deutsch“ auf der Startseite (neben „❓ Hilfe“), Speicher `swspielen.sprache`, Wechsel lädt neu.
+  Die ganze Übersetzung steht in **`spielen-en.js`** (im `<head>` geladen): Wörterliste `UE`, zusammengesetzte Texte `UE_RE`, Liedtitel `LIEDER`,
+  lange Hilfetexte als ganze `BLOECKE`, MutationObserver + übersetzte alert/confirm/prompt. **Neuer deutscher Text in Smart Control → dort ergänzen.**
+  Sicherung davor: Branch `stabil-42`.
 - **iPad 5. Generation (iPadOS 16):** Beim Antippen des Bildschirms kratzt der Klang – auch in der
   Tischharfe, also eine Grenze von Safari auf diesem Gerät. Mit SoundWhackern/Tasten klingt es sauber.
   Ausprobiert ohne Erfolg: halbe Abtastrate (24 kHz), größerer Puffer, „Klang schonen“, Leicht-Modus-Idee.

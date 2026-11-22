@@ -97,6 +97,10 @@ Erzeugt ein Arpeggio über fünf Akkorde mit einem Instrument und lädt es als f
 2. **Muster** (aufwärts, abwärts, auf und ab, Alberti …), **Notenwert** (Achtel oder Sechzehntel), **Oktaven** und **Lage** einstellen.
 3. **🎹 5 Arpeggio-Loops erzeugen**.
 
+## Auf Englisch (English)
+
+Auf der Startseite steht neben „❓ Hilfe“ der Knopf **🌐 English**. Ein Tipp – und die ganze App ist auf Englisch: alle Knöpfe, Menüs, Hinweise, Meldungen, die Hilfe und die Liedtitel der Gemeinsamen Melodie (z. B. „Ode to Joy“). Mit **🌐 Deutsch** geht es zurück. Die App merkt sich die Sprache.
+
 ## Einstellungen
 
 - **Instrumente**: eingebaute Klänge verwenden oder **📁 Eigene SoundFont laden (.sf2)** – am iPad möglichst unter 30–40 MB. Mit **+ Instrument** weitere Klänge in die Liste aufnehmen.

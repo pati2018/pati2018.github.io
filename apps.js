@@ -36,7 +36,8 @@ window.APPS = [
     bild: "whacker-band/icons/icon-192.png",
     video: [{ src: "videos/soundwhacker-band.mp4?v=3", bild: "videos/soundwhacker-band.jpg", titel: "Die SoundWhacker Band im Video", datei: "SoundWhacker-Band.mp4" },
       { src: "videos/soundwhacker-band-en.mp4", bild: "videos/soundwhacker-band-en.jpg", titel: "The SoundWhacker Band (English)", datei: "SoundWhacker-Band-English.mp4" }],
-    datum: "2026-11-20"
+    datum: "2026-11-20",
+    ganzOben: 1
   },
   {
     id: "fagott",
@@ -77,7 +78,7 @@ window.APPS = [
     symbol: "🎼",
     bild: "tischharfe/icons/icon-192.png",
     datum: "2026-11-08",
-    ganzOben: 3
+    ganzOben: 5
   },
   {
     id: "smart-instruments",
@@ -93,7 +94,8 @@ window.APPS = [
     kategorie: "Musik",
     symbol: "🎸🎹",
     bild: "icons/smart-instruments-192.png",
-    datum: "2026-11-06"
+    datum: "2026-11-06",
+    ganzOben: 4
   },
   {
     id: "soundwhacker-spielen",
@@ -112,7 +114,7 @@ window.APPS = [
     symbol: "🎚️",
     bild: "icons/smart-control-192.png",
     datum: "2026-11-05",
-    ganzOben: 1
+    ganzOben: 2
   },
   {
     id: "miga",
@@ -126,6 +128,6 @@ window.APPS = [
     symbol: "📷",
     bild: "icons/miga-192.png",
     datum: "2026-11-05",
-    ganzOben: 2
+    ganzOben: 3
   }
 ];

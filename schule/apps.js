@@ -23,6 +23,16 @@
  */
 window.APPS = [
   {
+    id: "azubi-recruiting",
+    titel: "Azubi-Recruiting Dashboard",
+    kurz: "Steuerzentrale für Recruiting-Videos für Handwerksbetriebe im Saarland: Recherche, Video-Entwürfe mit Wasserzeichen, Briefversand mit Freigabe, Tracking, Änderungen, Abnahme, Zahlung, Sperrliste und Auswertung. Die Daten bleiben im Browser.",
+    link: "https://pati2018.github.io/schule/azubi-recruiting/",
+    repo: "https://github.com/pati2018/pati2018.github.io/tree/main/schule/azubi-recruiting",
+    kategorie: "Marketing & Vertrieb",
+    symbol: "🎬",
+    datum: "2026-11-22"
+  },
+  {
     id: "ki-agent-quiz",
     titel: "KI-Agent zuordnen",
     kurz: "Zuordnungsquiz: Ein KI-Agent ist gebaut wie ein Mensch. Acht Fachbegriffe wie Sprachmodell, Harness, Prompt, Skills, Connectors und Routinen den passenden Körperteilen zuordnen – mit Erklärung bei jeder richtigen Antwort.",

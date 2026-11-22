@@ -213,6 +213,10 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
   - `schule/ki-agent-quiz/` – Zuordnungsquiz „KI-Agent zuordnen“: 8 KI-Begriffe (Sprachmodell, CLAUDE.md, Prompt,
     Skills & Plugins, Connectors, Routinen, Artefakt, Harness) den nummerierten Stellen der Menschenfigur aus
     `ki-mensch/` zuordnen (antippen statt ziehen, Prüfen-Knopf, Erklärung bei richtigen Antworten). Von `ki-mensch/` verlinkt.
+  - `schule/azubi-recruiting/` – **Azubi-Recruiting Dashboard** (Geschäftsidee Nutzer: Recruiting-Videos für Handwerksbetriebe im Saarland, Erstkontakt nur per Brief).
+    Eine Seite, Daten nur im **localStorage** (`azubi-recruiting-dashboard`, Export/Import JSON), `noindex`. 13 Bereiche (Übersicht … Einstellungen & Start-Checkliste),
+    3 menschliche Freigaben, Sperrliste wird bei Anlegen/Import/Versand geprüft, Video-Vorschau 9:16 selbst erzeugt mit Wasserzeichen. Recherche/Versand/Zahlung legen
+    nur **Aufträge** an (noch keine Schnittstellen). Die vollständige Arbeitsanweisung des Nutzers steht **nicht** im öffentlichen Repo.
 - **Urheberrecht:** Artefakte mit fremden Texten (Zeitungs-/Fachartikel, Schulbuchseiten) nicht öffentlich hosten.
   Stattdessen eigenen Text schreiben oder nur geschlossen (Moodle/OSS) teilen.
 

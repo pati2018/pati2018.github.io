@@ -220,6 +220,7 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
     **Werbevideo** `videos/audioguide.mp4` (1:51, Vorschaubild `audioguide.jpg`): zeigt die echte App im Handy-Rahmen (Playwright-Bildschirmaufnahme
     per CDP-Screencast, GPS-Spaziergang mit `setGeolocation` → Station startet von selbst), Stimme „Alexander“, Untertitel im Bild,
     Original-Hörstücke der App (Friedenskirche, Spanisch Playa de Aro), Hinweistöne nachgebaut, Musik C–Am–F–G leise und aus, wenn die App klingt.
+    Zweite Fassung für Anbieter (Sie-Form, „Machen Sie Ihre Orte hörbar.“): `videos/audioguide-anbieter.mp4` (1:54), Bauordner im Scratchpad `guide2/`.
     `schule/app.html` kann dafür jetzt auch `video` aus `schule/apps.js` zeigen (wie die Hauptseite).
     Netz in der Cloud-Umgebung „MP3“: `guide.gueck.eu` und `tile.openstreetmap.org` freigegeben.
 - **Urheberrecht:** Artefakte mit fremden Texten (Zeitungs-/Fachartikel, Schulbuchseiten) nicht öffentlich hosten.

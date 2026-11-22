@@ -34,7 +34,10 @@ window.APPS = [
     kategorie: "Tourismus",
     symbol: "🎧",
     datum: "2026-11-22",
-    video: { src: "../videos/audioguide.mp4", bild: "../videos/audioguide.jpg", titel: "Werbevideo (1:51)", datei: "OMIVARO-Audioguide-Werbevideo.mp4" }
+    video: [
+      { src: "../videos/audioguide.mp4", bild: "../videos/audioguide.jpg", titel: "Werbevideo für Gäste (1:51)", datei: "OMIVARO-Audioguide-Werbevideo-Gaeste.mp4" },
+      { src: "../videos/audioguide-anbieter.mp4", bild: "../videos/audioguide-anbieter.jpg", titel: "Werbevideo für Städte, Gemeinden und Tourist-Informationen (1:54)", datei: "OMIVARO-Audioguide-Werbevideo-Anbieter.mp4" }
+    ]
   },
   {
     id: "ki-agent-quiz",

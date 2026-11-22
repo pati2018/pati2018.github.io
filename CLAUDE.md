@@ -217,6 +217,16 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
     Eine Seite, Daten nur im **localStorage** (`azubi-recruiting-dashboard`, Export/Import JSON), `noindex`. 13 Bereiche (Übersicht … Einstellungen & Start-Checkliste),
     3 menschliche Freigaben, Sperrliste wird bei Anlegen/Import/Versand geprüft, Video-Vorschau 9:16 selbst erzeugt mit Wasserzeichen. Recherche/Versand/Zahlung legen
     nur **Aufträge** an (noch keine Schnittstellen). Die vollständige Arbeitsanweisung des Nutzers steht **nicht** im öffentlichen Repo.
+  - Eintrag `audioguide` (kein eigener Ordner): **OMIVARO Audioguide** – eigene Web-App des Nutzers unter https://guide.gueck.eu
+    – Zielgruppe: Tourist-Informationen/Tourismuszentralen und Gemeinden sowie deren Gäste
+    (PHP-Server, Gemeinden `saarbruecken`, `castell-platja-daro`, `paula`; Vorführ-Code **123456** für Saarbrücken und Platja d'Aro,
+    darf öffentlich sein – Wunsch Nutzer). Links in `schule/apps.js` mit `?community=…&code=123456`.
+    **Werbevideo** `videos/audioguide.mp4` (1:51, Vorschaubild `audioguide.jpg`): zeigt die echte App im Handy-Rahmen (Playwright-Bildschirmaufnahme
+    per CDP-Screencast, GPS-Spaziergang mit `setGeolocation` → Station startet von selbst), Stimme „Alexander“, Untertitel im Bild,
+    Original-Hörstücke der App (Friedenskirche, Spanisch Playa de Aro), Hinweistöne nachgebaut, Musik C–Am–F–G leise und aus, wenn die App klingt.
+    Zweite Fassung für Anbieter (Sie-Form, „Machen Sie Ihre Orte hörbar.“): `videos/audioguide-anbieter.mp4` (1:54), Bauordner im Scratchpad `guide2/`.
+    `schule/app.html` kann dafür jetzt auch `video` aus `schule/apps.js` zeigen (wie die Hauptseite).
+    Netz in der Cloud-Umgebung „MP3“: `guide.gueck.eu` und `tile.openstreetmap.org` freigegeben.
 - **Urheberrecht:** Artefakte mit fremden Texten (Zeitungs-/Fachartikel, Schulbuchseiten) nicht öffentlich hosten.
   Stattdessen eigenen Text schreiben oder nur geschlossen (Moodle/OSS) teilen.
 

@@ -2,6 +2,8 @@
 
 Der **OMIVARO Audioguide** ist ein Reiseführer fürs Handy. Man geht durch eine Stadt, und an jeder Station erzählt eine Stimme die Geschichte dieses Ortes. Der Guide läuft im Browser. Man braucht also keinen App-Store und muss weder Namen noch E-Mail-Adresse angeben.
 
+**Für wen?** Für **Tourist-Informationen, Tourismuszentralen, Städte und Gemeinden**. Sie stellen ihre Orte und Hörstücke in den Guide und geben ihren **Gästen** einen Link oder QR-Code. Die Gäste hören die Führung dann auf dem eigenen Handy.
+
 Das **Werbevideo** oben zeigt die echte App: Anmelden, Tour wählen, losgehen und zuhören.
 
 ## Ausprobieren

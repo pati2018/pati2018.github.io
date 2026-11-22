@@ -214,6 +214,7 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
     Skills & Plugins, Connectors, Routinen, Artefakt, Harness) den nummerierten Stellen der Menschenfigur aus
     `ki-mensch/` zuordnen (antippen statt ziehen, Prüfen-Knopf, Erklärung bei richtigen Antworten). Von `ki-mensch/` verlinkt.
   - Eintrag `audioguide` (kein eigener Ordner): **OMIVARO Audioguide** – eigene Web-App des Nutzers unter https://guide.gueck.eu
+    – Zielgruppe: Tourist-Informationen/Tourismuszentralen und Gemeinden sowie deren Gäste
     (PHP-Server, Gemeinden `saarbruecken`, `castell-platja-daro`, `paula`; Vorführ-Code **123456** für Saarbrücken und Platja d'Aro,
     darf öffentlich sein – Wunsch Nutzer). Links in `schule/apps.js` mit `?community=…&code=123456`.
     **Werbevideo** `videos/audioguide.mp4` (1:51, Vorschaubild `audioguide.jpg`): zeigt die echte App im Handy-Rahmen (Playwright-Bildschirmaufnahme

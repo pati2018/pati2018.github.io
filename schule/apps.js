@@ -25,7 +25,7 @@ window.APPS = [
   {
     id: "audioguide",
     titel: "OMIVARO Audioguide",
-    kurz: "Audioguide fürs Handy: Stadtführungen mit Karte und Hörstücken, die per GPS von selbst starten, sobald man an einer Station ankommt. In fünf Sprachen, ohne App-Store. Mit Werbevideo zum Anschauen und Herunterladen.",
+    kurz: "Audioguide fürs Handy für Tourist-Informationen, Tourismuszentralen und Gemeinden – und deren Gäste: Stadtführungen mit Karte und Hörstücken, die per GPS von selbst starten. In fünf Sprachen, ohne App-Store. Mit Werbevideo zum Anschauen und Herunterladen.",
     link: "https://guide.gueck.eu/login.html?community=saarbruecken&code=123456",
     links: [
       { label: "Stadtführung Saarbrücken", url: "https://guide.gueck.eu/login.html?community=saarbruecken&code=123456" },

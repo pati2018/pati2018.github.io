@@ -23,16 +23,6 @@
  */
 window.APPS = [
   {
-    id: "azubi-recruiting",
-    titel: "Azubi-Recruiting Dashboard",
-    kurz: "Steuerzentrale für Recruiting-Videos für Handwerksbetriebe im Saarland: Recherche, Video-Entwürfe mit Wasserzeichen, Briefversand mit Freigabe, Tracking, Änderungen, Abnahme, Zahlung, Sperrliste und Auswertung. Die Daten bleiben im Browser.",
-    link: "https://pati2018.github.io/schule/azubi-recruiting/",
-    repo: "https://github.com/pati2018/pati2018.github.io/tree/main/schule/azubi-recruiting",
-    kategorie: "Marketing & Vertrieb",
-    symbol: "🎬",
-    datum: "2026-11-22"
-  },
-  {
     id: "audioguide",
     titel: "OMIVARO Audioguide",
     kurz: "Audioguide fürs Handy für Tourist-Informationen, Tourismuszentralen und Gemeinden – und deren Gäste: Stadtführungen mit Karte und Hörstücken, die per GPS von selbst starten. In fünf Sprachen, ohne App-Store. Mit Werbevideo zum Anschauen und Herunterladen.",

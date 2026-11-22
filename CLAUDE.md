@@ -213,12 +213,7 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
   - `schule/ki-agent-quiz/` – Zuordnungsquiz „KI-Agent zuordnen“: 8 KI-Begriffe (Sprachmodell, CLAUDE.md, Prompt,
     Skills & Plugins, Connectors, Routinen, Artefakt, Harness) den nummerierten Stellen der Menschenfigur aus
     `ki-mensch/` zuordnen (antippen statt ziehen, Prüfen-Knopf, Erklärung bei richtigen Antworten). Von `ki-mensch/` verlinkt.
-  - `schule/azubi-recruiting/` – **Azubi-Recruiting Dashboard** (Geschäftsidee Nutzer: Recruiting-Videos für Handwerksbetriebe im Saarland, Erstkontakt nur per Brief).
-    Eine Seite, Daten nur im **localStorage** (`azubi-recruiting-dashboard`, Export/Import JSON), `noindex`. 13 Bereiche (Übersicht … Einstellungen & Start-Checkliste),
-    3 menschliche Freigaben, Sperrliste wird bei Anlegen/Import/Versand geprüft, Video-Vorschau 9:16 selbst erzeugt mit Wasserzeichen. Recherche/Versand/Zahlung legen
-    nur **Aufträge** an (noch keine Schnittstellen). Die vollständige Arbeitsanweisung des Nutzers steht **nicht** im öffentlichen Repo.
-    **Projekt pausiert (Wunsch Nutzer, 22.11.2026)** – Kachel bleibt auf der Übersicht. Stand Probe-Recherche: Jobbörse der BA lehnt Abfragen ab (403),
-    Firmen-Websites sind in der Umgebung „MP3“ gesperrt → für echte Recherche eigene Umgebung mit offenem Internet nötig.
+  - Das **Azubi-Recruiting Dashboard** (`schule/azubi-recruiting/`) wurde auf Wunsch wieder entfernt (Ordner, Eintrag, Anleitung gelöscht; steckt noch in der Git-Geschichte). Projekt pausiert.
   - Eintrag `audioguide` (kein eigener Ordner): **OMIVARO Audioguide** – eigene Web-App des Nutzers unter https://guide.gueck.eu
     – Zielgruppe: Tourist-Informationen/Tourismuszentralen und Gemeinden sowie deren Gäste
     (PHP-Server, Gemeinden `saarbruecken`, `castell-platja-daro`, `paula`; Vorführ-Code **123456** für Saarbrücken und Platja d'Aro,

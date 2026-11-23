@@ -9,6 +9,22 @@ Eine **Präsentation für Kaufleute im Dialogmarketing** zum Thema Technik: 18 F
 3. Auf **Aufdecken ▶** tippen – die Antwort erscheint. Bei Zuordnungsaufgaben kommt jede Lösung mit einem eigenen Tipp.
 4. Steht auf dem Knopf **Weiter ▶**, geht es zur nächsten Folie.
 
+## Quiz nach jedem Block
+
+Nach jedem der vier Themenblöcke kommt eine **Quiz-Folie** mit 5–6 Aufgaben – zum Auflockern und Wiederholen:
+
+- **Multiple Choice:** die richtige Antwort antippen.
+- **Wahr oder falsch?** eine Aussage beurteilen.
+- **Zuordnen:** für jede Zeile die passende Antwort antippen (die blau umrandete Zeile ist dran).
+- **Reihenfolge:** die Karten in der richtigen Reihenfolge antippen.
+
+Richtige Antworten werden grün und zeigen eine kurze Erklärung, falsche wackeln rot – dann einfach noch einmal versuchen. Dazu gibt es einen kurzen Ton (unten mit **🔊 Ton** abschaltbar).
+
+- **Lösung ▶** zeigt die Lösung, wenn niemand mehr weiterweiß.
+- **Nächste Aufgabe ▶** geht zur nächsten Aufgabe, am Ende gibt es **Sterne** und die Zahl der Aufgaben, die beim ersten Versuch richtig waren.
+- **↺ Quiz nochmal** startet die Runde neu – die Antworten werden dabei neu gemischt.
+- **SoundWhacker oder Tasten 1–5** wählen auf Quiz-Folien die Antwort mit dieser Nummer. Ist die Aufgabe gelöst, geht ein weiterer Druck zur nächsten Aufgabe.
+
 ## Bedienung
 
 - **Knöpfe unten:** Zurück, Aufdecken/Weiter und eine Auswahl, um direkt zu einer Folie zu springen.
@@ -26,6 +42,7 @@ Eine **Präsentation für Kaufleute im Dialogmarketing** zum Thema Technik: 18 F
 | Internet | 7–9: Begriff, Internetdienste, Wurzeln (ARPANET) mit Zeitstrahl |
 | Protokolle | 10–13: Protokoll (Vergleich mit der Briefpost), Überblick der Dienste, TCP/IP, Abkürzungen, welches Protokoll wann |
 | Adressen & Zugang | 14–18: Top Level Domain, Beispiele, URL, VPN, Extranet |
+| Quiz | nach Folie 10 (Netzwerke), 14 (Internet), 20 (Protokolle) und 26 (Adressen & Zugang) |
 | Zum Schluss | Das Wichtigste auf einen Blick |
 
 ## Ideen für den Unterricht

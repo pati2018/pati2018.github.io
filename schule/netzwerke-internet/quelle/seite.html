@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Netzwerke &amp; Internet</title>
+<meta name="description" content="Präsentation für Kaufleute im Dialogmarketing: 18 Fragen und Antworten zu Netzwerken, Internet, Protokollen, Webadressen, VPN und Extranet – mit Skizzen und Beispielen aus dem Kundenservice.">
+<meta name="theme-color" content="#14213D">
+<link rel="icon" type="image/png" sizes="32x32" href="../../icons/favicon-32.png">
+<link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
+<link rel="stylesheet" href="/fonts/fonts.css">
+<script src="../../theme.js"></script>
+<style>
+:root {
+  --hg: #E4E0D6; --leiste: #F7F5F0; --text: #14213D; --rand: #C9C2B2; --knopf: #FFFDF9; --akzent: #E2711D;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --hg: #0B1226; --leiste: #14213D; --text: #F7F5F0; --rand: #33446B; --knopf: #1F2F55; color-scheme: dark; }
+}
+:root[data-theme="dark"] { --hg: #0B1226; --leiste: #14213D; --text: #F7F5F0; --rand: #33446B; --knopf: #1F2F55; color-scheme: dark; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body {
+  margin: 0; background: var(--hg); color: var(--text); overflow: hidden;
+  font-family: 'Atkinson Hyperlegible', 'Segoe UI', Arial, sans-serif;
+  -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
+  touch-action: manipulation;
+  display: flex; flex-direction: column;
+}
+.buehne { position: relative; flex: 1; min-height: 0; overflow: hidden; }
+.rahmen { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; box-shadow: 0 12px 40px rgba(0,0,0,.25); }
+.rahmen section { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; }
+.rahmen section:not(.aktiv) { display: none; }
+.rahmen h1, .rahmen h2, .rahmen h3, .rahmen p, .rahmen table { margin: 0; }
+.rahmen table { border-collapse: collapse; }
+.rahmen th, .rahmen td { padding: 0.45em 0.7em; vertical-align: top; }
+.rahmen a { pointer-events: auto; }
+
+/* ===== Folien (aus der Präsentation) ===== */
+/*DECKCSS*/
+
+/* ===== Quiz-Folien ===== */
+.rahmen section.quiz { gap: 24px; }
+.qz-kopf { display: flex; justify-content: space-between; align-items: center; }
+.qz-dots { display: flex; gap: 12px; }
+.qz-dot { width: 26px; height: 26px; border-radius: 50%; background: #D9D3C5; border: 4px solid transparent; box-sizing: border-box; }
+.qz-dot.jetzt { border-color: #14213D; background: #FFFDF9; }
+.qz-dot.gut { background: #2C7A3C; }
+.qz-dot.halb { background: #E2711D; }
+.qz-dot.loes { background: #9AA6BF; }
+.qz-body { flex: 1; display: flex; flex-direction: column; gap: 24px; min-height: 0; }
+.qz-meta { display: flex; gap: 18px; align-items: center; }
+.qz-typ { font-family: 'Bricolage Grotesque', Arial, sans-serif; font-size: 26px; font-weight: 700; padding: 6px 22px; border-radius: 40px; background: #2F5BD3; color: #F7F5F0; }
+.qz-nr { font-size: 26px; color: #5C6577; font-weight: 700; }
+.qz-frage { font-family: 'Bricolage Grotesque', Arial, sans-serif; font-size: 52px; font-weight: 600; line-height: 1.12; letter-spacing: -1px; color: #14213D; }
+.qz-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.qz-opt, .qz-chip { -webkit-appearance: none; appearance: none; cursor: pointer; color: #14213D; font-family: 'Atkinson Hyperlegible', Arial, sans-serif; }
+.qz-opt { display: flex; align-items: center; gap: 24px; min-height: 118px; padding: 18px 28px; border-radius: 22px; border: 4px solid #E2DCCD; background: #FFFDF9; font-size: 32px; font-weight: 700; line-height: 1.25; text-align: left; box-shadow: 0 8px 22px rgba(20,33,61,.07); }
+.qz-opts.wf .qz-opt { min-height: 190px; font-size: 48px; justify-content: center; }
+.qz-nrk { flex: none; width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 700; color: #14213D; }
+.sw1 { background: #E5484D; } .sw2 { background: #F28C28; } .sw3 { background: #F5C518; } .sw4 { background: #3BA55C; } .sw5 { background: #3F8EE8; }
+.qz-opt.ok, .qz-chip.ok { border-color: #2C7A3C; background: #DFF0E2; }
+.qz-opt.no, .qz-chip.no { border-color: #C2412D; background: #FBE3DE; animation: wackel .45s ease; }
+.qz-opt.no { opacity: .75; }
+.qz-opt:disabled, .qz-chip:disabled { cursor: default; }
+.qz-opt:focus-visible, .qz-chip:focus-visible, .qz-nochmal:focus-visible { outline: 6px solid #2F5BD3; outline-offset: 3px; }
+.qz-rows { display: flex; flex-direction: column; gap: 14px; }
+.qz-row { display: flex; align-items: center; gap: 20px; background: #FFFDF9; border-radius: 20px; padding: 12px 14px 12px 28px; border: 4px solid transparent; box-shadow: 0 6px 18px rgba(20,33,61,.06); }
+.qz-row.dran { border-color: #2F5BD3; }
+.qz-row.ok { border-color: #2C7A3C; background: #EEF7F0; }
+.qz-row-t { flex: 1; font-size: 30px; line-height: 1.3; color: #14213D; }
+.qz-row.ok .qz-row-t::before { content: '✓ '; color: #2C7A3C; font-weight: 700; }
+.qz-chips { display: flex; gap: 12px; flex: none; }
+.qz-chip { display: flex; align-items: center; gap: 10px; min-height: 68px; padding: 6px 20px 6px 8px; border-radius: 18px; border: 4px solid #E2DCCD; background: #F7F5F0; font-size: 28px; font-weight: 700; }
+.qz-chip .qz-nrk { width: 48px; height: 48px; font-size: 26px; }
+.qz-row.ok .qz-chip:not(.ok) { opacity: .35; }
+.qz-fb { font-size: 30px; line-height: 1.35; padding: 18px 28px; border-radius: 18px; color: #14213D; }
+.qz-fb:empty { display: none; }
+.qz-fb.gut { background: #DFF0E2; color: #1E5A2B; }
+.qz-fb.no { background: #FBE3DE; color: #8A2A1C; }
+.qz-fb.loes { background: #E6EAF2; }
+.qz-ende { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 26px; text-align: center; }
+.qz-sterne { font-size: 120px; letter-spacing: 24px; color: #F5C518; line-height: 1; }
+.qz-sterne .leer { color: #D9D3C5; }
+.qz-gross { font-family: 'Bricolage Grotesque', Arial, sans-serif; font-size: 88px; font-weight: 700; color: #14213D; }
+.qz-sub { font-size: 38px; color: #4A5568; }
+.qz-nochmal { min-height: 80px; padding: 10px 36px; border-radius: 20px; border: 4px solid #14213D; background: #FFFDF9; color: #14213D; font: 700 32px 'Atkinson Hyperlegible', Arial, sans-serif; cursor: pointer; }
+@keyframes wackel { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-12px); } 75% { transform: translateX(12px); } }
+
+/* ===== Steuerleiste ===== */
+.leiste {
+  display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;
+  padding: 10px 14px calc(10px + env(safe-area-inset-bottom)); background: var(--leiste);
+  border-top: 1px solid var(--rand);
+}
+.knopf, .theme-toggle, .wahl {
+  min-height: 56px; padding: 8px 18px; border-radius: 14px; border: 2px solid var(--rand);
+  background: var(--knopf); color: var(--text); font: 700 18px 'Atkinson Hyperlegible', 'Segoe UI', Arial, sans-serif;
+  cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+}
+.knopf.haupt { background: var(--akzent); border-color: var(--akzent); color: #14213D; min-width: 150px; justify-content: center; font-size: 20px; }
+.knopf:focus-visible, .theme-toggle:focus-visible, .wahl:focus-visible { outline: 4px solid #2F5BD3; outline-offset: 2px; }
+.knopf:disabled { opacity: .45; cursor: default; }
+.wahl { max-width: 340px; }
+.stand { font-weight: 700; font-size: 18px; min-width: 110px; text-align: center; }
+.theme-toggle .ico { font-size: 18px; }
+.links { margin-right: auto; display: flex; gap: 10px; }
+.rechts { margin-left: auto; display: flex; gap: 10px; }
+@media (max-width: 900px) {
+  .links, .rechts { margin: 0; }
+  .wahl { max-width: 200px; }
+  .knopf.haupt { min-width: 120px; }
+}
+@media (max-height: 520px) {
+  .wahl, .leiste .theme-toggle { display: none; }
+  .leiste { padding: 6px 10px calc(6px + env(safe-area-inset-bottom)); flex-wrap: nowrap; }
+  .knopf { min-height: 48px; padding: 6px 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rahmen * { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<main class="buehne" id="buehne" aria-live="polite">
+<div class="rahmen" id="rahmen">
+<!--FOLIEN-->
+</div>
+</main>
+<nav class="leiste" aria-label="Folien steuern">
+<div class="links" id="links">
+<select class="wahl" id="wahl" aria-label="Zu Folie springen"></select>
+</div>
+<button class="knopf" id="zurueck" type="button" aria-label="Zurück">◀ Zurück</button>
+<span class="stand" id="stand" aria-live="polite">1 / 1</span>
+<button class="knopf haupt" id="weiter" type="button" aria-label="Weiter">Weiter ▶</button>
+<div class="rechts">
+<button class="knopf" id="ton" type="button" aria-pressed="true">🔊 Ton</button>
+<button class="knopf" id="vollbild" type="button" hidden>⛶ Vollbild</button>
+</div>
+</nav>
+<script>
+/*QUIZDATEN*/
+(function () {
+  var folien = Array.prototype.slice.call(document.querySelectorAll('#rahmen section'));
+  var rahmen = document.getElementById('rahmen'), buehne = document.getElementById('buehne');
+  var stand = document.getElementById('stand'), wahl = document.getElementById('wahl');
+  var weiterK = document.getElementById('weiter'), zurueckK = document.getElementById('zurueck');
+  var tonK = document.getElementById('ton');
+  var nr = 0;
+
+  /* ---------- Ton ---------- */
+  var tonAn = true, ctx = null;
+  try { tonAn = localStorage.getItem('netzwerke-ton') !== 'aus'; } catch (e) {}
+  function tonText() { tonK.textContent = tonAn ? '🔊 Ton' : '🔇 Ton aus'; tonK.setAttribute('aria-pressed', tonAn ? 'true' : 'false'); }
+  tonText();
+  tonK.addEventListener('click', function () {
+    tonAn = !tonAn; tonText();
+    try { localStorage.setItem('netzwerke-ton', tonAn ? 'an' : 'aus'); } catch (e) {}
+  });
+  function klang(art) {
+    if (!tonAn) return;
+    try {
+      if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+      if (ctx.state === 'suspended') ctx.resume();
+      var noten = art === 'gut' ? [659, 880] : art === 'ende' ? [523, 659, 784, 1047] : art === 'tipp' ? [440] : [196, 165];
+      var t = ctx.currentTime;
+      noten.forEach(function (f, i) {
+        var o = ctx.createOscillator(), g = ctx.createGain();
+        o.type = art === 'no' ? 'triangle' : 'sine'; o.frequency.value = f;
+        var s = t + i * (art === 'ende' ? 0.12 : 0.1);
+        g.gain.setValueAtTime(0.0001, s);
+        g.gain.exponentialRampToValueAtTime(art === 'tipp' ? 0.08 : 0.22, s + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, s + (art === 'ende' ? 0.5 : 0.28));
+        o.connect(g); g.connect(ctx.destination); o.start(s); o.stop(s + 0.6);
+      });
+    } catch (e) {}
+  }
+
+  /* ---------- Quiz ---------- */
+  var SW = ['sw1', 'sw2', 'sw3', 'sw4', 'sw5'];
+  var TYP = { mc: 'Multiple Choice', wf: 'Wahr oder falsch?', zu: 'Zuordnen', rf: 'Reihenfolge' };
+  var qs = {}; // Zustand je Quiz-Folie
+  function mischen(a) { var o = a.slice(), gleich = true; while (gleich) { a = o.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var x = a[i]; a[i] = a[j]; a[j] = x; } gleich = a.length > 1 && a.every(function (v, k) { return v === o[k]; }); } return a; }
+  function el(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
+  function nrk(i) { return el('span', 'qz-nrk ' + SW[i % 5], String(i + 1)); }
+
+  function quizNeu(sec) {
+    var d = QUIZ[+sec.dataset.quiz];
+    var st = { sec: sec, d: d, i: 0, ende: false, fr: [] };
+    d.fragen.forEach(function (f) {
+      var z = { geloest: false, fehler: 0, loes: false, zeit: 0 };
+      if (f.typ === 'mc') z.reihe = mischen(f.opts.map(function (_, k) { return k; }));
+      if (f.typ === 'zu') { z.items = mischen(f.items.map(function (_, k) { return k; })); z.ok = {}; z.falsch = {}; }
+      if (f.typ === 'rf') { z.reihe = mischen(f.items.map(function (_, k) { return k; })); z.weit = 0; }
+      if (f.typ === 'mc' || f.typ === 'wf') z.falsch = {};
+      st.fr.push(z);
+    });
+    qs[sec.id] = st;
+    return st;
+  }
+  function quizVon(sec) { return qs[sec.id] || quizNeu(sec); }
+
+  function punkte(st) { return st.fr.filter(function (z) { return z.geloest && !z.loes && z.fehler === 0; }).length; }
+
+  function dots(st) {
+    var box = st.sec.querySelector('.qz-dots'); box.innerHTML = '';
+    st.fr.forEach(function (z, k) {
+      var c = 'qz-dot';
+      if (z.geloest) c += z.loes ? ' loes' : z.fehler ? ' halb' : ' gut';
+      if (!st.ende && k === st.i) c += ' jetzt';
+      var dd = el('span', c); dd.setAttribute('aria-hidden', 'true'); box.appendChild(dd);
+    });
+  }
+
+  function rueckmeldung(st, art, text) {
+    var fb = st.sec.querySelector('.qz-fb');
+    fb.className = 'qz-fb ' + art; fb.textContent = text;
+  }
+
+  function geloest(st, z, f, durchLoesung) {
+    z.geloest = true; z.loes = !!durchLoesung; z.zeit = Date.now();
+    zeichne(st);
+    if (durchLoesung) { rueckmeldung(st, 'loes', 'Lösung: ' + f.erkl); klang('tipp'); }
+    else { rueckmeldung(st, 'gut', (z.fehler ? '✓ Jetzt stimmt’s! ' : '✓ Richtig! ') + f.erkl); klang('gut'); }
+    knoepfe();
+  }
+
+  function zeichne(st) {
+    var body = st.sec.querySelector('.qz-body'); body.innerHTML = '';
+    dots(st);
+    if (st.ende) {
+      var p = punkte(st), n = st.fr.length, sterne = p === n ? 3 : p >= n * 0.6 ? 2 : p >= 1 ? 1 : 0;
+      var box = el('div', 'qz-ende');
+      var s = el('p', 'qz-sterne'); s.setAttribute('aria-label', sterne + ' von 3 Sternen');
+      for (var k = 0; k < 3; k++) { var sp = el('span', k < sterne ? '' : 'leer', '★'); s.appendChild(sp); }
+      box.appendChild(s);
+      box.appendChild(el('p', 'qz-gross', p === n ? 'Perfekt!' : sterne >= 2 ? 'Stark gemacht!' : 'Geschafft!'));
+      box.appendChild(el('p', 'qz-sub', p + ' von ' + n + ' Aufgaben beim ersten Versuch richtig'));
+      var b = el('button', 'qz-nochmal', '↺ Quiz nochmal'); b.type = 'button';
+      b.addEventListener('click', function () { var neu = quizNeu(st.sec); zeichne(neu); knoepfe(); });
+      box.appendChild(b);
+      body.appendChild(box);
+      return;
+    }
+    var f = st.d.fragen[st.i], z = st.fr[st.i];
+    var meta = el('div', 'qz-meta');
+    meta.appendChild(el('p', 'qz-typ', TYP[f.typ]));
+    meta.appendChild(el('p', 'qz-nr', 'Aufgabe ' + (st.i + 1) + ' von ' + st.fr.length));
+    body.appendChild(meta);
+    body.appendChild(el('h2', 'qz-frage', f.frage));
+
+    if (f.typ === 'mc' || f.typ === 'wf') {
+      var opts = f.typ === 'wf' ? ['Wahr', 'Falsch'] : f.opts;
+      var richtig = f.typ === 'wf' ? (f.richtig ? 0 : 1) : f.richtig;
+      var reihe = f.typ === 'wf' ? [0, 1] : z.reihe;
+      var g = el('div', 'qz-opts' + (f.typ === 'wf' ? ' wf' : ''));
+      reihe.forEach(function (oi, pos) {
+        var b = el('button', 'qz-opt'); b.type = 'button';
+        b.appendChild(nrk(pos)); b.appendChild(el('span', '', opts[oi]));
+        if (z.geloest && oi === richtig) b.classList.add('ok');
+        if (z.falsch[oi]) b.classList.add('no');
+        b.disabled = z.geloest || !!z.falsch[oi];
+        b.addEventListener('click', function () {
+          if (z.geloest) return;
+          if (oi === richtig) geloest(st, z, f);
+          else { z.fehler++; z.falsch[oi] = true; zeichne(st); rueckmeldung(st, 'no', '✗ Leider falsch – noch ein Versuch!'); klang('no'); }
+        });
+        g.appendChild(b);
+      });
+      body.appendChild(g);
+    } else if (f.typ === 'zu') {
+      var rows = el('div', 'qz-rows'), dranGesetzt = false;
+      z.items.forEach(function (ii) {
+        var it = f.items[ii], r = el('div', 'qz-row');
+        var ok = z.geloest || z.ok[ii];
+        if (ok) r.classList.add('ok');
+        else if (!dranGesetzt) { r.classList.add('dran'); dranGesetzt = true; }
+        r.appendChild(el('p', 'qz-row-t', it[0]));
+        var chips = el('div', 'qz-chips');
+        f.kat.forEach(function (k, ki) {
+          var c = el('button', 'qz-chip'); c.type = 'button';
+          c.appendChild(nrk(ki)); c.appendChild(el('span', '', k));
+          c.setAttribute('aria-label', it[0] + ': ' + k);
+          if (ok && k === it[1]) c.classList.add('ok');
+          if (!ok && z.falsch[ii + '|' + k]) c.classList.add('no');
+          c.disabled = ok || !!z.falsch[ii + '|' + k];
+          c.addEventListener('click', function () {
+            if (z.ok[ii] || z.geloest) return;
+            if (k === it[1]) {
+              z.ok[ii] = true;
+              var alle = f.items.every(function (_, x) { return z.ok[x]; });
+              if (alle) geloest(st, z, f);
+              else { zeichne(st); rueckmeldung(st, 'gut', '✓ Passt!'); klang('gut'); fokusErster(st); }
+            } else { z.fehler++; z.falsch[ii + '|' + k] = true; zeichne(st); rueckmeldung(st, 'no', '✗ Passt nicht – noch ein Versuch!'); klang('no'); fokusErster(st); }
+          });
+          chips.appendChild(c);
+        });
+        r.appendChild(chips);
+        rows.appendChild(r);
+      });
+      body.appendChild(rows);
+    } else if (f.typ === 'rf') {
+      var g2 = el('div', 'qz-opts');
+      z.reihe.forEach(function (ii, pos) {
+        var b = el('button', 'qz-opt'); b.type = 'button';
+        var fertig = z.geloest || ii < z.weit;
+        var badge = nrk(pos);
+        if (fertig) { badge.textContent = '✓' + (ii + 1); badge.style.fontSize = '24px'; b.classList.add('ok'); }
+        if (!fertig && z.falsch && z.falsch[ii] === z.weit) b.classList.add('no');
+        b.appendChild(badge); b.appendChild(el('span', '', f.items[ii]));
+        b.disabled = fertig;
+        b.addEventListener('click', function () {
+          if (z.geloest || ii < z.weit) return;
+          z.falsch = {};
+          if (ii === z.weit) {
+            z.weit++;
+            if (z.weit === f.items.length) geloest(st, z, f);
+            else { zeichne(st); rueckmeldung(st, 'gut', '✓ Schritt ' + z.weit + ' stimmt – weiter so!'); klang('gut'); }
+          } else { z.fehler++; z.falsch[ii] = z.weit; zeichne(st); rueckmeldung(st, 'no', '✗ Das ist noch nicht Schritt ' + (z.weit + 1) + '.'); klang('no'); }
+        });
+        g2.appendChild(b);
+      });
+      body.appendChild(g2);
+    }
+    var fb = el('p', 'qz-fb'); fb.setAttribute('aria-live', 'polite');
+    body.appendChild(fb);
+    if (z.geloest) rueckmeldung(st, z.loes ? 'loes' : 'gut', (z.loes ? 'Lösung: ' : '✓ ') + f.erkl);
+  }
+  function fokusErster(st) {
+    var b = st.sec.querySelector('.qz-row.dran .qz-chip:not(:disabled)');
+    if (b && document.activeElement && document.activeElement.classList.contains('qz-chip')) b.focus();
+  }
+
+  function loesungZeigen(st) {
+    var f = st.d.fragen[st.i], z = st.fr[st.i];
+    if (f.typ === 'zu') f.items.forEach(function (_, x) { z.ok[x] = true; });
+    if (f.typ === 'rf') z.weit = f.items.length;
+    geloest(st, z, f, true);
+  }
+
+  // Taste 1–5 = Antwort Nummer 1–5 (SoundWhacker)
+  function quizTaste(st, k) {
+    if (st.ende) return false;
+    var f = st.d.fragen[st.i], z = st.fr[st.i];
+    if (z.geloest) return Date.now() - z.zeit > 800 ? (weiter(), true) : true;
+    var knoepfeListe;
+    if (f.typ === 'zu') knoepfeListe = st.sec.querySelectorAll('.qz-row.dran .qz-chip');
+    else knoepfeListe = st.sec.querySelectorAll('.qz-opt');
+    var b = knoepfeListe[k];
+    if (b && !b.disabled) b.click();
+    return true;
+  }
+
+  /* ---------- Folien ---------- */
+  folien.forEach(function (f, i) {
+    var t = f.querySelector('h1, h2');
+    var o = document.createElement('option');
+    o.value = i; o.textContent = (i + 1) + '. ' + (f.dataset.titel || (t ? t.textContent.replace(/\s+/g, ' ') : 'Folie'));
+    wahl.appendChild(o);
+  });
+
+  function frags(f) { return Array.prototype.slice.call(f.querySelectorAll('.fragment')); }
+  function istQuiz(f) { return f.classList.contains('quiz'); }
+
+  function zeige(i, rueckwaerts) {
+    if (i < 0 || i >= folien.length) return;
+    folien[nr].classList.remove('aktiv');
+    nr = i;
+    var f = folien[nr];
+    frags(f).forEach(function (e) { e.classList.toggle('visible', !!rueckwaerts); });
+    if (istQuiz(f)) {
+      var st = quizVon(f);
+      if (!rueckwaerts && st.ende) st = quizNeu(f);
+      zeichne(st);
+    }
+    f.classList.add('aktiv');
+    stand.textContent = 'Folie ' + (nr + 1) + ' / ' + folien.length;
+    wahl.value = nr;
+    try { history.replaceState(null, '', '#folie-' + (nr + 1)); } catch (e) {}
+    knoepfe();
+  }
+  function knoepfe() {
+    var f = folien[nr];
+    if (istQuiz(f)) {
+      var st = quizVon(f);
+      zurueckK.disabled = false;
+      weiterK.disabled = false;
+      if (st.ende) weiterK.textContent = nr === folien.length - 1 ? 'Ende' : 'Weiter ▶';
+      else if (!st.fr[st.i].geloest) weiterK.textContent = 'Lösung ▶';
+      else weiterK.textContent = st.i === st.fr.length - 1 ? 'Ergebnis ▶' : 'Nächste Aufgabe ▶';
+      if (st.ende && nr === folien.length - 1) weiterK.disabled = true;
+      return;
+    }
+    var offen = frags(f).some(function (e) { return !e.classList.contains('visible'); });
+    zurueckK.disabled = nr === 0 && !frags(f).some(function (e) { return e.classList.contains('visible'); });
+    weiterK.disabled = nr === folien.length - 1 && !offen;
+    weiterK.textContent = offen ? 'Aufdecken ▶' : 'Weiter ▶';
+  }
+  function weiter() {
+    var f = folien[nr];
+    if (istQuiz(f)) {
+      var st = quizVon(f);
+      if (st.ende) { zeige(nr + 1, false); return; }
+      if (!st.fr[st.i].geloest) { loesungZeigen(st); return; }
+      if (st.i < st.fr.length - 1) st.i++;
+      else { st.ende = true; klang('ende'); }
+      zeichne(st); knoepfe();
+      return;
+    }
+    var naechste = frags(f).filter(function (e) { return !e.classList.contains('visible'); })[0];
+    if (naechste) { naechste.classList.add('visible'); knoepfe(); }
+    else zeige(nr + 1, false);
+  }
+  function zurueck() {
+    var f = folien[nr];
+    if (istQuiz(f)) {
+      var st = quizVon(f);
+      if (st.ende) { st.ende = false; zeichne(st); knoepfe(); return; }
+      if (st.i > 0) { st.i--; zeichne(st); knoepfe(); return; }
+      zeige(nr - 1, true); return;
+    }
+    var sichtbar = frags(f).filter(function (e) { return e.classList.contains('visible'); });
+    if (sichtbar.length) { sichtbar[sichtbar.length - 1].classList.remove('visible'); knoepfe(); }
+    else zeige(nr - 1, true);
+  }
+
+  function anpassen() {
+    var w = buehne.clientWidth, h = buehne.clientHeight;
+    var s = Math.min(w / 1920, h / 1080);
+    rahmen.style.transform = 'translate(' + ((w - 1920 * s) / 2) + 'px,' + ((h - 1080 * s) / 2) + 'px) scale(' + s + ')';
+  }
+
+  weiterK.addEventListener('click', weiter);
+  zurueckK.addEventListener('click', zurueck);
+  wahl.addEventListener('change', function () { zeige(+wahl.value, false); wahl.blur(); });
+
+  document.addEventListener('keydown', function (e) {
+    var t = e.target.tagName;
+    if (t === 'SELECT' || t === 'INPUT' || e.ctrlKey || e.metaKey || e.altKey) return;
+    var k = e.key;
+    if ((k === 'Enter' || k === ' ') && (t === 'BUTTON' || t === 'A')) return;
+    if (/^[1-5]$/.test(k) && istQuiz(folien[nr])) {
+      if (quizTaste(quizVon(folien[nr]), +k - 1)) { e.preventDefault(); return; }
+    }
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter', '2', '3', '4', '5'].indexOf(k) >= 0) { e.preventDefault(); weiter(); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace', '1'].indexOf(k) >= 0) { e.preventDefault(); zurueck(); }
+    else if (k === 'Home') { e.preventDefault(); zeige(0, false); }
+    else if (k === 'End') { e.preventDefault(); zeige(folien.length - 1, false); }
+  });
+
+  var x0 = null, y0 = null;
+  buehne.addEventListener('touchstart', function (e) { if (e.touches.length === 1) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; } }, { passive: true });
+  buehne.addEventListener('touchend', function (e) {
+    if (x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) { if (dx < 0) weiter(); else zurueck(); }
+  });
+  document.addEventListener('contextmenu', function (e) { if (e.target.tagName !== 'A') e.preventDefault(); });
+
+  // Echtes Vollbild nur am PC (iPad/iPhone zeigen sonst bei Tastendruck eine Warnung)
+  var ios = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var vb = document.getElementById('vollbild');
+  if (document.fullscreenEnabled && !ios) {
+    vb.hidden = false;
+    vb.addEventListener('click', function () {
+      if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen();
+    });
+    document.addEventListener('fullscreenchange', function () { vb.textContent = document.fullscreenElement ? '✕ Vollbild aus' : '⛶ Vollbild'; });
+  }
+
+  // Hell/Dunkel-Schalter in die Leiste holen
+  document.addEventListener('DOMContentLoaded', function () {
+    var tt = document.querySelector('.theme-toggle');
+    if (tt) document.getElementById('links').prepend(tt);
+  });
+
+  window.addEventListener('resize', anpassen);
+  window.addEventListener('orientationchange', function () { setTimeout(anpassen, 200); });
+  var start = 0, m = /folie-(\d+)/.exec(location.hash);
+  if (m) start = Math.min(folien.length, Math.max(1, +m[1])) - 1;
+  folien[0].classList.add('aktiv');
+  zeige(start, false);
+  anpassen();
+})();
+</script>
+</body>
+</html>

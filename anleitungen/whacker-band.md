@@ -124,12 +124,10 @@ Oben rechts neben „Anleitung“ steht der Knopf **🌐 English**. Ein Tipp –
 
 ## Zusammen mit GarageBand (Backing-Track)
 
-Läuft auf dem iPad oder iPhone im Hintergrund Musik, z. B. ein Backing-Track aus **GarageBand**, dann das Häkchen **🎧 Mit GarageBand** setzen (in der Leiste bei Vorspielen und Mitspielen). Dann klingt die Band **zusammen** mit der anderen Musik.
+Die Band spielt **immer zusammen mit anderer Musik**: Läuft auf dem iPad oder iPhone im Hintergrund ein Backing-Track aus **GarageBand** (oder Spotify, YouTube …), spielt sie einfach mit – nichts wird angehalten. Ein Schalter ist dafür nicht mehr nötig.
 
-- Ohne Häkchen klingt die Band allein und schaltet andere Musik aus – dafür auch bei eingeschaltetem Stummschalter.
-- **Mit Häkchen** gilt der Stummschalter bzw. „Stumm“ im Kontrollzentrum: Er muss **aus** sein, sonst ist die Band nicht zu hören.
+- **Kein Ton?** Dann ist das Gerät auf **stumm**: am iPad die **Glocke im Kontrollzentrum** (durchgestrichen) ausschalten, am iPhone den **Stummschalter** an der Seite. Beim allerersten Ton zeigt die App dazu einmal einen Hinweis.
 - Klingt nach dem Wechsel zwischen den Apps nichts: einmal einen SoundWhacker drücken oder die Seite neu laden.
-- Funktioniert ab iPadOS/iOS 16.4.
 
 ## Ohne Internet spielen
 

@@ -121,7 +121,6 @@
   input,textarea{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
   /* Improvisieren: Lied und Klang braucht es nicht – jeder SoundWhacker hat sein eigenes Instrument */
   body.impMit #hauptLeiste label:has(#lied), body.impMit #klangLabel{display:none}
-  #mischLabel input{width:26px;height:26px;accent-color:var(--gold);vertical-align:middle}
 </style>
 </head>
 <body>
@@ -147,7 +146,6 @@
     <label id="tempoLabel">Tempo <input type="range" id="tempo" min="40" max="130" step="5" value="100" aria-describedby="tempoWert"> <span id="tempoWert"></span></label>
     <label>Aufstellung <select id="aufstellung"><option value="reihe">Reihe</option><option value="halbkreis">Halbkreis</option><option value="kreis">Kreis</option><option value="u">offenes U</option></select></label>
     <label id="klangLabel">Klang <select id="klang"></select></label>
-    <label id="mischLabel" title="Damit die Band zusammen mit einem Backing-Track aus GarageBand oder einer anderen App klingt"><input type="checkbox" id="mischen"> 🎧 Mit GarageBand</label>
     <label>Hall <input type="range" id="hall" min="0" max="100" step="5" value="20" aria-describedby="hallWert"> <span id="hallWert"></span></label>
   </div>
 
@@ -304,10 +302,15 @@ for(const id in KLAENGE){ const K=KLAENGE[id]; if(!K.pfad){ K.pfad='../tischharf
 let ctx=null, master, dry, wet; const hallWert=()=>Math.pow(st.hall/100,1.3)*1.1; const puffer={}, lade={};
 /* iPad/iPhone: 'playback' = die App klingt allein (auch bei Stummschalter), 'ambient' = mischt sich mit anderen Apps,
    z. B. einem Backing-Track aus GarageBand, der im Hintergrund läuft (Schalter „Mit GarageBand“) */
-function sitzung(){ try{ if(navigator.audioSession) navigator.audioSession.type=st.mischen?'ambient':'playback'; }catch(e){} }
+/* Immer „mit anderer Musik mischen“ (Wunsch Nutzer): GarageBand, Spotify … laufen weiter, die Band spielt mit.
+   Folge: bei „Stumm“ (Glocke im Kontrollzentrum / Schalter am iPhone) ist die Band nicht zu hören → einmaliger Hinweis */
+function sitzung(){ try{ if(navigator.audioSession) navigator.audioSession.type='ambient'; }catch(e){} }
+function stummHinweis(){ const ios=navigator.maxTouchPoints>0||/iPad|iPhone|iPod/.test(navigator.userAgent); if(!ios) return;
+  try{ if(localStorage.getItem('whacker-band-stummhinweis')) return; localStorage.setItem('whacker-band-stummhinweis','1'); }catch(e){}
+  setTimeout(()=>toast(L('🔔 Kein Ton? Stummschalter / Glocke im Kontrollzentrum am iPad bzw. iPhone ausschalten.','🔔 No sound? Turn off silent mode / the bell in Control Center on the iPad or iPhone.'),7000),600); }
 function audio(){
   if(ctx){ if(ctx.state!=='running') ctx.resume().catch(()=>{}); return; }
-  sitzung();
+  sitzung(); stummHinweis();
   ctx=new (window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'});
   const comp=ctx.createDynamicsCompressor(); comp.threshold.value=-10; comp.ratio.value=3; comp.attack.value=.003; comp.release.value=.2;
   master=ctx.createGain(); master.gain.value=.9; master.connect(comp); comp.connect(ctx.destination);
@@ -780,10 +783,6 @@ for(const id in KLAENGE) if(!schonDrin.has(id)) ks.appendChild(new Option(KLAENG
 ks.value=st.klang;
 ks.onchange=()=>{ st.klang=ks.value; merke(); audio(); ladeKlang(st.klang); klavierBeschriften(); info(); ks.blur(); };
 function hallZeigen(){ const v=st.hall; $('hallWert').textContent=v+' % '+(v===0?'(trocken)':v<=25?'(kleiner Raum)':v<=60?'(Saal)':'(Kirche)'); if(wet) wet.gain.setTargetAtTime(hallWert(),ctx.currentTime,.05); }
-$('mischen').checked=!!st.mischen;
-$('mischen').onchange=()=>{ st.mischen=$('mischen').checked; merke(); sitzung(); $('mischen').blur();
-  if(ctx) ctx.suspend().then(()=>ctx.resume()).catch(()=>{});   /* Audio neu anmelden, damit die Einstellung sofort gilt */
-  toast(st.mischen?'🎧 Die Band klingt jetzt zusammen mit GarageBand. Stummschalter am iPhone aus!':'Die Band klingt wieder allein'); };
 /* Nach einer Unterbrechung (Anruf, andere App, GarageBand) Ton wieder einschalten */
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden&&ctx&&ctx.state!=='running') ctx.resume().catch(()=>{}); });
 $('hall').value=st.hall; hallZeigen(); $('hall').oninput=()=>{ st.hall=+$('hall').value; merke(); hallZeigen(); };
@@ -821,7 +820,7 @@ document.addEventListener('touchmove',e=>{ const B=document.body; if(!B.classLis
 document.addEventListener('dblclick',e=>{ if(document.body.classList.contains('vollbild')) e.preventDefault(); },{passive:false});
 const VP=document.querySelector('meta[name=viewport]'), VP0=VP.getAttribute('content');
 function zoomSperre(an){ VP.setAttribute('content',an?VP0+', maximum-scale=1, user-scalable=no':VP0); }   /* setzt auch einen schon vorhandenen Zoom zurück */
-let tT=0; function toast(t){ let e=document.querySelector('.toast'); if(!e){ e=document.createElement('div'); e.className='toast'; e.setAttribute('role','status'); document.body.appendChild(e); } e.textContent=t; e.hidden=false; clearTimeout(tT); tT=setTimeout(()=>e.hidden=true,2200); }
+let tT=0; function toast(t,ms){ let e=document.querySelector('.toast'); if(!e){ e=document.createElement('div'); e.className='toast'; e.setAttribute('role','status'); document.body.appendChild(e); } e.textContent=t; e.hidden=false; clearTimeout(tT); tT=setTimeout(()=>e.hidden=true,ms||2200); }
 // Ton erst nach der ersten Berührung (Browser-Regel) – jede Berührung startet den Klang
 ['pointerdown','keydown','touchstart'].forEach(ev=>window.addEventListener(ev,()=>audio(),{once:true,passive:true}));
 // Kein Kontextmenü bei langem Drücken (außer im Namensfeld)

@@ -217,6 +217,10 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
   - `schule/ki-agent-quiz/` – Zuordnungsquiz „KI-Agent zuordnen“: 8 KI-Begriffe (Sprachmodell, CLAUDE.md, Prompt,
     Skills & Plugins, Connectors, Routinen, Artefakt, Harness) den nummerierten Stellen der Menschenfigur aus
     `ki-mensch/` zuordnen (antippen statt ziehen, Prüfen-Knopf, Erklärung bei richtigen Antworten). Von `ki-mensch/` verlinkt.
+  - `schule/netzwerke-internet/` – Präsentation „Netzwerke & Internet“ für Kaufleute im Dialogmarketing (18 Fragen zur Technik,
+    Buch S. 328–332): 24 Folien, Antworten erscheinen per Klick („Aufdecken ▶“), Tasten → / Leertaste / 2–5 = weiter, ← / 1 = zurück, Wischen,
+    Folienauswahl, `#folie-N`. Gebaut aus dem claude.ai-Folien-Artefakt https://claude.ai/artifact/6rAVAjr3bYrkPYBfaqy7Y6
+    (Bauskript im Scratchpad: Folien-HTML + `x-icon` → eigene SVG-Symbole, lokale Schriften Bricolage/Atkinson). Änderungen am besten im Artefakt machen und neu bauen.
   - Das **Azubi-Recruiting Dashboard** (`schule/azubi-recruiting/`) wurde auf Wunsch wieder entfernt (Ordner, Eintrag, Anleitung gelöscht; steckt noch in der Git-Geschichte). Projekt pausiert.
   - Eintrag `audioguide` (kein eigener Ordner): **OMIVARO Audioguide** – eigene Web-App des Nutzers unter https://guide.gueck.eu
     – Zielgruppe: Tourist-Informationen/Tourismuszentralen und Gemeinden sowie deren Gäste

@@ -54,4 +54,5 @@ Eigene Übersicht für Lernseiten und Schul-Apps: https://pati2018.github.io/sch
 | `schule/datenschutz-tom/` | TOM-Rundgang: technische und organisatorische Maßnahmen im Datenschutz für MFA und TFA |
 | `schule/serienbrief/` | Serienbrief in 8 Schritten: animierte Erklärung mit Sprachausgabe |
 | `schule/herzlich-willkommen/` | Lesemodus „Herzlich willkommen im Reisebüro“ mit Markierfunktion und Fragen zum Text |
+| `schule/netzwerke-internet/` | Präsentation „Netzwerke & Internet“: 18 Fragen und Antworten für Kaufleute im Dialogmarketing |
 | – (nur Eintrag `audioguide`) | OMIVARO Audioguide (https://guide.gueck.eu, eigene Web-App des Nutzers) mit Werbevideo `videos/audioguide.mp4` |

@@ -310,7 +310,7 @@ async function ladeKlang(id){
   const K=KLAENGE[id]; if(!K||!ctx||lade[id]) return; lade[id]='laedt'; const b={};
   try{ await Promise.all(Object.entries(K.toene).map(async([name,midi])=>{ const r=await fetch(K.pfad+name+'.mp3'); if(!r.ok) throw 0; const ab=await r.arrayBuffer(); b[midi]=await new Promise((ok,no)=>ctx.decodeAudioData(ab,ok,no)); }));
     puffer[id]=b; lade[id]='fertig'; }
-  catch(e){ lade[id]='fehler'; toast('Klang konnte nicht geladen werden'); }
+  catch(e){ lade[id]=null; toast('Klang konnte nicht geladen werden'); }   /* null = beim nächsten Ton erneut versuchen */
 }
 const stimmen=[null,null,null,null,null], fxStimme={};
 // Ein Ton klingt so lange, wie der SoundWhacker / die Taste gehalten wird (wie in Smart Control) – beim Vorspielen so lange wie die Note
@@ -513,7 +513,7 @@ let laeuft=false, timer=0, plan=[];
 function sekProSchlag(){ return 60/(LIED.tempo*st.tempo/100); }
 function start(){
   audio(); if(laeuft){ stopp(); return; }
-  if(!puffer[st.klang]){ ladeKlang(st.klang); const warte=()=>{ if(puffer[st.klang]||lade[st.klang]==='fehler') start(); else setTimeout(warte,150); }; return setTimeout(warte,150); }
+  if(!puffer[st.klang]){ ladeKlang(st.klang); const warte=()=>{ if(puffer[st.klang]||!lade[st.klang]) start(); else setTimeout(warte,150); }; return setTimeout(warte,150); }
   laeuft=true; $('start').textContent='■ Stopp'; pos=0; bandZeigen();
   const VOR=.35, t0=ctx.currentTime+VOR, p0=performance.now()+VOR*1000; let t=0; const sp=sekProSchlag();
   plan=LIED.noten.map((n,k)=>{ const at=t; t+=n.dur*sp; return {k,n,at}; });
@@ -820,6 +820,8 @@ const UE={'▶ Vorspielen':'▶ Band plays','🙌 Mitspielen':'🙌 Play along',
   'Noch keine eigenen Lieder':'No songs of your own yet','Diese Datei passt nicht':'This file does not fit','Keine Lieder in der Datei gefunden':'No songs found in the file',
   '🎧 Die Band klingt jetzt zusammen mit GarageBand. Stummschalter am iPhone aus!':'🎧 The band now plays together with GarageBand. Turn off silent mode on the iPhone!',
   'Die Band klingt wieder allein':'The band plays on its own again','✓ Jetzt auch ohne Internet spielbar':'✓ Now playable without internet too',
+  '⚠ Offline-Speicher noch nicht vollständig – App einmal mit Internet geöffnet lassen':'⚠ Offline storage not complete yet – keep the app open once with internet',
+  '✓ Offline-Speicher vervollständigt – alle Klänge auch ohne Internet':'✓ Offline storage completed – all sounds work without internet too',
   'Spiele eine Melodie ein. Mit höchstens 5 verschiedenen Tönen wird sie ein ⭐-Lied.':'Record a melody. With at most 5 different notes it becomes a ⭐ song.',
   'Meine Lieder: auswählen, umbenennen, herunterladen, hochladen.':'My songs: select, rename, download, upload.','Improvisation einstellen.':'Improvisation settings.',
   'Spiele eine Geräusch-Geschichte ein – mit SW1–5 oder auf der Klaviatur. Jede Taste ist ein anderes Geräusch.':'Record a noise story – with SW1–5 or on the keyboard. Every key is a different noise.',
@@ -867,6 +869,11 @@ $('sprache').onclick=()=>{ stopp(); st.sprache=EN?'de':'en'; merke(); location.r
 
 akkWahlBauen(); impWahlBauen(); liedListe(); liedSetzen(); aufstellen(true); modus(st.modus); meineZeigen(); klavierBeschriften(); buehneAnpassen(); if(EN) ueKnoten(document.body); if(document.fonts) document.fonts.ready.then(buehneAnpassen);
 // Offline: App und alle Klänge im Gerät speichern (Service Worker)
+/* Offline-Speicher prüfen und fehlende Klänge nachladen, sobald Internet da ist */
+function offlinePruefen(){ if(navigator.onLine&&navigator.serviceWorker&&navigator.serviceWorker.controller) navigator.serviceWorker.controller.postMessage('pruefen'); }
+window.addEventListener('online',()=>{ offlinePruefen(); for(const id in lade) if(!lade[id]) delete lade[id]; if(ctx) ladeKlang(st.klang); });
+if('serviceWorker' in navigator){ navigator.serviceWorker.addEventListener('message',e=>{ if(e.data&&e.data.offline==='unvollstaendig') toast('⚠ Offline-Speicher noch nicht vollständig – App einmal mit Internet geöffnet lassen'); if(e.data&&e.data.offline==='ok'&&e.data.nachgeladen>0) toast('✓ Offline-Speicher vervollständigt – alle Klänge auch ohne Internet'); });
+  navigator.serviceWorker.ready.then(()=>setTimeout(offlinePruefen,4000)); }
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').then(()=>navigator.serviceWorker.ready).then(()=>{ let neu=true; try{ neu=!localStorage.getItem('whacker-band-offline'); localStorage.setItem('whacker-band-offline','1'); }catch(e){} if(neu) setTimeout(()=>toast('✓ Jetzt auch ohne Internet spielbar'),1500); }).catch(()=>{}); }
 })();
 </script>

@@ -1,7 +1,7 @@
 // SoundWhacker Band – Offline-Speicher (Service Worker)
 // Beim ersten Öffnen mit Internet werden App, Lieder und alle Klänge gespeichert.
 // Danach läuft die App auch ohne Internet. Bei Änderungen VERSION erhöhen.
-const VERSION='sw-band-v37';
+const VERSION='sw-band-v38';
 const DATEIEN=[
 "./",
 "index.html",
@@ -463,12 +463,17 @@ const DATEIEN=[
 "../tischharfe/samples/G5.mp3",
 "../tischharfe/samples/B5.mp3"
 ];
-self.addEventListener('install',e=>{
-  e.waitUntil(caches.open(VERSION).then(c=>Promise.all(DATEIEN.map(u=>c.add(u).catch(()=>{})))).then(()=>self.skipWaiting()));
-});
+// Speichern mit bis zu 3 Versuchen. Fehlt danach noch eine Datei, bricht das Update ab:
+// Dann bleibt die alte, vollständige Fassung im Speicher – nie ein halb gefüllter Speicher (sonst fehlen offline Klänge).
+const holen=async(c,u)=>{ for(let i=0;i<3;i++){ try{ const a=await fetch(u,{cache:'reload'}); if(a.ok){ await c.put(u,a); return; } }catch(e){} await new Promise(r=>setTimeout(r,800*(i+1))); } throw new Error('fehlt: '+u); };
+const fuellen=async name=>{ const c=await caches.open(name); const fehlt=[]; for(const u of DATEIEN){ if(!(await c.match(u))) fehlt.push(u); }
+  for(let i=0;i<fehlt.length;i+=8) await Promise.all(fehlt.slice(i,i+8).map(u=>holen(c,u))); return fehlt.length; };
+self.addEventListener('install',e=>{ e.waitUntil(fuellen(VERSION).then(()=>self.skipWaiting())); });
 self.addEventListener('activate',e=>{
   e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(n=>n.startsWith('sw-band-')&&n!==VERSION).map(n=>caches.delete(n)))).then(()=>self.clients.claim()));
 });
+// Die Seite fragt bei Internet nach: fehlende Dateien nachladen (repariert einen unvollständigen Speicher)
+self.addEventListener('message',e=>{ if(e.data==='pruefen') e.waitUntil(fuellen(VERSION).then(n=>e.source&&e.source.postMessage({offline:'ok',nachgeladen:n})).catch(()=>e.source&&e.source.postMessage({offline:'unvollstaendig'}))); });
 self.addEventListener('fetch',e=>{
   const r=e.request, u=new URL(r.url);
   if(r.method!=='GET'||u.origin!==location.origin) return;           // z. B. Zähler: normal übers Netz

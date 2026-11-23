@@ -100,6 +100,9 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
       **Mit GarageBand:** Häkchen „🎧 Mit GarageBand“ (`st.mischen`) stellt `navigator.audioSession.type` von `playback` (allein, ignoriert Stummschalter) auf `ambient` (mischt mit Backing-Track aus anderen Apps, Stummschalter muss aus sein) – Funktion `sitzung()`.
       **Offline:** `whacker-band/sw.js` (Service Worker) speichert App, `lieder.js` und alle Klänge (≈ 21 MB). Bei neuen Dateien
       oder neuer `lieder.js?v=…`-Nummer die Liste und `VERSION` in `sw.js` anpassen.
+      **Offline sicher (seit v38):** Update nur „alles oder nichts“ (3 Versuche je Datei, sonst bleibt die alte vollständige Fassung);
+      die Seite schickt bei Internet `pruefen` an den Service Worker → fehlende Dateien werden nachgeladen. Fehlgeschlagene Klänge werden beim nächsten Ton erneut geladen.
+      Anlass: Nutzer hatte nach WLAN aus + GarageBand-Wechsel keinen Ton mehr (halb gefüllter Speicher nach Update).
       Eine Jarvis-Sprachsteuerung (Web Speech API) wurde ausprobiert und auf Wunsch wieder entfernt – nicht erneut einbauen.
   - **Achtung:** `tischharfe/lieder.js` lädt auch SoundWhacker Spielen (Gemeinsame Melodie), das Fagott und die SoundWhacker Band.
     Wer Lieder ändert, ändert sie in beiden Apps – und erhöht in `SoundWhacker_Spielen.html`

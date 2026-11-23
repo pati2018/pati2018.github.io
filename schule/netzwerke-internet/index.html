@@ -1,0 +1,1032 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Netzwerke &amp; Internet</title>
+<meta name="description" content="Präsentation für Kaufleute im Dialogmarketing: 18 Fragen und Antworten zu Netzwerken, Internet, Protokollen, Webadressen, VPN und Extranet – mit Skizzen und Beispielen aus dem Kundenservice.">
+<meta name="theme-color" content="#14213D">
+<link rel="icon" type="image/png" sizes="32x32" href="../../icons/favicon-32.png">
+<link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
+<link rel="stylesheet" href="/fonts/fonts.css">
+<script src="../../theme.js"></script>
+<style>
+:root {
+  --hg: #E4E0D6; --leiste: #F7F5F0; --text: #14213D; --rand: #C9C2B2; --knopf: #FFFDF9; --akzent: #E2711D;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --hg: #0B1226; --leiste: #14213D; --text: #F7F5F0; --rand: #33446B; --knopf: #1F2F55; color-scheme: dark; }
+}
+:root[data-theme="dark"] { --hg: #0B1226; --leiste: #14213D; --text: #F7F5F0; --rand: #33446B; --knopf: #1F2F55; color-scheme: dark; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body {
+  margin: 0; background: var(--hg); color: var(--text); overflow: hidden;
+  font-family: 'Atkinson Hyperlegible', 'Segoe UI', Arial, sans-serif;
+  -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
+  touch-action: manipulation;
+  display: flex; flex-direction: column;
+}
+.buehne { position: relative; flex: 1; min-height: 0; overflow: hidden; }
+.rahmen { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; box-shadow: 0 12px 40px rgba(0,0,0,.25); }
+.rahmen section { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; }
+.rahmen section:not(.aktiv) { display: none; }
+.rahmen h1, .rahmen h2, .rahmen h3, .rahmen p, .rahmen table { margin: 0; }
+.rahmen table { border-collapse: collapse; }
+.rahmen th, .rahmen td { padding: 0.45em 0.7em; vertical-align: top; }
+.rahmen a { pointer-events: auto; }
+
+/* ===== Folien (aus der Präsentation) ===== */
+section {
+  --ink: #14213D;
+  --ink2: #1F2F55;
+  --paper: #F7F5F0;
+  --paper2: #ECE8DE;
+  --card: #FFFDF9;
+  --muted: #4A5568;
+  --soft: #5C6577;
+  --orange: #E2711D;
+  --orange-t: #A94C0C;
+  --orange-l: #FBE3CF;
+  --blue: #2F5BD3;
+  --blue-l: #DFE7FB;
+  --sky: #5B8DEF;
+  --glow: #F4A259;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Atkinson Hyperlegible', 'Segoe UI', Arial, sans-serif;
+  padding: 128px 128px 160px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  counter-increment: page;
+}
+.dark { background: var(--ink); color: var(--paper); }
+.alt { background: var(--paper2); }
+
+/* Kopf */
+.top { display: flex; flex-direction: column; gap: 14px; }
+.eyebrow { font-family: 'Bricolage Grotesque', 'Segoe UI', Arial, sans-serif; font-size: 24px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--orange-t); }
+.eyebrow-l { font-family: 'Bricolage Grotesque', 'Segoe UI', Arial, sans-serif; font-size: 24px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--glow); }
+.q { font-family: 'Bricolage Grotesque', 'Segoe UI', Arial, sans-serif; font-size: 56px; font-weight: 600; line-height: 1.1; letter-spacing: -1px; color: var(--ink); }
+.q-l { font-family: 'Bricolage Grotesque', 'Segoe UI', Arial, sans-serif; font-size: 56px; font-weight: 600; line-height: 1.1; letter-spacing: -1px; color: var(--paper); }
+
+/* Raster */
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; flex: 1; }
+.stack { display: flex; flex-direction: column; gap: 28px; }
+.fill { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 28px; }
+.c2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.c3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; }
+.c4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 32px; }
+.c5 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr; gap: 24px; }
+
+/* Antwort */
+.answer { background: var(--card); border-left: 10px solid var(--orange); border-radius: 20px; padding: 32px 40px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 10px 30px rgba(20,33,61,0.08); }
+.lbl { font-family: 'Bricolage Grotesque', 'Segoe UI', Arial, sans-serif; font-size: 24px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--orange-t); }
+.atext { font-size: 34px; line-height: 1.35; color: var(--ink); }
+.praxis { display: flex; gap: 24px; align-items: center; background: var(--ink); border-radius: 20px; padding: 26px 34px; }
+.praxis-ic { width: 52px; height: 52px; color: var(--glow); flex: none; }
+.praxis-t { font-size: 26px; line-height: 1.4; color: #E6EAF2; }
+.hl { color: var(--glow); }
+
+/* Karten */
+.card { background: var(--card); border-radius: 24px; padding: 34px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 10px 30px rgba(20,33,61,0.08); }
+.card-o { background: var(--orange-l); border-radius: 24px; padding: 34px; display: flex; flex-direction: column; gap: 14px; }
+.card-b { background: var(--blue-l); border-radius: 24px; padding: 34px; display: flex; flex-direction: column; gap: 14px; }
+.ct { font-family: 'Bricolage Grotesque', 'Segoe UI', Arial, sans-serif; font-size: 40px; font-weight: 600; line-height: 1.1; color: var(--ink); }
+.cs { font-family: 'Bricolage Grotesque', 'Segoe UI', Arial, sans-serif; font-size: 26px; font-weight: 600; color: var(--blue); }
+.cp { font-size: 26px; line-height: 1.4; color: var(--muted); }
+.icb { width: 84px; height: 84px; border-radius: 22px; background: var(--orange-l); display: flex; align-items: center; justify-content: center; flex: none; }
+.icb-b { width: 84px; height: 84px; border-radius: 22px; background: var(--blue-l); display: flex; align-items: center; justify-content: center; flex: none; }
+.ico { width: 46px; height: 46px; color: var(--orange-t); }
+.ico-b { width: 46px; height: 46px; color: var(--blue); }
+.pill { font-family: 'Bricolage Grotesque', 'Segoe UI', Arial, sans-serif; font-size: 26px; font-weight: 700; padding: 8px 24px; border-radius: 40px; background: var(--orange); color: var(--ink); align-self: flex-start; }
+.pill-b { font-family: 'Bricolage Grotesque', 'Segoe UI', Arial, sans-serif; font-size: 26px; font-weight: 700; padding: 8px 24px; border-radius: 40px; background: var(--blue); color: #F7F5F0; align-self: flex-start; }
+.pill-n { font-family: 'Bricolage Grotesque', 'Segoe UI', Arial, sans-serif; font-size: 26px; font-weight: 700; padding: 8px 24px; border-radius: 40px; background: var(--ink); color: var(--paper); align-self: flex-start; }
+.num { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, 'Courier New', monospace; font-size: 44px; font-weight: 700; color: var(--orange-t); }
+
+/* Frage-Zeilen (Zuordnen) */
+.rows { display: flex; flex-direction: column; gap: 16px; }
+.qrow { display: flex; align-items: center; gap: 28px; background: var(--card); border-radius: 18px; padding: 18px 28px; box-shadow: 0 6px 18px rgba(20,33,61,0.07); }
+.qk { font-family: 'Bricolage Grotesque', 'Segoe UI', Arial, sans-serif; font-size: 28px; font-weight: 700; width: 56px; height: 56px; line-height: 56px; text-align: center; border-radius: 28px; background: var(--ink); color: var(--paper); flex: none; }
+.qs { font-size: 30px; line-height: 1.35; flex: 1; color: var(--ink); }
+.qa { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, 'Courier New', monospace; font-size: 30px; font-weight: 700; padding: 8px 26px; border-radius: 40px; background: var(--orange); color: var(--ink); flex: none; }
+
+/* Video-Tipp */
+.video { display: flex; align-items: center; gap: 16px; }
+.video-ic { width: 36px; height: 36px; color: var(--blue); flex: none; }
+.video-t { font-size: 24px; color: var(--soft); }
+.lnk { color: var(--blue); }
+
+/* Fußzeile */
+.foot { position: absolute; left: 128px; bottom: 64px; width: 1664px; display: flex; justify-content: space-between; align-items: center; }
+.foot-t { font-size: 24px; color: var(--soft); }
+.pg { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, 'Courier New', monospace; font-size: 24px; color: var(--soft); }
+
+
+/* Tabelle */
+.tbl { width: 100%; font-size: 28px; color: var(--ink); font-family: 'Atkinson Hyperlegible', 'Segoe UI', Arial, sans-serif; }
+.tr-h { background: var(--ink); }
+.th { color: var(--paper); text-align: left; }
+.tr-a { background: var(--card); }
+.tr-b { background: var(--paper2); }
+.td-k { color: var(--orange-t); }
+
+/* Titel */
+.cover { justify-content: center; }
+.cover-net { position: absolute; left: 1040px; top: 150px; width: 740px; height: 780px; }
+.cover-txt { display: flex; flex-direction: column; gap: 32px; width: 920px; }
+.h1 { font-family: 'Bricolage Grotesque', 'Segoe UI', Arial, sans-serif; font-size: 112px; font-weight: 700; line-height: 1.02; letter-spacing: -3px; color: var(--paper); }
+.sub { font-size: 34px; line-height: 1.4; color: #BFC8DA; }
+
+/* Schaubilder */
+.vis { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.cap { font-size: 26px; color: var(--muted); text-align: center; }
+.host { position: relative; width: 760px; height: 560px; }
+.lab { position: absolute; width: 300px; font-family: 'Bricolage Grotesque', 'Segoe UI', Arial, sans-serif; font-size: 28px; font-weight: 600; text-align: center; color: var(--ink); }
+.box-net { background: var(--blue-l); border-radius: 28px; padding: 36px; display: flex; flex-direction: column; gap: 22px; width: 720px; box-sizing: border-box; }
+.chips { display: flex; flex-wrap: wrap; gap: 16px; }
+.chip { font-size: 28px; font-weight: 600; padding: 12px 24px; border-radius: 16px; background: var(--card); color: var(--ink); }
+.chip-o { font-size: 28px; font-weight: 700; padding: 12px 24px; border-radius: 16px; background: var(--orange); color: var(--ink); }
+.scale { display: flex; flex-direction: column; gap: 14px; }
+.scale-bar { height: 14px; border-radius: 7px; background: linear-gradient(90deg, #DFE7FB, #2F5BD3); }
+.scale-l { display: flex; justify-content: space-between; }
+.scale-t { font-size: 24px; font-weight: 600; color: var(--soft); }
+.warn { display: flex; gap: 22px; align-items: center; background: var(--orange-l); border-radius: 18px; padding: 20px 30px; }
+.warn-ic { width: 44px; height: 44px; color: var(--orange-t); flex: none; }
+.warn-t { font-size: 26px; line-height: 1.4; color: var(--ink); }
+
+/* Ablauf */
+.lane { display: flex; align-items: center; gap: 20px; }
+.lane-line { flex: 1; height: 6px; border-radius: 3px; background: repeating-linear-gradient(90deg, #2F5BD3 0px, #2F5BD3 18px, transparent 18px, transparent 30px); }
+.lane-t { font-size: 24px; font-weight: 600; color: var(--blue); }
+.step { background: var(--card); border-radius: 22px; padding: 28px; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 10px 30px rgba(20,33,61,0.08); border-top: 8px solid var(--blue); }
+.step-n { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, 'Courier New', monospace; font-size: 40px; font-weight: 700; color: var(--blue); }
+.step-t { font-family: 'Bricolage Grotesque', 'Segoe UI', Arial, sans-serif; font-size: 32px; font-weight: 600; color: var(--ink); }
+.step-p { font-size: 25px; line-height: 1.4; color: var(--muted); }
+
+/* Zeitstrahl */
+.tl-i { border-top: 8px solid var(--blue); padding-top: 22px; display: flex; flex-direction: column; gap: 10px; }
+.tl-o { border-top: 8px solid var(--orange); padding-top: 22px; display: flex; flex-direction: column; gap: 10px; }
+.tl-y { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, 'Courier New', monospace; font-size: 44px; font-weight: 700; color: var(--ink); }
+.tl-p { font-size: 25px; line-height: 1.4; color: var(--muted); }
+
+/* Protokolle */
+.pgrid { display: grid; grid-template-columns: 330px 320px 280px 1fr; gap: 20px 28px; align-items: center; }
+.ph { font-family: 'Bricolage Grotesque', 'Segoe UI', Arial, sans-serif; font-size: 24px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--orange-t); }
+.pbox { background: var(--card); border-radius: 18px; padding: 20px 26px; display: flex; flex-direction: column; gap: 4px; box-shadow: 0 6px 18px rgba(20,33,61,0.07); }
+.pbox-s { background: var(--blue); border-radius: 18px; padding: 20px 26px; display: flex; flex-direction: column; gap: 4px; }
+.pb-t { font-family: 'Bricolage Grotesque', 'Segoe UI', Arial, sans-serif; font-size: 30px; font-weight: 600; color: var(--ink); }
+.pb-p { font-size: 24px; color: var(--muted); }
+.ps-t { font-family: 'Bricolage Grotesque', 'Segoe UI', Arial, sans-serif; font-size: 30px; font-weight: 600; color: #F7F5F0; }
+.proto { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.proto-t { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, 'Courier New', monospace; font-size: 28px; font-weight: 700; color: var(--orange-t); text-align: center; }
+.pdesc { font-size: 25px; line-height: 1.4; color: var(--muted); }
+
+/* Pakete */
+.flow { display: flex; align-items: center; gap: 28px; }
+.pk-col { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.pk { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, 'Courier New', monospace; font-size: 26px; font-weight: 700; padding: 10px 22px; border-radius: 12px; background: var(--orange); color: var(--ink); align-self: flex-start; }
+.pk-1 { margin-left: 20px; }
+.pk-2 { margin-left: 170px; }
+.pk-3 { margin-left: 80px; }
+.pk-4 { margin-left: 230px; }
+.pk-ok { display: flex; gap: 10px; }
+.pk-s { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, 'Courier New', monospace; font-size: 26px; font-weight: 700; padding: 10px 18px; border-radius: 12px; background: var(--orange); color: var(--ink); }
+
+/* Adresszeile */
+.bar { display: flex; align-items: center; gap: 0px; background: var(--card); border-radius: 60px; padding: 22px 40px; box-shadow: 0 10px 30px rgba(20,33,61,0.1); align-self: flex-start; }
+.bar-ic { width: 40px; height: 40px; color: var(--soft); margin-right: 22px; }
+.bar-t { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, 'Courier New', monospace; font-size: 48px; font-weight: 500; color: var(--soft); }
+.bar-tld { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, 'Courier New', monospace; font-size: 48px; font-weight: 700; color: var(--ink); background: var(--orange); border-radius: 12px; padding: 0px 10px; }
+.tile { background: var(--card); border-radius: 24px; padding: 30px 34px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 10px 30px rgba(20,33,61,0.08); }
+.tile-l { font-size: 28px; color: var(--muted); }
+.tile-d { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, 'Courier New', monospace; font-size: 64px; font-weight: 700; color: var(--orange-t); }
+
+/* URL-Aufbau */
+.url { display: flex; gap: 10px; align-self: center; }
+.seg { display: flex; flex-direction: column; gap: 18px; align-items: center; }
+.seg-c { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, 'Courier New', monospace; font-size: 52px; font-weight: 700; color: var(--ink); padding-bottom: 14px; border-bottom: 10px solid var(--blue); }
+.seg-c2 { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, 'Courier New', monospace; font-size: 52px; font-weight: 700; color: var(--ink); padding-bottom: 14px; border-bottom: 10px solid var(--ink); }
+.seg-c3 { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, 'Courier New', monospace; font-size: 52px; font-weight: 700; color: var(--ink); padding-bottom: 14px; border-bottom: 10px solid var(--orange); }
+.seg-c4 { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, 'Courier New', monospace; font-size: 52px; font-weight: 700; color: var(--ink); padding-bottom: 14px; border-bottom: 10px solid var(--sky); }
+.seg-c5 { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, 'Courier New', monospace; font-size: 52px; font-weight: 700; color: var(--ink); padding-bottom: 14px; border-bottom: 10px solid #9AA6BF; }
+.seg-l { font-family: 'Bricolage Grotesque', 'Segoe UI', Arial, sans-serif; font-size: 26px; font-weight: 600; color: var(--muted); text-align: center; }
+
+/* VPN */
+.tunnel { flex: 1; background: var(--blue-l); border: 4px dashed #2F5BD3; border-radius: 60px; padding: 26px 34px; display: flex; align-items: center; gap: 20px; }
+.tunnel-t { font-size: 26px; line-height: 1.35; color: var(--ink); }
+.end { background: var(--card); border-radius: 24px; padding: 28px; display: flex; flex-direction: column; align-items: center; gap: 12px; width: 300px; box-sizing: border-box; box-shadow: 0 10px 30px rgba(20,33,61,0.08); }
+.end-t { font-family: 'Bricolage Grotesque', 'Segoe UI', Arial, sans-serif; font-size: 30px; font-weight: 600; text-align: center; color: var(--ink); }
+.end-p { font-size: 24px; text-align: center; color: var(--muted); }
+
+/* Extranet */
+.ring1 { background: var(--paper2); border: 3px solid #C9C2B2; border-radius: 36px; padding: 26px; display: flex; flex-direction: column; gap: 18px; width: 760px; box-sizing: border-box; }
+.ring2 { background: var(--blue-l); border-radius: 30px; padding: 26px; display: flex; flex-direction: column; gap: 18px; }
+.ring3 { background: var(--orange-l); border-radius: 24px; padding: 26px; display: flex; flex-direction: column; gap: 8px; }
+.rh { display: flex; align-items: center; gap: 14px; }
+.rh-ic { width: 36px; height: 36px; color: var(--ink); flex: none; }
+.rt { font-family: 'Bricolage Grotesque', 'Segoe UI', Arial, sans-serif; font-size: 32px; font-weight: 600; color: var(--ink); }
+.rp { font-size: 24px; line-height: 1.35; color: var(--muted); }
+
+/* Merke */
+.m-card { background: var(--ink2); border-radius: 22px; padding: 30px; display: flex; flex-direction: column; gap: 12px; }
+.m-t { font-family: 'Bricolage Grotesque', 'Segoe UI', Arial, sans-serif; font-size: 32px; font-weight: 600; color: var(--glow); }
+.m-p { font-size: 26px; line-height: 1.4; color: #E6EAF2; }
+.m-ic { width: 44px; height: 44px; color: var(--glow); }
+
+/* Bewegung */
+@keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0px); } }
+@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+.rise { animation: rise 0.6s ease both; animation-delay: calc(var(--i, 0) * 120ms); }
+.fade { animation: fadein 0.9s ease both; animation-delay: 0.2s; }
+.fragment { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.fragment.visible { opacity: 1; transform: translateY(0px); }
+
+
+/* ===== Steuerleiste ===== */
+.leiste {
+  display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;
+  padding: 10px 14px calc(10px + env(safe-area-inset-bottom)); background: var(--leiste);
+  border-top: 1px solid var(--rand);
+}
+.knopf, .theme-toggle, .wahl {
+  min-height: 56px; padding: 8px 18px; border-radius: 14px; border: 2px solid var(--rand);
+  background: var(--knopf); color: var(--text); font: 700 18px 'Atkinson Hyperlegible', 'Segoe UI', Arial, sans-serif;
+  cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+}
+.knopf.haupt { background: var(--akzent); border-color: var(--akzent); color: #14213D; min-width: 150px; justify-content: center; font-size: 20px; }
+.knopf:focus-visible, .theme-toggle:focus-visible, .wahl:focus-visible { outline: 4px solid #2F5BD3; outline-offset: 2px; }
+.knopf:disabled { opacity: .45; cursor: default; }
+.wahl { max-width: 340px; }
+.stand { font-weight: 700; font-size: 18px; min-width: 110px; text-align: center; }
+.theme-toggle .ico { font-size: 18px; }
+.links { margin-right: auto; display: flex; gap: 10px; }
+.rechts { margin-left: auto; display: flex; gap: 10px; }
+@media (max-width: 900px) {
+  .links, .rechts { margin: 0; }
+  .wahl { max-width: 200px; }
+  .knopf.haupt { min-width: 120px; }
+}
+@media (max-height: 520px) {
+  .wahl, .leiste .theme-toggle { display: none; }
+  .leiste { padding: 6px 10px calc(6px + env(safe-area-inset-bottom)); flex-wrap: nowrap; }
+  .knopf { min-height: 48px; padding: 6px 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rahmen * { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<main class="buehne" id="buehne" aria-live="polite">
+<div class="rahmen" id="rahmen">
+<section id="folie-1" data-name="cover" aria-roledescription="Folie" aria-label="Folie 1 von 24" class="dark cover">
+<svg class="cover-net fade" width="740" height="780" viewBox="0 0 740 780" aria-label="Vernetzte Computer rund um eine Kundenservice-Zentrale">
+<g stroke="#5B8DEF" stroke-width="2" opacity="0.35">
+<line x1="140" y1="170" x2="420" y2="100"/><line x1="420" y1="100" x2="640" y2="240"/><line x1="640" y1="240" x2="680" y2="520"/><line x1="680" y1="520" x2="460" y2="690"/><line x1="460" y1="690" x2="170" y2="630"/><line x1="170" y1="630" x2="60" y2="400"/><line x1="60" y1="400" x2="140" y2="170"/>
+</g>
+<g stroke="#5B8DEF" stroke-width="4">
+<line x1="370" y1="390" x2="140" y2="170"/><line x1="370" y1="390" x2="420" y2="100"/><line x1="370" y1="390" x2="640" y2="240"/><line x1="370" y1="390" x2="680" y2="520"/><line x1="370" y1="390" x2="460" y2="690"/><line x1="370" y1="390" x2="170" y2="630"/><line x1="370" y1="390" x2="60" y2="400"/>
+</g>
+<g fill="#1F2F55" stroke="#5B8DEF" stroke-width="4">
+<circle cx="140" cy="170" r="36"/><circle cx="420" cy="100" r="30"/><circle cx="640" cy="240" r="38"/><circle cx="680" cy="520" r="30"/><circle cx="460" cy="690" r="36"/><circle cx="170" cy="630" r="32"/><circle cx="60" cy="400" r="28"/>
+</g>
+<g fill="#5B8DEF">
+<rect x="124" y="158" width="32" height="20" rx="3"/><rect x="406" y="89" width="28" height="18" rx="3"/><rect x="623" y="228" width="34" height="21" rx="3"/><rect x="666" y="509" width="28" height="18" rx="3"/><rect x="444" y="678" width="32" height="20" rx="3"/><rect x="155" y="619" width="30" height="19" rx="3"/><rect x="47" y="390" width="26" height="17" rx="3"/>
+</g>
+<circle cx="370" cy="390" r="92" fill="#E2711D" opacity="0.25"/>
+<circle cx="370" cy="390" r="70" fill="#E2711D"/>
+<path d="M332 400 A38 38 0 0 1 408 400" fill="none" stroke="#14213D" stroke-width="9" stroke-linecap="round"/>
+<rect x="322" y="392" width="18" height="34" rx="7" fill="#14213D"/>
+<rect x="400" y="392" width="18" height="34" rx="7" fill="#14213D"/>
+<path d="M409 424 Q409 446 380 446" fill="none" stroke="#14213D" stroke-width="6" stroke-linecap="round"/>
+<circle cx="376" cy="446" r="6" fill="#14213D"/>
+<g fill="#F7F5F0" opacity="0.35">
+<circle cx="260" cy="60" r="4"/><circle cx="580" cy="60" r="3"/><circle cx="720" cy="380" r="4"/><circle cx="600" cy="740" r="3"/><circle cx="300" cy="740" r="4"/><circle cx="20" cy="250" r="3"/><circle cx="250" cy="300" r="3"/><circle cx="540" cy="420" r="3"/>
+</g>
+</svg>
+<div class="cover-txt">
+<p class="eyebrow-l rise" style="--i:0">Dialogmarketing · Technik</p>
+<h1 class="h1 rise" style="--i:1">Netzwerke &amp; Internet</h1>
+<p class="sub rise" style="--i:2">18 Fragen und Antworten – anschaulich erklärt, mit Beispielen aus dem Kundenservice</p>
+<p class="pill rise" style="--i:3">Fragen zu den Seiten 328–332</p>
+</div>
+</section>
+
+<section id="folie-2" data-name="agenda" aria-roledescription="Folie" aria-label="Folie 2 von 24" class="alt">
+<div class="top">
+<p class="eyebrow">Überblick · 18 Fragen</p>
+<h2 class="q">Worum geht’s heute?</h2>
+</div>
+<div class="c4">
+<div class="card rise" style="--i:0"><p class="num">01</p><h3 class="ct">Netzwerke</h3><p class="cs">Fragen 1–6</p><p class="cp">Netzwerk, Intranet, LAN · WAN · GAN, Client-Server</p></div>
+<div class="card rise" style="--i:1"><p class="num">02</p><h3 class="ct">Internet</h3><p class="cs">Fragen 7–9</p><p class="cp">Begriff, Internetdienste, Geschichte</p></div>
+<div class="card rise" style="--i:2"><p class="num">03</p><h3 class="ct">Protokolle</h3><p class="cs">Fragen 10–13</p><p class="cp">Regeln, TCP/IP, HTTP(S), FTP, E-Mail</p></div>
+<div class="card rise" style="--i:3"><p class="num">04</p><h3 class="ct">Adressen &amp; Zugang</h3><p class="cs">Fragen 14–18</p><p class="cp">Domain, URL, VPN, Extranet</p></div>
+</div>
+<div class="praxis rise" style="--i:4">
+<svg class="praxis-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
+<p class="praxis-t"><span class="hl">So arbeiten wir:</span> Erst die Frage lesen und selbst überlegen – mit dem nächsten Klick erscheint die Antwort. Zu jeder Frage gibt es ein Beispiel aus dem Dialogmarketing.</p>
+</div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">2 / 24</div></div>
+</section>
+
+<section id="folie-3" data-name="q01" aria-roledescription="Folie" aria-label="Folie 3 von 24">
+<div class="top">
+<p class="eyebrow">Frage 1 · Netzwerke</p>
+<h2 class="q">Was versteht man grundsätzlich unter einem Rechner-Netzwerk?</h2>
+</div>
+<div class="two">
+<div class="stack">
+<div class="answer fragment">
+<p class="lbl">Antwort</p>
+<p class="atext">Ein <b>Verbund von Rechnern</b>, die über Leitungen (Kabel oder Funk) verbunden sind, um <b>miteinander zu kommunizieren</b>.</p>
+</div>
+<div class="praxis fragment">
+<svg class="praxis-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+<p class="praxis-t"><span class="hl">Im Kundenservice:</span> Alle Arbeitsplätze teilen sich Kundendatenbank, Drucker und Telefonanlage – das geht nur im Netzwerk.</p>
+</div>
+</div>
+<div class="vis rise" style="--i:1">
+<svg width="760" height="300" viewBox="0 0 760 300" aria-label="Zwei Computer, die mit einem Kabel verbunden sind; dazwischen wird eine Nachricht übertragen">
+<line x1="210" y1="120" x2="550" y2="120" stroke="#14213D" stroke-width="8" stroke-linecap="round"/>
+<g transform="translate(30 50)">
+<rect x="0" y="0" width="180" height="120" rx="12" fill="#14213D"/><rect x="12" y="12" width="156" height="92" rx="6" fill="#5B8DEF"/><rect x="78" y="120" width="24" height="26" fill="#14213D"/><rect x="45" y="146" width="90" height="14" rx="7" fill="#14213D"/>
+</g>
+<g transform="translate(550 50)">
+<rect x="0" y="0" width="180" height="120" rx="12" fill="#14213D"/><rect x="12" y="12" width="156" height="92" rx="6" fill="#5B8DEF"/><rect x="78" y="120" width="24" height="26" fill="#14213D"/><rect x="45" y="146" width="90" height="14" rx="7" fill="#14213D"/>
+</g>
+<rect x="336" y="90" width="88" height="60" rx="8" fill="#FBE3CF" stroke="#E2711D" stroke-width="5"/>
+<path d="M340 96 L380 126 L420 96" fill="none" stroke="#E2711D" stroke-width="5" stroke-linejoin="round"/>
+<circle cx="260" cy="120" r="9" fill="#E2711D"/><circle cx="500" cy="120" r="9" fill="#E2711D"/>
+</svg>
+<p class="cap">Das einfachste Netzwerk: zwei Rechner, ein Kabel.</p>
+</div>
+</div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">3 / 24</div></div>
+</section>
+
+<section id="folie-4" data-name="q02" aria-roledescription="Folie" aria-label="Folie 4 von 24">
+<div class="top">
+<p class="eyebrow">Frage 2 · Netzwerke</p>
+<h2 class="q">Welche beiden Arten von Rechner-Netzwerken unterscheidet man bezüglich der „Öffentlichkeit“?</h2>
+</div>
+<div class="c2">
+<div class="card-o fragment">
+<div class="icb" style="background:#FFFDF9"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+<h3 class="ct">Intranet</h3>
+<p class="cp">Geschlossenes Netzwerk <b>nur für Mitarbeitende</b> des Unternehmens. Unabhängig vom Internet – von außen höchstens über einen <b>VPN-Tunnel</b> erreichbar.</p>
+</div>
+<div class="card-b fragment">
+<div class="icb-b" style="background:#FFFDF9"><svg class="ico-b" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+<h3 class="ct">Internet</h3>
+<p class="cp"><b>Öffentliches</b> Netzwerk – für alle zugänglich, weltweit.</p>
+</div>
+</div>
+<div class="praxis fragment">
+<svg class="praxis-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+<p class="praxis-t"><span class="hl">Im Dialogmarketing:</span> Gesprächsleitfäden, Schichtpläne und Kampagnen-Infos liegen im Intranet. Online-Shop und Kontaktformular sind im Internet für alle Kundinnen und Kunden erreichbar.</p>
+</div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">4 / 24</div></div>
+</section>
+
+<section id="folie-5" data-name="q03" aria-roledescription="Folie" aria-label="Folie 5 von 24">
+<div class="top">
+<p class="eyebrow">Frage 3 · Netzwerke</p>
+<h2 class="q">Internet und World Wide Web (WWW) – gibt es einen Unterschied?</h2>
+</div>
+<div class="two">
+<div class="stack">
+<div class="answer fragment">
+<p class="lbl">Antwort: Ja!</p>
+<p class="atext">Das <b>Internet</b> ist das weltweite Netz aus vielen einzelnen Computernetzwerken – die Technik darunter.</p>
+<p class="atext">Das <b>WWW</b> ist nur <b>ein Dienst</b>, der im Internet läuft. Ein anderer Dienst ist z. B. E-Mail.</p>
+</div>
+</div>
+<div class="vis fragment">
+<div class="box-net">
+<div class="rh"><svg class="rh-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><p class="rt">Internet = das Straßennetz</p></div>
+<p class="rp">Die Dienste sind die Fahrzeuge, die darauf unterwegs sind:</p>
+<div class="chips">
+<p class="chip-o">WWW · Webseiten</p>
+<p class="chip">E-Mail</p>
+<p class="chip">VoIP-Telefonie</p>
+<p class="chip">Messenger</p>
+<p class="chip">Datei-Übertragung</p>
+</div>
+</div>
+<p class="cap">Wer „im Internet surft“, nutzt eigentlich das WWW.</p>
+</div>
+</div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">5 / 24</div></div>
+</section>
+
+<section id="folie-6" data-name="q04" aria-roledescription="Folie" aria-label="Folie 6 von 24">
+<div class="top">
+<p class="eyebrow">Frage 4 · Netzwerke</p>
+<h2 class="q">Welche drei Arten von Rechner-Netzwerken unterscheidet man bezüglich der „räumlichen Entfernung“?</h2>
+</div>
+<div class="c3">
+<div class="card fragment">
+<div class="icb"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+<h3 class="ct">LAN</h3>
+<p class="cs">Local Area Network</p>
+<p class="cp">Lokal: ein Büro, ein Gebäude, eine Schule.</p>
+</div>
+<div class="card fragment">
+<div class="icb"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>
+<h3 class="ct">WAN</h3>
+<p class="cs">Wide Area Network</p>
+<p class="cp">Weit: verbindet mehrere Standorte, z. B. Filialen in einer Region.</p>
+</div>
+<div class="card fragment">
+<div class="icb"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+<h3 class="ct">GAN</h3>
+<p class="cs">Global Area Network</p>
+<p class="cp">Weltweit: über Länder und Kontinente – z. B. das Internet.</p>
+</div>
+</div>
+<div class="scale rise" style="--i:2">
+<div class="scale-bar"></div>
+<div class="scale-l"><p class="scale-t">Raum · Gebäude</p><p class="scale-t">Stadt · Region · Land</p><p class="scale-t">ganze Welt</p></div>
+</div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">6 / 24</div></div>
+</section>
+
+<section id="folie-7" data-name="q05" aria-roledescription="Folie" aria-label="Folie 7 von 24" class="alt">
+<div class="top">
+<p class="eyebrow">Frage 5 · Zuordnen</p>
+<h2 class="q">Ordnen Sie zu: LAN, GAN, WAN, WLAN</h2>
+</div>
+<div class="rows">
+<div class="qrow"><p class="qk">a</p><p class="qs">Das Internet</p><p class="qa fragment">GAN</p></div>
+<div class="qrow"><p class="qk">b</p><p class="qs">Das kabelgebundene PC-Netzwerk unserer Schule</p><p class="qa fragment">LAN</p></div>
+<div class="qrow"><p class="qk">c</p><p class="qs">Das kabellose Netzwerk unserer Schule</p><p class="qa fragment">WLAN</p></div>
+<div class="qrow"><p class="qk">d</p><p class="qs">Zwei Schulstandorte (z. B. das BBZ St. Wendel) sind miteinander kabelgebunden vernetzt.</p><p class="qa fragment">WAN</p></div>
+</div>
+<div class="warn fragment">
+<svg class="warn-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
+<p class="warn-t"><b>WLAN</b> = Wireless LAN: ein lokales Netz über Funk statt Kabel – wie das WLAN im Büro oder im Homeoffice.</p>
+</div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">7 / 24</div></div>
+</section>
+
+<section id="folie-8" data-name="q06" aria-roledescription="Folie" aria-label="Folie 8 von 24">
+<div class="top">
+<p class="eyebrow">Frage 6 · Netzwerke</p>
+<h2 class="q">Worin unterscheiden sich Client-Server- und Peer-to-Peer-Netzwerke?</h2>
+</div>
+<div class="c2">
+<div class="card">
+<svg width="418" height="150" viewBox="0 0 640 230" aria-label="Sternförmiges Netz: ein zentraler Server, um ihn herum sechs Clients">
+<g stroke="#14213D" stroke-width="4"><line x1="320" y1="115" x2="540" y2="115"/><line x1="320" y1="115" x2="430" y2="197"/><line x1="320" y1="115" x2="210" y2="197"/><line x1="320" y1="115" x2="100" y2="115"/><line x1="320" y1="115" x2="210" y2="33"/><line x1="320" y1="115" x2="430" y2="33"/></g>
+<rect x="290" y="72" width="60" height="86" rx="10" fill="#E2711D"/><rect x="302" y="88" width="36" height="8" rx="3" fill="#14213D"/><rect x="302" y="104" width="36" height="8" rx="3" fill="#14213D"/><circle cx="320" cy="140" r="5" fill="#14213D"/>
+<g fill="#2F5BD3"><circle cx="540" cy="115" r="24"/><circle cx="430" cy="197" r="24"/><circle cx="210" cy="197" r="24"/><circle cx="100" cy="115" r="24"/><circle cx="210" cy="33" r="24"/><circle cx="430" cy="33" r="24"/></g>
+</svg>
+<h3 class="ct">Client-Server</h3>
+<p class="cp fragment">Ein <b>zentraler Rechner (Server)</b> stellt den anderen Rechnern (Clients) Dienste zur Verfügung.</p>
+</div>
+<div class="card">
+<svg width="418" height="150" viewBox="0 0 640 230" aria-label="Vermaschtes Netz: sechs gleichberechtigte Rechner, jeder mit jedem verbunden">
+<g stroke="#9AA6BF" stroke-width="3"><line x1="540" y1="115" x2="430" y2="197"/><line x1="540" y1="115" x2="210" y2="197"/><line x1="540" y1="115" x2="100" y2="115"/><line x1="540" y1="115" x2="210" y2="33"/><line x1="540" y1="115" x2="430" y2="33"/><line x1="430" y1="197" x2="210" y2="197"/><line x1="430" y1="197" x2="100" y2="115"/><line x1="430" y1="197" x2="210" y2="33"/><line x1="430" y1="197" x2="430" y2="33"/><line x1="210" y1="197" x2="100" y2="115"/><line x1="210" y1="197" x2="210" y2="33"/><line x1="210" y1="197" x2="430" y2="33"/><line x1="100" y1="115" x2="210" y2="33"/><line x1="100" y1="115" x2="430" y2="33"/><line x1="210" y1="33" x2="430" y2="33"/></g>
+<g fill="#2F5BD3"><circle cx="540" cy="115" r="24"/><circle cx="430" cy="197" r="24"/><circle cx="210" cy="197" r="24"/><circle cx="100" cy="115" r="24"/><circle cx="210" cy="33" r="24"/><circle cx="430" cy="33" r="24"/></g>
+</svg>
+<h3 class="ct">Peer-to-Peer</h3>
+<p class="cp fragment">Jeder Rechner ist <b>Client und Server</b> zugleich. „Peer“ = der Gleichgestellte. Es gibt <b>keinen zentralen Server</b>, der kontrolliert.</p>
+</div>
+</div>
+<div class="warn fragment">
+<svg class="warn-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+<p class="warn-t"><b>Achtung Tauschbörsen:</b> Wer dort urheberrechtlich geschützte Inhalte tauscht, macht sich strafbar.</p>
+</div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">8 / 24</div></div>
+</section>
+
+<section id="folie-9" data-name="rollen" aria-roledescription="Folie" aria-label="Folie 9 von 24" class="alt">
+<div class="top">
+<p class="eyebrow">Zusatz · Netzwerke</p>
+<h2 class="q">Host, Client, Server – wer macht was?</h2>
+</div>
+<div class="c3">
+<div class="card rise" style="--i:0">
+<div class="icb"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+<h3 class="ct">Host</h3>
+<p class="cs">= Gastgeber</p>
+<p class="cp">Ein Computer, der das Netz steuert und Programme und Daten (auch Webseiten) beherbergt, die die anderen brauchen.</p>
+</div>
+<div class="card rise" style="--i:1">
+<div class="icb-b"><svg class="ico-b" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+<h3 class="ct">Client</h3>
+<p class="cs">= Kunde</p>
+<p class="cp">Ein Programm, das Daten im Netzwerk <b>anfordert</b> – z. B. der Browser oder das CRM-Programm am Arbeitsplatz.</p>
+</div>
+<div class="card rise" style="--i:2">
+<div class="icb"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+<h3 class="ct">Server</h3>
+<p class="cs">to serve = bedienen</p>
+<p class="cp">Ein Programm, das auf Anfragen <b>wartet</b> und sie beantwortet – z. B. die Kundendatenbank.</p>
+</div>
+</div>
+<div class="praxis rise" style="--i:3">
+<svg class="praxis-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+<p class="praxis-t"><span class="hl">Wie im Restaurant:</span> Der Gast (Client) bestellt, der Kellner (Server) bringt das Essen – und das Restaurant ist der Gastgeber (Host).</p>
+</div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">9 / 24</div></div>
+</section>
+
+<section id="folie-10" data-name="ablauf" aria-roledescription="Folie" aria-label="Folie 10 von 24">
+<div class="top">
+<p class="eyebrow">Zusatz · Client-Server-Prinzip im WWW</p>
+<h2 class="q">Was passiert beim Aufruf einer Website?</h2>
+</div>
+<div class="fill">
+<div class="lane">
+<p class="pill-b">Client · Browser</p>
+<div class="lane-line"></div>
+<p class="lane-t">Internet</p>
+<div class="lane-line"></div>
+<p class="pill">Server · Webserver</p>
+</div>
+<div class="c5">
+<div class="step fragment"><p class="step-n">1</p><h3 class="step-t">Anfordern</h3><p class="step-p">Der Browser (Client) fordert ein HTML-Dokument beim Webserver an.</p></div>
+<div class="step fragment"><p class="step-n">2</p><h3 class="step-t">Verbinden</h3><p class="step-p">Die Verbindung zum Webserver wird über das Internet hergestellt.</p></div>
+<div class="step fragment"><p class="step-n">3</p><h3 class="step-t">Suchen</h3><p class="step-p">Der Webserver nimmt die Anfrage an und sucht die gewünschte HTML-Datei.</p></div>
+<div class="step fragment"><p class="step-n">4</p><h3 class="step-t">Senden</h3><p class="step-p">Die HTML-Datei wird über das Internet zum Browser übertragen.</p></div>
+<div class="step fragment"><p class="step-n">5</p><h3 class="step-t">Anzeigen</h3><p class="step-p">Der Browser „übersetzt“ das HTML-Dokument und zeigt die Seite an.</p></div>
+</div>
+</div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">10 / 24</div></div>
+</section>
+
+<section id="folie-11" data-name="q07" aria-roledescription="Folie" aria-label="Folie 11 von 24">
+<div class="top">
+<p class="eyebrow">Frage 7 · Internet</p>
+<h2 class="q">Erklären Sie den Begriff „Internet“.</h2>
+</div>
+<div class="two">
+<div class="stack">
+<div class="answer fragment">
+<p class="lbl">Antwort</p>
+<p class="atext">Ein <b>weltumspannendes Netz</b> aus vielen einzelnen Computernetzwerken – das „Netz der Netze“.</p>
+</div>
+<div class="praxis fragment">
+<svg class="praxis-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
+<p class="praxis-t"><span class="hl">Wortkunde:</span> „inter“ = zwischen. Das Internet verbindet Netze <i>untereinander</i> – Firmennetze, Schulnetze, Heimnetze.</p>
+</div>
+</div>
+<div class="host rise" style="--i:1">
+<svg width="760" height="560" viewBox="0 0 760 560" aria-label="Vier einzelne Netzwerke, die über einen zentralen Knoten miteinander verbunden sind">
+<g stroke="#14213D" stroke-width="7" stroke-linecap="round"><line x1="150" y1="140" x2="380" y2="280"/><line x1="610" y1="140" x2="380" y2="280"/><line x1="610" y1="420" x2="380" y2="280"/><line x1="150" y1="420" x2="380" y2="280"/></g>
+<g stroke="#9AA6BF" stroke-width="3" stroke-dasharray="10 10"><line x1="240" y1="140" x2="520" y2="140"/><line x1="240" y1="420" x2="520" y2="420"/></g>
+<g fill="#DFE7FB" stroke="#2F5BD3" stroke-width="3"><circle cx="150" cy="140" r="90"/><circle cx="610" cy="140" r="90"/><circle cx="610" cy="420" r="90"/><circle cx="150" cy="420" r="90"/></g>
+<g stroke="#2F5BD3" stroke-width="3">
+<path d="M115 120 L185 120 L150 175 Z" fill="none"/><path d="M575 120 L645 120 L610 175 Z" fill="none"/><path d="M575 400 L645 400 L610 455 Z" fill="none"/><path d="M115 400 L185 400 L150 455 Z" fill="none"/>
+</g>
+<g fill="#2F5BD3">
+<circle cx="115" cy="120" r="15"/><circle cx="185" cy="120" r="15"/><circle cx="150" cy="175" r="15"/>
+<circle cx="575" cy="120" r="15"/><circle cx="645" cy="120" r="15"/><circle cx="610" cy="175" r="15"/>
+<circle cx="575" cy="400" r="15"/><circle cx="645" cy="400" r="15"/><circle cx="610" cy="455" r="15"/>
+<circle cx="115" cy="400" r="15"/><circle cx="185" cy="400" r="15"/><circle cx="150" cy="455" r="15"/>
+</g>
+<circle cx="380" cy="280" r="52" fill="#E2711D"/>
+<circle cx="380" cy="280" r="30" fill="none" stroke="#14213D" stroke-width="5"/>
+<path d="M350 280 L410 280 M380 250 Q395 280 380 310 Q365 280 380 250" fill="none" stroke="#14213D" stroke-width="4"/>
+</svg>
+<p class="lab" style="left:0px;top:0px">Firmennetz</p>
+<p class="lab" style="left:460px;top:0px">Schulnetz</p>
+<p class="lab" style="left:460px;top:520px">Callcenter</p>
+<p class="lab" style="left:0px;top:520px">Heimnetz</p>
+</div>
+</div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">11 / 24</div></div>
+</section>
+
+<section id="folie-12" data-name="q08" aria-roledescription="Folie" aria-label="Folie 12 von 24">
+<div class="top">
+<p class="eyebrow">Frage 8 · Internet</p>
+<h2 class="q">Nennen Sie drei bekannte Internetdienste.</h2>
+</div>
+<div class="c3">
+<div class="card fragment">
+<div class="icb"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+<h3 class="ct">WWW</h3>
+<p class="cs">World Wide Web</p>
+<p class="cp">Webseiten aufrufen und anbieten.</p>
+<p class="pill-n">Online-Shop, Landingpage</p>
+</div>
+<div class="card fragment">
+<div class="icb"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></div>
+<h3 class="ct">E-Mail</h3>
+<p class="cs">elektronische Post</p>
+<p class="cp">Nachrichten mit Anhängen senden und empfangen.</p>
+<p class="pill-n">Newsletter, Mailing</p>
+</div>
+<div class="card fragment">
+<div class="icb"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
+<h3 class="ct">VoIP</h3>
+<p class="cs">Voice over IP</p>
+<p class="cp">Telefonieren über das Internet.</p>
+<p class="pill-n">Telefonie im Callcenter</p>
+</div>
+</div>
+<div class="praxis fragment">
+<svg class="praxis-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+<p class="praxis-t"><span class="hl">Im Dialogmarketing</span> laufen alle drei Dienste zusammen: Die Kundin sieht die Kampagne im Web, bekommt eine E-Mail und ruft per Telefon (VoIP) im Service an.</p>
+</div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">12 / 24</div></div>
+</section>
+
+<section id="folie-13" data-name="q09" aria-roledescription="Folie" aria-label="Folie 13 von 24" class="alt">
+<div class="top">
+<p class="eyebrow">Frage 9 · Internet</p>
+<h2 class="q">Wo liegen die Wurzeln des Internets?</h2>
+</div>
+<div class="answer fragment">
+<p class="lbl">Antwort</p>
+<p class="atext">In einem <b>Forschungsprojekt des US-Verteidigungsministeriums</b>: dem <b>ARPANET</b>.</p>
+</div>
+<div class="c5">
+<div class="tl-i rise" style="--i:1"><p class="tl-y">1969</p><p class="tl-p">ARPANET: vier Universitätsrechner in den USA werden verbunden.</p></div>
+<div class="tl-i rise" style="--i:2"><p class="tl-y">1971</p><p class="tl-p">Die erste E-Mail wird verschickt.</p></div>
+<div class="tl-i rise" style="--i:3"><p class="tl-y">1983</p><p class="tl-p">TCP/IP wird das gemeinsame Protokoll.</p></div>
+<div class="tl-i rise" style="--i:4"><p class="tl-y">1991</p><p class="tl-p">Das World Wide Web (CERN) wird öffentlich.</p></div>
+<div class="tl-o rise" style="--i:5"><p class="tl-y">heute</p><p class="tl-p">Online-Shops, Social Media, Telefonie per VoIP.</p></div>
+</div>
+<div class="video">
+<svg class="video-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+<p class="video-t">Video-Tipp: So ist das Internet gewachsen – <a class="lnk" target="_blank" rel="noopener" href="https://youtu.be/EKm6pJSI-aQ">youtu.be/EKm6pJSI-aQ</a></p>
+</div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">13 / 24</div></div>
+</section>
+
+<section id="folie-14" data-name="q10" aria-roledescription="Folie" aria-label="Folie 14 von 24">
+<div class="top">
+<p class="eyebrow">Frage 10 · Protokolle</p>
+<h2 class="q">Was versteht man unter einem „Protokoll“?</h2>
+</div>
+<div class="answer fragment">
+<p class="lbl">Antwort</p>
+<p class="atext"><b>Kommunikationsregeln für Computer.</b> Sie legen fest, wie Daten ausgetauscht werden – damit Sender und Empfänger sich verstehen.</p>
+</div>
+<div class="fragment">
+<table class="tbl">
+<tr class="tr-h"><th class="th" style="width:22%">Ebene</th><th class="th" style="width:39%">Briefpost</th><th class="th" style="width:39%">Computernetz</th></tr>
+<tr class="tr-a"><td class="td-k">Inhalt</td><td>Gemeinsame Sprache, Regeln nach DIN 5008</td><td>Gemeinsames Format, z. B. HTML über HTTP</td></tr>
+<tr class="tr-b"><td class="td-k">Adresse</td><td>Weltweit eindeutige Anschrift</td><td>Eindeutige IP-Adresse jedes Geräts</td></tr>
+<tr class="tr-a"><td class="td-k">Transport</td><td>LKW, Flugzeug, Schiff</td><td>Kabel, Glasfaser, Funk</td></tr>
+</table>
+</div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">14 / 24</div></div>
+</section>
+
+<section id="folie-15" data-name="dienste" aria-roledescription="Folie" aria-label="Folie 15 von 24" class="alt">
+<div class="top">
+<p class="eyebrow">Zusatz · Protokolle</p>
+<h2 class="q">Protokolle und Dienste im Überblick</h2>
+</div>
+<div class="pgrid">
+<p class="ph">Client</p><p class="ph" style="text-align:center">Protokoll</p><p class="ph">Server</p><p class="ph">Wofür?</p>
+<div class="pbox rise" style="--i:0"><p class="pb-t">Browser</p><p class="pb-p">z. B. Chrome, Firefox</p></div>
+<div class="proto rise" style="--i:0"><p class="proto-t">HTTP(S)</p><svg width="260" height="24" viewBox="0 0 260 24" aria-label="Doppelpfeil"><path d="M14 12 H246" stroke="#E2711D" stroke-width="6"/><path d="M2 12 L20 2 L20 22 Z M258 12 L240 2 L240 22 Z" fill="#E2711D"/></svg></div>
+<div class="pbox-s rise" style="--i:0"><p class="ps-t">Webserver</p></div>
+<p class="pdesc rise" style="--i:0">Webseiten übertragen</p>
+<div class="pbox rise" style="--i:1"><p class="pb-t">FTP-Programm</p><p class="pb-p">z. B. FileZilla</p></div>
+<div class="proto rise" style="--i:1"><p class="proto-t">FTP</p><svg width="260" height="24" viewBox="0 0 260 24" aria-label="Doppelpfeil"><path d="M14 12 H246" stroke="#E2711D" stroke-width="6"/><path d="M2 12 L20 2 L20 22 Z M258 12 L240 2 L240 22 Z" fill="#E2711D"/></svg></div>
+<div class="pbox-s rise" style="--i:1"><p class="ps-t">FTP-Server</p></div>
+<p class="pdesc rise" style="--i:1">Dateien hoch- und herunterladen</p>
+<div class="pbox rise" style="--i:2"><p class="pb-t">Mail-Programm</p><p class="pb-p">z. B. Outlook</p></div>
+<div class="proto rise" style="--i:2"><p class="proto-t">SMTP · IMAP · POP3</p><svg width="260" height="24" viewBox="0 0 260 24" aria-label="Doppelpfeil"><path d="M14 12 H246" stroke="#E2711D" stroke-width="6"/><path d="M2 12 L20 2 L20 22 Z M258 12 L240 2 L240 22 Z" fill="#E2711D"/></svg></div>
+<div class="pbox-s rise" style="--i:2"><p class="ps-t">Mail-Server</p></div>
+<p class="pdesc rise" style="--i:2">E-Mails senden (SMTP) und abrufen (IMAP, POP3)</p>
+</div>
+<div class="stack" style="gap:12px">
+<div class="video"><svg class="video-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg><p class="video-t">Video: FTP-Server einfach erklärt – <a class="lnk" target="_blank" rel="noopener" href="https://youtu.be/p93wITqI8ao">youtu.be/p93wITqI8ao</a></p></div>
+<div class="video"><svg class="video-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg><p class="video-t">Video: IMAP, POP3, SMTP – was ist das? – <a class="lnk" target="_blank" rel="noopener" href="https://youtu.be/O187AH5s3hY">youtu.be/O187AH5s3hY</a></p></div>
+</div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">15 / 24</div></div>
+</section>
+
+<section id="folie-16" data-name="q11" aria-roledescription="Folie" aria-label="Folie 16 von 24">
+<div class="top">
+<p class="eyebrow">Frage 11 · Protokolle</p>
+<h2 class="q">Wie heißt das wichtigste Protokoll im Internet?</h2>
+</div>
+<div class="answer fragment">
+<p class="lbl">Antwort</p>
+<p class="atext"><b>TCP/IP</b> – Transmission Control Protocol / Internet Protocol</p>
+</div>
+<div class="flow fragment">
+<div class="end"><svg class="ico-b" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg><p class="end-t">Nachricht</p><p class="end-p">wird in Pakete zerlegt</p></div>
+<div class="pk-col">
+<p class="pk pk-2">Paket 2</p>
+<p class="pk pk-4">Paket 4</p>
+<p class="pk pk-1">Paket 1</p>
+<p class="pk pk-3">Paket 3</p>
+</div>
+<div class="end"><svg class="ico-b" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><p class="end-t">Empfänger</p><div class="pk-ok"><p class="pk-s">1</p><p class="pk-s">2</p><p class="pk-s">3</p><p class="pk-s">4</p></div></div>
+</div>
+<div class="c2 fragment">
+<div class="praxis"><p class="praxis-t"><span class="hl">TCP</span> zerlegt die Daten in Pakete, nummeriert sie und prüft, ob alles vollständig ankommt.</p></div>
+<div class="praxis"><p class="praxis-t"><span class="hl">IP</span> gibt jedem Paket die Adresse mit, damit es seinen Weg zum Ziel findet.</p></div>
+</div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">16 / 24</div></div>
+</section>
+
+<section id="folie-17" data-name="q12" aria-roledescription="Folie" aria-label="Folie 17 von 24">
+<div class="top">
+<p class="eyebrow">Frage 12 · Protokolle</p>
+<h2 class="q">Geben Sie die englische Bezeichnung der folgenden Protokolle an.</h2>
+</div>
+<div class="fill">
+<table class="tbl">
+<tr class="tr-h"><th class="th" style="width:16%">Kürzel</th><th class="th" style="width:46%">Englische Bezeichnung</th><th class="th" style="width:38%">Wofür?</th></tr>
+<tr class="tr-a"><td class="td-k">a) FTP</td><td>File Transfer Protocol</td><td>Dateien übertragen</td></tr>
+<tr class="tr-b"><td class="td-k">b) SMTP</td><td>Simple Mail Transfer Protocol</td><td>E-Mails versenden</td></tr>
+<tr class="tr-a"><td class="td-k">c) IMAP</td><td>Internet Message Access Protocol</td><td>E-Mails abrufen, bleiben auf dem Server</td></tr>
+<tr class="tr-b"><td class="td-k">d) HTTP</td><td>Hypertext Transfer Protocol</td><td>Webseiten übertragen</td></tr>
+<tr class="tr-a"><td class="td-k">e) HTTPS</td><td>Hypertext Transfer Protocol Secure</td><td>Webseiten verschlüsselt übertragen</td></tr>
+<tr class="tr-b"><td class="td-k">f) POP3</td><td>Post Office Protocol Version 3</td><td>E-Mails abrufen und herunterladen</td></tr>
+</table>
+</div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">17 / 24</div></div>
+</section>
+
+<section id="folie-18" data-name="q13" aria-roledescription="Folie" aria-label="Folie 18 von 24" class="alt">
+<div class="top">
+<p class="eyebrow">Frage 13 · Protokolle</p>
+<h2 class="q">Entscheiden Sie, welches Protokoll zum Einsatz kommt.</h2>
+</div>
+<div class="rows">
+<div class="qrow"><p class="qk">a</p><p class="qs">Versenden einer E-Mail</p><p class="qa fragment">SMTP</p></div>
+<div class="qrow"><p class="qk">b</p><p class="qs">Empfangen einer E-Mail</p><p class="qa fragment">IMAP · POP3</p></div>
+<div class="qrow"><p class="qk">c</p><p class="qs">Upload einer Webseite auf den Webserver</p><p class="qa fragment">FTP</p></div>
+<div class="qrow"><p class="qk">d</p><p class="qs">Anzeige einer Internetseite (ohne sichere Übertragung)</p><p class="qa fragment">HTTP</p></div>
+<div class="qrow"><p class="qk">e</p><p class="qs">Anzeige der Internetseite einer Bank</p><p class="qa fragment">HTTPS 🔒</p></div>
+</div>
+<div class="video">
+<svg class="video-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+<p class="video-t">Video: Sicher surfen einfach erklärt – <a class="lnk" target="_blank" rel="noopener" href="https://youtu.be/tW1-CmggG9s">youtu.be/tW1-CmggG9s</a></p>
+</div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">18 / 24</div></div>
+</section>
+
+<section id="folie-19" data-name="q14" aria-roledescription="Folie" aria-label="Folie 19 von 24">
+<div class="top">
+<p class="eyebrow">Frage 14 · Adressen</p>
+<h2 class="q">Was kennzeichnet eine „Top Level Domain“?</h2>
+</div>
+<div class="fill">
+<div class="bar rise" style="--i:0">
+<svg class="bar-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+<p class="bar-t">www.kbbz-halberg</p>
+<p class="bar-tld">.de</p>
+</div>
+<p class="cap rise" style="--i:1;text-align:left">Die Top Level Domain (TLD) ist die <b>Endung</b> der Webadresse – ganz rechts.</p>
+<div class="c2">
+<div class="card fragment">
+<div class="icb"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+<h3 class="ct">Aus welchem Land?</h3>
+<p class="cp">Länderkennung: <b>.de</b> Deutschland, <b>.it</b> Italien, <b>.at</b> Österreich, <b>.fr</b> Frankreich</p>
+</div>
+<div class="card fragment">
+<div class="icb-b"><svg class="ico-b" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+<h3 class="ct">Welcher Inhalt?</h3>
+<p class="cp">Art des Angebots: <b>.com</b> kommerziell, <b>.org</b> Organisation, <b>.edu</b> Bildung, <b>.shop</b> Online-Shop</p>
+</div>
+</div>
+</div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">19 / 24</div></div>
+</section>
+
+<section id="folie-20" data-name="q15" aria-roledescription="Folie" aria-label="Folie 20 von 24" class="alt">
+<div class="top">
+<p class="eyebrow">Frage 15 · Adressen</p>
+<h2 class="q">Geben Sie jeweils die Top Level Domain an.</h2>
+</div>
+<div class="c3">
+<div class="tile"><p class="tile-l">a) Italien</p><p class="tile-d fragment">.it</p></div>
+<div class="tile"><p class="tile-l">b) Österreich</p><p class="tile-d fragment">.at</p></div>
+<div class="tile"><p class="tile-l">c) Saarland</p><p class="tile-d fragment">.saarland</p></div>
+<div class="tile"><p class="tile-l">d) Bildung</p><p class="tile-d fragment">.edu</p></div>
+<div class="tile"><p class="tile-l">e) Organisationen, Vereine</p><p class="tile-d fragment">.org</p></div>
+<div class="tile"><p class="tile-l">f) kommerzielle Webseiten</p><p class="tile-d fragment">.com</p></div>
+</div>
+<div class="praxis rise" style="--i:2">
+<svg class="praxis-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
+<p class="praxis-t"><span class="hl">Gut zu wissen:</span> Österreich ist <b>.at</b> – nach dem Landeskürzel „AT“ (Austria), nicht „.ö“.</p>
+</div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">20 / 24</div></div>
+</section>
+
+<section id="folie-21" data-name="q16" aria-roledescription="Folie" aria-label="Folie 21 von 24">
+<div class="top">
+<p class="eyebrow">Frage 16 · Adressen</p>
+<h2 class="q">Geben Sie eine andere Bezeichnung für die Webadresse an und nennen Sie ein Beispiel.</h2>
+</div>
+<div class="answer fragment">
+<p class="lbl">Antwort</p>
+<p class="atext"><b>URL</b> = Uniform Resource Locator – die eindeutige Adresse einer Datei im Internet.</p>
+</div>
+<div class="fill">
+<div class="url fragment">
+<div class="seg"><p class="seg-c">http://</p><p class="seg-l">Protokoll</p></div>
+<div class="seg"><p class="seg-c2">kbbz-halberg</p><p class="seg-l">Domain-Name</p></div>
+<div class="seg"><p class="seg-c3">.de</p><p class="seg-l">TLD</p></div>
+<div class="seg"><p class="seg-c4">/schueler/</p><p class="seg-l">Ordner</p></div>
+<div class="seg"><p class="seg-c5">index.html</p><p class="seg-l">Datei</p></div>
+</div>
+</div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">21 / 24</div></div>
+</section>
+
+<section id="folie-22" data-name="q17" aria-roledescription="Folie" aria-label="Folie 22 von 24">
+<div class="top">
+<p class="eyebrow">Frage 17 · Zugang</p>
+<h2 class="q">Welche Technik erlaubt es Mitarbeitenden, über das Internet sicher auf das Firmennetzwerk zuzugreifen?</h2>
+</div>
+<div class="answer fragment">
+<p class="lbl">Antwort</p>
+<p class="atext"><b>VPN</b> = Virtual Private Network – eine verschlüsselte Verbindung („Tunnel“) durch das öffentliche Internet ins Firmennetz.</p>
+</div>
+<div class="flow fragment">
+<div class="end"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><p class="end-t">Homeoffice</p><p class="end-p">Agentin am Laptop</p></div>
+<div class="tunnel">
+<svg class="ico-b" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+<p class="tunnel-t"><b>VPN-Tunnel</b> durch das Internet – von außen nicht lesbar</p>
+</div>
+<div class="end"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg><p class="end-t">Firmennetz</p><p class="end-p">CRM und Kundendaten</p></div>
+</div>
+<div class="video">
+<svg class="video-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+<p class="video-t">Video: VPN – nicht nur für den Zugang zum Firmennetz – <a class="lnk" target="_blank" rel="noopener" href="https://youtu.be/jLFH4C8WPSs">youtu.be/jLFH4C8WPSs</a></p>
+</div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">22 / 24</div></div>
+</section>
+
+<section id="folie-23" data-name="q18" aria-roledescription="Folie" aria-label="Folie 23 von 24" class="alt">
+<div class="top">
+<p class="eyebrow">Frage 18 · Zugang</p>
+<h2 class="q">Was ist ein „Extranet“?</h2>
+</div>
+<div class="two">
+<div class="stack">
+<div class="answer fragment">
+<p class="lbl">Antwort</p>
+<p class="atext">Eine <b>Erweiterung des Intranets</b>: Auch ausgewählte <b>Außenstehende</b> erhalten mit Zugangsdaten Zugriff und können mit dem Unternehmen kommunizieren.</p>
+</div>
+<div class="praxis fragment">
+<svg class="praxis-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+<p class="praxis-t"><span class="hl">Beispiel:</span> Ein Lettershop oder externer Callcenter-Dienstleister holt sich Adresslisten und Kampagnen-Infos über das Extranet.</p>
+</div>
+</div>
+<div class="ring1 rise" style="--i:1">
+<div class="rh"><svg class="rh-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><p class="rt">Internet</p></div>
+<p class="rp">öffentlich – für alle</p>
+<div class="ring2">
+<div class="rh"><svg class="rh-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg><p class="rt">Extranet</p></div>
+<p class="rp">Partner, Dienstleister, Kunden – mit Zugangsdaten</p>
+<div class="ring3">
+<div class="rh"><svg class="rh-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><p class="rt">Intranet</p></div>
+<p class="rp">nur Mitarbeitende</p>
+</div>
+</div>
+</div>
+</div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">23 / 24</div></div>
+</section>
+
+<section id="folie-24" data-name="merke" aria-roledescription="Folie" aria-label="Folie 24 von 24" class="dark">
+<div class="top">
+<p class="eyebrow-l">Zusammenfassung</p>
+<h2 class="q-l">Das Wichtigste auf einen Blick</h2>
+</div>
+<div class="c3">
+<div class="m-card rise" style="--i:0"><svg class="m-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><h3 class="m-t">Netzwerk</h3><p class="m-p">Verbundene Rechner, die miteinander kommunizieren.</p></div>
+<div class="m-card rise" style="--i:1"><svg class="m-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><h3 class="m-t">Intra · Extra · Inter</h3><p class="m-p">Intern – mit Partnern – öffentlich für alle.</p></div>
+<div class="m-card rise" style="--i:2"><svg class="m-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><h3 class="m-t">LAN · WAN · GAN</h3><p class="m-p">Lokal – mehrere Standorte – weltweit. WLAN = per Funk.</p></div>
+<div class="m-card rise" style="--i:3"><svg class="m-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg><h3 class="m-t">Client &amp; Server</h3><p class="m-p">Der Client fragt an, der Server antwortet.</p></div>
+<div class="m-card rise" style="--i:4"><svg class="m-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg><h3 class="m-t">Protokolle</h3><p class="m-p">Regeln: TCP/IP, HTTP(S), FTP, SMTP, IMAP, POP3.</p></div>
+<div class="m-card rise" style="--i:5"><svg class="m-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg><h3 class="m-t">URL &amp; VPN</h3><p class="m-p">URL = Webadresse, TLD = Endung. VPN = sicherer Tunnel.</p></div>
+</div>
+<div class="foot"><p class="foot-t" style="color:#BFC8DA">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg" style="color:#BFC8DA">24 / 24</div></div>
+</section>
+
+</div>
+</main>
+<nav class="leiste" aria-label="Folien steuern">
+<div class="links" id="links">
+<select class="wahl" id="wahl" aria-label="Zu Folie springen"></select>
+</div>
+<button class="knopf" id="zurueck" type="button" aria-label="Zurück">◀ Zurück</button>
+<span class="stand" id="stand" aria-live="polite">1 / 1</span>
+<button class="knopf haupt" id="weiter" type="button" aria-label="Weiter">Weiter ▶</button>
+<div class="rechts">
+<button class="knopf" id="vollbild" type="button" hidden>⛶ Vollbild</button>
+</div>
+</nav>
+<script>
+(function () {
+  var folien = Array.prototype.slice.call(document.querySelectorAll('#rahmen section'));
+  var rahmen = document.getElementById('rahmen'), buehne = document.getElementById('buehne');
+  var stand = document.getElementById('stand'), wahl = document.getElementById('wahl');
+  var weiterK = document.getElementById('weiter'), zurueckK = document.getElementById('zurueck');
+  var nr = 0;
+
+  folien.forEach(function (f, i) {
+    var t = f.querySelector('h1, h2');
+    var o = document.createElement('option');
+    o.value = i; o.textContent = (i + 1) + '. ' + (t ? t.textContent.replace(/\s+/g, ' ') : 'Folie');
+    wahl.appendChild(o);
+  });
+
+  function frags(f) { return Array.prototype.slice.call(f.querySelectorAll('.fragment')); }
+
+  function zeige(i, alleAufgedeckt) {
+    if (i < 0 || i >= folien.length) return;
+    folien[nr].classList.remove('aktiv');
+    nr = i;
+    frags(folien[nr]).forEach(function (e) { e.classList.toggle('visible', !!alleAufgedeckt); });
+    folien[nr].classList.add('aktiv');
+    stand.textContent = 'Folie ' + (nr + 1) + ' / ' + folien.length;
+    wahl.value = nr;
+    try { history.replaceState(null, '', '#folie-' + (nr + 1)); } catch (e) {}
+    knoepfe();
+  }
+  function knoepfe() {
+    var offen = frags(folien[nr]).some(function (e) { return !e.classList.contains('visible'); });
+    zurueckK.disabled = nr === 0 && !frags(folien[nr]).some(function (e) { return e.classList.contains('visible'); });
+    weiterK.disabled = nr === folien.length - 1 && !offen;
+    weiterK.textContent = offen ? 'Aufdecken ▶' : 'Weiter ▶';
+  }
+  function weiter() {
+    var naechste = frags(folien[nr]).filter(function (e) { return !e.classList.contains('visible'); })[0];
+    if (naechste) { naechste.classList.add('visible'); knoepfe(); }
+    else zeige(nr + 1, false);
+  }
+  function zurueck() {
+    var sichtbar = frags(folien[nr]).filter(function (e) { return e.classList.contains('visible'); });
+    if (sichtbar.length) { sichtbar[sichtbar.length - 1].classList.remove('visible'); knoepfe(); }
+    else zeige(nr - 1, true);
+  }
+
+  function anpassen() {
+    var w = buehne.clientWidth, h = buehne.clientHeight;
+    var s = Math.min(w / 1920, h / 1080);
+    rahmen.style.transform = 'translate(' + ((w - 1920 * s) / 2) + 'px,' + ((h - 1080 * s) / 2) + 'px) scale(' + s + ')';
+  }
+
+  weiterK.addEventListener('click', weiter);
+  zurueckK.addEventListener('click', zurueck);
+  wahl.addEventListener('change', function () { zeige(+wahl.value, false); wahl.blur(); });
+
+  document.addEventListener('keydown', function (e) {
+    var t = e.target.tagName;
+    if (t === 'SELECT' || t === 'INPUT') return;
+    var k = e.key;
+    if ((k === 'Enter' || k === ' ') && (t === 'BUTTON' || t === 'A')) return;
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter', '2', '3', '4', '5'].indexOf(k) >= 0) { e.preventDefault(); weiter(); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace', '1'].indexOf(k) >= 0) { e.preventDefault(); zurueck(); }
+    else if (k === 'Home') { e.preventDefault(); zeige(0, false); }
+    else if (k === 'End') { e.preventDefault(); zeige(folien.length - 1, false); }
+  });
+
+  var x0 = null, y0 = null;
+  buehne.addEventListener('touchstart', function (e) { if (e.touches.length === 1) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; } }, { passive: true });
+  buehne.addEventListener('touchend', function (e) {
+    if (x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) { if (dx < 0) weiter(); else zurueck(); }
+  });
+  document.addEventListener('contextmenu', function (e) { if (e.target.tagName !== 'A') e.preventDefault(); });
+
+  // Echtes Vollbild nur am PC (iPad/iPhone zeigen sonst bei Tastendruck eine Warnung)
+  var ios = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var vb = document.getElementById('vollbild');
+  if (document.fullscreenEnabled && !ios) {
+    vb.hidden = false;
+    vb.addEventListener('click', function () {
+      if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen();
+    });
+    document.addEventListener('fullscreenchange', function () { vb.textContent = document.fullscreenElement ? '✕ Vollbild aus' : '⛶ Vollbild'; });
+  }
+
+  // Hell/Dunkel-Schalter in die Leiste holen
+  document.addEventListener('DOMContentLoaded', function () {
+    var tt = document.querySelector('.theme-toggle');
+    if (tt) document.getElementById('links').prepend(tt);
+  });
+
+  window.addEventListener('resize', anpassen);
+  window.addEventListener('orientationchange', function () { setTimeout(anpassen, 200); });
+  var start = 0, m = /folie-(\d+)/.exec(location.hash);
+  if (m) start = Math.min(folien.length, Math.max(1, +m[1])) - 1;
+  folien[0].classList.add('aktiv');
+  zeige(start, false);
+  anpassen();
+})();
+</script>
+</body>
+</html>

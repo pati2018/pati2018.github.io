@@ -246,6 +246,54 @@ section {
 .fragment.visible { opacity: 1; transform: translateY(0px); }
 
 
+/* ===== Quiz-Folien ===== */
+.rahmen section.quiz { gap: 24px; }
+.qz-kopf { display: flex; justify-content: space-between; align-items: center; }
+.qz-dots { display: flex; gap: 12px; }
+.qz-dot { width: 26px; height: 26px; border-radius: 50%; background: #D9D3C5; border: 4px solid transparent; box-sizing: border-box; }
+.qz-dot.jetzt { border-color: #14213D; background: #FFFDF9; }
+.qz-dot.gut { background: #2C7A3C; }
+.qz-dot.halb { background: #E2711D; }
+.qz-dot.loes { background: #9AA6BF; }
+.qz-body { flex: 1; display: flex; flex-direction: column; gap: 24px; min-height: 0; }
+.qz-meta { display: flex; gap: 18px; align-items: center; }
+.qz-typ { font-family: 'Bricolage Grotesque', Arial, sans-serif; font-size: 26px; font-weight: 700; padding: 6px 22px; border-radius: 40px; background: #2F5BD3; color: #F7F5F0; }
+.qz-nr { font-size: 26px; color: #5C6577; font-weight: 700; }
+.qz-frage { font-family: 'Bricolage Grotesque', Arial, sans-serif; font-size: 52px; font-weight: 600; line-height: 1.12; letter-spacing: -1px; color: #14213D; }
+.qz-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.qz-opt, .qz-chip { -webkit-appearance: none; appearance: none; cursor: pointer; color: #14213D; font-family: 'Atkinson Hyperlegible', Arial, sans-serif; }
+.qz-opt { display: flex; align-items: center; gap: 24px; min-height: 118px; padding: 18px 28px; border-radius: 22px; border: 4px solid #E2DCCD; background: #FFFDF9; font-size: 32px; font-weight: 700; line-height: 1.25; text-align: left; box-shadow: 0 8px 22px rgba(20,33,61,.07); }
+.qz-opts.wf .qz-opt { min-height: 190px; font-size: 48px; justify-content: center; }
+.qz-nrk { flex: none; width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 700; color: #14213D; }
+.sw1 { background: #E5484D; } .sw2 { background: #F28C28; } .sw3 { background: #F5C518; } .sw4 { background: #3BA55C; } .sw5 { background: #3F8EE8; }
+.qz-opt.ok, .qz-chip.ok { border-color: #2C7A3C; background: #DFF0E2; }
+.qz-opt.no, .qz-chip.no { border-color: #C2412D; background: #FBE3DE; animation: wackel .45s ease; }
+.qz-opt.no { opacity: .75; }
+.qz-opt:disabled, .qz-chip:disabled { cursor: default; }
+.qz-opt:focus-visible, .qz-chip:focus-visible, .qz-nochmal:focus-visible { outline: 6px solid #2F5BD3; outline-offset: 3px; }
+.qz-rows { display: flex; flex-direction: column; gap: 14px; }
+.qz-row { display: flex; align-items: center; gap: 20px; background: #FFFDF9; border-radius: 20px; padding: 12px 14px 12px 28px; border: 4px solid transparent; box-shadow: 0 6px 18px rgba(20,33,61,.06); }
+.qz-row.dran { border-color: #2F5BD3; }
+.qz-row.ok { border-color: #2C7A3C; background: #EEF7F0; }
+.qz-row-t { flex: 1; font-size: 30px; line-height: 1.3; color: #14213D; }
+.qz-row.ok .qz-row-t::before { content: '✓ '; color: #2C7A3C; font-weight: 700; }
+.qz-chips { display: flex; gap: 12px; flex: none; }
+.qz-chip { display: flex; align-items: center; gap: 10px; min-height: 68px; padding: 6px 20px 6px 8px; border-radius: 18px; border: 4px solid #E2DCCD; background: #F7F5F0; font-size: 28px; font-weight: 700; }
+.qz-chip .qz-nrk { width: 48px; height: 48px; font-size: 26px; }
+.qz-row.ok .qz-chip:not(.ok) { opacity: .35; }
+.qz-fb { font-size: 30px; line-height: 1.35; padding: 18px 28px; border-radius: 18px; color: #14213D; }
+.qz-fb:empty { display: none; }
+.qz-fb.gut { background: #DFF0E2; color: #1E5A2B; }
+.qz-fb.no { background: #FBE3DE; color: #8A2A1C; }
+.qz-fb.loes { background: #E6EAF2; }
+.qz-ende { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 26px; text-align: center; }
+.qz-sterne { font-size: 120px; letter-spacing: 24px; color: #F5C518; line-height: 1; }
+.qz-sterne .leer { color: #D9D3C5; }
+.qz-gross { font-family: 'Bricolage Grotesque', Arial, sans-serif; font-size: 88px; font-weight: 700; color: #14213D; }
+.qz-sub { font-size: 38px; color: #4A5568; }
+.qz-nochmal { min-height: 80px; padding: 10px 36px; border-radius: 20px; border: 4px solid #14213D; background: #FFFDF9; color: #14213D; font: 700 32px 'Atkinson Hyperlegible', Arial, sans-serif; cursor: pointer; }
+@keyframes wackel { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-12px); } 75% { transform: translateX(12px); } }
+
 /* ===== Steuerleiste ===== */
 .leiste {
   display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;
@@ -283,7 +331,7 @@ section {
 <body>
 <main class="buehne" id="buehne" aria-live="polite">
 <div class="rahmen" id="rahmen">
-<section id="folie-1" data-name="cover" aria-roledescription="Folie" aria-label="Folie 1 von 24" class="dark cover">
+<section id="folie-1" data-name="cover" aria-roledescription="Folie" aria-label="Folie 1 von 28" class="dark cover">
 <svg class="cover-net fade" width="740" height="780" viewBox="0 0 740 780" aria-label="Vernetzte Computer rund um eine Kundenservice-Zentrale">
 <g stroke="#5B8DEF" stroke-width="2" opacity="0.35">
 <line x1="140" y1="170" x2="420" y2="100"/><line x1="420" y1="100" x2="640" y2="240"/><line x1="640" y1="240" x2="680" y2="520"/><line x1="680" y1="520" x2="460" y2="690"/><line x1="460" y1="690" x2="170" y2="630"/><line x1="170" y1="630" x2="60" y2="400"/><line x1="60" y1="400" x2="140" y2="170"/>
@@ -316,7 +364,7 @@ section {
 </div>
 </section>
 
-<section id="folie-2" data-name="agenda" aria-roledescription="Folie" aria-label="Folie 2 von 24" class="alt">
+<section id="folie-2" data-name="agenda" aria-roledescription="Folie" aria-label="Folie 2 von 28" class="alt">
 <div class="top">
 <p class="eyebrow">Überblick · 18 Fragen</p>
 <h2 class="q">Worum geht’s heute?</h2>
@@ -329,12 +377,12 @@ section {
 </div>
 <div class="praxis rise" style="--i:4">
 <svg class="praxis-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
-<p class="praxis-t"><span class="hl">So arbeiten wir:</span> Erst die Frage lesen und selbst überlegen – mit dem nächsten Klick erscheint die Antwort. Zu jeder Frage gibt es ein Beispiel aus dem Dialogmarketing.</p>
+<p class="praxis-t"><span class="hl">So arbeiten wir:</span> Erst die Frage lesen und selbst überlegen – mit dem nächsten Klick erscheint die Antwort. Nach jedem Block gibt es ein kurzes Quiz zum Mitmachen.</p>
 </div>
-<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">2 / 24</div></div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">2 / 28</div></div>
 </section>
 
-<section id="folie-3" data-name="q01" aria-roledescription="Folie" aria-label="Folie 3 von 24">
+<section id="folie-3" data-name="q01" aria-roledescription="Folie" aria-label="Folie 3 von 28">
 <div class="top">
 <p class="eyebrow">Frage 1 · Netzwerke</p>
 <h2 class="q">Was versteht man grundsätzlich unter einem Rechner-Netzwerk?</h2>
@@ -366,10 +414,10 @@ section {
 <p class="cap">Das einfachste Netzwerk: zwei Rechner, ein Kabel.</p>
 </div>
 </div>
-<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">3 / 24</div></div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">3 / 28</div></div>
 </section>
 
-<section id="folie-4" data-name="q02" aria-roledescription="Folie" aria-label="Folie 4 von 24">
+<section id="folie-4" data-name="q02" aria-roledescription="Folie" aria-label="Folie 4 von 28">
 <div class="top">
 <p class="eyebrow">Frage 2 · Netzwerke</p>
 <h2 class="q">Welche beiden Arten von Rechner-Netzwerken unterscheidet man bezüglich der „Öffentlichkeit“?</h2>
@@ -390,10 +438,10 @@ section {
 <svg class="praxis-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
 <p class="praxis-t"><span class="hl">Im Dialogmarketing:</span> Gesprächsleitfäden, Schichtpläne und Kampagnen-Infos liegen im Intranet. Online-Shop und Kontaktformular sind im Internet für alle Kundinnen und Kunden erreichbar.</p>
 </div>
-<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">4 / 24</div></div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">4 / 28</div></div>
 </section>
 
-<section id="folie-5" data-name="q03" aria-roledescription="Folie" aria-label="Folie 5 von 24">
+<section id="folie-5" data-name="q03" aria-roledescription="Folie" aria-label="Folie 5 von 28">
 <div class="top">
 <p class="eyebrow">Frage 3 · Netzwerke</p>
 <h2 class="q">Internet und World Wide Web (WWW) – gibt es einen Unterschied?</h2>
@@ -421,10 +469,10 @@ section {
 <p class="cap">Wer „im Internet surft“, nutzt eigentlich das WWW.</p>
 </div>
 </div>
-<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">5 / 24</div></div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">5 / 28</div></div>
 </section>
 
-<section id="folie-6" data-name="q04" aria-roledescription="Folie" aria-label="Folie 6 von 24">
+<section id="folie-6" data-name="q04" aria-roledescription="Folie" aria-label="Folie 6 von 28">
 <div class="top">
 <p class="eyebrow">Frage 4 · Netzwerke</p>
 <h2 class="q">Welche drei Arten von Rechner-Netzwerken unterscheidet man bezüglich der „räumlichen Entfernung“?</h2>
@@ -453,10 +501,10 @@ section {
 <div class="scale-bar"></div>
 <div class="scale-l"><p class="scale-t">Raum · Gebäude</p><p class="scale-t">Stadt · Region · Land</p><p class="scale-t">ganze Welt</p></div>
 </div>
-<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">6 / 24</div></div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">6 / 28</div></div>
 </section>
 
-<section id="folie-7" data-name="q05" aria-roledescription="Folie" aria-label="Folie 7 von 24" class="alt">
+<section id="folie-7" data-name="q05" aria-roledescription="Folie" aria-label="Folie 7 von 28" class="alt">
 <div class="top">
 <p class="eyebrow">Frage 5 · Zuordnen</p>
 <h2 class="q">Ordnen Sie zu: LAN, GAN, WAN, WLAN</h2>
@@ -471,10 +519,10 @@ section {
 <svg class="warn-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
 <p class="warn-t"><b>WLAN</b> = Wireless LAN: ein lokales Netz über Funk statt Kabel – wie das WLAN im Büro oder im Homeoffice.</p>
 </div>
-<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">7 / 24</div></div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">7 / 28</div></div>
 </section>
 
-<section id="folie-8" data-name="q06" aria-roledescription="Folie" aria-label="Folie 8 von 24">
+<section id="folie-8" data-name="q06" aria-roledescription="Folie" aria-label="Folie 8 von 28">
 <div class="top">
 <p class="eyebrow">Frage 6 · Netzwerke</p>
 <h2 class="q">Worin unterscheiden sich Client-Server- und Peer-to-Peer-Netzwerke?</h2>
@@ -502,10 +550,10 @@ section {
 <svg class="warn-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
 <p class="warn-t"><b>Achtung Tauschbörsen:</b> Wer dort urheberrechtlich geschützte Inhalte tauscht, macht sich strafbar.</p>
 </div>
-<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">8 / 24</div></div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">8 / 28</div></div>
 </section>
 
-<section id="folie-9" data-name="rollen" aria-roledescription="Folie" aria-label="Folie 9 von 24" class="alt">
+<section id="folie-9" data-name="rollen" aria-roledescription="Folie" aria-label="Folie 9 von 28" class="alt">
 <div class="top">
 <p class="eyebrow">Zusatz · Netzwerke</p>
 <h2 class="q">Host, Client, Server – wer macht was?</h2>
@@ -534,10 +582,10 @@ section {
 <svg class="praxis-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
 <p class="praxis-t"><span class="hl">Wie im Restaurant:</span> Der Gast (Client) bestellt, der Kellner (Server) bringt das Essen – und das Restaurant ist der Gastgeber (Host).</p>
 </div>
-<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">9 / 24</div></div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">9 / 28</div></div>
 </section>
 
-<section id="folie-10" data-name="ablauf" aria-roledescription="Folie" aria-label="Folie 10 von 24">
+<section id="folie-10" data-name="ablauf" aria-roledescription="Folie" aria-label="Folie 10 von 28">
 <div class="top">
 <p class="eyebrow">Zusatz · Client-Server-Prinzip im WWW</p>
 <h2 class="q">Was passiert beim Aufruf einer Website?</h2>
@@ -558,10 +606,15 @@ section {
 <div class="step fragment"><p class="step-n">5</p><h3 class="step-t">Anzeigen</h3><p class="step-p">Der Browser „übersetzt“ das HTML-Dokument und zeigt die Seite an.</p></div>
 </div>
 </div>
-<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">10 / 24</div></div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">10 / 28</div></div>
 </section>
 
-<section id="folie-11" data-name="q07" aria-roledescription="Folie" aria-label="Folie 11 von 24">
+<section id="folie-11" class="quiz" data-quiz="0" data-titel="Quiz: Netzwerke" aria-roledescription="Folie" aria-label="Folie 11 von 28: Quiz Netzwerke">
+<div class="qz-kopf"><p class="eyebrow">Quiz · Netzwerke</p><div class="qz-dots"></div></div>
+<div class="qz-body"></div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">11 / 28</div></div>
+</section>
+<section id="folie-12" data-name="q07" aria-roledescription="Folie" aria-label="Folie 12 von 28">
 <div class="top">
 <p class="eyebrow">Frage 7 · Internet</p>
 <h2 class="q">Erklären Sie den Begriff „Internet“.</h2>
@@ -601,10 +654,10 @@ section {
 <p class="lab" style="left:0px;top:520px">Heimnetz</p>
 </div>
 </div>
-<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">11 / 24</div></div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">12 / 28</div></div>
 </section>
 
-<section id="folie-12" data-name="q08" aria-roledescription="Folie" aria-label="Folie 12 von 24">
+<section id="folie-13" data-name="q08" aria-roledescription="Folie" aria-label="Folie 13 von 28">
 <div class="top">
 <p class="eyebrow">Frage 8 · Internet</p>
 <h2 class="q">Nennen Sie drei bekannte Internetdienste.</h2>
@@ -636,10 +689,10 @@ section {
 <svg class="praxis-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
 <p class="praxis-t"><span class="hl">Im Dialogmarketing</span> laufen alle drei Dienste zusammen: Die Kundin sieht die Kampagne im Web, bekommt eine E-Mail und ruft per Telefon (VoIP) im Service an.</p>
 </div>
-<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">12 / 24</div></div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">13 / 28</div></div>
 </section>
 
-<section id="folie-13" data-name="q09" aria-roledescription="Folie" aria-label="Folie 13 von 24" class="alt">
+<section id="folie-14" data-name="q09" aria-roledescription="Folie" aria-label="Folie 14 von 28" class="alt">
 <div class="top">
 <p class="eyebrow">Frage 9 · Internet</p>
 <h2 class="q">Wo liegen die Wurzeln des Internets?</h2>
@@ -659,10 +712,15 @@ section {
 <svg class="video-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
 <p class="video-t">Video-Tipp: So ist das Internet gewachsen – <a class="lnk" target="_blank" rel="noopener" href="https://youtu.be/EKm6pJSI-aQ">youtu.be/EKm6pJSI-aQ</a></p>
 </div>
-<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">13 / 24</div></div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">14 / 28</div></div>
 </section>
 
-<section id="folie-14" data-name="q10" aria-roledescription="Folie" aria-label="Folie 14 von 24">
+<section id="folie-15" class="quiz" data-quiz="1" data-titel="Quiz: Internet" aria-roledescription="Folie" aria-label="Folie 15 von 28: Quiz Internet">
+<div class="qz-kopf"><p class="eyebrow">Quiz · Internet</p><div class="qz-dots"></div></div>
+<div class="qz-body"></div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">15 / 28</div></div>
+</section>
+<section id="folie-16" data-name="q10" aria-roledescription="Folie" aria-label="Folie 16 von 28">
 <div class="top">
 <p class="eyebrow">Frage 10 · Protokolle</p>
 <h2 class="q">Was versteht man unter einem „Protokoll“?</h2>
@@ -679,10 +737,10 @@ section {
 <tr class="tr-a"><td class="td-k">Transport</td><td>LKW, Flugzeug, Schiff</td><td>Kabel, Glasfaser, Funk</td></tr>
 </table>
 </div>
-<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">14 / 24</div></div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">16 / 28</div></div>
 </section>
 
-<section id="folie-15" data-name="dienste" aria-roledescription="Folie" aria-label="Folie 15 von 24" class="alt">
+<section id="folie-17" data-name="dienste" aria-roledescription="Folie" aria-label="Folie 17 von 28" class="alt">
 <div class="top">
 <p class="eyebrow">Zusatz · Protokolle</p>
 <h2 class="q">Protokolle und Dienste im Überblick</h2>
@@ -706,10 +764,10 @@ section {
 <div class="video"><svg class="video-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg><p class="video-t">Video: FTP-Server einfach erklärt – <a class="lnk" target="_blank" rel="noopener" href="https://youtu.be/p93wITqI8ao">youtu.be/p93wITqI8ao</a></p></div>
 <div class="video"><svg class="video-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg><p class="video-t">Video: IMAP, POP3, SMTP – was ist das? – <a class="lnk" target="_blank" rel="noopener" href="https://youtu.be/O187AH5s3hY">youtu.be/O187AH5s3hY</a></p></div>
 </div>
-<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">15 / 24</div></div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">17 / 28</div></div>
 </section>
 
-<section id="folie-16" data-name="q11" aria-roledescription="Folie" aria-label="Folie 16 von 24">
+<section id="folie-18" data-name="q11" aria-roledescription="Folie" aria-label="Folie 18 von 28">
 <div class="top">
 <p class="eyebrow">Frage 11 · Protokolle</p>
 <h2 class="q">Wie heißt das wichtigste Protokoll im Internet?</h2>
@@ -732,10 +790,10 @@ section {
 <div class="praxis"><p class="praxis-t"><span class="hl">TCP</span> zerlegt die Daten in Pakete, nummeriert sie und prüft, ob alles vollständig ankommt.</p></div>
 <div class="praxis"><p class="praxis-t"><span class="hl">IP</span> gibt jedem Paket die Adresse mit, damit es seinen Weg zum Ziel findet.</p></div>
 </div>
-<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">16 / 24</div></div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">18 / 28</div></div>
 </section>
 
-<section id="folie-17" data-name="q12" aria-roledescription="Folie" aria-label="Folie 17 von 24">
+<section id="folie-19" data-name="q12" aria-roledescription="Folie" aria-label="Folie 19 von 28">
 <div class="top">
 <p class="eyebrow">Frage 12 · Protokolle</p>
 <h2 class="q">Geben Sie die englische Bezeichnung der folgenden Protokolle an.</h2>
@@ -751,10 +809,10 @@ section {
 <tr class="tr-b"><td class="td-k">f) POP3</td><td>Post Office Protocol Version 3</td><td>E-Mails abrufen und herunterladen</td></tr>
 </table>
 </div>
-<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">17 / 24</div></div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">19 / 28</div></div>
 </section>
 
-<section id="folie-18" data-name="q13" aria-roledescription="Folie" aria-label="Folie 18 von 24" class="alt">
+<section id="folie-20" data-name="q13" aria-roledescription="Folie" aria-label="Folie 20 von 28" class="alt">
 <div class="top">
 <p class="eyebrow">Frage 13 · Protokolle</p>
 <h2 class="q">Entscheiden Sie, welches Protokoll zum Einsatz kommt.</h2>
@@ -770,10 +828,15 @@ section {
 <svg class="video-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
 <p class="video-t">Video: Sicher surfen einfach erklärt – <a class="lnk" target="_blank" rel="noopener" href="https://youtu.be/tW1-CmggG9s">youtu.be/tW1-CmggG9s</a></p>
 </div>
-<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">18 / 24</div></div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">20 / 28</div></div>
 </section>
 
-<section id="folie-19" data-name="q14" aria-roledescription="Folie" aria-label="Folie 19 von 24">
+<section id="folie-21" class="quiz" data-quiz="2" data-titel="Quiz: Protokolle" aria-roledescription="Folie" aria-label="Folie 21 von 28: Quiz Protokolle">
+<div class="qz-kopf"><p class="eyebrow">Quiz · Protokolle</p><div class="qz-dots"></div></div>
+<div class="qz-body"></div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">21 / 28</div></div>
+</section>
+<section id="folie-22" data-name="q14" aria-roledescription="Folie" aria-label="Folie 22 von 28">
 <div class="top">
 <p class="eyebrow">Frage 14 · Adressen</p>
 <h2 class="q">Was kennzeichnet eine „Top Level Domain“?</h2>
@@ -798,10 +861,10 @@ section {
 </div>
 </div>
 </div>
-<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">19 / 24</div></div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">22 / 28</div></div>
 </section>
 
-<section id="folie-20" data-name="q15" aria-roledescription="Folie" aria-label="Folie 20 von 24" class="alt">
+<section id="folie-23" data-name="q15" aria-roledescription="Folie" aria-label="Folie 23 von 28" class="alt">
 <div class="top">
 <p class="eyebrow">Frage 15 · Adressen</p>
 <h2 class="q">Geben Sie jeweils die Top Level Domain an.</h2>
@@ -818,10 +881,10 @@ section {
 <svg class="praxis-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
 <p class="praxis-t"><span class="hl">Gut zu wissen:</span> Österreich ist <b>.at</b> – nach dem Landeskürzel „AT“ (Austria), nicht „.ö“.</p>
 </div>
-<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">20 / 24</div></div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">23 / 28</div></div>
 </section>
 
-<section id="folie-21" data-name="q16" aria-roledescription="Folie" aria-label="Folie 21 von 24">
+<section id="folie-24" data-name="q16" aria-roledescription="Folie" aria-label="Folie 24 von 28">
 <div class="top">
 <p class="eyebrow">Frage 16 · Adressen</p>
 <h2 class="q">Geben Sie eine andere Bezeichnung für die Webadresse an und nennen Sie ein Beispiel.</h2>
@@ -839,10 +902,10 @@ section {
 <div class="seg"><p class="seg-c5">index.html</p><p class="seg-l">Datei</p></div>
 </div>
 </div>
-<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">21 / 24</div></div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">24 / 28</div></div>
 </section>
 
-<section id="folie-22" data-name="q17" aria-roledescription="Folie" aria-label="Folie 22 von 24">
+<section id="folie-25" data-name="q17" aria-roledescription="Folie" aria-label="Folie 25 von 28">
 <div class="top">
 <p class="eyebrow">Frage 17 · Zugang</p>
 <h2 class="q">Welche Technik erlaubt es Mitarbeitenden, über das Internet sicher auf das Firmennetzwerk zuzugreifen?</h2>
@@ -863,10 +926,10 @@ section {
 <svg class="video-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
 <p class="video-t">Video: VPN – nicht nur für den Zugang zum Firmennetz – <a class="lnk" target="_blank" rel="noopener" href="https://youtu.be/jLFH4C8WPSs">youtu.be/jLFH4C8WPSs</a></p>
 </div>
-<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">22 / 24</div></div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">25 / 28</div></div>
 </section>
 
-<section id="folie-23" data-name="q18" aria-roledescription="Folie" aria-label="Folie 23 von 24" class="alt">
+<section id="folie-26" data-name="q18" aria-roledescription="Folie" aria-label="Folie 26 von 28" class="alt">
 <div class="top">
 <p class="eyebrow">Frage 18 · Zugang</p>
 <h2 class="q">Was ist ein „Extranet“?</h2>
@@ -895,10 +958,15 @@ section {
 </div>
 </div>
 </div>
-<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">23 / 24</div></div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">26 / 28</div></div>
 </section>
 
-<section id="folie-24" data-name="merke" aria-roledescription="Folie" aria-label="Folie 24 von 24" class="dark">
+<section id="folie-27" class="quiz" data-quiz="3" data-titel="Quiz: Adressen &amp; Zugang" aria-roledescription="Folie" aria-label="Folie 27 von 28: Quiz Adressen &amp; Zugang">
+<div class="qz-kopf"><p class="eyebrow">Quiz · Adressen &amp; Zugang</p><div class="qz-dots"></div></div>
+<div class="qz-body"></div>
+<div class="foot"><p class="foot-t">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg">27 / 28</div></div>
+</section>
+<section id="folie-28" data-name="merke" aria-roledescription="Folie" aria-label="Folie 28 von 28" class="dark">
 <div class="top">
 <p class="eyebrow-l">Zusammenfassung</p>
 <h2 class="q-l">Das Wichtigste auf einen Blick</h2>
@@ -911,7 +979,7 @@ section {
 <div class="m-card rise" style="--i:4"><svg class="m-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg><h3 class="m-t">Protokolle</h3><p class="m-p">Regeln: TCP/IP, HTTP(S), FTP, SMTP, IMAP, POP3.</p></div>
 <div class="m-card rise" style="--i:5"><svg class="m-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg><h3 class="m-t">URL &amp; VPN</h3><p class="m-p">URL = Webadresse, TLD = Endung. VPN = sicherer Tunnel.</p></div>
 </div>
-<div class="foot"><p class="foot-t" style="color:#BFC8DA">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg" style="color:#BFC8DA">24 / 24</div></div>
+<div class="foot"><p class="foot-t" style="color:#BFC8DA">Netzwerke &amp; Internet · Dialogmarketing</p><div class="pg" style="color:#BFC8DA">28 / 28</div></div>
 </section>
 
 </div>
@@ -924,50 +992,292 @@ section {
 <span class="stand" id="stand" aria-live="polite">1 / 1</span>
 <button class="knopf haupt" id="weiter" type="button" aria-label="Weiter">Weiter ▶</button>
 <div class="rechts">
+<button class="knopf" id="ton" type="button" aria-pressed="true">🔊 Ton</button>
 <button class="knopf" id="vollbild" type="button" hidden>⛶ Vollbild</button>
 </div>
 </nav>
 <script>
+window.QUIZ = [{"titel":"Netzwerke","fragen":[{"typ":"mc","frage":"Was ist ein Rechner-Netzwerk?","opts":["Ein einzelner, besonders schneller Computer","Ein Verbund von Rechnern, die miteinander kommunizieren","Ein Programm zum Schreiben von E-Mails","Ein Drucker mit WLAN"],"richtig":1,"erkl":"Rechner werden verbunden, damit sie Daten austauschen und Geräte gemeinsam nutzen können."},{"typ":"zu","frage":"Welches Netz ist das? Ordnen Sie zu.","kat":["LAN","WLAN","WAN","GAN"],"items":[["Kabel-Netz in einem Callcenter-Gebäude","LAN"],["Laptop im Homeoffice, per Funk am Router","WLAN"],["Filialen in Saarbrücken, Trier und Mainz sind verbunden","WAN"],["Eine Kundin in Spanien besucht den Online-Shop","GAN"]],"erkl":"L = lokal, W = weit, G = global. WLAN ist ein LAN über Funk."},{"typ":"wf","frage":"Im Intranet eines Unternehmens kann jeder Mensch auf der Welt die Daten sehen.","richtig":false,"erkl":"Falsch: Das Intranet ist geschlossen – nur für Mitarbeitende."},{"typ":"mc","frage":"Was gilt für ein Peer-to-Peer-Netzwerk?","opts":["Es gibt einen zentralen Server","Jeder Rechner ist gleichberechtigt – Client und Server zugleich","Es besteht immer nur aus zwei Rechnern","Es funktioniert nur ohne Kabel"],"richtig":1,"erkl":"„Peer“ heißt „der Gleichgestellte“ – es gibt keinen zentralen Server."},{"typ":"zu","frage":"Client oder Server? Ordnen Sie zu.","kat":["Client","Server"],"items":[["Browser am Arbeitsplatz","Client"],["Kundendatenbank, die Anfragen beantwortet","Server"],["CRM-Programm, das Kundendaten anfordert","Client"],["Webserver mit dem Online-Shop","Server"]],"erkl":"Der Client fordert an, der Server bedient (to serve = bedienen)."},{"typ":"rf","frage":"Aufruf einer Website: Tippen Sie die Schritte in der richtigen Reihenfolge an.","items":["Browser fordert die Seite an","Verbindung zum Webserver","Server sucht die HTML-Datei","Datei wird zum Browser gesendet","Browser zeigt die Seite an"],"erkl":"Anfordern – Verbinden – Suchen – Senden – Anzeigen."}]},{"titel":"Internet","fragen":[{"typ":"wf","frage":"Internet und World Wide Web sind dasselbe.","richtig":false,"erkl":"Falsch: Das Internet ist das Netz der Netze, das WWW nur ein Dienst darin."},{"typ":"mc","frage":"Welcher ist KEIN Internetdienst?","opts":["WWW","E-Mail","VoIP","Tabellenkalkulation"],"richtig":3,"erkl":"Eine Tabellenkalkulation ist ein Programm, kein Dienst im Internet."},{"typ":"zu","frage":"Welcher Internetdienst wird genutzt?","kat":["WWW","E-Mail","VoIP"],"items":[["Newsletter an 5.000 Kundinnen und Kunden","E-Mail"],["Eine Kundin öffnet die Landingpage der Kampagne","WWW"],["Ein Agent telefoniert über das Headset am PC","VoIP"]],"erkl":"Im Dialogmarketing laufen alle drei Dienste zusammen."},{"typ":"mc","frage":"Wo liegen die Wurzeln des Internets?","opts":["In einem Forschungsprojekt des US-Verteidigungsministeriums","Bei einer Suchmaschinen-Firma","Bei der Deutschen Post","Bei einem Telefonanbieter in Japan"],"richtig":0,"erkl":"Das ARPANET (1969) war ein Forschungsprojekt des US-Verteidigungsministeriums."},{"typ":"rf","frage":"Zeitstrahl: Tippen Sie die Ereignisse vom ältesten zum neuesten an.","items":["ARPANET verbindet vier Rechner (1969)","Die erste E-Mail (1971)","TCP/IP wird Standard (1983)","Das WWW wird öffentlich (1991)"],"erkl":"1969 – 1971 – 1983 – 1991."}]},{"titel":"Protokolle","fragen":[{"typ":"mc","frage":"Was ist ein Protokoll in der Computertechnik?","opts":["Die Mitschrift einer Besprechung","Regeln, wie Computer Daten austauschen","Ein Virenschutz-Programm","Ein besonderes Netzwerkkabel"],"richtig":1,"erkl":"Protokolle sind Kommunikationsregeln – wie DIN 5008 für Geschäftsbriefe."},{"typ":"zu","frage":"Welches Protokoll kommt zum Einsatz?","kat":["SMTP","IMAP / POP3","FTP","HTTPS"],"items":[["Ein Mailing an Kunden verschicken","SMTP"],["Neue E-Mails im Postfach abrufen","IMAP / POP3"],["Die neue Landingpage auf den Webserver hochladen","FTP"],["Eine Kundin bezahlt im Online-Shop","HTTPS"]],"erkl":"Senden = SMTP, Abrufen = IMAP/POP3, Hochladen = FTP, sicher surfen = HTTPS."},{"typ":"wf","frage":"Für Online-Banking reicht HTTP ohne S völlig aus.","richtig":false,"erkl":"Falsch: Bei Bank, Bestellung und Login muss HTTPS laufen – erkennbar am Schloss."},{"typ":"mc","frage":"Wofür steht das „S“ in HTTPS?","opts":["Schnell","Server","Secure – sicher","Standard"],"richtig":2,"erkl":"Secure: Die Daten werden verschlüsselt übertragen."},{"typ":"mc","frage":"Was erledigt TCP?","opts":["Es zerlegt Daten in nummerierte Pakete und prüft, ob alles ankommt","Es zeigt Webseiten auf dem Bildschirm an","Es legt die Endung .de fest","Es schützt vor Viren"],"richtig":0,"erkl":"TCP zerlegt und prüft – IP adressiert die Pakete."}]},{"titel":"Adressen & Zugang","fragen":[{"typ":"zu","frage":"Welche Top Level Domain passt?","kat":[".at",".it",".org",".com"],"items":[["Ein Reisebüro in Österreich",".at"],["Ein Hotel in Italien",".it"],["Ein gemeinnütziger Verein",".org"],["Ein weltweit tätiger Online-Händler",".com"]],"erkl":"Die TLD zeigt das Land oder die Art des Angebots."},{"typ":"mc","frage":"Welcher Teil von „https://www.reise-service.de/angebote“ ist die Top Level Domain?","opts":["https","reise-service",".de","/angebote"],"richtig":2,"erkl":"Die TLD ist die Endung des Domain-Namens: .de"},{"typ":"mc","frage":"Eine Agentin im Homeoffice braucht sicheren Zugriff auf das CRM der Firma. Was nutzt sie?","opts":["VPN","WLAN","FTP","POP3"],"richtig":0,"erkl":"VPN baut einen verschlüsselten Tunnel durch das Internet ins Firmennetz."},{"typ":"zu","frage":"Intranet, Extranet oder Internet?","kat":["Intranet","Extranet","Internet"],"items":[["Schichtplan nur für Beschäftigte","Intranet"],["Der Lettershop holt Adresslisten mit Passwort ab","Extranet"],["Kontaktformular für alle Kunden","Internet"]],"erkl":"Innen nur Mitarbeitende, dazwischen Partner mit Zugang, außen alle."},{"typ":"wf","frage":"„URL“ ist eine andere Bezeichnung für die Webadresse.","richtig":true,"erkl":"Richtig: URL = Uniform Resource Locator."}]}];
 (function () {
   var folien = Array.prototype.slice.call(document.querySelectorAll('#rahmen section'));
   var rahmen = document.getElementById('rahmen'), buehne = document.getElementById('buehne');
   var stand = document.getElementById('stand'), wahl = document.getElementById('wahl');
   var weiterK = document.getElementById('weiter'), zurueckK = document.getElementById('zurueck');
+  var tonK = document.getElementById('ton');
   var nr = 0;
 
+  /* ---------- Ton ---------- */
+  var tonAn = true, ctx = null;
+  try { tonAn = localStorage.getItem('netzwerke-ton') !== 'aus'; } catch (e) {}
+  function tonText() { tonK.textContent = tonAn ? '🔊 Ton' : '🔇 Ton aus'; tonK.setAttribute('aria-pressed', tonAn ? 'true' : 'false'); }
+  tonText();
+  tonK.addEventListener('click', function () {
+    tonAn = !tonAn; tonText();
+    try { localStorage.setItem('netzwerke-ton', tonAn ? 'an' : 'aus'); } catch (e) {}
+  });
+  function klang(art) {
+    if (!tonAn) return;
+    try {
+      if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+      if (ctx.state === 'suspended') ctx.resume();
+      var noten = art === 'gut' ? [659, 880] : art === 'ende' ? [523, 659, 784, 1047] : art === 'tipp' ? [440] : [196, 165];
+      var t = ctx.currentTime;
+      noten.forEach(function (f, i) {
+        var o = ctx.createOscillator(), g = ctx.createGain();
+        o.type = art === 'no' ? 'triangle' : 'sine'; o.frequency.value = f;
+        var s = t + i * (art === 'ende' ? 0.12 : 0.1);
+        g.gain.setValueAtTime(0.0001, s);
+        g.gain.exponentialRampToValueAtTime(art === 'tipp' ? 0.08 : 0.22, s + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, s + (art === 'ende' ? 0.5 : 0.28));
+        o.connect(g); g.connect(ctx.destination); o.start(s); o.stop(s + 0.6);
+      });
+    } catch (e) {}
+  }
+
+  /* ---------- Quiz ---------- */
+  var SW = ['sw1', 'sw2', 'sw3', 'sw4', 'sw5'];
+  var TYP = { mc: 'Multiple Choice', wf: 'Wahr oder falsch?', zu: 'Zuordnen', rf: 'Reihenfolge' };
+  var qs = {}; // Zustand je Quiz-Folie
+  function mischen(a) { var o = a.slice(), gleich = true; while (gleich) { a = o.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var x = a[i]; a[i] = a[j]; a[j] = x; } gleich = a.length > 1 && a.every(function (v, k) { return v === o[k]; }); } return a; }
+  function el(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
+  function nrk(i) { return el('span', 'qz-nrk ' + SW[i % 5], String(i + 1)); }
+
+  function quizNeu(sec) {
+    var d = QUIZ[+sec.dataset.quiz];
+    var st = { sec: sec, d: d, i: 0, ende: false, fr: [] };
+    d.fragen.forEach(function (f) {
+      var z = { geloest: false, fehler: 0, loes: false, zeit: 0 };
+      if (f.typ === 'mc') z.reihe = mischen(f.opts.map(function (_, k) { return k; }));
+      if (f.typ === 'zu') { z.items = mischen(f.items.map(function (_, k) { return k; })); z.ok = {}; z.falsch = {}; }
+      if (f.typ === 'rf') { z.reihe = mischen(f.items.map(function (_, k) { return k; })); z.weit = 0; }
+      if (f.typ === 'mc' || f.typ === 'wf') z.falsch = {};
+      st.fr.push(z);
+    });
+    qs[sec.id] = st;
+    return st;
+  }
+  function quizVon(sec) { return qs[sec.id] || quizNeu(sec); }
+
+  function punkte(st) { return st.fr.filter(function (z) { return z.geloest && !z.loes && z.fehler === 0; }).length; }
+
+  function dots(st) {
+    var box = st.sec.querySelector('.qz-dots'); box.innerHTML = '';
+    st.fr.forEach(function (z, k) {
+      var c = 'qz-dot';
+      if (z.geloest) c += z.loes ? ' loes' : z.fehler ? ' halb' : ' gut';
+      if (!st.ende && k === st.i) c += ' jetzt';
+      var dd = el('span', c); dd.setAttribute('aria-hidden', 'true'); box.appendChild(dd);
+    });
+  }
+
+  function rueckmeldung(st, art, text) {
+    var fb = st.sec.querySelector('.qz-fb');
+    fb.className = 'qz-fb ' + art; fb.textContent = text;
+  }
+
+  function geloest(st, z, f, durchLoesung) {
+    z.geloest = true; z.loes = !!durchLoesung; z.zeit = Date.now();
+    zeichne(st);
+    if (durchLoesung) { rueckmeldung(st, 'loes', 'Lösung: ' + f.erkl); klang('tipp'); }
+    else { rueckmeldung(st, 'gut', (z.fehler ? '✓ Jetzt stimmt’s! ' : '✓ Richtig! ') + f.erkl); klang('gut'); }
+    knoepfe();
+  }
+
+  function zeichne(st) {
+    var body = st.sec.querySelector('.qz-body'); body.innerHTML = '';
+    dots(st);
+    if (st.ende) {
+      var p = punkte(st), n = st.fr.length, sterne = p === n ? 3 : p >= n * 0.6 ? 2 : p >= 1 ? 1 : 0;
+      var box = el('div', 'qz-ende');
+      var s = el('p', 'qz-sterne'); s.setAttribute('aria-label', sterne + ' von 3 Sternen');
+      for (var k = 0; k < 3; k++) { var sp = el('span', k < sterne ? '' : 'leer', '★'); s.appendChild(sp); }
+      box.appendChild(s);
+      box.appendChild(el('p', 'qz-gross', p === n ? 'Perfekt!' : sterne >= 2 ? 'Stark gemacht!' : 'Geschafft!'));
+      box.appendChild(el('p', 'qz-sub', p + ' von ' + n + ' Aufgaben beim ersten Versuch richtig'));
+      var b = el('button', 'qz-nochmal', '↺ Quiz nochmal'); b.type = 'button';
+      b.addEventListener('click', function () { var neu = quizNeu(st.sec); zeichne(neu); knoepfe(); });
+      box.appendChild(b);
+      body.appendChild(box);
+      return;
+    }
+    var f = st.d.fragen[st.i], z = st.fr[st.i];
+    var meta = el('div', 'qz-meta');
+    meta.appendChild(el('p', 'qz-typ', TYP[f.typ]));
+    meta.appendChild(el('p', 'qz-nr', 'Aufgabe ' + (st.i + 1) + ' von ' + st.fr.length));
+    body.appendChild(meta);
+    body.appendChild(el('h2', 'qz-frage', f.frage));
+
+    if (f.typ === 'mc' || f.typ === 'wf') {
+      var opts = f.typ === 'wf' ? ['Wahr', 'Falsch'] : f.opts;
+      var richtig = f.typ === 'wf' ? (f.richtig ? 0 : 1) : f.richtig;
+      var reihe = f.typ === 'wf' ? [0, 1] : z.reihe;
+      var g = el('div', 'qz-opts' + (f.typ === 'wf' ? ' wf' : ''));
+      reihe.forEach(function (oi, pos) {
+        var b = el('button', 'qz-opt'); b.type = 'button';
+        b.appendChild(nrk(pos)); b.appendChild(el('span', '', opts[oi]));
+        if (z.geloest && oi === richtig) b.classList.add('ok');
+        if (z.falsch[oi]) b.classList.add('no');
+        b.disabled = z.geloest || !!z.falsch[oi];
+        b.addEventListener('click', function () {
+          if (z.geloest) return;
+          if (oi === richtig) geloest(st, z, f);
+          else { z.fehler++; z.falsch[oi] = true; zeichne(st); rueckmeldung(st, 'no', '✗ Leider falsch – noch ein Versuch!'); klang('no'); }
+        });
+        g.appendChild(b);
+      });
+      body.appendChild(g);
+    } else if (f.typ === 'zu') {
+      var rows = el('div', 'qz-rows'), dranGesetzt = false;
+      z.items.forEach(function (ii) {
+        var it = f.items[ii], r = el('div', 'qz-row');
+        var ok = z.geloest || z.ok[ii];
+        if (ok) r.classList.add('ok');
+        else if (!dranGesetzt) { r.classList.add('dran'); dranGesetzt = true; }
+        r.appendChild(el('p', 'qz-row-t', it[0]));
+        var chips = el('div', 'qz-chips');
+        f.kat.forEach(function (k, ki) {
+          var c = el('button', 'qz-chip'); c.type = 'button';
+          c.appendChild(nrk(ki)); c.appendChild(el('span', '', k));
+          c.setAttribute('aria-label', it[0] + ': ' + k);
+          if (ok && k === it[1]) c.classList.add('ok');
+          if (!ok && z.falsch[ii + '|' + k]) c.classList.add('no');
+          c.disabled = ok || !!z.falsch[ii + '|' + k];
+          c.addEventListener('click', function () {
+            if (z.ok[ii] || z.geloest) return;
+            if (k === it[1]) {
+              z.ok[ii] = true;
+              var alle = f.items.every(function (_, x) { return z.ok[x]; });
+              if (alle) geloest(st, z, f);
+              else { zeichne(st); rueckmeldung(st, 'gut', '✓ Passt!'); klang('gut'); fokusErster(st); }
+            } else { z.fehler++; z.falsch[ii + '|' + k] = true; zeichne(st); rueckmeldung(st, 'no', '✗ Passt nicht – noch ein Versuch!'); klang('no'); fokusErster(st); }
+          });
+          chips.appendChild(c);
+        });
+        r.appendChild(chips);
+        rows.appendChild(r);
+      });
+      body.appendChild(rows);
+    } else if (f.typ === 'rf') {
+      var g2 = el('div', 'qz-opts');
+      z.reihe.forEach(function (ii, pos) {
+        var b = el('button', 'qz-opt'); b.type = 'button';
+        var fertig = z.geloest || ii < z.weit;
+        var badge = nrk(pos);
+        if (fertig) { badge.textContent = '✓' + (ii + 1); badge.style.fontSize = '24px'; b.classList.add('ok'); }
+        if (!fertig && z.falsch && z.falsch[ii] === z.weit) b.classList.add('no');
+        b.appendChild(badge); b.appendChild(el('span', '', f.items[ii]));
+        b.disabled = fertig;
+        b.addEventListener('click', function () {
+          if (z.geloest || ii < z.weit) return;
+          z.falsch = {};
+          if (ii === z.weit) {
+            z.weit++;
+            if (z.weit === f.items.length) geloest(st, z, f);
+            else { zeichne(st); rueckmeldung(st, 'gut', '✓ Schritt ' + z.weit + ' stimmt – weiter so!'); klang('gut'); }
+          } else { z.fehler++; z.falsch[ii] = z.weit; zeichne(st); rueckmeldung(st, 'no', '✗ Das ist noch nicht Schritt ' + (z.weit + 1) + '.'); klang('no'); }
+        });
+        g2.appendChild(b);
+      });
+      body.appendChild(g2);
+    }
+    var fb = el('p', 'qz-fb'); fb.setAttribute('aria-live', 'polite');
+    body.appendChild(fb);
+    if (z.geloest) rueckmeldung(st, z.loes ? 'loes' : 'gut', (z.loes ? 'Lösung: ' : '✓ ') + f.erkl);
+  }
+  function fokusErster(st) {
+    var b = st.sec.querySelector('.qz-row.dran .qz-chip:not(:disabled)');
+    if (b && document.activeElement && document.activeElement.classList.contains('qz-chip')) b.focus();
+  }
+
+  function loesungZeigen(st) {
+    var f = st.d.fragen[st.i], z = st.fr[st.i];
+    if (f.typ === 'zu') f.items.forEach(function (_, x) { z.ok[x] = true; });
+    if (f.typ === 'rf') z.weit = f.items.length;
+    geloest(st, z, f, true);
+  }
+
+  // Taste 1–5 = Antwort Nummer 1–5 (SoundWhacker)
+  function quizTaste(st, k) {
+    if (st.ende) return false;
+    var f = st.d.fragen[st.i], z = st.fr[st.i];
+    if (z.geloest) return Date.now() - z.zeit > 800 ? (weiter(), true) : true;
+    var knoepfeListe;
+    if (f.typ === 'zu') knoepfeListe = st.sec.querySelectorAll('.qz-row.dran .qz-chip');
+    else knoepfeListe = st.sec.querySelectorAll('.qz-opt');
+    var b = knoepfeListe[k];
+    if (b && !b.disabled) b.click();
+    return true;
+  }
+
+  /* ---------- Folien ---------- */
   folien.forEach(function (f, i) {
     var t = f.querySelector('h1, h2');
     var o = document.createElement('option');
-    o.value = i; o.textContent = (i + 1) + '. ' + (t ? t.textContent.replace(/\s+/g, ' ') : 'Folie');
+    o.value = i; o.textContent = (i + 1) + '. ' + (f.dataset.titel || (t ? t.textContent.replace(/\s+/g, ' ') : 'Folie'));
     wahl.appendChild(o);
   });
 
   function frags(f) { return Array.prototype.slice.call(f.querySelectorAll('.fragment')); }
+  function istQuiz(f) { return f.classList.contains('quiz'); }
 
-  function zeige(i, alleAufgedeckt) {
+  function zeige(i, rueckwaerts) {
     if (i < 0 || i >= folien.length) return;
     folien[nr].classList.remove('aktiv');
     nr = i;
-    frags(folien[nr]).forEach(function (e) { e.classList.toggle('visible', !!alleAufgedeckt); });
-    folien[nr].classList.add('aktiv');
+    var f = folien[nr];
+    frags(f).forEach(function (e) { e.classList.toggle('visible', !!rueckwaerts); });
+    if (istQuiz(f)) {
+      var st = quizVon(f);
+      if (!rueckwaerts && st.ende) st = quizNeu(f);
+      zeichne(st);
+    }
+    f.classList.add('aktiv');
     stand.textContent = 'Folie ' + (nr + 1) + ' / ' + folien.length;
     wahl.value = nr;
     try { history.replaceState(null, '', '#folie-' + (nr + 1)); } catch (e) {}
     knoepfe();
   }
   function knoepfe() {
-    var offen = frags(folien[nr]).some(function (e) { return !e.classList.contains('visible'); });
-    zurueckK.disabled = nr === 0 && !frags(folien[nr]).some(function (e) { return e.classList.contains('visible'); });
+    var f = folien[nr];
+    if (istQuiz(f)) {
+      var st = quizVon(f);
+      zurueckK.disabled = false;
+      weiterK.disabled = false;
+      if (st.ende) weiterK.textContent = nr === folien.length - 1 ? 'Ende' : 'Weiter ▶';
+      else if (!st.fr[st.i].geloest) weiterK.textContent = 'Lösung ▶';
+      else weiterK.textContent = st.i === st.fr.length - 1 ? 'Ergebnis ▶' : 'Nächste Aufgabe ▶';
+      if (st.ende && nr === folien.length - 1) weiterK.disabled = true;
+      return;
+    }
+    var offen = frags(f).some(function (e) { return !e.classList.contains('visible'); });
+    zurueckK.disabled = nr === 0 && !frags(f).some(function (e) { return e.classList.contains('visible'); });
     weiterK.disabled = nr === folien.length - 1 && !offen;
     weiterK.textContent = offen ? 'Aufdecken ▶' : 'Weiter ▶';
   }
   function weiter() {
-    var naechste = frags(folien[nr]).filter(function (e) { return !e.classList.contains('visible'); })[0];
+    var f = folien[nr];
+    if (istQuiz(f)) {
+      var st = quizVon(f);
+      if (st.ende) { zeige(nr + 1, false); return; }
+      if (!st.fr[st.i].geloest) { loesungZeigen(st); return; }
+      if (st.i < st.fr.length - 1) st.i++;
+      else { st.ende = true; klang('ende'); }
+      zeichne(st); knoepfe();
+      return;
+    }
+    var naechste = frags(f).filter(function (e) { return !e.classList.contains('visible'); })[0];
     if (naechste) { naechste.classList.add('visible'); knoepfe(); }
     else zeige(nr + 1, false);
   }
   function zurueck() {
-    var sichtbar = frags(folien[nr]).filter(function (e) { return e.classList.contains('visible'); });
+    var f = folien[nr];
+    if (istQuiz(f)) {
+      var st = quizVon(f);
+      if (st.ende) { st.ende = false; zeichne(st); knoepfe(); return; }
+      if (st.i > 0) { st.i--; zeichne(st); knoepfe(); return; }
+      zeige(nr - 1, true); return;
+    }
+    var sichtbar = frags(f).filter(function (e) { return e.classList.contains('visible'); });
     if (sichtbar.length) { sichtbar[sichtbar.length - 1].classList.remove('visible'); knoepfe(); }
     else zeige(nr - 1, true);
   }
@@ -984,9 +1294,12 @@ section {
 
   document.addEventListener('keydown', function (e) {
     var t = e.target.tagName;
-    if (t === 'SELECT' || t === 'INPUT') return;
+    if (t === 'SELECT' || t === 'INPUT' || e.ctrlKey || e.metaKey || e.altKey) return;
     var k = e.key;
     if ((k === 'Enter' || k === ' ') && (t === 'BUTTON' || t === 'A')) return;
+    if (/^[1-5]$/.test(k) && istQuiz(folien[nr])) {
+      if (quizTaste(quizVon(folien[nr]), +k - 1)) { e.preventDefault(); return; }
+    }
     if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter', '2', '3', '4', '5'].indexOf(k) >= 0) { e.preventDefault(); weiter(); }
     else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace', '1'].indexOf(k) >= 0) { e.preventDefault(); zurueck(); }
     else if (k === 'Home') { e.preventDefault(); zeige(0, false); }

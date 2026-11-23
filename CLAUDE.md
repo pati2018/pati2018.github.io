@@ -218,9 +218,12 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
     Skills & Plugins, Connectors, Routinen, Artefakt, Harness) den nummerierten Stellen der Menschenfigur aus
     `ki-mensch/` zuordnen (antippen statt ziehen, Prüfen-Knopf, Erklärung bei richtigen Antworten). Von `ki-mensch/` verlinkt.
   - `schule/netzwerke-internet/` – Präsentation „Netzwerke & Internet“ für Kaufleute im Dialogmarketing (18 Fragen zur Technik,
-    Buch S. 328–332): 24 Folien, Antworten erscheinen per Klick („Aufdecken ▶“), Tasten → / Leertaste / 2–5 = weiter, ← / 1 = zurück, Wischen,
-    Folienauswahl, `#folie-N`. Gebaut aus dem claude.ai-Folien-Artefakt https://claude.ai/artifact/6rAVAjr3bYrkPYBfaqy7Y6
-    (Bauskript im Scratchpad: Folien-HTML + `x-icon` → eigene SVG-Symbole, lokale Schriften Bricolage/Atkinson). Änderungen am besten im Artefakt machen und neu bauen.
+    Buch S. 328–332): 28 Folien, Antworten erscheinen per Klick („Aufdecken ▶“), Tasten → / Leertaste / 2–5 = weiter, ← / 1 = zurück, Wischen,
+    Folienauswahl, `#folie-N`. **Nach jedem Block eine Quiz-Folie** (4 Runden, je 5–6 Aufgaben: Multiple Choice, Wahr/Falsch,
+    Zuordnen, Reihenfolge; Ton an/aus, Sterne am Ende, auf Quiz-Folien wählen Tasten/SW 1–5 die Antwort).
+    **Quelle im Repo:** `schule/netzwerke-internet/quelle/` – Folien (`slides/`, `deck.css`, `deck.json` aus dem claude.ai-Artefakt
+    https://claude.ai/artifact/6rAVAjr3bYrkPYBfaqy7Y6, dort ohne Quiz), Quizfragen `quiz-daten.js`, Seitenrahmen + Quiz-Logik `seite.html`.
+    Neu bauen: `node schule/netzwerke-internet/quelle/build.js schule/netzwerke-internet/quelle schule/netzwerke-internet/index.html`.
   - Das **Azubi-Recruiting Dashboard** (`schule/azubi-recruiting/`) wurde auf Wunsch wieder entfernt (Ordner, Eintrag, Anleitung gelöscht; steckt noch in der Git-Geschichte). Projekt pausiert.
   - Eintrag `audioguide` (kein eigener Ordner): **OMIVARO Audioguide** – eigene Web-App des Nutzers unter https://guide.gueck.eu
     – Zielgruppe: Tourist-Informationen/Tourismuszentralen und Gemeinden sowie deren Gäste

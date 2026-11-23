@@ -25,7 +25,7 @@ window.APPS = [
   {
     id: "netzwerke-internet",
     titel: "Netzwerke & Internet",
-    kurz: "Präsentation für Kaufleute im Dialogmarketing: 18 Fragen und Antworten zu Netzwerken, Internet, Protokollen, Webadressen, VPN und Extranet – mit Skizzen und Beispielen aus dem Kundenservice. Antworten erscheinen erst auf Klick.",
+    kurz: "Präsentation für Kaufleute im Dialogmarketing: 18 Fragen und Antworten zu Netzwerken, Internet, Protokollen, Webadressen, VPN und Extranet – mit Skizzen und Beispielen aus dem Kundenservice. Antworten erscheinen erst auf Klick, nach jedem Block ein Quiz zum Mitmachen.",
     link: "https://pati2018.github.io/schule/netzwerke-internet/",
     repo: "https://github.com/pati2018/pati2018.github.io/tree/main/schule/netzwerke-internet",
     kategorie: "Dialogmarketing",

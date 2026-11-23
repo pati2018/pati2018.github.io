@@ -72,6 +72,9 @@
   /* echtes Vollbild am iPad: oben links liegt das Schließen-Kreuz von Safari – Noten etwas nach rechts */
   body.vollbild.echt #band{margin-left:64px}
   body.vollbild #vollAus{display:block}
+  /* „Von vorne“ im Vollbild: unten links, gleiche dezente Art wie „Vollbild aus“ */
+  #vonVorne{display:none;position:fixed;bottom:max(10px,env(safe-area-inset-bottom));left:max(12px,env(safe-area-inset-left));z-index:60;min-height:52px;padding:6px 20px;font-size:19px;font-weight:700;color:#e8ecf6;background:#243052;border:2px solid #6f7fa8;border-radius:14px;box-shadow:0 4px 14px rgba(0,0,0,.45)}
+  body.vollbild.vonVorneOk #vonVorne{display:block}
   #vollbild{background:#3f8ee8;color:#fff;border-color:#3f8ee8;font-weight:800}   /* hellblau wie SW5, rechts in der Titelzeile */
   .top h1{order:0;flex:1 1 calc(100% - 560px)} #sprache{order:1;margin-left:auto} .top > a{order:1} #vollbild{order:2}
   .top .modi{order:3;flex:1 1 100%}   /* Titel, Anleitung, Vollbild in einer Reihe – darunter alle Modi */
@@ -109,7 +112,7 @@
   .toast{position:fixed;left:50%;top:18px;transform:translateX(-50%);background:#111a33;border:2px solid var(--gold);color:#fff;padding:10px 20px;border-radius:14px;font-weight:800;font-size:20px;z-index:50}
   @media (prefers-reduced-motion:reduce){#recDot{animation:none}}
   /* Zarter gelber Rand für alle nicht aktiven Knöpfe und alle Auswahlfelder (Wunsch Nutzer) */
-  .modi button:not([aria-pressed="true"]), .knopf:not(#vollbild):not(#vollAus):not([aria-pressed="true"]){border:1.5px solid var(--gold)}
+  .modi button:not([aria-pressed="true"]), .knopf:not(#vollbild):not(#vollAus):not(#vonVorne):not([aria-pressed="true"]){border:1.5px solid var(--gold)}
   .leiste select, .akkZeile select, #recName{border:1.5px solid var(--gold)}
   /* Lied/Akkorde einspielen: von der Leiste bleibt nur die Klangauswahl */
   body.einspielen #hauptLeiste > :not(#klangLabel){display:none!important}
@@ -167,6 +170,7 @@
   </div>
   </div></div>
   <p class="hinweis" id="schlagInfo" hidden></p>
+  <button class="knopf" id="vonVorne" title="Lied von vorne beginnen">↺ Von vorne</button>
   <button class="knopf" id="vollAus" title="Vollbild beenden (Esc)" aria-label="Vollbild beenden">✕ Vollbild aus</button>
   <p class="hinweis" id="info"></p>
 
@@ -698,7 +702,7 @@ function modus(m){
   if(m==='auf'){ $('klavier').before($('recZeile')); $('klavier').after($('recDanach')); }
   if(m==='akk'){ $('akkPanel').append($('recZeile'),$('recDanach')); }
   nummernZeigen();
-  $('start').hidden=m!=='vor'; $('tempoLabel').hidden=m!=='vor';   /* Start und Tempo nur beim Vorspielen */ $('start').textContent='▶ Start';
+  $('tempoLabel').hidden=m!=='vor';   /* Tempo nur beim Vorspielen; der Start-Knopf heißt beim Mitspielen „Von vorne“ */ $('start').textContent=m==='mit'?'↺ Von vorne':'▶ Start';
   /* Beim Einspielen nur das Nötige zeigen: Klaviatur bzw. Akkordwahl – keine Leisten, keine Spielarten */
   $('hauptLeiste').hidden=m==='lieder'||m==='imp';   /* beim Einspielen nur der Klang (CSS), bei „Meine Lieder“ gar nichts */ $('mitLeiste').hidden=m!=='mit'; $('info').hidden=ein; $('schlagInfo').hidden=ein||!istSchlag(); spielartZeigen();
   pos=0; zug=0; spieler=[]; bandBauen(); info(); setTimeout(buehneAnpassen,30); setTimeout(buehneAnpassen,700);
@@ -740,6 +744,7 @@ function impKnopf(i,an){ document.querySelectorAll('#impWahl .swk').forEach((k,j
 function akkKnopf(i,an){ const k=document.querySelector('#akkWahl .swk[data-i="'+i+'"]'); if(k) k.classList.toggle('an',an); }
 function akkWahlSperren(j){ document.querySelectorAll('#akkWahl select').forEach(x=>x.disabled=j); }
 function spielartZeigen(){
+  vonVorneZeigen();
   const eff=st.modus==='mit'?spielart():st.spielart;
   document.querySelectorAll('#spielart button').forEach(b=>{ b.setAttribute('aria-pressed',b.dataset.s===eff);
     if(b.dataset.s==='fest'){ b.disabled=!fuenf(); b.title=fuenf()?'Jeder SoundWhacker hat seinen eigenen Ton oder Akkord':'Nur bei ⭐-Liedern (höchstens 5 Töne)'; } });
@@ -752,7 +757,13 @@ $('spielart').onclick=e=>{ const b=e.target.closest('button'); if(!b) return; b.
 $('festZeile').onclick=e=>{ const b=e.target.closest('[data-f]'); if(!b) return; b.blur(); st.festFrei=b.dataset.f==='1'; merke(); spielartZeigen(); info(); };
 $('reiheZeile').onclick=e=>{ const b=e.target.closest('[data-n]'); if(!b) return; b.blur(); st.reiheN=+b.dataset.n; merke(); spielartZeigen(); pos=0; zug=0; bandBauen(); };
 document.querySelector('.modi').onclick=e=>{ const b=e.target.closest('button'); if(b) modus(b.dataset.m); };
-$('start').onclick=()=>{ if(st.modus==='mit'){ pos=0; zug=0; spieler=[]; bandBauen(); audio(); } else start(); };
+/* Von vorne: Mitspielen = Lied wieder beim ersten Ton/Akkord; Vorspielen = Band von vorne vorspielen lassen */
+function vonVorne(){ audio(); if(st.modus==='mit'){ stimmen.forEach((v,i)=>loslassen(i)); pos=0; zug=0; spieler=[]; bandBauen(); toast(L('↺ Von vorne','↺ From the start')); }
+  else if(st.modus==='vor'){ stopp(); start(); } }
+$('start').onclick=()=>{ if(st.modus==='mit') vonVorne(); else start(); };
+$('vonVorne').onclick=()=>{ $('vonVorne').blur(); vonVorne(); };
+/* Start-/Von-vorne-Knopf nur beim Vorspielen und Mitspielen mit Lied (nicht beim Improvisieren) */
+function vonVorneZeigen(){ const ok=st.modus==='vor'||(st.modus==='mit'&&st.spielart!=='imp'); $('start').hidden=!ok; document.body.classList.toggle('vonVorneOk',ok); }
 $('lied').onchange=()=>{ st.lied=$('lied').value; merke(); liedSetzen(); $('lied').blur(); };
 $('aufstellung').value=st.aufstellung; $('aufstellung').onchange=()=>{ st.aufstellung=$('aufstellung').value; merke(); aufstellen(false); $('aufstellung').blur(); };
 // Klangauswahl in Rubriken
@@ -828,7 +839,7 @@ const UE={'▶ Vorspielen':'▶ Band plays','🙌 Mitspielen':'🙌 Play along',
   'Gib jedem SoundWhacker einen Akkord (Dur, Moll oder Septim). Dann „● Aufnahme starten“ und die Akkordfolge mit SW1–5 spielen – mit den SoundWhackern, den Tasten 1–5 oder den farbigen Knöpfen.':'Give each SoundWhacker a chord (major, minor or seventh). Then press “● Start recording” and play the chord progression with SW1–5 – with the SoundWhackers, the keys 1–5 or the colored buttons.',
   'Beim Mitspielen mit „🎲 Improvisieren“ spielt jede Berührung eines SoundWhackers einen Zufallston aus dieser Tonart und Skala – jeder SoundWhacker mit seinem eigenen Instrument. Alle dürfen jederzeit spielen.':'When playing along with “🎲 Improvise”, every touch of a SoundWhacker plays a random note from this key and scale – each SoundWhacker with its own instrument. Everyone may play at any time.',
   'Tonart':'Key','Skala':'Scale','Anzahl Töne':'Number of notes','⬇ Alle herunterladen':'⬇ Download all','⬆ Datei hochladen':'⬆ Upload file',
-  '■ Stopp':'■ Stop','↺ Von vorne':'↺ From the start','▶ Auswählen':'▶ Select','✎ Umbenennen':'✎ Rename','⬇ Herunterladen':'⬇ Download','🗑 Löschen':'🗑 Delete',
+  '■ Stopp':'■ Stop','↺ Von vorne':'↺ From the start','Lied von vorne beginnen':'Start the song from the beginning','▶ Auswählen':'▶ Select','✎ Umbenennen':'✎ Rename','⬇ Herunterladen':'⬇ Download','🗑 Löschen':'🗑 Delete',
   'Noch keine eigenen Lieder. Unter „● Lied einspielen“ oder „🎸 Akkorde einspielen“ aufnehmen oder hier eine Datei hochladen.':'No songs of your own yet. Record them under “● Record a song” or “🎸 Record chords”, or upload a file here.',
   'Klang konnte nicht geladen werden':'The sound could not be loaded','Speichern nicht möglich':'Saving is not possible','Bitte einen Namen eingeben':'Please enter a name','Diesen Namen gibt es schon':'This name already exists',
   'Noch keine eigenen Lieder':'No songs of your own yet','Diese Datei passt nicht':'This file does not fit','Keine Lieder in der Datei gefunden':'No songs found in the file',

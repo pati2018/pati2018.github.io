@@ -649,11 +649,11 @@ function meineZeigen(){
   l.forEach(x=>{ const z=document.createElement('div'); z.className='eintrag';
     z.innerHTML='<b></b><button class="knopf" data-a="spielen">▶ Auswählen</button><button class="knopf" data-a="umbenennen">✎ Umbenennen</button><button class="knopf" data-a="laden">⬇ Herunterladen</button><button class="knopf" data-a="loeschen">🗑 Löschen</button>';
     const bb=z.querySelector('b'); bb.dataset.notr=1; bb.textContent=(x.akk?'🎸 ':'')+x.name+' ('+x.noten.length+(x.akk?L(' Akkorde)',' chords)'):L(' Töne)',' notes)'));
-    z.onclick=e=>{ const a=e.target.dataset.a; if(!a) return; const L=eigene(), i=L.findIndex(y=>y.name===x.name);
+    z.onclick=e=>{ const a=e.target.dataset.a; if(!a) return; const LS=eigene(), i=LS.findIndex(y=>y.name===x.name);
       if(a==='spielen'){ st.lied='eigen:'+x.name; merke(); liedListe(); liedSetzen(); modus('vor'); }
-      if(a==='umbenennen'){ const n=(prompt(L('Neuer Name:','New name:'),x.name)||'').trim(); if(!n||n===x.name) return; if(L.some(y=>y.name===n)) return toast('Diesen Namen gibt es schon'); L[i].name=n; eigeneSpeichern(L); if(st.lied==='eigen:'+x.name) st.lied='eigen:'+n; merke(); liedListe(); meineZeigen(); }
-      if(a==='laden') herunter([L[i]],x.name);
-      if(a==='loeschen'){ if(!confirm(L('„'+x.name+'“ wirklich löschen?','Really delete “'+x.name+'”?'))) return; L.splice(i,1); eigeneSpeichern(L); liedListe(); liedSetzen(); meineZeigen(); } };
+      if(a==='umbenennen'){ const n=(prompt(L('Neuer Name:','New name:'),x.name)||'').trim(); if(!n||n===x.name) return; if(LS.some(y=>y.name===n)) return toast('Diesen Namen gibt es schon'); LS[i].name=n; eigeneSpeichern(LS); if(st.lied==='eigen:'+x.name) st.lied='eigen:'+n; merke(); liedListe(); meineZeigen(); }
+      if(a==='laden') herunter([LS[i]],x.name);
+      if(a==='loeschen'){ if(!confirm(L('„'+x.name+'“ wirklich löschen?','Really delete “'+x.name+'”?'))) return; LS.splice(i,1); eigeneSpeichern(LS); liedListe(); liedSetzen(); meineZeigen(); } };
     box.appendChild(z); });
 }
 function herunter(lieder,name){
@@ -667,12 +667,12 @@ $('datei').onchange=async()=>{
   const f=$('datei').files[0]; $('datei').value=''; if(!f) return;
   let neu; try{ const j=JSON.parse(await f.text()); neu=(j.lieder||j).filter(x=>x&&x.name&&Array.isArray(x.noten)&&x.noten.every(n=>typeof n.m==='number'&&typeof n.d==='number')); }catch(e){ return toast('Diese Datei passt nicht'); }
   if(!neu||!neu.length) return toast('Keine Lieder in der Datei gefunden');
-  const L=eigene(); let n=0;
-  neu.forEach(x=>{ const i=L.findIndex(y=>y.name===x.name);
-    const sx=Object.assign({},x.schlag?{schlag:true}:{},x.akk&&Array.isArray(x.set)?{akk:true,set:x.set.slice(0,5).map(v=>typeof v==='number'?v:null)}:{}); if(i<0){ L.push({name:x.name,noten:x.noten,...sx}); n++; return; }
-    if(confirm(L('„'+x.name+'“ gibt es schon.\nOK = überschreiben, Abbrechen = als Kopie behalten','“'+x.name+'” already exists.\nOK = overwrite, Cancel = keep as a copy'))){ L[i]={name:x.name,noten:x.noten,...sx}; n++; }
-    else { let k=2; while(L.some(y=>y.name===x.name+' ('+k+')')) k++; L.push({name:x.name+' ('+k+')',noten:x.noten,...sx}); n++; } });
-  eigeneSpeichern(L); liedListe(); meineZeigen(); toast(n+' Lied'+(n===1?'':'er')+' hochgeladen');
+  const LS=eigene(); let n=0;
+  neu.forEach(x=>{ const i=LS.findIndex(y=>y.name===x.name);
+    const sx=Object.assign({},x.schlag?{schlag:true}:{},x.akk&&Array.isArray(x.set)?{akk:true,set:x.set.slice(0,5).map(v=>typeof v==='number'?v:null)}:{}); if(i<0){ LS.push({name:x.name,noten:x.noten,...sx}); n++; return; }
+    if(confirm(L('„'+x.name+'“ gibt es schon.\nOK = überschreiben, Abbrechen = als Kopie behalten','“'+x.name+'” already exists.\nOK = overwrite, Cancel = keep as a copy'))){ LS[i]={name:x.name,noten:x.noten,...sx}; n++; }
+    else { let k=2; while(LS.some(y=>y.name===x.name+' ('+k+')')) k++; LS.push({name:x.name+' ('+k+')',noten:x.noten,...sx}); n++; } });
+  eigeneSpeichern(LS); liedListe(); meineZeigen(); toast(n+' Lied'+(n===1?'':'er')+' hochgeladen');
 };
 
 // ---------- Bedienung ----------

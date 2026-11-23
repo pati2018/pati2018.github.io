@@ -61,6 +61,11 @@
   /* Vollbild: Seite festhalten – beim Antippen der Figuren darf nichts rutschen (iPad) */
   html:has(body.vollbild){overflow:hidden;overscroll-behavior:none}
   body.vollbild{position:fixed;inset:0;overflow:hidden;overscroll-behavior:none;touch-action:none}
+  html{touch-action:manipulation}   /* nirgends Doppeltipp-Zoom (schnelles Spielen auf Knöpfen/Klaviatur) */
+  /* Vollbild beim Einspielen/Einstellen: passt der Inhalt nicht auf den Bildschirm (iPhone), darf nur er senkrecht rollen –
+     die Klaviatur selbst rollt nie, nichts zoomt, nichts wackelt seitlich */
+  body.vollbild.einspielen{touch-action:pan-y}
+  body.vollbild.einspielen .wrap{height:100%;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding-bottom:76px}
   body.vollbild .buehne, body.vollbild #band{touch-action:none}
   @media (max-height:500px){body.vollbild #band{min-height:56px;padding:4px 12px} body.vollbild #band span{width:36px;height:36px} body.vollbild #band span.akk{font-size:16px;min-width:36px}}
   #vollAus{display:none;position:fixed;bottom:max(10px,env(safe-area-inset-bottom));right:max(12px,env(safe-area-inset-right));z-index:60;min-height:52px;padding:6px 20px;font-size:19px;font-weight:700;color:#e8ecf6;background:#243052;border:2px solid #6f7fa8;border-radius:14px;box-shadow:0 4px 14px rgba(0,0,0,.45)}
@@ -784,7 +789,7 @@ if(window.visualViewport) visualViewport.addEventListener('resize',spaeterAnpass
 // Vollbild: echtes Vollbild nur am PC. Auf iPad/iPhone nur die Bühnenansicht – im echten Vollbild warnt Safari bei jedem
 // Tastendruck („Eingabe im Vollbildmodus“), und SoundWhacker sind Bluetooth-Tastaturen.
 function vollbild(an){
-  const d=document, de=d.documentElement; document.body.classList.toggle('vollbild',an);
+  const d=document, de=d.documentElement; document.body.classList.toggle('vollbild',an); zoomSperre(an); document.querySelector('.wrap').scrollTop=0;
   const touch=navigator.maxTouchPoints>0||/iPad|iPhone|iPod/.test(navigator.userAgent);
   try{ if(an&&!touch){ const f=de.requestFullscreen||de.webkitRequestFullscreen; if(f&&!(d.fullscreenElement||d.webkitFullscreenElement)){ const x=f.call(de); if(x&&x.catch) x.catch(()=>{}); } }
        else if(d.fullscreenElement||d.webkitFullscreenElement){ (d.exitFullscreen||d.webkitExitFullscreen).call(d); } }catch(e){}
@@ -795,7 +800,14 @@ $('vollAus').onclick=()=>{ $('vollAus').blur(); vollbild(false); };
 ['fullscreenchange','webkitfullscreenchange'].forEach(ev=>document.addEventListener(ev,()=>{ const echt=!!(document.fullscreenElement||document.webkitFullscreenElement); document.body.classList.toggle('echt',echt&&navigator.maxTouchPoints>0); if(!echt) document.body.classList.remove('vollbild'); spaeterAnpassen(); setTimeout(buehneAnpassen,450); }));
 window.addEventListener('keydown',e=>{ if(e.key==='Escape'&&document.body.classList.contains('vollbild')) vollbild(false); });
 // iPad: im Vollbild jedes Wischen unterdrücken, sonst wackelt die Seite beim Antippen der Figuren
-document.addEventListener('touchmove',e=>{ if(document.body.classList.contains('vollbild')&&!e.target.closest('#vollAus')) e.preventDefault(); },{passive:false});
+document.addEventListener('touchmove',e=>{ const B=document.body; if(!B.classList.contains('vollbild')||e.target.closest('#vollAus')) return;
+  const w=document.querySelector('.wrap'), rollt=B.classList.contains('einspielen')&&w.scrollHeight>w.clientHeight+2;
+  if(e.touches.length>1||!rollt||e.target.closest('#klavier')) e.preventDefault(); },{passive:false});   // zwei Finger = nie zoomen
+/* iPad-Safari: Zwei-Finger-Zoom und Doppeltipp-Zoom im Vollbild unterbinden (Safari hält sich sonst nicht an touch-action) */
+['gesturestart','gesturechange','gestureend'].forEach(ev=>document.addEventListener(ev,e=>{ if(document.body.classList.contains('vollbild')) e.preventDefault(); },{passive:false}));
+document.addEventListener('dblclick',e=>{ if(document.body.classList.contains('vollbild')) e.preventDefault(); },{passive:false});
+const VP=document.querySelector('meta[name=viewport]'), VP0=VP.getAttribute('content');
+function zoomSperre(an){ VP.setAttribute('content',an?VP0+', maximum-scale=1, user-scalable=no':VP0); }   /* setzt auch einen schon vorhandenen Zoom zurück */
 let tT=0; function toast(t){ let e=document.querySelector('.toast'); if(!e){ e=document.createElement('div'); e.className='toast'; e.setAttribute('role','status'); document.body.appendChild(e); } e.textContent=t; e.hidden=false; clearTimeout(tT); tT=setTimeout(()=>e.hidden=true,2200); }
 // Ton erst nach der ersten Berührung (Browser-Regel) – jede Berührung startet den Klang
 ['pointerdown','keydown','touchstart'].forEach(ev=>window.addEventListener(ev,()=>audio(),{once:true,passive:true}));

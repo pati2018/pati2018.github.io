@@ -2,6 +2,12 @@
 
 Eine **Präsentation für Kaufleute im Dialogmarketing** zum Thema Technik: 18 Fragen und Antworten zu Netzwerken, Internet, Protokollen, Webadressen, VPN und Extranet (Fragen zu den Buchseiten 328–332). Zu jeder Frage gibt es eine passende Skizze und ein Beispiel aus dem Kundenservice – vom CRM-System über den Newsletter bis zum Agent im Homeoffice.
 
+## Als PDF zum Ausdrucken oder Weitergeben
+
+📄 **[Präsentation als PDF öffnen / herunterladen](https://pati2018.github.io/schule/netzwerke-internet/Netzwerke-und-Internet.pdf)** (28 Seiten, Querformat, ca. 4,5 MB)
+
+In der PDF sind **alle Antworten aufgedeckt**. Statt der Quiz-Folien gibt es **Lösungsseiten** mit allen Aufgaben, der richtigen Antwort und einer kurzen Erklärung – gut zum Wiederholen, für die Klassenarbeit oder für Schülerinnen und Schüler, die gefehlt haben.
+
 ## Schnellstart
 
 1. Präsentation öffnen – am besten am Beamer, Smartboard oder iPad im Querformat.

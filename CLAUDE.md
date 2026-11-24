@@ -224,6 +224,9 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
     **Quelle im Repo:** `schule/netzwerke-internet/quelle/` – Folien (`slides/`, `deck.css`, `deck.json` aus dem claude.ai-Artefakt
     https://claude.ai/artifact/6rAVAjr3bYrkPYBfaqy7Y6, dort ohne Quiz), Quizfragen `quiz-daten.js`, Seitenrahmen + Quiz-Logik `seite.html`.
     Neu bauen: `node schule/netzwerke-internet/quelle/build.js schule/netzwerke-internet/quelle schule/netzwerke-internet/index.html`.
+  - `schule/netzwerke-internet/` – Präsentation „Netzwerke & Internet“ (Dialogmarketing, 28 Folien, Antworten auf Klick, 4 Quiz-Folien).
+    **PDF** `schule/netzwerke-internet/Netzwerke-und-Internet.pdf` (alle Antworten aufgedeckt, Quiz als Lösungsseiten), in der Anleitung verlinkt.
+    Neu bauen nach Änderungen: Playwright-Skript (Folien 1920×1080 einzeln aufnehmen, `.fragment` sichtbar, Quiz aus `window.QUIZ` als Lösungsseite) + Bilder zu PDF.
   - Das **Azubi-Recruiting Dashboard** (`schule/azubi-recruiting/`) wurde auf Wunsch wieder entfernt (Ordner, Eintrag, Anleitung gelöscht; steckt noch in der Git-Geschichte). Projekt pausiert.
   - Eintrag `audioguide` (kein eigener Ordner): **OMIVARO Audioguide** – eigene Web-App des Nutzers unter https://guide.gueck.eu
     – Zielgruppe: Tourist-Informationen/Tourismuszentralen und Gemeinden sowie deren Gäste

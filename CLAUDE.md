@@ -156,6 +156,10 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
 - **Als App installieren (PC/Chrome):** Jede App hat ein Manifest (`display: standalone`, Symbole 192 + 512) und ist installierbar
   (geprüft mit Chrome `Page.getInstallabilityErrors`). MIGA hat `miga.webmanifest`, Smart Control `spielen.webmanifest` (Repo soundwhacker-looper).
   In Chrome: Symbol rechts in der Adressleiste oder Menü ⋮ → „Streamen, speichern und teilen“ → „Seite als App installieren …“.
+- **Englische Anleitungen:** In `apps.js` je App optional `en: { titel, kurz }` → Datei `anleitungen/<id>-en.md`, Aufruf `app.html?id=<id>&lang=en`
+  (Seite dann ganz auf Englisch, englische Videos zuerst, Knopf „🌐 Deutsche Anleitung“ / „🌐 English guide“). Auf der Übersicht zusätzlich Knopf „Guide (English)“.
+  Vorhanden für **SoundWhacker Band** (`whacker-band-en.md`) und **Smart Control** (`soundwhacker-spielen-en.md`). Die Band verlinkt im englischen Modus „Guide“ dorthin.
+  **Ändert sich eine deutsche Anleitung, die englische mit anpassen.**
 - **Kein „Quellcode“-Knopf** auf den Anleitungsseiten (`app.html`, `schule/app.html`) – Wunsch Nutzer; `repo` in `apps.js` bleibt nur als Notiz.
 - **Weitere Dateien:** `index.html` (Übersicht), `app.html` (zeigt die Anleitung
   einer App), `anleitungen/<id>.md` (Anleitungen), `style.css`, `theme.js`

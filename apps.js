@@ -26,6 +26,7 @@
 window.APPS = [
   {
     id: "whacker-band",
+    en: { titel: "SoundWhacker Band", kurz: "Five animated figures with SoundWhackers play a song for you – then everyone plays along live: melody, chords, fixed notes or improvisation. With full screen, 30+ sounds, drums and noises, your own songs, English and German." },   // englische Anleitung: anleitungen/whacker-band-en.md
     zaehler: "/whacker-band/",
     titel: "SoundWhacker Band",
     kurz: "Fünf animierte Figuren spielen mit SoundWhackern ein Lied vor – danach spielen die Teilnehmer live mit (Tasten 1–5). Eigene Lieder einspielen, speichern und als Datei weitergeben. Für den Beamer im Workshop.",
@@ -99,6 +100,7 @@ window.APPS = [
   },
   {
     id: "soundwhacker-spielen",
+    en: { titel: "SoundWhacker Smart Control", kurz: "Turns the SoundWhackers into a musical instrument: chords, notes, melodies, arpeggios, improvisation, shared melody, looper and arpeggio maker – for inclusive music making on iPad and PC. English and German." },   // englische Anleitung: anleitungen/soundwhacker-spielen-en.md
     video: [
       { src: "videos/soundwhacker-smart-control.mp4", bild: "videos/soundwhacker-smart-control.jpg", titel: "Die App: SoundWhacker Smart Control", datei: "SoundWhacker-Smart-Control.mp4" },
       { src: "videos/soundwhacker.mp4", bild: "videos/soundwhacker.jpg", titel: "Der SoundWhacker: berühren, verbinden, Musik machen", datei: "SoundWhacker.mp4" },

@@ -37,35 +37,41 @@
     const raw = new URLSearchParams(location.search).get("id"), id = ALIAS[raw] || raw;
     const app = (window.APPS || []).find(a => a.id === id);
     const box = document.getElementById("inhalt");
+    /* Englische Anleitung: app.html?id=…&lang=en, wenn die App in apps.js „en“ hat (Datei anleitungen/<id>-en.md) */
+    const EN = new URLSearchParams(location.search).get("lang") === "en" && !!(app && app.en);
+    const T = EN ? { open: "Open app", guide: "Guide", load: "Loading guide …", none: "There is no guide for this app yet.", dl: "⬇ Download video", hint: "on the iPad: open the video → Share → “Save Video”", all: "← All apps", back: "Back to the overview", other: "🌐 Deutsche Anleitung" }
+                 : { open: "App öffnen", guide: "Anleitung", load: "Lade Anleitung …", none: "Für diese App gibt es noch keine ausführliche Anleitung.", dl: "⬇ Video herunterladen", hint: "am iPad: Video öffnen → Teilen → „Video sichern“", all: "← Alle Apps", back: "Zurück zur Übersicht", other: "🌐 English guide" };
+    if (EN) { document.documentElement.lang = "en"; document.querySelector("a.back").textContent = T.all; document.querySelector("footer.site a").textContent = T.back; }
 
     if (!app) {
       box.innerHTML = `<p class="empty">Diese App gibt es nicht. <a href="./">Zur Übersicht</a></p>`;
     } else {
-      document.title = `${app.titel} – Anleitung`;
+      document.title = `${app.titel} – ${T.guide}`;
       box.innerHTML = `
         <div class="app-head">
           ${app.bild ? `<div class="icon" aria-hidden="true" style="background:none;overflow:hidden"><img src="${esc(app.bild)}" alt="" style="width:100%;height:100%;border-radius:inherit"></div>` : `<div class="icon" aria-hidden="true"${[...(app.symbol || "")].length > 1 ? ' style="font-size:24px;letter-spacing:-2px"' : ""}>${esc(app.symbol || "🧩")}</div>`}
           <h1>${esc(app.titel)}</h1>
         </div>
-        <p class="lead">${esc(app.kurz)}</p>
+        <p class="lead">${esc(EN ? app.en.kurz : app.kurz)}</p>
         <div class="actions">
-          ${(app.links || [{ label: "App öffnen", url: app.link }]).map(l => `<a class="btn primary" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>`).join("")}
+          ${(app.links || [{ label: T.open, url: app.link }]).map(l => `<a class="btn primary" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>`).join("")}
+          ${app.en ? `<a class="btn" href="app.html?id=${encodeURIComponent(app.id)}${EN ? "" : "&lang=en"}" lang="${EN ? "de" : "en"}">${T.other}</a>` : ""}
         </div>
-        ${[].concat(app.video || []).map(v => `<section class="appvideo" aria-label="${esc(v.titel || "Video")}">
+        ${[].concat(app.video || []).sort((a, b) => EN ? (/english/i.test(b.titel || "") - /english/i.test(a.titel || "")) : 0).map(v => `<section class="appvideo" aria-label="${esc(v.titel || "Video")}">
           ${v.titel ? `<h2 class="vtitel">${esc(v.titel)}</h2>` : ""}
           <video controls playsinline preload="none"${v.bild ? ` poster="${esc(v.bild)}"` : ""}><source src="${esc(v.src)}" type="video/mp4"></video>
-          <div class="actions"><a class="btn" href="${esc(v.src)}" download="${esc(v.datei || "")}">⬇ Video herunterladen</a><span class="hint">am iPad: Video öffnen → Teilen → „Video sichern“</span></div>
+          <div class="actions"><a class="btn" href="${esc(v.src)}" download="${esc(v.datei || "")}">${T.dl}</a><span class="hint">${T.hint}</span></div>
         </section>`).join("")}
-        <article class="guide" id="anleitung"><p class="empty">Lade Anleitung …</p></article>`;
+        <article class="guide" id="anleitung"><p class="empty">${T.load}</p></article>`;
 
-      fetch(`anleitungen/${encodeURIComponent(app.id)}.md`)
+      fetch(`anleitungen/${encodeURIComponent(app.id)}${EN ? "-en" : ""}.md`)
         .then(r => r.ok ? r.text() : Promise.reject())
         .then(md => {
           const html = window.marked ? marked.parse(md) : `<pre>${esc(md)}</pre>`;
           document.getElementById("anleitung").innerHTML = window.DOMPurify ? DOMPurify.sanitize(html) : html;
         })
         .catch(() => {
-          document.getElementById("anleitung").innerHTML = `<p>Für diese App gibt es noch keine ausführliche Anleitung.</p>`;
+          document.getElementById("anleitung").innerHTML = `<p>${T.none}</p>`;
         });
     }
   </script>

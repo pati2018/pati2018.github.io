@@ -828,7 +828,7 @@ document.addEventListener('contextmenu',e=>{ if(!e.target.closest('input,textare
 
 // ---------- English: alle Texte der Oberfläche (Knöpfe, Hinweise, Meldungen) ----------
 const UE={'▶ Vorspielen':'▶ Band plays','🙌 Mitspielen':'🙌 Play along','● Lied einspielen':'● Record a song','🎸 Akkorde einspielen':'🎸 Record chords',
-  '🎲 Improvisation einstellen':'🎲 Improvisation settings','💾 Meine Lieder':'💾 My songs','⛶ Vollbild':'⛶ Full screen','Anleitung':'Guide (German)',
+  '🎲 Improvisation einstellen':'🎲 Improvisation settings','💾 Meine Lieder':'💾 My songs','⛶ Vollbild':'⛶ Full screen','Anleitung':'Guide',
   'Lied':'Song','Aufstellung':'Formation','Reihe':'Row','Halbkreis':'Semicircle','Kreis':'Circle','offenes U':'Open U','Klang':'Sound','🎧 Mit GarageBand':'🎧 With GarageBand','Hall':'Reverb',
   '🔁 SW spielt Melodie / Akkorde':'🔁 Any SW plays melody / chords','🔢 Feste SW-Reihenfolge':'🔢 Fixed SW order','🎯 Feste SW-Töne / Akkorde':'🎯 Fixed SW notes / chords','🎲 Improvisieren':'🎲 Improvise',
   'Mitspieler:':'Players:','Wer darf spielen?':'Who may play?','🎯 Nur wer dran ist':'🎯 Only whose turn it is','🎶 Alle jederzeit':'🎶 Everyone, any time','✕ Vollbild aus':'✕ Exit full screen',
@@ -889,6 +889,7 @@ if(EN){ document.documentElement.lang='en';
     .observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:UE_ATTR}); }
 // Sprachschalter: merken und neu laden (so ist sicher alles in der neuen Sprache)
 $('sprache').textContent=EN?'🌐 Deutsch':'🌐 English'; $('sprache').lang=EN?'de':'en'; $('sprache').title=EN?'App auf Deutsch umstellen':'Switch the app to English';
+if(EN){ const ga=document.querySelector('.top > a'); if(ga) ga.href='../app.html?id=whacker-band&lang=en'; }
 $('sprache').onclick=()=>{ stopp(); st.sprache=EN?'de':'en'; merke(); location.reload(); };
 
 akkWahlBauen(); impWahlBauen(); liedListe(); liedSetzen(); aufstellen(true); modus(st.modus); meineZeigen(); klavierBeschriften(); buehneAnpassen(); if(EN) ueKnoten(document.body); if(document.fonts) document.fonts.ready.then(buehneAnpassen);

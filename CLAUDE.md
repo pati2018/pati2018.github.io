@@ -178,8 +178,7 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
   **Wunsch des Nutzers:** Wo im Video die Klänge der App zu hören sind (Instrumente, Klaviatur), Hintergrundmusik ganz leise/aus.
   `soundwhacker-band-en.mp4` (2:19, englische Fassung des Band-Videos mit **englischer App-Oberfläche**, Stimme „Brian“, Bauordner im Scratchpad `band-en/`).
   Englische Fassung `soundwhacker-en.mp4` (1:39, Stimme „Brian“ `nPczCjzI2devNBz1zQrb`).
-  Chinesische Fassung `soundwhacker-zh.mp4` (1:46, Mandarin, Stimme „Haoran“ `pU9NaAwkoR3v0Mrg3uKz`, Schrift Noto Sans CJK –
-  im Container mit `apt-get install fonts-noto-cjk` nachinstallieren).
+  Die chinesische Fassung `soundwhacker-zh.mp4` wurde auf Wunsch gelöscht (Datei und Eintrag; steckt noch in der Git-Geschichte).
   **SoundWhacker-Technik (für Texte):** Kunststoffröhre, zwei breite schwarze Ringe aus leitendem Filament (einer oben, einer unten – in Zeichnungen immer so darstellen), innen ESP32-C3 Mini, Akku (USB-C),
   Farb-LED im Rohr (leuchtet bei Berührung, z. B. grün), kleine LED vorne = nur Status (an/verbunden). Touch-Sensor unter dem
   kleinen Punkt; Body Touch = beide Ringe halten (auch im Kreis mit mehreren Menschen). Verbindet sich per Bluetooth direkt mit

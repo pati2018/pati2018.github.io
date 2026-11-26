@@ -28,7 +28,7 @@ window.APPS = [
     id: "motion-watch",
     zaehler: "/motion-watch/",
     titel: "Motion Watch",
-    kurz: "Das Smartphone wie eine Uhr ans Handgelenk binden – durch Neigen nach vorne und hinten spielst du die Töne einer Skala: Dur- oder Moll-Pentatonik, Blues, Dur, Moll. Grundton, Anzahl Töne und Instrument einstellbar.",
+    kurz: "iPad oder Handy flach auf den Tisch legen und Kreise fahren (oder drehen, oder wie eine Uhr am Handgelenk neigen) – so spielst du die Töne einer Skala: Dur- oder Moll-Pentatonik, Blues, Dur, Moll. Grundton, Anzahl Töne und Instrument einstellbar.",
     link: "https://pati2018.github.io/motion-watch/",
     repo: "https://github.com/pati2018/pati2018.github.io/tree/main/motion-watch",
     kategorie: "Musik",

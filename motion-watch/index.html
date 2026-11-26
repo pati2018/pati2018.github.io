@@ -89,13 +89,16 @@
     <div class="zeile"><span>Skala</span><select id="wSkala" aria-label="Skala"></select></div>
     <div class="zeile"><span>Anzahl Töne</span><select id="wAnzahl" aria-label="Anzahl Töne"></select></div>
     <div class="zeile"><span>Instrument</span><select id="wInst" aria-label="Instrument"></select></div>
-    <div class="zeile"><span>Neigen</span><select id="wAchse" aria-label="Richtung der Bewegung">
-      <option value="vh">vorne ↔ hinten</option><option value="lr">links ↔ rechts</option></select></div>
-    <div class="zeile"><span>Hohe Töne</span><select id="wRicht" aria-label="Wo sind die hohen Töne?">
+    <div class="zeile"><span>Bewegung</span><select id="wModus" aria-label="Welche Bewegung spielt?">
+      <option value="kreis">⭕ Kreise schieben (flach)</option><option value="dreh">🔄 Drehen (flach)</option>
+      <option value="vh">↕ Neigen vorne/hinten</option><option value="lr">↔ Neigen links/rechts</option></select></div>
+    <div class="zeile" id="zEmpf"><span>Empfindlich</span><select id="wEmpf" aria-label="Wie fest muss man schieben?">
+      <option value="0.4">sehr (kleine Kreise)</option><option value="0.8">mittel</option><option value="1.5">wenig (große Kreise)</option></select></div>
+    <div class="zeile" id="zRicht"><span>Hohe Töne</span><select id="wRicht" aria-label="Wo sind die hohen Töne?">
       <option value="1">vorne / rechts</option><option value="-1">hinten / links</option></select></div>
-    <div class="zeile"><span>Wie weit?</span><select id="wWeit" aria-label="Wie weit neigen?">
+    <div class="zeile" id="zWeit"><span>Wie weit?</span><select id="wWeit" aria-label="Wie weit neigen?">
       <option value="30">wenig (± 30°)</option><option value="45">mittel (± 45°)</option><option value="60">stark (± 60°)</option></select></div>
-    <p class="tipp">Handy wie eine Uhr ans Handgelenk. „📱 Bewegung“ einschalten, Hand ruhig halten (= Mitte), dann neigen: jeder neue Ton auf der Uhr erklingt.
+    <p class="tipp">„📱 Bewegung“ einschalten. ⭕ Kreise: iPad/Handy flach auf den Tisch legen und im Kreis schieben. 🔄 Drehen: flach liegend wie ein Lenkrad drehen. Neigen: Handy wie eine Uhr ans Handgelenk. Jeder neue Ton auf der Uhr erklingt.
       Ohne Bewegung: Töne antippen, Tasten/SoundWhacker 1–9 oder Pfeiltasten ↑ ↓.</p>
     <button class="knopf" id="fertig" type="button">✓ Fertig</button>
   </div>
@@ -119,7 +122,7 @@ const KLAENGE={marimba:['Marimba',.96],klavier:['Klavier',.84],vibraphon:['Vibra
   klarinette:['Klarinette',.24],sopransax:['Sopransaxophon',.31],altsax:['Altsaxophon',.48],tenorsax:['Tenorsaxophon',.5]};
 const FARBEN=['var(--sw1)','var(--sw2)','var(--sw3)','var(--sw4)','var(--sw5)'];
 const SPEICHER='motion-watch';
-let st={grund:9, skala:'mollpenta', anzahl:10, inst:'marimba', achse:'vh', richt:1, weit:45};   // A-Moll-Pentatonik
+let st={grund:9, skala:'mollpenta', anzahl:10, inst:'marimba', modus:'kreis', empf:0.8, richt:1, weit:45};   // A-Moll-Pentatonik
 try{Object.assign(st,JSON.parse(localStorage.getItem(SPEICHER)||'{}'))}catch(e){}
 const sichern=()=>{try{localStorage.setItem(SPEICHER,JSON.stringify(st))}catch(e){}};
 
@@ -165,10 +168,11 @@ function spiele(m){
 const uhr=document.getElementById('uhr'), NS='http://www.w3.org/2000/svg';
 const el=(n,a)=>{const e=document.createElementNS(NS,n); for(const k in a) e.setAttribute(k,a[k]); return e};
 const pt=(w,r)=>[Math.sin(w*Math.PI/180)*r, -Math.cos(w*Math.PI/180)*r];   // 0° = oben, im Uhrzeigersinn
-const A0=-135, A1=135, R1=238, R0=150;    // Bogen von unten links über oben nach unten rechts
+let A0=0, A1=360; const R1=238, R0=150;    // rund (Kreise/Drehen) oder Bogen unten links → oben → unten rechts (Neigen)
+const rund=()=>st.modus==='kreis'||st.modus==='dreh';
 let segs=[], zeiger, gTon, gSkala, gZeit, aktiv=-1;
 function zeichnen(){
-  uhr.innerHTML='';
+  uhr.innerHTML=''; if(rund()){A0=0;A1=360;}else{A0=-135;A1=135;}
   uhr.appendChild(el('circle',{r:252,fill:'#1f2747',stroke:'#fff','stroke-width':8}));
   // Minutenstriche wie bei einer Uhr
   for(let i=0;i<60;i++){ const [x1,y1]=pt(i*6,140),[x2,y2]=pt(i*6,i%5?132:122);
@@ -181,16 +185,20 @@ function zeichnen(){
     const [tx,ty]=pt(a+w/2,(R0+R1)/2), t=el('text',{x:tx,y:ty,'font-size':n>12?24:30}); t.textContent=tonName(m);
     g.append(p,t); uhr.appendChild(g); segs.push(g);
   });
-  gTon=el('text',{x:0,y:-40,class:'gross','font-size':96}); gTon.textContent='♪';
-  gSkala=el('text',{x:0,y:62,class:'klein','font-size':22}); gSkala.textContent=TONNAME[st.grund]+' · '+SKALEN[st.skala].n;
+  gTon=el('text',{x:0,y:-14,class:'gross','font-size':96}); gTon.textContent='♪';
+  gSkala=el('text',{x:0,y:66,class:'klein','font-size':22}); gSkala.textContent=TONNAME[st.grund]+' · '+SKALEN[st.skala].n;
   gZeit=el('text',{x:0,y:200,class:'klein','font-size':26});
   zeiger=el('g',{id:'zeiger'});
-  zeiger.append(el('line',{x1:0,y1:0,x2:0,y2:-R0+6,stroke:'#fff','stroke-width':7,'stroke-linecap':'round'}));
-  uhr.append(zeiger,el('circle',{r:14,fill:'#fff','pointer-events':'none'}),gTon,gSkala,gZeit);
-  zeigerAuf(aktiv>=0?aktiv+.5:n/2);
+  // Zeiger nur am Rand (die Mitte bleibt frei für den Tonnamen)
+  zeiger.append(el('line',{x1:0,y1:-104,x2:0,y2:-R0+18,stroke:'#fff','stroke-width':8,'stroke-linecap':'round'}),
+                el('path',{d:`M-14 ${-R0+22} L0 ${-R0+2} L14 ${-R0+22} Z`,fill:'#fff'}));
+  if(rund()) gZeit.setAttribute('y',112);
+  uhr.append(zeiger,gTon,gSkala,gZeit);
+  zeigerAuf(aktiv>=0?aktiv+.5:(rund()?.5:n/2));
   uhrzeit();
 }
-function zeigerAuf(pos){ const n=TOENE.length; zeiger.setAttribute('transform',`rotate(${A0+(A1-A0)*Math.max(0,Math.min(n,pos))/n})`); }
+function zeigerAuf(pos){ const n=TOENE.length; if(!rund()) pos=Math.max(0,Math.min(n,pos));
+  zeiger.style.transition=rund()?'none':''; zeiger.setAttribute('transform',`rotate(${A0+(A1-A0)*pos/n})`); }
 function uhrzeit(){ if(gZeit){ const d=new Date(); gZeit.textContent=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); } }
 setInterval(uhrzeit,10000);
 
@@ -230,32 +238,58 @@ document.addEventListener('keyup',e=>gedrueckt.delete(e.code));
 document.addEventListener('pointerdown',()=>audio(),{once:true});
 
 /* ---------- Bewegung (Bewegungssensor) ----------
-   Handy liegt wie eine Uhr am Handgelenk. Neigen ändert den Winkel; der Winkelbereich
-   (± „Wie weit“) ist in so viele Felder geteilt, wie die Skala Töne hat.
-   Kommt der Zeiger in ein neues Feld, erklingt dessen Ton. Mitte = Haltung beim Einschalten. */
+   ⭕ Kreise: flach im Kreis schieben (Beschleunigung) · 🔄 Drehen: flach drehen (Gyro, alpha)
+   ↕/↔ Neigen: Winkelbereich ± „Wie weit“. Die Uhr ist in so viele Felder geteilt, wie die Skala Töne hat;
+   kommt der Zeiger in ein neues Feld, erklingt dessen Ton. */
 const hinweis=document.getElementById('hinweis');
 function zeige(t,ms){ hinweis.textContent=t; hinweis.hidden=false; clearTimeout(zeige._t); zeige._t=setTimeout(()=>hinweis.hidden=true,ms||2500); }
 const bewKnopf=document.getElementById('bewKnopf'), mitteKnopf=document.getElementById('mitteKnopf');
 let bewAn=false, mitte=null, roh=null, bekommen=false, wachLock=null;
-function aufOrientierung(e){
-  if(e.beta==null||e.gamma==null) return;
-  bekommen=true; roh=[e.beta,e.gamma];
-  if(!bewAn) return;
-  if(!mitte){ mitte=roh.slice(); }
-  // vorne/hinten = beta (vorne = oberer Rand geht nach unten → beta wird kleiner), links/rechts = gamma
-  let d = st.achse==='lr' ? roh[1]-mitte[1] : -(roh[0]-mitte[0]);
-  if(d>180) d-=360; if(d<-180) d+=360;
-  d*=st.richt;
-  const n=TOENE.length, pos=(d+st.weit)/(2*st.weit)*n;   // 0 … n
+// neuer Ton erst, wenn der Zeiger deutlich im neuen Feld ist (kein Flattern an der Grenze)
+function zuFeld(pos){
+  const n=TOENE.length;
+  if(rund()) pos=((pos%n)+n)%n;
   zeigerAuf(pos);
   const k=Math.max(0,Math.min(n-1,Math.floor(pos)));
-  if(aktiv<0){ aktiv=k; gTon.textContent=tonName(TOENE[k]); return; }   // erster Wert: nur merken, nicht spielen
-  if(k!==aktiv){
-    // kleine Schwelle, damit der Ton an der Grenze nicht flattert
-    const rand = k>aktiv ? pos-k : (k+1)-pos;
-    if(rand>0.15 || Math.abs(k-aktiv)>1 || pos<0 || pos>n) spieleIndex(k,true);
-  }
+  if(aktiv<0){ aktiv=k; gTon.textContent=tonName(TOENE[k]); return; }   // erster Wert: nur merken
+  if(k===aktiv) return;
+  let d=pos-(aktiv+0.5); if(rund()){ d=((d%n)+n)%n; if(d>n/2) d-=n; }
+  if(Math.abs(d)>0.65 || (!rund()&&(pos<=0||pos>=n))) spieleIndex(k,true);
 }
+function aufOrientierung(e){
+  if(e.beta==null||e.gamma==null) return;
+  bekommen=true; roh=[e.beta,e.gamma,e.alpha];
+  if(!bewAn || st.modus==='kreis') return;
+  if(!mitte){ mitte=roh.slice(); }
+  const n=TOENE.length;
+  if(st.modus==='dreh'){   // flach liegend drehen: alpha (Kompass-Richtung, kommt vom Gyrosensor)
+    if(e.alpha==null||mitte[2]==null) return;
+    let r=(mitte[2]-e.alpha)*st.richt;          // im Uhrzeigersinn = positiv
+    return zuFeld(0.5+r/360*n);
+  }
+  // Neigen: vorne/hinten = beta (vorne → beta wird kleiner), links/rechts = gamma
+  let d = st.modus==='lr' ? roh[1]-mitte[1] : -(roh[0]-mitte[0]);
+  if(d>180) d-=360; if(d<-180) d+=360;
+  d*=st.richt;
+  zuFeld((d+st.weit)/(2*st.weit)*n);
+}
+/* Kreise schieben: Beim Schieben im Kreis zeigt die Beschleunigung immer zur Kreismitte –
+   ihre Richtung dreht sich einmal pro Runde mit. Daraus wird der Platz auf dem Kreis (= Ton). */
+let gx=0,gy=0,sx=0,sy=0;
+function aufBewegung(e){
+  let ax,ay;
+  if(e.acceleration && e.acceleration.x!=null){ ax=e.acceleration.x; ay=e.acceleration.y; }
+  else if(e.accelerationIncludingGravity && e.accelerationIncludingGravity.x!=null){
+    const a=e.accelerationIncludingGravity; gx=gx*.9+a.x*.1; gy=gy*.9+a.y*.1; ax=a.x-gx; ay=a.y-gy; }
+  else return;
+  bekommen=true;
+  if(!bewAn || st.modus!=='kreis') return;
+  sx=sx*.65+ax*.35; sy=sy*.65+ay*.35;                     // glätten
+  if(Math.hypot(sx,sy)<st.empf) return;                   // zu wenig Bewegung → nichts
+  const w=Math.atan2(sx,sy)*180/Math.PI+180;              // 0° = oberer Rand, im Uhrzeigersinn
+  zuFeld(((w*st.richt)+360)%360/360*TOENE.length);
+}
+window.addEventListener('devicemotion',aufBewegung);
 window.addEventListener('deviceorientation',aufOrientierung);
 async function wachHalten(an){
   try{ if(an && 'wakeLock' in navigator){ wachLock=await navigator.wakeLock.request('screen'); }
@@ -263,37 +297,46 @@ async function wachHalten(an){
 }
 document.addEventListener('visibilitychange',()=>{ if(bewAn && document.visibilityState==='visible') wachHalten(true); });
 function bewZeigen(){ bewKnopf.textContent='📱 Bewegung: '+(bewAn?'an':'aus'); bewKnopf.classList.toggle('an',bewAn);
-  bewKnopf.setAttribute('aria-pressed',bewAn); mitteKnopf.hidden=!bewAn; }
+  bewKnopf.setAttribute('aria-pressed',bewAn); mitteKnopf.hidden=!bewAn||st.modus==='kreis'; }
 async function bewegungEin(){
   audio();
   const DOE=window.DeviceOrientationEvent;
   if(!DOE){ zeige('Dieses Gerät hat keinen Bewegungssensor.'); return; }
-  if(typeof DOE.requestPermission==='function'){
-    try{ if(await DOE.requestPermission()!=='granted'){ zeige('Bewegung nicht erlaubt. Safari ganz schließen, neu öffnen und „Erlauben“ tippen.',4500); return; } }
+  const DME=window.DeviceMotionEvent;
+  if(typeof DOE.requestPermission==='function' || (DME && typeof DME.requestPermission==='function')){
+    try{ const P=(st.modus==='kreis'&&DME&&DME.requestPermission)?DME:DOE;
+         if(await P.requestPermission()!=='granted'){ zeige('Bewegung nicht erlaubt. Safari ganz schließen, neu öffnen und „Erlauben“ tippen.',4500); return; } }
     catch(e){ zeige('Bewegung konnte nicht eingeschaltet werden.',3500); return; }
   }
   bewAn=true; mitte=null; aktiv=-1; bewZeigen(); wachHalten(true);
-  zeige('Hand ruhig halten – das ist jetzt die Mitte. Dann neigen!',3000);
+  zeige({kreis:'Handy/iPad flach hinlegen und im Kreis schieben!',dreh:'Flach hinlegen und drehen wie ein Lenkrad!'}[st.modus]||'Hand ruhig halten – das ist jetzt die Mitte. Dann neigen!',3000);
   setTimeout(()=>{ if(bewAn && !bekommen){ bewAn=false; bewZeigen(); wachHalten(false); zeige('Kein Bewegungssensor gefunden (geht am iPhone/iPad).',4000); } },1500);
 }
 bewKnopf.addEventListener('click',()=>{ if(bewAn){ bewAn=false; bewZeigen(); wachHalten(false); } else bewegungEin(); });
-mitteKnopf.addEventListener('click',()=>{ mitte=roh?roh.slice():null; aktiv=-1; zeige('Neue Mitte gesetzt.',1500); });
+mitteKnopf.addEventListener('click',()=>{ mitte=roh?roh.slice():null; sx=sy=0; aktiv=-1; zeige('Neue Mitte gesetzt.',1500); });
 
 /* ---------- Einstellungen ---------- */
 const einst=document.getElementById('einst');
-const W={grund:'wGrund',skala:'wSkala',anzahl:'wAnzahl',inst:'wInst',achse:'wAchse',richt:'wRicht',weit:'wWeit'};
+const W={grund:'wGrund',skala:'wSkala',anzahl:'wAnzahl',inst:'wInst',modus:'wModus',empf:'wEmpf',richt:'wRicht',weit:'wWeit'};
 for(const k in W) W[k]=document.getElementById(W[k]);
 TONNAME.forEach((n,i)=>W.grund.add(new Option(n,i)));
 for(const k in SKALEN) W.skala.add(new Option(SKALEN[k].n,k));
 for(let i=5;i<=15;i++) W.anzahl.add(new Option(i+' Töne',i));
 for(const k in KLAENGE) W.inst.add(new Option(KLAENGE[k][0],k));
-const ZAHL=['grund','anzahl','richt','weit'];
+const ZAHL=['grund','anzahl','richt','weit','empf'];
 for(const k in W) W[k].addEventListener('change',()=>{
   st[k]=ZAHL.includes(k)?+W[k].value:W[k].value; sichern(); neu();
   if(['grund','skala','anzahl','inst'].includes(k)) spieleIndex(0);
-  if(k==='achse'||k==='richt'||k==='weit'){ mitte=null; aktiv=-1; }
+  if(['modus','richt','weit','empf'].includes(k)){ mitte=null; aktiv=-1; zeilenZeigen(); bewZeigen(); }
 });
-function auf(){ for(const k in W) W[k].value=st[k]; einst.hidden=false; document.getElementById('fertig').focus(); }
+function zeilenZeigen(){
+  const r=rund();
+  document.getElementById('zEmpf').hidden=st.modus!=='kreis';
+  document.getElementById('zWeit').hidden=r;
+  W.richt.options[0].text=r?'im Uhrzeigersinn':'vorne / rechts';
+  W.richt.options[1].text=r?'gegen den Uhrzeigersinn':'hinten / links';
+}
+function auf(){ for(const k in W) W[k].value=st[k]; zeilenZeigen(); einst.hidden=false; document.getElementById('fertig').focus(); }
 function zu(){ einst.hidden=true; document.getElementById('einstKnopf').focus(); }
 document.getElementById('einstKnopf').addEventListener('click',auf);
 document.getElementById('fertig').addEventListener('click',zu);

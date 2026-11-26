@@ -1,17 +1,23 @@
 ## Worum geht es?
 
-Die **Motion Watch** macht dein Smartphone zu einem Instrument, das du am Handgelenk trägst. Du bindest das Handy **wie eine Uhr** ans Handgelenk und **neigst die Hand** – jede Neigung spielt einen Ton. Die Töne kommen aus einer **Skala**, z. B. der Moll-Pentatonik. So klingt es immer passend.
+Die **Motion Watch** macht dein Smartphone zu einem Instrument, das du am Handgelenk trägst. Du legst das iPad oder Handy **flach auf den Tisch und fährst Kreise** – oder drehst es, oder trägst es **wie eine Uhr** am Handgelenk und neigst die Hand. Jede Bewegung spielt Töne. Die Töne kommen aus einer **Skala**, z. B. der Moll-Pentatonik. So klingt es immer passend.
 
 Auf dem Bildschirm siehst du eine **Uhr**: Rundherum stehen die Töne in bunten Feldern, der **Zeiger** folgt deiner Bewegung, in der Mitte steht groß der Ton, der gerade klingt.
 
 ## So geht's
 
-1. Die App am iPhone öffnen und **„📱 Bewegung: aus“** antippen. Beim ersten Mal fragt das iPhone nach **„Bewegung und Ausrichtung“** → **Erlauben**.
-2. Das Handy wie eine Uhr ans Handgelenk binden (z. B. mit einem Klettband oder einer Sportarmband-Hülle). Die lange Seite zeigt zu den Fingern.
-3. Die Hand **ruhig halten** – diese Haltung ist jetzt die **Mitte**.
-4. Die Hand **nach vorne** neigen → die Töne werden **höher**. **Nach hinten** → **tiefer**. Jedes neue Feld auf der Uhr = ein neuer Ton.
+1. **„📱 Bewegung: aus“** antippen. Beim ersten Mal fragt das iPhone/iPad nach **„Bewegung und Ausrichtung“** → **Erlauben**.
+2. Unter **⚙ Einstellen → Bewegung** wählen, wie du spielst:
 
-- **⊕ Mitte** – die jetzige Haltung wird die neue Mitte.
+| Bewegung | So spielst du |
+|---|---|
+| **⭕ Kreise schieben** (Standard) | iPad oder Handy **flach auf den Tisch** legen und **im Kreis schieben**. Jede Runde spielt die Töne der Skala nacheinander – im Uhrzeigersinn aufwärts. Schnelle Kreise = schnelle Töne. Liegt das Gerät still, ist es still. |
+| **🔄 Drehen** | Gerät **flach hinlegen** und **drehen** wie ein Lenkrad oder eine Drehscheibe. Eine ganze Umdrehung = alle Töne einmal. |
+| **↕ Neigen vorne/hinten** | Handy **wie eine Uhr ans Handgelenk** (lange Seite zu den Fingern). Hand ruhig halten (= Mitte), dann nach vorne neigen = höher, nach hinten = tiefer. |
+| **↔ Neigen links/rechts** | wie oben, nur seitlich neigen. |
+
+- Bei Kreisen und Drehen liegen die Töne **rundherum wie die Stunden einer Uhr** – der Zeiger zeigt, wo du gerade bist.
+- **⊕ Mitte** (bei Drehen und Neigen) – die jetzige Lage wird der neue Anfang.
 - Der Bildschirm bleibt an, solange die Bewegung eingeschaltet ist.
 - **Tipp:** Die **Ausrichtungssperre** im Kontrollzentrum einschalten.
 
@@ -23,9 +29,10 @@ Auf dem Bildschirm siehst du eine **Uhr**: Rundherum stehen die Töne in bunten 
 | **Skala** | Dur-Pentatonik, **Moll-Pentatonik** (Standard), Blues-Skala (Moll), Blues-Skala (Dur), Dur-Tonleiter, Moll-Tonleiter |
 | **Anzahl Töne** | 5 bis 15 – wenige Töne = große Felder, leicht zu treffen |
 | **Instrument** | Marimba, Klavier, Vibraphon, Kalimba, Gitarre, Flöten, Saxophone und mehr |
-| **Neigen** | **vorne ↔ hinten** (Standard) oder **links ↔ rechts** |
-| **Hohe Töne** | vorne/rechts oder hinten/links |
-| **Wie weit?** | wenig (± 30°), mittel (± 45°), stark (± 60°) |
+| **Bewegung** | ⭕ Kreise schieben, 🔄 Drehen, ↕ Neigen vorne/hinten, ↔ Neigen links/rechts |
+| **Empfindlich** (nur Kreise) | sehr (kleine Kreise reichen), mittel, wenig (nur große, kräftige Kreise) |
+| **Hohe Töne** | im / gegen den Uhrzeigersinn – beim Neigen: vorne/rechts oder hinten/links |
+| **Wie weit?** (nur Neigen) | wenig (± 30°), mittel (± 45°), stark (± 60°) |
 
 Die App merkt sich alle Einstellungen.
 

@@ -33,7 +33,7 @@ window.APPS = [
     repo: "https://github.com/pati2018/pati2018.github.io/tree/main/motion-watch",
     kategorie: "Musik",
     symbol: "⌚",
-    datum: "2026-11-27"
+    datum: "2026-11-26"
   },
   {
     id: "trommelball",

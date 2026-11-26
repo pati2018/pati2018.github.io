@@ -112,7 +112,7 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
     danach die übrigen nach Datum
     (neueste oben); Singen ganz unten (`ganzUnten: 1`). Die App **Atemklang** wurde auf Wunsch entfernt (Ordner und Eintrag gelöscht; steckt noch in der Git-Geschichte).
     Die Kacheln auf der Erklärseite `ki-betriebssystem/` stehen in derselben Reihenfolge.
-    - `motion-watch/` – **Motion Watch** (27.11.2026, Idee aus dem Workshop wie Trommelball): Handy wie eine Uhr ans Handgelenk (lange Seite zu den Fingern).
+    - `motion-watch/` – **Motion Watch** (26.11.2026, Idee aus dem Workshop wie Trommelball): Handy wie eine Uhr ans Handgelenk (lange Seite zu den Fingern).
       Uhr-Ansicht: Bogen mit den Tönen der Skala (SW-Farben reihum), Zeiger folgt der Neigung, großer Tonname in der Mitte, Uhrzeit unten.
       **Neigen** (Standard vorne ↔ hinten = Richtung Feld 2/4 wie im Trommelball, `beta`; wahlweise links ↔ rechts = `gamma`): Winkelbereich ± `st.weit` (30/45/60°) wird in `st.anzahl` Felder geteilt,
       neues Feld = Ton (kleine Schwelle gegen Flattern); vorne = hohe Töne (`st.richt` umkehrbar). Mitte = Haltung beim Einschalten, „⊕ Mitte“. Gerätachsen, nicht Bildschirmachsen (Bildschirm darf sich drehen).

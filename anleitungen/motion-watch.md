@@ -1,8 +1,8 @@
 ## Worum geht es?
 
-Die **Motion Watch** macht dein Smartphone zu einem Instrument, das du am Handgelenk trägst. Du legst das iPad oder Handy **flach auf den Tisch und fährst Kreise** – oder drehst es, oder trägst es **wie eine Uhr** am Handgelenk und neigst die Hand. Jede Bewegung spielt Töne. Die Töne kommen aus einer **Skala**, z. B. der Moll-Pentatonik. So klingt es immer passend.
+Die **Motion Watch** macht dein Smartphone zu einem Instrument, das du am Handgelenk trägst. Du legst das iPad oder Handy **flach hin und fährst Kreise** – z. B. mit dem E-Rolli – oder drehst es, oder trägst es **wie eine Uhr** am Handgelenk und neigst die Hand. Jede Bewegung spielt Töne. Die Töne kommen aus einer **Skala**, z. B. der Moll-Pentatonik. So klingt es immer passend.
 
-Auf dem Bildschirm siehst du eine **Uhr**: Rundherum stehen die Töne in bunten Feldern, der **Zeiger** folgt deiner Bewegung, in der Mitte steht groß der Ton, der gerade klingt.
+Auf dem Bildschirm siehst du eine **Uhr**: Rundherum stehen die Töne in bunten Feldern (Farben wie in der SoundWhacker Band: rot, lila, gelb, grün, blau), der **Zeiger** folgt deiner Bewegung, in der Mitte steht groß der Ton, der gerade klingt.
 
 ## So geht's
 
@@ -11,8 +11,8 @@ Auf dem Bildschirm siehst du eine **Uhr**: Rundherum stehen die Töne in bunten 
 
 | Bewegung | So spielst du |
 |---|---|
-| **⭕ Kreise schieben** (Standard) | iPad oder Handy **flach auf den Tisch** legen und **im Kreis schieben**. Jede Runde spielt die Töne der Skala nacheinander – im Uhrzeigersinn aufwärts. Schnelle Kreise = schnelle Töne. Liegt das Gerät still, ist es still. |
-| **🔄 Drehen** | Gerät **flach hinlegen** und **drehen** wie ein Lenkrad oder eine Drehscheibe. Eine ganze Umdrehung = alle Töne einmal. |
+| **🔄 Kreise fahren / drehen** (Standard) | iPad oder Handy liegt **flach**, z. B. auf dem **Tisch am E-Rolli**. Fährt der E-Rolli Kreise, dreht sich das Gerät mit – **eine Runde = alle Töne** der Skala, im Uhrzeigersinn aufwärts. Geht auch, wenn du das Gerät auf dem Tisch drehst wie ein Lenkrad. |
+| **⭕ Im Kreis schieben** | Gerät flach auf dem Tisch **im Kreis schieben**, ohne es zu drehen. Schnelle Kreise = schnelle Töne. |
 | **↕ Neigen vorne/hinten** | Handy **wie eine Uhr ans Handgelenk** (lange Seite zu den Fingern). Hand ruhig halten (= Mitte), dann nach vorne neigen = höher, nach hinten = tiefer. |
 | **↔ Neigen links/rechts** | wie oben, nur seitlich neigen. |
 
@@ -29,8 +29,8 @@ Auf dem Bildschirm siehst du eine **Uhr**: Rundherum stehen die Töne in bunten 
 | **Skala** | Dur-Pentatonik, **Moll-Pentatonik** (Standard), Blues-Skala (Moll), Blues-Skala (Dur), Dur-Tonleiter, Moll-Tonleiter |
 | **Anzahl Töne** | 5 bis 15 – wenige Töne = große Felder, leicht zu treffen |
 | **Instrument** | Marimba, Klavier, Vibraphon, Kalimba, Gitarre, Flöten, Saxophone und mehr |
-| **Bewegung** | ⭕ Kreise schieben, 🔄 Drehen, ↕ Neigen vorne/hinten, ↔ Neigen links/rechts |
-| **Empfindlich** (nur Kreise) | sehr (kleine Kreise reichen), mittel, wenig (nur große, kräftige Kreise) |
+| **Bewegung** | 🔄 Kreise fahren / drehen, ⭕ Im Kreis schieben, ↕ Neigen vorne/hinten, ↔ Neigen links/rechts |
+| **Empfindlich** (nur Schieben) | sehr (kleine Kreise reichen), mittel, wenig (nur große, kräftige Kreise) |
 | **Hohe Töne** | im / gegen den Uhrzeigersinn – beim Neigen: vorne/rechts oder hinten/links |
 | **Wie weit?** (nur Neigen) | wenig (± 30°), mittel (± 45°), stark (± 60°) |
 

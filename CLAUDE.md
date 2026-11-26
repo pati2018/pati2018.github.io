@@ -114,9 +114,10 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
     Die Kacheln auf der Erklärseite `ki-betriebssystem/` stehen in derselben Reihenfolge.
     - `motion-watch/` – **Motion Watch** (26.11.2026, Idee aus dem Workshop wie Trommelball): Handy wie eine Uhr ans Handgelenk (lange Seite zu den Fingern).
       Uhr-Ansicht: Bogen mit den Tönen der Skala (SW-Farben reihum), Zeiger folgt der Neigung, großer Tonname in der Mitte, Uhrzeit unten.
-      **Bewegung `st.modus`** (Wunsch Nutzer: Gyro, iPad flach auf dem Tisch, Kreise fahren): **⭕ `kreis`** (Standard) = flach im Kreis schieben – `devicemotion`, Richtung der
-      geglätteten Beschleunigung (zeigt zur Kreismitte) +180° = Platz auf dem Kreis, Schwelle `st.empf` 0,4/0,8/1,5 m/s²; **🔄 `dreh`** = flach drehen, `alpha` (Gyro) relativ zur Mitte, 1 Umdrehung = alle Töne.
-      Bei beiden liegen die Töne rundum (360°, Ton 1 oben, im Uhrzeigersinn aufwärts), Zeiger nur am Rand. Sicherung vor diesem Umbau: Branch `stabil/motion-watch-v1.0`.
+      **Bewegung `st.modus`** (Wunsch Nutzer: Gyro; „Kreise fahren“ = Gerät liegt flach, z. B. auf dem Tisch am **E-Rolli**, und dreht sich mit, wenn der E-Rolli Kreise fährt):
+      **🔄 `dreh`** (Standard, alte Speicherstände werden per `st.v=3` umgestellt) = `alpha` (Gyro) relativ zur Mitte, 1 Umdrehung = alle Töne; **⭕ `kreis`** = flach im Kreis schieben ohne Drehen –
+      `devicemotion`, Richtung der geglätteten Beschleunigung +180°, Schwelle `st.empf` 0,4/0,8/1,5 m/s². Bei beiden Töne rundum (360°, Ton 1 oben, im Uhrzeigersinn aufwärts), Zeiger nur am Rand.
+      **Farben wie in der SoundWhacker Band** (rot #e5484d, lila #9b5de5, gelb #f2cf3a, grün #46b37b, blau #3f8ee8 – Wunsch Nutzer). Sicherung vor diesem Umbau: Branch `stabil/motion-watch-v1.0`.
       **Neigen** (`vh` vorne ↔ hinten = Richtung Feld 2/4 wie im Trommelball, `beta`; `lr` links ↔ rechts = `gamma`; Bogen statt Kreis): Winkelbereich ± `st.weit` (30/45/60°) wird in `st.anzahl` Felder geteilt,
       neues Feld = Ton (kleine Schwelle gegen Flattern); vorne = hohe Töne (`st.richt` umkehrbar). Mitte = Haltung beim Einschalten, „⊕ Mitte“. Gerätachsen, nicht Bildschirmachsen (Bildschirm darf sich drehen).
       Skalen `SKALEN`: Dur-/Moll-Pentatonik, Blues (Moll), Blues (Dur), Dur, Moll; Grundton C–H, 5–15 Töne, Instrumente aus `../tischharfe/klaenge/` (Samples 54–81 je 3 Halbtöne).

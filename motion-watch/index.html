@@ -16,7 +16,7 @@
 <script data-goatcounter="https://pati2018.goatcounter.com/count" data-goatcounter-settings='{"path":"/motion-watch/"}' async src="//gc.zgo.at/count.js"></script>
 <style>
   :root{--bg:#141a33;--panel:#1f2747;--ink:#fff;--gold:#f6c83f;
-        --sw1:#e63946;--sw2:#f4892b;--sw3:#f6c83f;--sw4:#3fb950;--sw5:#3f8ee8;
+        --sw1:#e5484d;--sw2:#9b5de5;--sw3:#f2cf3a;--sw4:#46b37b;--sw5:#3f8ee8;   /* Farben wie SoundWhacker Band (SW2 lila) */
         --f:"Work Sans","Segoe UI",system-ui,sans-serif;--fd:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif}
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   [hidden]{display:none!important}
@@ -90,7 +90,7 @@
     <div class="zeile"><span>Anzahl Töne</span><select id="wAnzahl" aria-label="Anzahl Töne"></select></div>
     <div class="zeile"><span>Instrument</span><select id="wInst" aria-label="Instrument"></select></div>
     <div class="zeile"><span>Bewegung</span><select id="wModus" aria-label="Welche Bewegung spielt?">
-      <option value="kreis">⭕ Kreise schieben (flach)</option><option value="dreh">🔄 Drehen (flach)</option>
+      <option value="dreh">🔄 Kreise fahren / drehen (flach)</option><option value="kreis">⭕ Im Kreis schieben (flach)</option>
       <option value="vh">↕ Neigen vorne/hinten</option><option value="lr">↔ Neigen links/rechts</option></select></div>
     <div class="zeile" id="zEmpf"><span>Empfindlich</span><select id="wEmpf" aria-label="Wie fest muss man schieben?">
       <option value="0.4">sehr (kleine Kreise)</option><option value="0.8">mittel</option><option value="1.5">wenig (große Kreise)</option></select></div>
@@ -98,7 +98,7 @@
       <option value="1">vorne / rechts</option><option value="-1">hinten / links</option></select></div>
     <div class="zeile" id="zWeit"><span>Wie weit?</span><select id="wWeit" aria-label="Wie weit neigen?">
       <option value="30">wenig (± 30°)</option><option value="45">mittel (± 45°)</option><option value="60">stark (± 60°)</option></select></div>
-    <p class="tipp">„📱 Bewegung“ einschalten. ⭕ Kreise: iPad/Handy flach auf den Tisch legen und im Kreis schieben. 🔄 Drehen: flach liegend wie ein Lenkrad drehen. Neigen: Handy wie eine Uhr ans Handgelenk. Jeder neue Ton auf der Uhr erklingt.
+    <p class="tipp">„📱 Bewegung“ einschalten. 🔄 Kreise fahren: iPad/Handy liegt flach (z. B. auf dem Tisch am E-Rolli) und dreht sich mit – eine Runde = alle Töne. ⭕ Schieben: flach im Kreis über den Tisch schieben. Neigen: Handy wie eine Uhr ans Handgelenk. Jeder neue Ton auf der Uhr erklingt.
       Ohne Bewegung: Töne antippen, Tasten/SoundWhacker 1–9 oder Pfeiltasten ↑ ↓.</p>
     <button class="knopf" id="fertig" type="button">✓ Fertig</button>
   </div>
@@ -122,8 +122,9 @@ const KLAENGE={marimba:['Marimba',.96],klavier:['Klavier',.84],vibraphon:['Vibra
   klarinette:['Klarinette',.24],sopransax:['Sopransaxophon',.31],altsax:['Altsaxophon',.48],tenorsax:['Tenorsaxophon',.5]};
 const FARBEN=['var(--sw1)','var(--sw2)','var(--sw3)','var(--sw4)','var(--sw5)'];
 const SPEICHER='motion-watch';
-let st={grund:9, skala:'mollpenta', anzahl:10, inst:'marimba', modus:'kreis', empf:0.8, richt:1, weit:45};   // A-Moll-Pentatonik
+let st={grund:9, skala:'mollpenta', anzahl:10, inst:'marimba', modus:'dreh', empf:0.8, richt:1, weit:45};   // A-Moll-Pentatonik
 try{Object.assign(st,JSON.parse(localStorage.getItem(SPEICHER)||'{}'))}catch(e){}
+if(!(st.v>=3)){ st.modus='dreh'; st.v=3; }   // neuer Standard: Kreise fahren = drehen (z. B. E-Rolli)
 const sichern=()=>{try{localStorage.setItem(SPEICHER,JSON.stringify(st))}catch(e){}};
 
 /* ---------- Töne der Skala ---------- */
@@ -309,7 +310,7 @@ async function bewegungEin(){
     catch(e){ zeige('Bewegung konnte nicht eingeschaltet werden.',3500); return; }
   }
   bewAn=true; mitte=null; aktiv=-1; bewZeigen(); wachHalten(true);
-  zeige({kreis:'Handy/iPad flach hinlegen und im Kreis schieben!',dreh:'Flach hinlegen und drehen wie ein Lenkrad!'}[st.modus]||'Hand ruhig halten – das ist jetzt die Mitte. Dann neigen!',3000);
+  zeige({kreis:'Handy/iPad flach hinlegen und im Kreis schieben!',dreh:'Flach hinlegen und Kreise fahren oder drehen!'}[st.modus]||'Hand ruhig halten – das ist jetzt die Mitte. Dann neigen!',3000);
   setTimeout(()=>{ if(bewAn && !bekommen){ bewAn=false; bewZeigen(); wachHalten(false); zeige('Kein Bewegungssensor gefunden (geht am iPhone/iPad).',4000); } },1500);
 }
 bewKnopf.addEventListener('click',()=>{ if(bewAn){ bewAn=false; bewZeigen(); wachHalten(false); } else bewegungEin(); });

@@ -3,10 +3,10 @@
 <rect x="196" y="20" width="120" height="90" rx="20" fill="#3a4470"/><rect x="196" y="402" width="120" height="90" rx="20" fill="#3a4470"/>
 <circle cx="256" cy="256" r="178" fill="#1f2747" stroke="#fff" stroke-width="14"/>
 <g fill="none" stroke-width="34" stroke-linecap="butt">
-<path d="M136 352 A142 142 0 0 1 117 280" stroke="#e63946"/>
-<path d="M119 252 A142 142 0 0 1 160 158" stroke="#f4892b"/>
-<path d="M180 141 A142 142 0 0 1 332 141" stroke="#f6c83f"/>
-<path d="M352 158 A142 142 0 0 1 393 252" stroke="#3fb950"/>
+<path d="M136 352 A142 142 0 0 1 117 280" stroke="#e5484d"/>
+<path d="M119 252 A142 142 0 0 1 160 158" stroke="#9b5de5"/>
+<path d="M180 141 A142 142 0 0 1 332 141" stroke="#f2cf3a"/>
+<path d="M352 158 A142 142 0 0 1 393 252" stroke="#46b37b"/>
 <path d="M395 280 A142 142 0 0 1 376 352" stroke="#3f8ee8"/>
 </g>
 <line x1="256" y1="256" x2="330" y2="150" stroke="#fff" stroke-width="14" stroke-linecap="round"/>

@@ -112,6 +112,12 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
     danach die übrigen nach Datum
     (neueste oben); Singen ganz unten (`ganzUnten: 1`). Die App **Atemklang** wurde auf Wunsch entfernt (Ordner und Eintrag gelöscht; steckt noch in der Git-Geschichte).
     Die Kacheln auf der Erklärseite `ki-betriebssystem/` stehen in derselben Reihenfolge.
+    - `motion-watch/` – **Motion Watch** (27.11.2026, Idee aus dem Workshop wie Trommelball): Handy wie eine Uhr ans Handgelenk (lange Seite zu den Fingern).
+      Uhr-Ansicht: Bogen mit den Tönen der Skala (SW-Farben reihum), Zeiger folgt der Neigung, großer Tonname in der Mitte, Uhrzeit unten.
+      **Neigen** (Standard vorne ↔ hinten = Richtung Feld 2/4 wie im Trommelball, `beta`; wahlweise links ↔ rechts = `gamma`): Winkelbereich ± `st.weit` (30/45/60°) wird in `st.anzahl` Felder geteilt,
+      neues Feld = Ton (kleine Schwelle gegen Flattern); vorne = hohe Töne (`st.richt` umkehrbar). Mitte = Haltung beim Einschalten, „⊕ Mitte“. Gerätachsen, nicht Bildschirmachsen (Bildschirm darf sich drehen).
+      Skalen `SKALEN`: Dur-/Moll-Pentatonik, Blues (Moll), Blues (Dur), Dur, Moll; Grundton C–H, 5–15 Töne, Instrumente aus `../tischharfe/klaenge/` (Samples 54–81 je 3 Halbtöne).
+      Standard A-Moll-Pentatonik, 10 Töne, Marimba. Auch antippen/streichen, Tasten/SW 1–9, Pfeile ↑↓. Bildschirm bleibt an (Wake Lock). Speicher `motion-watch`. Noch ohne Offline-Speicher und ohne Kachel in `ki-betriebssystem/`.
     - `trommelball/` – **Trommelball** (Entwurf aus einem Workshop, 26.11.2026): großer Ball mit 4 Flächen (links rot = SW1/Taste 1, oben orange = 2, rechts gelb = 3, unten grün = 4,
       auch Pfeiltasten). Jede Fläche spielt ein Schlagzeug-Instrument aus `../tischharfe/klaenge/schlag-<set>/55–84.mp3` (30 Instrumente, 6 Sets); Standard links Bassdrum, oben Snare,
       rechts Hi-Hat zu, unten Becken. „⚙ Flächen einstellen“ = je Fläche Instrument wählen, Speicher `trommelball`. Mehrere Finger gleichzeitig, Gleiten über Flächen spielt sie auch.

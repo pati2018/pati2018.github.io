@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Motion Watch</title>
+<meta name="description" content="Motion Watch: Das Smartphone wie eine Uhr ans Handgelenk – durch Neigen spielst du die Töne einer Skala (Dur-/Moll-Pentatonik, Blues …).">
+<meta name="theme-color" content="#141a33">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Motion Watch">
+<link rel="stylesheet" href="/fonts/fonts.css">
+<script data-goatcounter="https://pati2018.goatcounter.com/count" data-goatcounter-settings='{"path":"/motion-watch/"}' async src="//gc.zgo.at/count.js"></script>
+<style>
+  :root{--bg:#141a33;--panel:#1f2747;--ink:#fff;--gold:#f6c83f;
+        --sw1:#e63946;--sw2:#f4892b;--sw3:#f6c83f;--sw4:#3fb950;--sw5:#3f8ee8;
+        --f:"Work Sans","Segoe UI",system-ui,sans-serif;--fd:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  [hidden]{display:none!important}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:var(--f)}
+  body{display:flex;flex-direction:column;min-height:100dvh;overflow:hidden;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:manipulation;
+       padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+  button,select{font:inherit;color:inherit}
+  :focus-visible{outline:4px solid #fff;outline-offset:3px}
+
+  header{display:flex;align-items:center;gap:10px;padding:10px 14px;flex-wrap:wrap}
+  h1{font-family:var(--fd);font-weight:800;font-size:clamp(22px,5vw,32px);margin:0;flex:1;white-space:nowrap}
+  .knopf{min-height:52px;padding:8px 16px;border-radius:16px;border:1.5px solid var(--gold);background:var(--panel);font-weight:700;font-size:18px;cursor:pointer}
+  .knopf.an{background:var(--gold);color:#141a33}
+
+  main{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;padding:8px}
+  #uhr{width:min(94vw,calc(100dvh - 130px),720px);height:auto;aspect-ratio:1;touch-action:none;display:block;overflow:visible}
+  .seg{cursor:pointer;transition:filter .3s}
+  .seg path{stroke:var(--bg);stroke-width:5}
+  .seg.hit{filter:brightness(1.6) drop-shadow(0 0 14px #fff);transition:filter 0s}
+  .seg text{font-family:var(--fd);font-weight:800;fill:#141a33;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
+  #zeiger{transition:transform .07s linear}
+  .gross,.klein{paint-order:stroke;stroke:#1f2747;stroke-linejoin:round;pointer-events:none}
+  .gross{stroke-width:10;font-family:var(--fd);font-weight:800;fill:#fff;text-anchor:middle;dominant-baseline:middle}
+  .klein{stroke-width:6;font-family:var(--f);font-weight:700;fill:#c9d1f0;text-anchor:middle;dominant-baseline:middle}
+
+  @media (max-width:520px){
+    header{gap:8px;padding:8px 10px}
+    h1{flex:1 0 100%;font-size:24px}
+    .knopf{flex:1 1 auto;font-size:16px;min-height:48px;padding:6px 10px}
+  }
+  @media (orientation:landscape) and (max-height:540px){
+    body{flex-direction:row}
+    header{flex-direction:column;align-items:stretch;justify-content:center;width:min(32vw,230px);padding:8px}
+    h1{flex:0;font-size:22px}
+    .knopf{font-size:16px;min-height:48px;padding:6px 10px}
+    #uhr{width:min(calc(100dvh - 24px),calc(68vw - 24px))}
+  }
+
+  #hinweis{position:fixed;left:50%;bottom:max(18px,env(safe-area-inset-bottom));transform:translateX(-50%);background:#243052;border:1.5px solid var(--gold);
+           border-radius:14px;padding:10px 16px;font-weight:700;font-size:17px;max-width:92vw;text-align:center;z-index:6;pointer-events:none}
+
+  #einst{position:fixed;inset:0;background:rgba(10,13,30,.82);display:flex;align-items:center;justify-content:center;padding:16px;z-index:5}
+  .karte{background:var(--panel);border-radius:22px;padding:16px 18px;width:min(100%,560px);max-height:calc(100dvh - 32px);overflow:auto;border:1.5px solid var(--gold)}
+  .karte h2{margin:0 0 12px;font-family:var(--fd);font-size:24px}
+  .zeile{display:flex;align-items:center;gap:12px;margin:8px 0}
+  .zeile>span{flex:0 0 130px;font-weight:700}
+  .zeile select{flex:1;min-width:0;min-height:50px;border-radius:14px;background:#141a33;border:1.5px solid var(--gold);padding:0 12px;font-size:18px}
+  .karte .knopf{width:100%;margin-top:14px}
+  .tipp{opacity:.85;font-size:15px;margin:6px 0 0}
+  @media (max-width:420px){ .zeile>span{flex-basis:100px;font-size:15px} }
+</style>
+</head>
+<body>
+<header>
+  <h1>⌚ Motion Watch</h1>
+  <button class="knopf" id="bewKnopf" type="button" aria-pressed="false">📱 Bewegung: aus</button>
+  <button class="knopf" id="mitteKnopf" type="button" hidden>⊕ Mitte</button>
+  <button class="knopf" id="einstKnopf" type="button">⚙ Einstellen</button>
+</header>
+
+<main>
+  <svg id="uhr" viewBox="-260 -260 520 520" role="group" aria-label="Uhr mit den Tönen der Skala"></svg>
+</main>
+
+<div id="hinweis" hidden role="status"></div>
+<div id="einst" hidden role="dialog" aria-modal="true" aria-labelledby="einstTitel">
+  <div class="karte">
+    <h2 id="einstTitel">⚙ Einstellen</h2>
+    <div class="zeile"><span>Grundton</span><select id="wGrund" aria-label="Grundton"></select></div>
+    <div class="zeile"><span>Skala</span><select id="wSkala" aria-label="Skala"></select></div>
+    <div class="zeile"><span>Anzahl Töne</span><select id="wAnzahl" aria-label="Anzahl Töne"></select></div>
+    <div class="zeile"><span>Instrument</span><select id="wInst" aria-label="Instrument"></select></div>
+    <div class="zeile"><span>Neigen</span><select id="wAchse" aria-label="Richtung der Bewegung">
+      <option value="vh">vorne ↔ hinten</option><option value="lr">links ↔ rechts</option></select></div>
+    <div class="zeile"><span>Hohe Töne</span><select id="wRicht" aria-label="Wo sind die hohen Töne?">
+      <option value="1">vorne / rechts</option><option value="-1">hinten / links</option></select></div>
+    <div class="zeile"><span>Wie weit?</span><select id="wWeit" aria-label="Wie weit neigen?">
+      <option value="30">wenig (± 30°)</option><option value="45">mittel (± 45°)</option><option value="60">stark (± 60°)</option></select></div>
+    <p class="tipp">Handy wie eine Uhr ans Handgelenk. „📱 Bewegung“ einschalten, Hand ruhig halten (= Mitte), dann neigen: jeder neue Ton auf der Uhr erklingt.
+      Ohne Bewegung: Töne antippen, Tasten/SoundWhacker 1–9 oder Pfeiltasten ↑ ↓.</p>
+    <button class="knopf" id="fertig" type="button">✓ Fertig</button>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+const TONNAME=['C','Cis','D','Es','E','F','Fis','G','As','A','B','H'];
+const SKALEN={
+  durpenta:{n:'Dur-Pentatonik',  s:[0,2,4,7,9]},
+  mollpenta:{n:'Moll-Pentatonik',s:[0,3,5,7,10]},
+  blues:{n:'Blues-Skala (Moll)', s:[0,3,5,6,7,10]},
+  durblues:{n:'Blues-Skala (Dur)',s:[0,2,3,4,7,9]},
+  dur:{n:'Dur-Tonleiter',        s:[0,2,4,5,7,9,11]},
+  moll:{n:'Moll-Tonleiter',      s:[0,2,3,5,7,8,10]}
+};
+const KLAENGE={marimba:['Marimba',.96],klavier:['Klavier',.84],vibraphon:['Vibraphon',.68],xylophon:['Xylophon',2.18],spieluhr:['Spieluhr',1.12],
+  kalimba:['Kalimba',1.31],steeldrums:['Steeldrums',1.34],epiano:['E-Piano',.4],gitarre:['Gitarre',1.36],koto:['Koto',2.2],
+  overdrive:['Verzerrte Gitarre',.46],wah:['Wah-Wah-Gitarre',.52],floete:['Querflöte',.37],panfloete:['Panflöte',.26],okarina:['Okarina',.19],
+  klarinette:['Klarinette',.24],sopransax:['Sopransaxophon',.31],altsax:['Altsaxophon',.48],tenorsax:['Tenorsaxophon',.5]};
+const FARBEN=['var(--sw1)','var(--sw2)','var(--sw3)','var(--sw4)','var(--sw5)'];
+const SPEICHER='motion-watch';
+let st={grund:9, skala:'mollpenta', anzahl:10, inst:'marimba', achse:'vh', richt:1, weit:45};   // A-Moll-Pentatonik
+try{Object.assign(st,JSON.parse(localStorage.getItem(SPEICHER)||'{}'))}catch(e){}
+const sichern=()=>{try{localStorage.setItem(SPEICHER,JSON.stringify(st))}catch(e){}};
+
+/* ---------- Töne der Skala ---------- */
+let TOENE=[];
+function toeneBerechnen(){
+  const s=SKALEN[st.skala].s, basis=55+((st.grund-7+12)%12);   // Grundton zwischen G3 und Fis4
+  TOENE=[]; for(let i=0;i<st.anzahl;i++) TOENE.push(basis+12*Math.floor(i/s.length)+s[i%s.length]);
+}
+const tonName=m=>TONNAME[m%12];
+
+/* ---------- Klang ---------- */
+let ctx=null, haupt=null; const puffer={}; let letzte=null;
+function audio(){
+  if(!ctx){ try{ if(navigator.audioSession) navigator.audioSession.type='ambient'; }catch(e){}
+    ctx=new (window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'});
+    const k=ctx.createDynamicsCompressor(); k.threshold.value=-10; k.ratio.value=4; k.connect(ctx.destination);
+    haupt=ctx.createGain(); haupt.gain.value=0.9; haupt.connect(k); }
+  if(ctx.state!=='running') ctx.resume();
+  return ctx;
+}
+const BASIS=[54,57,60,63,66,69,72,75,78,81];
+const naechste=m=>BASIS.reduce((a,b)=>Math.abs(b-m)<Math.abs(a-m)?b:a);
+function laden(inst,b){
+  const k=inst+'/'+b; if(puffer[k]) return puffer[k];
+  puffer[k]=fetch('../tischharfe/klaenge/'+inst+'/'+b+'.mp3').then(r=>{if(!r.ok)throw 0;return r.arrayBuffer()})
+    .then(x=>new Promise((ok,nein)=>audio().decodeAudioData(x,ok,nein))).catch(e=>{delete puffer[k]; throw e});
+  return puffer[k];
+}
+function vorladen(){ const s=new Set(TOENE.map(naechste)); s.forEach(b=>laden(st.inst,b).catch(()=>{})); }
+function spiele(m){
+  audio(); const b=naechste(m), inst=st.inst;
+  laden(inst,b).then(buf=>{
+    const t=ctx.currentTime;
+    if(letzte){ try{ letzte.g.gain.cancelScheduledValues(t); letzte.g.gain.setValueAtTime(letzte.g.gain.value,t); letzte.g.gain.linearRampToValueAtTime(0,t+.12); letzte.q.stop(t+.15);}catch(e){} }
+    const q=ctx.createBufferSource(); q.buffer=buf; q.playbackRate.value=Math.pow(2,(m-b)/12);
+    const g=ctx.createGain(), p=KLAENGE[inst][1]; g.gain.setValueAtTime(p,t); g.gain.setValueAtTime(p,t+1.4); g.gain.linearRampToValueAtTime(0,t+2.2);
+    q.connect(g); g.connect(haupt); q.start(t); q.stop(t+2.3); letzte={q,g};
+  }).catch(()=>{});
+}
+
+/* ---------- Uhr zeichnen ---------- */
+const uhr=document.getElementById('uhr'), NS='http://www.w3.org/2000/svg';
+const el=(n,a)=>{const e=document.createElementNS(NS,n); for(const k in a) e.setAttribute(k,a[k]); return e};
+const pt=(w,r)=>[Math.sin(w*Math.PI/180)*r, -Math.cos(w*Math.PI/180)*r];   // 0° = oben, im Uhrzeigersinn
+const A0=-135, A1=135, R1=238, R0=150;    // Bogen von unten links über oben nach unten rechts
+let segs=[], zeiger, gTon, gSkala, gZeit, aktiv=-1;
+function zeichnen(){
+  uhr.innerHTML='';
+  uhr.appendChild(el('circle',{r:252,fill:'#1f2747',stroke:'#fff','stroke-width':8}));
+  // Minutenstriche wie bei einer Uhr
+  for(let i=0;i<60;i++){ const [x1,y1]=pt(i*6,140),[x2,y2]=pt(i*6,i%5?132:122);
+    uhr.appendChild(el('line',{x1,y1,x2,y2,stroke:'#c9d1f0','stroke-width':i%5?2:4,opacity:.5})); }
+  const n=TOENE.length, w=(A1-A0)/n; segs=[];
+  TOENE.forEach((m,i)=>{
+    const a=A0+i*w, b=a+w, [x1,y1]=pt(a,R1),[x2,y2]=pt(b,R1),[x3,y3]=pt(b,R0),[x4,y4]=pt(a,R0), gr=w>180?1:0;
+    const g=el('g',{class:'seg',tabindex:'0',role:'button','aria-label':'Ton '+(i+1)+': '+tonName(m)}); g.dataset.i=i;
+    const p=el('path',{d:`M${x1} ${y1} A${R1} ${R1} 0 ${gr} 1 ${x2} ${y2} L${x3} ${y3} A${R0} ${R0} 0 ${gr} 0 ${x4} ${y4} Z`}); p.style.fill=FARBEN[i%5];
+    const [tx,ty]=pt(a+w/2,(R0+R1)/2), t=el('text',{x:tx,y:ty,'font-size':n>12?24:30}); t.textContent=tonName(m);
+    g.append(p,t); uhr.appendChild(g); segs.push(g);
+  });
+  gTon=el('text',{x:0,y:-40,class:'gross','font-size':96}); gTon.textContent='♪';
+  gSkala=el('text',{x:0,y:62,class:'klein','font-size':22}); gSkala.textContent=TONNAME[st.grund]+' · '+SKALEN[st.skala].n;
+  gZeit=el('text',{x:0,y:200,class:'klein','font-size':26});
+  zeiger=el('g',{id:'zeiger'});
+  zeiger.append(el('line',{x1:0,y1:0,x2:0,y2:-R0+6,stroke:'#fff','stroke-width':7,'stroke-linecap':'round'}));
+  uhr.append(zeiger,el('circle',{r:14,fill:'#fff','pointer-events':'none'}),gTon,gSkala,gZeit);
+  zeigerAuf(aktiv>=0?aktiv+.5:n/2);
+  uhrzeit();
+}
+function zeigerAuf(pos){ const n=TOENE.length; zeiger.setAttribute('transform',`rotate(${A0+(A1-A0)*Math.max(0,Math.min(n,pos))/n})`); }
+function uhrzeit(){ if(gZeit){ const d=new Date(); gZeit.textContent=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); } }
+setInterval(uhrzeit,10000);
+
+function spieleIndex(i,ohneZeiger){
+  if(i<0||i>=TOENE.length) return;
+  aktiv=i; spiele(TOENE[i]); gTon.textContent=tonName(TOENE[i]);
+  if(!ohneZeiger) zeigerAuf(i+.5);
+  const g=segs[i]; g.classList.remove('hit'); void g.getBBox(); g.classList.add('hit');
+  clearTimeout(g._t); g._t=setTimeout(()=>g.classList.remove('hit'),160);
+}
+
+// Antippen / über die Töne streichen
+const finger=new Map();
+function segAn(x,y){ const e=document.elementFromPoint(x,y); const g=e&&e.closest&&e.closest('.seg'); return g?+g.dataset.i:-1; }
+uhr.addEventListener('pointerdown',e=>{ e.preventDefault(); const i=segAn(e.clientX,e.clientY); finger.set(e.pointerId,i); if(i>=0) spieleIndex(i); });
+uhr.addEventListener('pointermove',e=>{ if(!finger.has(e.pointerId)) return; const i=segAn(e.clientX,e.clientY);
+  if(i!==finger.get(e.pointerId)){ finger.set(e.pointerId,i); if(i>=0) spieleIndex(i); } });
+['pointerup','pointercancel','pointerleave'].forEach(t=>uhr.addEventListener(t,e=>finger.delete(e.pointerId)));
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('gesturestart',e=>e.preventDefault());
+document.addEventListener('dblclick',e=>e.preventDefault());
+
+// Tasten: 1–9 (SoundWhacker 1–5), Pfeile ↑ ↓ eine Stufe
+const gedrueckt=new Set();
+document.addEventListener('keydown',e=>{
+  if(!einst.hidden){ if(e.key==='Escape') zu(); return; }
+  let i=-1;
+  if(/^[1-9]$/.test(e.key)) i=+e.key-1;
+  else if(e.key==='ArrowUp'||e.key==='ArrowRight') i=Math.min(TOENE.length-1,(aktiv<0?Math.floor(TOENE.length/2)-1:aktiv)+1);
+  else if(e.key==='ArrowDown'||e.key==='ArrowLeft') i=Math.max(0,(aktiv<0?Math.floor(TOENE.length/2):aktiv)-1);
+  else if((e.key===' '||e.key==='Enter') && e.target.classList && e.target.classList.contains('seg')) i=+e.target.dataset.i;
+  if(i<0) return;
+  e.preventDefault(); if(/^[1-9 ]$|Enter/.test(e.key)){ if(gedrueckt.has(e.code)) return; gedrueckt.add(e.code); }
+  spieleIndex(i);
+});
+document.addEventListener('keyup',e=>gedrueckt.delete(e.code));
+document.addEventListener('pointerdown',()=>audio(),{once:true});
+
+/* ---------- Bewegung (Bewegungssensor) ----------
+   Handy liegt wie eine Uhr am Handgelenk. Neigen ändert den Winkel; der Winkelbereich
+   (± „Wie weit“) ist in so viele Felder geteilt, wie die Skala Töne hat.
+   Kommt der Zeiger in ein neues Feld, erklingt dessen Ton. Mitte = Haltung beim Einschalten. */
+const hinweis=document.getElementById('hinweis');
+function zeige(t,ms){ hinweis.textContent=t; hinweis.hidden=false; clearTimeout(zeige._t); zeige._t=setTimeout(()=>hinweis.hidden=true,ms||2500); }
+const bewKnopf=document.getElementById('bewKnopf'), mitteKnopf=document.getElementById('mitteKnopf');
+let bewAn=false, mitte=null, roh=null, bekommen=false, wachLock=null;
+function aufOrientierung(e){
+  if(e.beta==null||e.gamma==null) return;
+  bekommen=true; roh=[e.beta,e.gamma];
+  if(!bewAn) return;
+  if(!mitte){ mitte=roh.slice(); }
+  // vorne/hinten = beta (vorne = oberer Rand geht nach unten → beta wird kleiner), links/rechts = gamma
+  let d = st.achse==='lr' ? roh[1]-mitte[1] : -(roh[0]-mitte[0]);
+  if(d>180) d-=360; if(d<-180) d+=360;
+  d*=st.richt;
+  const n=TOENE.length, pos=(d+st.weit)/(2*st.weit)*n;   // 0 … n
+  zeigerAuf(pos);
+  const k=Math.max(0,Math.min(n-1,Math.floor(pos)));
+  if(aktiv<0){ aktiv=k; gTon.textContent=tonName(TOENE[k]); return; }   // erster Wert: nur merken, nicht spielen
+  if(k!==aktiv){
+    // kleine Schwelle, damit der Ton an der Grenze nicht flattert
+    const rand = k>aktiv ? pos-k : (k+1)-pos;
+    if(rand>0.15 || Math.abs(k-aktiv)>1 || pos<0 || pos>n) spieleIndex(k,true);
+  }
+}
+window.addEventListener('deviceorientation',aufOrientierung);
+async function wachHalten(an){
+  try{ if(an && 'wakeLock' in navigator){ wachLock=await navigator.wakeLock.request('screen'); }
+       else if(!an && wachLock){ wachLock.release(); wachLock=null; } }catch(e){}
+}
+document.addEventListener('visibilitychange',()=>{ if(bewAn && document.visibilityState==='visible') wachHalten(true); });
+function bewZeigen(){ bewKnopf.textContent='📱 Bewegung: '+(bewAn?'an':'aus'); bewKnopf.classList.toggle('an',bewAn);
+  bewKnopf.setAttribute('aria-pressed',bewAn); mitteKnopf.hidden=!bewAn; }
+async function bewegungEin(){
+  audio();
+  const DOE=window.DeviceOrientationEvent;
+  if(!DOE){ zeige('Dieses Gerät hat keinen Bewegungssensor.'); return; }
+  if(typeof DOE.requestPermission==='function'){
+    try{ if(await DOE.requestPermission()!=='granted'){ zeige('Bewegung nicht erlaubt. Safari ganz schließen, neu öffnen und „Erlauben“ tippen.',4500); return; } }
+    catch(e){ zeige('Bewegung konnte nicht eingeschaltet werden.',3500); return; }
+  }
+  bewAn=true; mitte=null; aktiv=-1; bewZeigen(); wachHalten(true);
+  zeige('Hand ruhig halten – das ist jetzt die Mitte. Dann neigen!',3000);
+  setTimeout(()=>{ if(bewAn && !bekommen){ bewAn=false; bewZeigen(); wachHalten(false); zeige('Kein Bewegungssensor gefunden (geht am iPhone/iPad).',4000); } },1500);
+}
+bewKnopf.addEventListener('click',()=>{ if(bewAn){ bewAn=false; bewZeigen(); wachHalten(false); } else bewegungEin(); });
+mitteKnopf.addEventListener('click',()=>{ mitte=roh?roh.slice():null; aktiv=-1; zeige('Neue Mitte gesetzt.',1500); });
+
+/* ---------- Einstellungen ---------- */
+const einst=document.getElementById('einst');
+const W={grund:'wGrund',skala:'wSkala',anzahl:'wAnzahl',inst:'wInst',achse:'wAchse',richt:'wRicht',weit:'wWeit'};
+for(const k in W) W[k]=document.getElementById(W[k]);
+TONNAME.forEach((n,i)=>W.grund.add(new Option(n,i)));
+for(const k in SKALEN) W.skala.add(new Option(SKALEN[k].n,k));
+for(let i=5;i<=15;i++) W.anzahl.add(new Option(i+' Töne',i));
+for(const k in KLAENGE) W.inst.add(new Option(KLAENGE[k][0],k));
+const ZAHL=['grund','anzahl','richt','weit'];
+for(const k in W) W[k].addEventListener('change',()=>{
+  st[k]=ZAHL.includes(k)?+W[k].value:W[k].value; sichern(); neu();
+  if(['grund','skala','anzahl','inst'].includes(k)) spieleIndex(0);
+  if(k==='achse'||k==='richt'||k==='weit'){ mitte=null; aktiv=-1; }
+});
+function auf(){ for(const k in W) W[k].value=st[k]; einst.hidden=false; document.getElementById('fertig').focus(); }
+function zu(){ einst.hidden=true; document.getElementById('einstKnopf').focus(); }
+document.getElementById('einstKnopf').addEventListener('click',auf);
+document.getElementById('fertig').addEventListener('click',zu);
+einst.addEventListener('pointerdown',e=>{ if(e.target===einst) zu(); });
+
+function neu(){ toeneBerechnen(); if(aktiv>=TOENE.length) aktiv=-1; zeichnen(); vorladen(); }
+neu();
+})();
+</script>
+</body>
+</html>

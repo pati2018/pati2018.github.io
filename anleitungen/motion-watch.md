@@ -12,7 +12,6 @@ Auf dem Bildschirm siehst du eine **Uhr**: Rundherum stehen die Töne in bunten 
 | Bewegung | So spielst du |
 |---|---|
 | **🔄 Kreise fahren / drehen** (Standard) | iPad oder Handy liegt **flach**, z. B. auf dem **Tisch am E-Rolli**. Fährt der E-Rolli Kreise, dreht sich das Gerät mit – **eine Runde = alle Töne** der Skala, im Uhrzeigersinn aufwärts. Geht auch, wenn du das Gerät auf dem Tisch drehst wie ein Lenkrad. |
-| **💪 Arm heben** | Handy **wie eine Uhr ans Handgelenk**. Beim Einschalten den **Arm locker hängen lassen** – die App merkt sich diese Haltung. Hängt der Arm, ist es **still**. Hebst du den Arm langsam **bis er in den Himmel zeigt (180°)**, erklingen alle Töne **gleichmäßig verteilt von tief nach hoch**; beim Senken wieder abwärts. Egal, wie das Handy am Handgelenk sitzt. **⊕ Arm unten** misst die hängende Haltung neu. |
 | **⭕ Im Kreis schieben** | Gerät flach auf dem Tisch **im Kreis schieben**, ohne es zu drehen. Schnelle Kreise = schnelle Töne. |
 | **↕ Neigen vorne/hinten** | Handy **wie eine Uhr ans Handgelenk** (lange Seite zu den Fingern). Hand ruhig halten (= Mitte), dann nach vorne neigen = höher, nach hinten = tiefer. |
 | **↔ Neigen links/rechts** | wie oben, nur seitlich neigen. |
@@ -30,7 +29,7 @@ Auf dem Bildschirm siehst du eine **Uhr**: Rundherum stehen die Töne in bunten 
 | **Skala** | Dur-Pentatonik, **Moll-Pentatonik** (Standard), Blues-Skala (Moll), Blues-Skala (Dur), Dur-Tonleiter, Moll-Tonleiter |
 | **Anzahl Töne** | 5 bis 15 – wenige Töne = große Felder, leicht zu treffen |
 | **Instrument** | Marimba, Klavier, Vibraphon, Kalimba, Gitarre, Flöten, Saxophone und mehr |
-| **Bewegung** | 🔄 Kreise fahren / drehen, 💪 Arm heben, ⭕ Im Kreis schieben, ↕ Neigen vorne/hinten, ↔ Neigen links/rechts |
+| **Bewegung** | 🔄 Kreise fahren / drehen, ⭕ Im Kreis schieben, ↕ Neigen vorne/hinten, ↔ Neigen links/rechts |
 | **Empfindlich** (nur Schieben) | sehr (kleine Kreise reichen), mittel, wenig (nur große, kräftige Kreise) |
 | **Hohe Töne** | im / gegen den Uhrzeigersinn – beim Neigen: vorne/rechts oder hinten/links |
 | **Wie weit?** (nur Neigen) | wenig (± 30°), mittel (± 45°), stark (± 60°) |

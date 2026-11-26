@@ -90,7 +90,7 @@
     <div class="zeile"><span>Anzahl Töne</span><select id="wAnzahl" aria-label="Anzahl Töne"></select></div>
     <div class="zeile"><span>Instrument</span><select id="wInst" aria-label="Instrument"></select></div>
     <div class="zeile"><span>Bewegung</span><select id="wModus" aria-label="Welche Bewegung spielt?">
-      <option value="dreh">🔄 Kreise fahren / drehen (flach)</option><option value="arm">💪 Arm heben</option><option value="kreis">⭕ Im Kreis schieben (flach)</option>
+      <option value="dreh">🔄 Kreise fahren / drehen (flach)</option><option value="kreis">⭕ Im Kreis schieben (flach)</option>
       <option value="vh">↕ Neigen vorne/hinten</option><option value="lr">↔ Neigen links/rechts</option></select></div>
     <div class="zeile" id="zEmpf"><span>Empfindlich</span><select id="wEmpf" aria-label="Wie fest muss man schieben?">
       <option value="0.4">sehr (kleine Kreise)</option><option value="0.8">mittel</option><option value="1.5">wenig (große Kreise)</option></select></div>
@@ -98,7 +98,7 @@
       <option value="1">vorne / rechts</option><option value="-1">hinten / links</option></select></div>
     <div class="zeile" id="zWeit"><span>Wie weit?</span><select id="wWeit" aria-label="Wie weit neigen?">
       <option value="30">wenig (± 30°)</option><option value="45">mittel (± 45°)</option><option value="60">stark (± 60°)</option></select></div>
-    <p class="tipp">„📱 Bewegung“ einschalten. 🔄 Kreise fahren: iPad/Handy liegt flach (z. B. auf dem Tisch am E-Rolli) und dreht sich mit – eine Runde = alle Töne. 💪 Arm heben: Handy am Handgelenk, Arm hängt = still, Arm langsam bis in den Himmel heben (180°) = alle Töne von tief nach hoch. ⭕ Schieben: flach im Kreis über den Tisch schieben. Neigen: Handy wie eine Uhr ans Handgelenk. Jeder neue Ton auf der Uhr erklingt.
+    <p class="tipp">„📱 Bewegung“ einschalten. 🔄 Kreise fahren: iPad/Handy liegt flach (z. B. auf dem Tisch am E-Rolli) und dreht sich mit – eine Runde = alle Töne. ⭕ Schieben: flach im Kreis über den Tisch schieben. Neigen: Handy wie eine Uhr ans Handgelenk. Jeder neue Ton auf der Uhr erklingt.
       Ohne Bewegung: Töne antippen, Tasten/SoundWhacker 1–9 oder Pfeiltasten ↑ ↓.</p>
     <button class="knopf" id="fertig" type="button">✓ Fertig</button>
   </div>
@@ -171,10 +171,9 @@ const el=(n,a)=>{const e=document.createElementNS(NS,n); for(const k in a) e.set
 const pt=(w,r)=>[Math.sin(w*Math.PI/180)*r, -Math.cos(w*Math.PI/180)*r];   // 0° = oben, im Uhrzeigersinn
 let A0=0, A1=360; const R1=238, R0=150;    // rund (Kreise/Drehen) oder Bogen unten links → oben → unten rechts (Neigen)
 const rund=()=>st.modus==='kreis'||st.modus==='dreh';
-const RUHE=10;   // Arm heben: die ersten 10° (Arm hängt) sind still
 let segs=[], zeiger, gTon, gSkala, gZeit, aktiv=-1;
 function zeichnen(){
-  uhr.innerHTML=''; if(rund()){A0=0;A1=360;}else if(st.modus==='arm'){A0=180+RUHE;A1=360;}else{A0=-135;A1=135;}
+  uhr.innerHTML=''; if(rund()){A0=0;A1=360;}else{A0=-135;A1=135;}
   uhr.appendChild(el('circle',{r:252,fill:'#1f2747',stroke:'#fff','stroke-width':8}));
   // Minutenstriche wie bei einer Uhr
   for(let i=0;i<60;i++){ const [x1,y1]=pt(i*6,140),[x2,y2]=pt(i*6,i%5?132:122);
@@ -187,8 +186,6 @@ function zeichnen(){
     const [tx,ty]=pt(a+w/2,(R0+R1)/2), t=el('text',{x:tx,y:ty,'font-size':n>12?24:30}); t.textContent=tonName(m);
     g.append(p,t); uhr.appendChild(g); segs.push(g);
   });
-  if(st.modus==='arm'){ const [x1,y1]=pt(180,R1),[x2,y2]=pt(180+RUHE,R1),[x3,y3]=pt(180+RUHE,R0),[x4,y4]=pt(180,R0);
-    uhr.appendChild(el('path',{d:`M${x1} ${y1} A${R1} ${R1} 0 0 1 ${x2} ${y2} L${x3} ${y3} A${R0} ${R0} 0 0 0 ${x4} ${y4} Z`,fill:'#3a4470',stroke:'#141a33','stroke-width':5,'aria-hidden':'true'})); }
   gTon=el('text',{x:0,y:-14,class:'gross','font-size':96}); gTon.textContent='♪';
   gSkala=el('text',{x:0,y:66,class:'klein','font-size':22}); gSkala.textContent=TONNAME[st.grund]+' · '+SKALEN[st.skala].n;
   gZeit=el('text',{x:0,y:200,class:'klein','font-size':26});
@@ -196,12 +193,12 @@ function zeichnen(){
   // Zeiger nur am Rand (die Mitte bleibt frei für den Tonnamen)
   zeiger.append(el('line',{x1:0,y1:-104,x2:0,y2:-R0+18,stroke:'#fff','stroke-width':8,'stroke-linecap':'round'}),
                 el('path',{d:`M-14 ${-R0+22} L0 ${-R0+2} L14 ${-R0+22} Z`,fill:'#fff'}));
-  if(rund()||st.modus==='arm') gZeit.setAttribute('y',112);
+  if(rund()) gZeit.setAttribute('y',112);
   uhr.append(zeiger,gTon,gSkala,gZeit);
   zeigerAuf(aktiv>=0?aktiv+.5:(rund()?.5:n/2));
   uhrzeit();
 }
-function zeigerAuf(pos){ const n=TOENE.length; if(!rund()) pos=Math.max(st.modus==='arm'?-n*RUHE/(180-RUHE):0,Math.min(n,pos));
+function zeigerAuf(pos){ const n=TOENE.length; if(!rund()) pos=Math.max(0,Math.min(n,pos));
   zeiger.style.transition=rund()?'none':''; zeiger.setAttribute('transform',`rotate(${A0+(A1-A0)*pos/n})`); }
 function uhrzeit(){ if(gZeit){ const d=new Date(); gZeit.textContent=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); } }
 setInterval(uhrzeit,10000);
@@ -287,34 +284,11 @@ function aufBewegung(e){
     const a=e.accelerationIncludingGravity; gx=gx*.9+a.x*.1; gy=gy*.9+a.y*.1; ax=a.x-gx; ay=a.y-gy; }
   else return;
   bekommen=true;
-  if(bewAn && st.modus==='arm') return armHeben(e.accelerationIncludingGravity);
   if(!bewAn || st.modus!=='kreis') return;
   sx=sx*.65+ax*.35; sy=sy*.65+ay*.35;                     // glätten
   if(Math.hypot(sx,sy)<st.empf) return;                   // zu wenig Bewegung → nichts
   const w=Math.atan2(sx,sy)*180/Math.PI+180;              // 0° = oberer Rand, im Uhrzeigersinn
   zuFeld(((w*st.richt)+360)%360/360*TOENE.length);
-}
-/* Arm heben: Winkel zwischen der Schwerkraft jetzt und der Schwerkraft bei hängendem Arm.
-   Hängt der Arm = 0°, zeigt er in den Himmel = 180°. Egal, wie das Handy am Handgelenk sitzt.
-   0–10° = still, darüber sind die Töne gleichmäßig verteilt (tief unten, hoch oben). */
-let armUnten=null, armProben=[], G=null;
-function armHeben(a){
-  if(!a || a.x==null) return;
-  const v=[a.x,a.y,a.z];
-  G = G ? G.map((g,i)=>g*.8+v[i]*.2) : v;                  // glätten
-  if(!armUnten){                                           // Arm hängt: kurz messen
-    armProben.push(G.slice());
-    if(armProben.length>=25){ armUnten=[0,1,2].map(i=>armProben.reduce((s,p)=>s+p[i],0)/armProben.length); zeige('Jetzt den Arm langsam heben!',2500); }
-    return;
-  }
-  const lg=Math.hypot(...G), lu=Math.hypot(...armUnten); if(!lg||!lu) return;
-  const c=Math.max(-1,Math.min(1,(G[0]*armUnten[0]+G[1]*armUnten[1]+G[2]*armUnten[2])/(lg*lu)));
-  const w=Math.acos(c)*180/Math.PI, n=TOENE.length, pos=(w-RUHE)/(180-RUHE)*n;
-  zeigerAuf(pos);
-  if(w<RUHE){ if(aktiv>=0 && pos<-0.15){ aktiv=-1; gTon.textContent='♪'; } return; }   // Arm hängt → still
-  const k=Math.max(0,Math.min(n-1,Math.floor(pos)));
-  if(aktiv<0){ spieleIndex(k,true); return; }
-  if(k!==aktiv && (Math.abs(pos-(aktiv+0.5))>0.65 || pos>=n)) spieleIndex(k,true);
 }
 window.addEventListener('devicemotion',aufBewegung);
 window.addEventListener('deviceorientation',aufOrientierung);
@@ -324,24 +298,23 @@ async function wachHalten(an){
 }
 document.addEventListener('visibilitychange',()=>{ if(bewAn && document.visibilityState==='visible') wachHalten(true); });
 function bewZeigen(){ bewKnopf.textContent='📱 Bewegung: '+(bewAn?'an':'aus'); bewKnopf.classList.toggle('an',bewAn);
-  bewKnopf.setAttribute('aria-pressed',bewAn); mitteKnopf.hidden=!bewAn||st.modus==='kreis'; mitteKnopf.textContent=st.modus==='arm'?'⊕ Arm unten':'⊕ Mitte'; }
+  bewKnopf.setAttribute('aria-pressed',bewAn); mitteKnopf.hidden=!bewAn||st.modus==='kreis'; }
 async function bewegungEin(){
   audio();
   const DOE=window.DeviceOrientationEvent;
   if(!DOE){ zeige('Dieses Gerät hat keinen Bewegungssensor.'); return; }
   const DME=window.DeviceMotionEvent;
   if(typeof DOE.requestPermission==='function' || (DME && typeof DME.requestPermission==='function')){
-    try{ const P=((st.modus==='kreis'||st.modus==='arm')&&DME&&DME.requestPermission)?DME:DOE;
+    try{ const P=(st.modus==='kreis'&&DME&&DME.requestPermission)?DME:DOE;
          if(await P.requestPermission()!=='granted'){ zeige('Bewegung nicht erlaubt. Safari ganz schließen, neu öffnen und „Erlauben“ tippen.',4500); return; } }
     catch(e){ zeige('Bewegung konnte nicht eingeschaltet werden.',3500); return; }
   }
-  bewAn=true; mitte=null; aktiv=-1; armUnten=null; armProben=[]; G=null; bewZeigen(); wachHalten(true);
-  zeige({kreis:'Handy/iPad flach hinlegen und im Kreis schieben!',dreh:'Flach hinlegen und Kreise fahren oder drehen!',arm:'Arm locker hängen lassen …'}[st.modus]||'Hand ruhig halten – das ist jetzt die Mitte. Dann neigen!',3000);
+  bewAn=true; mitte=null; aktiv=-1; bewZeigen(); wachHalten(true);
+  zeige({kreis:'Handy/iPad flach hinlegen und im Kreis schieben!',dreh:'Flach hinlegen und Kreise fahren oder drehen!'}[st.modus]||'Hand ruhig halten – das ist jetzt die Mitte. Dann neigen!',3000);
   setTimeout(()=>{ if(bewAn && !bekommen){ bewAn=false; bewZeigen(); wachHalten(false); zeige('Kein Bewegungssensor gefunden (geht am iPhone/iPad).',4000); } },1500);
 }
 bewKnopf.addEventListener('click',()=>{ if(bewAn){ bewAn=false; bewZeigen(); wachHalten(false); } else bewegungEin(); });
-mitteKnopf.addEventListener('click',()=>{ mitte=roh?roh.slice():null; sx=sy=0; aktiv=-1;
-  if(st.modus==='arm'){ armUnten=null; armProben=[]; zeige('Arm locker hängen lassen …',2000); } else zeige('Neue Mitte gesetzt.',1500); });
+mitteKnopf.addEventListener('click',()=>{ mitte=roh?roh.slice():null; sx=sy=0; aktiv=-1; zeige('Neue Mitte gesetzt.',1500); });
 
 /* ---------- Einstellungen ---------- */
 const einst=document.getElementById('einst');
@@ -355,13 +328,12 @@ const ZAHL=['grund','anzahl','richt','weit','empf'];
 for(const k in W) W[k].addEventListener('change',()=>{
   st[k]=ZAHL.includes(k)?+W[k].value:W[k].value; sichern(); neu();
   if(['grund','skala','anzahl','inst'].includes(k)) spieleIndex(0);
-  if(['modus','richt','weit','empf'].includes(k)){ mitte=null; aktiv=-1; armUnten=null; armProben=[]; zeilenZeigen(); bewZeigen(); }
+  if(['modus','richt','weit','empf'].includes(k)){ mitte=null; aktiv=-1; zeilenZeigen(); bewZeigen(); }
 });
 function zeilenZeigen(){
   const r=rund();
   document.getElementById('zEmpf').hidden=st.modus!=='kreis';
-  document.getElementById('zWeit').hidden=r||st.modus==='arm';
-  document.getElementById('zRicht').hidden=st.modus==='arm';
+  document.getElementById('zWeit').hidden=r;
   W.richt.options[0].text=r?'im Uhrzeigersinn':'vorne / rechts';
   W.richt.options[1].text=r?'gegen den Uhrzeigersinn':'hinten / links';
 }

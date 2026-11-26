@@ -117,9 +117,6 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
       **Bewegung `st.modus`** (Wunsch Nutzer: Gyro; „Kreise fahren“ = Gerät liegt flach, z. B. auf dem Tisch am **E-Rolli**, und dreht sich mit, wenn der E-Rolli Kreise fährt):
       **🔄 `dreh`** (Standard, alte Speicherstände werden per `st.v=3` umgestellt) = `alpha` (Gyro) relativ zur Mitte, 1 Umdrehung = alle Töne; **⭕ `kreis`** = flach im Kreis schieben ohne Drehen –
       `devicemotion`, Richtung der geglätteten Beschleunigung +180°, Schwelle `st.empf` 0,4/0,8/1,5 m/s². Bei beiden Töne rundum (360°, Ton 1 oben, im Uhrzeigersinn aufwärts), Zeiger nur am Rand.
-      **💪 `arm`** = Arm heben (Wunsch Nutzer): Handy am Handgelenk, beim Einschalten/„⊕ Arm unten“ 25 Messungen der Schwerkraft bei hängendem Arm (`armUnten`);
-      Winkel = Winkel zwischen jetziger und hängender Schwerkraft (0° hängt … 180° zeigt in den Himmel, unabhängig von der Lage am Handgelenk, Unterarm-Drehen ändert nichts).
-      0–10° (`RUHE`) = still (grauer Bogen), 10–180° gleichmäßig auf die Töne verteilt; Töne auf der linken Hälfte der Uhr von unten (tief) nach oben (hoch).
       **Farben wie in der SoundWhacker Band** (rot #e5484d, lila #9b5de5, gelb #f2cf3a, grün #46b37b, blau #3f8ee8 – Wunsch Nutzer). Sicherung vor diesem Umbau: Branch `stabil/motion-watch-v1.0`.
       **Neigen** (`vh` vorne ↔ hinten = Richtung Feld 2/4 wie im Trommelball, `beta`; `lr` links ↔ rechts = `gamma`; Bogen statt Kreis): Winkelbereich ± `st.weit` (30/45/60°) wird in `st.anzahl` Felder geteilt,
       neues Feld = Ton (kleine Schwelle gegen Flattern); vorne = hohe Töne (`st.richt` umkehrbar). Mitte = Haltung beim Einschalten, „⊕ Mitte“. Gerätachsen, nicht Bildschirmachsen (Bildschirm darf sich drehen).

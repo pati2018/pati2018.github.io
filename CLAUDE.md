@@ -117,6 +117,7 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
       **Bewegung `st.modus`** (Wunsch Nutzer: Gyro; „Kreise fahren“ = Gerät liegt flach, z. B. auf dem Tisch am **E-Rolli**, und dreht sich mit, wenn der E-Rolli Kreise fährt):
       **🔄 `dreh`** (Standard, alte Speicherstände werden per `st.v=3` umgestellt) = `alpha` (Gyro) relativ zur Mitte, 1 Umdrehung = alle Töne; **⭕ `kreis`** = flach im Kreis schieben ohne Drehen –
       `devicemotion`, Richtung der geglätteten Beschleunigung +180°, Schwelle `st.empf` 0,4/0,8/1,5 m/s². Bei beiden Töne rundum (360°, Ton 1 oben, im Uhrzeigersinn aufwärts), Zeiger nur am Rand.
+      Ein Modus **„💪 Arm heben“** (0–180°, Schwerkraft-Winkel) wurde ausprobiert und auf Wunsch wieder entfernt („vorher war besser“) – nicht erneut einbauen, steckt in der Git-Geschichte.
       **Farben wie in der SoundWhacker Band** (rot #e5484d, lila #9b5de5, gelb #f2cf3a, grün #46b37b, blau #3f8ee8 – Wunsch Nutzer). Sicherung vor diesem Umbau: Branch `stabil/motion-watch-v1.0`.
       **Neigen** (`vh` vorne ↔ hinten = Richtung Feld 2/4 wie im Trommelball, `beta`; `lr` links ↔ rechts = `gamma`; Bogen statt Kreis): Winkelbereich ± `st.weit` (30/45/60°) wird in `st.anzahl` Felder geteilt,
       neues Feld = Ton (kleine Schwelle gegen Flattern); vorne = hohe Töne (`st.richt` umkehrbar). Mitte = Haltung beim Einschalten, „⊕ Mitte“. Gerätachsen, nicht Bildschirmachsen (Bildschirm darf sich drehen).

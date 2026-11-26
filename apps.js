@@ -25,6 +25,17 @@
  */
 window.APPS = [
   {
+    id: "visitenkarte",
+    zaehler: "/visitenkarte/",
+    titel: "Visitenkarte",
+    kurz: "Meine digitale Visitenkarte für Workshops: QR-Code zeigen, das Gegenüber scannt mit der Handykamera und speichert meinen Kontakt mit einem Tipp – ohne App. Mit soundwhackers.de, Handy, E-Mail und Band-Seite.",
+    link: "https://pati2018.github.io/visitenkarte/",
+    repo: "https://github.com/pati2018/pati2018.github.io/tree/main/visitenkarte",
+    kategorie: "Kontakt",
+    symbol: "📇",
+    datum: "2026-11-26"
+  },
+  {
     id: "whacker-band",
     en: { titel: "SoundWhacker Band", kurz: "Five animated figures with SoundWhackers play a song for you – then everyone plays along live: melody, chords, fixed notes or improvisation. With full screen, 30+ sounds, drums and noises, your own songs, English and German." },   // englische Anleitung: anleitungen/whacker-band-en.md
     zaehler: "/whacker-band/",

@@ -41,6 +41,7 @@ Speichern, committen – nach ca. einer Minute ist die App auf der Seite.
 | `fagott/` | Fagott – Klänge in `klang/` (GeneralUser GS, Bassoon); Lieder kommen aus `../tischharfe/lieder.js` |
 | `singen/` | Singen mit SoundWhackern; `stimme.js` ist die künstliche Singstimme (Formant-Synthese) |
 | `ki-os/` | Erklärseite „Mein KI-Betriebssystem“ (allgemein: Gedächtnis, Skills & Plugins, Connectors, Routinen); verlinkt von `ki-betriebssystem/` |
+| `visitenkarte/` | Digitale Visitenkarte (QR-Code → Karte → „Kontakt speichern“ als vCard), offline nutzbar |
 | `ki-betriebssystem/` | Erklärseite „So entstehen meine Apps“ (Schaubild, verlinkt alle Musik-Apps); keine App, darum nicht in `apps.js` |
 | `tischharfe/` | Tischharfe mit Unterlegnoten; `lieder.js` enthält die Lieder, `kopf.js` die Kopfsteuerung, `aufnahme.js` die Video-Aufnahme |
 | `veranstaltungen/praesentationen/` | Vortrag „Selbstgebaute barrierefreie digitale Musikinstrumente“ als Folien-App mit Videos (Bilder in `slides/`, Videos in `video/`); keine Musik-App, darum nicht in `apps.js`; nicht für Suchmaschinen (noindex) |

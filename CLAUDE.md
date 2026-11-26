@@ -112,6 +112,11 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
     danach die übrigen nach Datum
     (neueste oben); Singen ganz unten (`ganzUnten: 1`). Die App **Atemklang** wurde auf Wunsch entfernt (Ordner und Eintrag gelöscht; steckt noch in der Git-Geschichte).
     Die Kacheln auf der Erklärseite `ki-betriebssystem/` stehen in derselben Reihenfolge.
+    - `visitenkarte/` – **Digitale Visitenkarte** (Wunsch Nutzer, eigene Kachel auf der Übersicht, obwohl keine Musik-App): QR-Code enthält nur den Link
+      `https://pati2018.github.io/visitenkarte/` (Fehlerkorrektur M, Bibliothek `qrcode.js` von Kazuhiko Arase, MIT, lokal). `?qr` = nur großer QR-Code zum Vorzeigen
+      (Home-Bildschirm-Symbol startet dort, `start_url ./?qr`). „📇 Kontakt speichern“ = `patrick-schaefer.vcf` (vCard 3.0, UTF-8, CRLF).
+      Daten: soundwhackers.de (groß, mit Band-Icon der fünf Figuren), Patrick Schäfer, Handy +49 178 5800773, pa.schaefer@schule.saarland, Band iband-saar.de.
+      Bunter Verlauf Lila→Pink→Orange→Gelb, Equalizer-Deko, offline per `visitenkarte/sw.js` (`VERSION` bei Änderungen erhöhen). Kachel auch in `ki-betriebssystem/`.
   - In eigenen Repos (nur verlinkt):
     - Smart Instruments → Repo `pati2018/Gitarre`
     - SoundWhacker Smart Control und MIGA (Mimik, Gestik, Augensteuerung)

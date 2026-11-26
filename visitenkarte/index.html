@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Patrick Schäfer – soundwhackers.de</title>
+<meta name="description" content="Digitale Visitenkarte von Patrick Schäfer – soundwhackers.de. Kontakt mit einem Tipp speichern.">
+<meta name="theme-color" content="#ff2e88">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Visitenkarte">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="stylesheet" href="/fonts/fonts.css">
+<script data-goatcounter="https://pati2018.goatcounter.com/count" data-goatcounter-settings='{"path":"/visitenkarte/"}' async src="//gc.zgo.at/count.js"></script>
+<style>
+  :root{--pink:#ff2e88;--orange:#ff7a1a;--gelb:#ffd23f;--lila:#7b2ff7;--tuerkis:#00d4c8;--ink:#1a1033;--weiss:#fff;
+        --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;--f-body:"Work Sans","Segoe UI",system-ui,sans-serif}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  [hidden]{display:none!important}
+  html{min-height:100%;background:#ff7a1a linear-gradient(160deg,var(--lila) 0%,var(--pink) 38%,var(--orange) 72%,var(--gelb) 100%) no-repeat;background-size:100% 100%}
+  html,body{margin:0}
+  body{font-family:var(--f-body);color:var(--weiss);background:transparent;
+       min-height:100vh;min-height:100dvh;padding:max(18px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(22px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));
+       display:flex;justify-content:center;overflow-x:hidden}
+  a{color:inherit}
+  :focus-visible{outline:4px solid var(--weiss);outline-offset:3px;border-radius:8px}
+  .karte{width:100%;max-width:440px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;position:relative}
+
+  /* Equalizer-Deko – liegt hinter allem, nie über dem QR-Code */
+  .eq{position:fixed;left:0;right:0;bottom:0;height:120px;display:flex;align-items:flex-end;justify-content:center;gap:6px;opacity:.22;pointer-events:none;z-index:0}
+  .eq i{display:block;width:12px;border-radius:6px 6px 0 0;background:var(--weiss);height:30%;animation:eq 1.1s ease-in-out infinite alternate}
+  .eq i:nth-child(3n){animation-duration:.8s}.eq i:nth-child(4n+1){animation-duration:1.4s}.eq i:nth-child(5n+2){animation-duration:.95s}
+  @keyframes eq{0%{height:12%}100%{height:95%}}
+  @media (prefers-reduced-motion:reduce){.eq i{animation:none;height:40%}}
+  .karte>*{position:relative;z-index:1}
+
+  .kopf{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:4px}
+  .icon{width:118px;height:118px;border-radius:28px;box-shadow:0 10px 30px rgba(26,16,51,.35);display:block}
+  .thema{font-family:var(--f-display);font-weight:800;font-size:clamp(30px,9.6vw,48px);white-space:nowrap;max-width:100%;line-height:1;letter-spacing:-.02em;margin:10px 0 0;
+         text-decoration:none;text-shadow:0 3px 0 rgba(26,16,51,.25)}
+  .thema span{color:var(--gelb)}
+  .name{font-family:var(--f-display);font-weight:700;font-size:clamp(24px,7vw,30px);margin:0}
+  .wellen{width:150px;height:22px;display:block}
+  .wellen path{fill:none;stroke:var(--weiss);stroke-width:3;stroke-linecap:round;opacity:.85}
+
+  .qrfeld{background:var(--weiss);border-radius:26px;padding:18px;box-shadow:0 12px 34px rgba(26,16,51,.35);width:min(100%,300px)}
+  .qrfeld canvas,.qrfeld img{display:block;width:100%;height:auto;image-rendering:pixelated}
+  .qrtext{color:var(--ink);font-weight:700;font-size:14px;margin:8px 0 0}
+
+  .speichern{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:64px;border-radius:20px;border:none;background:var(--ink);color:var(--weiss);
+             font-family:var(--f-display);font-weight:800;font-size:22px;text-decoration:none;box-shadow:0 8px 0 rgba(26,16,51,.35);cursor:pointer}
+  .speichern:active{transform:translateY(4px);box-shadow:0 4px 0 rgba(26,16,51,.35)}
+
+  .kontakt{display:flex;flex-direction:column;gap:10px;width:100%}
+  .kontakt a{display:flex;align-items:center;gap:14px;min-height:58px;padding:10px 16px;border-radius:18px;background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.55);
+             text-decoration:none;font-weight:700;font-size:18px;text-align:left;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+  .kontakt a .ic{flex:0 0 38px;height:38px;border-radius:50%;background:var(--weiss);color:var(--pink);display:flex;align-items:center;justify-content:center;font-size:20px}
+  .kontakt a small{display:block;font-weight:500;font-size:13px;opacity:.9}
+  .kontakt a span{min-width:0;overflow-wrap:anywhere}
+  .band{font-size:16px;margin:4px 0 0;text-shadow:0 1px 3px rgba(26,16,51,.55)}
+  .kontakt a,.klein a,.klein button{text-shadow:0 1px 3px rgba(26,16,51,.45)}
+  .band a{font-weight:700}
+  .klein{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:2px}
+  .klein a,.klein button{font:inherit;font-size:14px;font-weight:700;color:var(--weiss);background:none;border:1.5px solid rgba(255,255,255,.6);border-radius:99px;padding:8px 14px;min-height:40px;text-decoration:none;cursor:pointer}
+
+  /* QR-Ansicht zum Vorzeigen: weiß, riesiger Code, nichts lenkt ab */
+  html:has(body.qr){background:#fff}
+  body.qr{background:var(--weiss);color:var(--ink);align-items:center}
+  body.qr .eq,body.qr .karte{display:none}
+  .gross{display:none;flex-direction:column;align-items:center;gap:14px;width:100%;max-width:560px;text-align:center}
+  body.qr .gross{display:flex}
+  .gross .qrbox{width:min(92vw,78vh,560px)}
+  .gross canvas{display:block;width:100%;height:auto;image-rendering:pixelated}
+  .gross h1{font-family:var(--f-display);font-weight:800;font-size:clamp(26px,7vw,40px);margin:0;color:var(--pink)}
+  .gross p{margin:0;font-size:18px;font-weight:700}
+  .gross .zurueck{font:inherit;font-weight:700;font-size:17px;color:var(--ink);background:#f1eef7;border:2px solid #d9d2ea;border-radius:16px;min-height:52px;padding:8px 22px;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="eq" aria-hidden="true"></div>
+
+<main class="karte" aria-label="Visitenkarte Patrick Schäfer">
+  <div class="kopf">
+    <img class="icon" src="icon.svg" alt="SoundWhackers – fünf Figuren mit SoundWhackern" width="118" height="118">
+    <a class="thema" href="https://soundwhackers.de" rel="noopener">sound<span>whackers</span>.de</a>
+    <svg class="wellen" viewBox="0 0 150 22" aria-hidden="true"><path d="M2 11 Q 12 1 22 11 T 42 11 T 62 11 T 82 11 T 102 11 T 122 11 T 148 11"/></svg>
+    <p class="name">Patrick Schäfer</p>
+  </div>
+
+  <div class="qrfeld">
+    <canvas id="qrKlein" aria-label="QR-Code zu dieser Visitenkarte" role="img"></canvas>
+    <p class="qrtext">Scannen = Visitenkarte öffnen</p>
+  </div>
+
+  <a class="speichern" href="patrick-schaefer.vcf" type="text/vcard">📇 Kontakt speichern</a>
+
+  <div class="kontakt">
+    <a href="tel:+491785800773"><span class="ic" aria-hidden="true">📞</span><span>0178 5800773<small>Handy · anrufen</small></span></a>
+    <a href="mailto:pa.schaefer@schule.saarland"><span class="ic" aria-hidden="true">✉️</span><span>pa.schaefer@schule.saarland<small>E-Mail schreiben</small></span></a>
+  </div>
+
+  <p class="band">Band: <a href="https://iband-saar.de" rel="noopener">iband-saar.de</a></p>
+
+  <div class="klein">
+    <a href="?qr" id="zeigeQR">🔍 QR groß zeigen</a>
+    <a href="../">Meine Musik-Apps</a>
+  </div>
+</main>
+
+<section class="gross" aria-label="QR-Code zum Vorzeigen">
+  <div class="qrbox"><canvas id="qrGross" aria-label="QR-Code zur Visitenkarte von Patrick Schäfer" role="img"></canvas></div>
+  <h1>soundwhackers.de</h1>
+  <p>Patrick Schäfer · Kamera drauf, Kontakt speichern</p>
+  <button class="zurueck" id="zurKarte" type="button">◀ Zur Visitenkarte</button>
+</section>
+
+<script src="qrcode.js"></script>
+<script>
+(function(){
+  'use strict';
+  // Feste Adresse der Visitenkarte – genau diese steht im QR-Code
+  var URL_KARTE = 'https://pati2018.github.io/visitenkarte/';
+
+  // Equalizer-Balken
+  var eq = document.querySelector('.eq');
+  for (var i = 0; i < 26; i++) { var b = document.createElement('i'); b.style.animationDelay = (-(i * 0.137) % 1.3) + 's'; eq.appendChild(b); }
+
+  // QR-Code zeichnen (Fehlerkorrektur M), schwarz auf weiß, mit Ruhezone
+  function zeichne(canvas, pixel) {
+    var q = qrcode(0, 'M'); q.addData(URL_KARTE); q.make();
+    var n = q.getModuleCount(), rand = 4, zell = Math.max(1, Math.floor(pixel / (n + 2 * rand)));
+    var g = (n + 2 * rand) * zell; canvas.width = g; canvas.height = g;
+    var c = canvas.getContext('2d'); c.fillStyle = '#fff'; c.fillRect(0, 0, g, g); c.fillStyle = '#000';
+    for (var r = 0; r < n; r++) for (var s = 0; s < n; s++) if (q.isDark(r, s)) c.fillRect((s + rand) * zell, (r + rand) * zell, zell, zell);
+  }
+  zeichne(document.getElementById('qrKlein'), 600);
+  zeichne(document.getElementById('qrGross'), 1100);
+
+  // Ansicht: ?qr oder #qr = nur der große QR-Code zum Vorzeigen
+  function ansicht() { var qr = /(^|[?&])qr\b/.test(location.search.slice(1)) || location.hash === '#qr'; document.body.classList.toggle('qr', qr); }
+  ansicht();
+  document.getElementById('zeigeQR').addEventListener('click', function (e) { e.preventDefault(); history.pushState(null, '', '?qr'); ansicht(); });
+  document.getElementById('zurKarte').addEventListener('click', function () { history.pushState(null, '', location.pathname); ansicht(); });
+  window.addEventListener('popstate', ansicht);
+
+  // Offline: Seite, Icon, QR-Bibliothek und Kontaktdatei im Gerät speichern
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(function () {});
+})();
+</script>
+</body>
+</html>

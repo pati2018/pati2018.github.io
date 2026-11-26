@@ -44,6 +44,12 @@
   #ball .rand{fill:none;stroke:#fff;stroke-width:8;pointer-events:none}
   #ball .naht{stroke:#fff;stroke-width:3;opacity:.35;fill:none;pointer-events:none}
 
+  @media (max-width:520px){
+    header{gap:8px;padding:8px 10px}
+    h1{flex:1 0 100%;font-size:24px}
+    .knopf{flex:1 1 auto;font-size:16px;min-height:48px;padding:6px 10px}
+    .lang{display:none}
+  }
   /* Handy quer: Kopfzeile links als Spalte, Ball so groß wie möglich */
   @media (orientation:landscape) and (max-height:540px){
     body{flex-direction:row}
@@ -52,6 +58,10 @@
     .knopf{font-size:16px;min-height:48px;padding:6px 10px}
     #ball{width:min(calc(100dvh - 24px),calc(68vw - 24px))}
   }
+
+  #hinweis{position:fixed;left:50%;bottom:max(18px,env(safe-area-inset-bottom));transform:translateX(-50%);background:#243052;border:1.5px solid var(--gold);
+           border-radius:14px;padding:10px 16px;font-weight:700;font-size:17px;max-width:92vw;text-align:center;z-index:6;pointer-events:none}
+  #punkt{transition:transform .06s linear}
 
   /* Einstellungen */
   #einst{position:fixed;inset:0;background:rgba(10,13,30,.82);display:flex;align-items:center;justify-content:center;padding:16px;z-index:5}
@@ -68,19 +78,24 @@
 <header>
   <h1>🥁 Trommelball</h1>
   <button class="knopf" id="setKnopf" type="button" aria-label="Schlagzeug-Set wählen">Set: Standard</button>
-  <button class="knopf" id="einstKnopf" type="button">⚙ Flächen einstellen</button>
+  <button class="knopf" id="neigKnopf" type="button" aria-pressed="false">📱 Neigen: aus</button>
+  <button class="knopf" id="mitteKnopf" type="button" hidden>⊕ Mitte</button>
+  <button class="knopf" id="einstKnopf" type="button">⚙ Flächen<span class="lang"> einstellen</span></button>
 </header>
 
 <main>
   <svg id="ball" viewBox="-260 -260 520 520" role="group" aria-label="Trommelball mit vier Flächen"></svg>
 </main>
 
+<div id="hinweis" hidden role="status"></div>
 <div id="einst" hidden role="dialog" aria-modal="true" aria-labelledby="einstTitel">
   <div class="karte">
     <h2 id="einstTitel">⚙ Welche Fläche spielt was?</h2>
     <div id="zeilen"></div>
     <div class="zeile"><span style="flex:0 0 112px;font-weight:700">Set</span><select id="setWahl" aria-label="Schlagzeug-Set"></select></div>
-    <p class="tipp">Farbknopf antippen = Probe hören. Spielen: Fläche antippen, SoundWhacker 1–4, Tasten 1–4 oder Pfeiltasten.</p>
+    <div class="zeile"><span style="flex:0 0 112px;font-weight:700">📱 Neigen</span><select id="neigWahl" aria-label="Wie weit neigen?">
+      <option value="15">wenig neigen (15°)</option><option value="25">mittel neigen (25°)</option><option value="35">stark neigen (35°)</option></select></div>
+    <p class="tipp">Farbknopf antippen = Probe hören. Spielen: Fläche antippen, SoundWhacker 1–4, Tasten 1–4, Pfeiltasten oder Handy neigen (📱).</p>
     <button class="knopf" id="fertig" type="button">✓ Fertig</button>
   </div>
 </div>
@@ -98,7 +113,7 @@ const FELDER=[
   {id:'unten', wort:'Unten', farbe:'var(--sw4)', a0:45,  pfeil:'ArrowDown'}
 ];
 const SPEICHER='trommelball';
-let st={set:'standard', inst:[55,57,61,70]};   // links Bassdrum, oben Snare, rechts Hi-Hat, unten Becken
+let st={set:'standard', inst:[55,57,61,70], neigGrad:25};   // links Bassdrum, oben Snare, rechts Hi-Hat, unten Becken
 try{Object.assign(st,JSON.parse(localStorage.getItem(SPEICHER)||'{}'))}catch(e){}
 const sichern=()=>{try{localStorage.setItem(SPEICHER,JSON.stringify(st))}catch(e){}};
 
@@ -147,7 +162,7 @@ FELDER.forEach((f,i)=>{
 ball.appendChild(el('ellipse',{cx:0,cy:0,rx:R*0.38,ry:R,class:'naht'}));
 ball.appendChild(el('ellipse',{cx:0,cy:0,rx:R,ry:R*0.38,class:'naht'}));
 ball.appendChild(el('circle',{cx:0,cy:0,r:R,class:'rand'}));
-ball.appendChild(el('circle',{cx:0,cy:0,r:26,fill:'#fff','pointer-events':'none'}));
+const punkt=el('circle',{cx:0,cy:0,r:26,fill:'#fff','pointer-events':'none',id:'punkt'}); ball.appendChild(punkt);
 
 function beschriften(){
   felder.forEach((f,i)=>{ const n=NAMEN[st.inst[i]-55]; f.nm.textContent=n;
@@ -202,7 +217,7 @@ FELDER.forEach((f,i)=>{
   s.addEventListener('change',()=>{ st.inst[i]=+s.value; sichern(); beschriften(); vorladen(); schlag(i); });
   z.append(b,s); zeilen.appendChild(z); f.sel=s;
 });
-function auf(){ FELDER.forEach((f,i)=>f.sel.value=st.inst[i]); setWahl.value=st.set; einst.hidden=false; document.getElementById('fertig').focus(); }
+function auf(){ FELDER.forEach((f,i)=>f.sel.value=st.inst[i]); setWahl.value=st.set; neigWahl.value=st.neigGrad||25; einst.hidden=false; document.getElementById('fertig').focus(); }
 function zu(){ einst.hidden=true; document.getElementById('einstKnopf').focus(); }
 setWahl.addEventListener('change',()=>{ st.set=setWahl.value; sichern(); beschriften(); vorladen(); schlag(0); });
 document.getElementById('einstKnopf').addEventListener('click',auf);
@@ -211,6 +226,52 @@ einst.addEventListener('pointerdown',e=>{ if(e.target===einst) zu(); });
 // Set-Knopf in der Kopfzeile: nächstes Set
 document.getElementById('setKnopf').addEventListener('click',()=>{
   const k=SETS.findIndex(s=>s[0]===st.set); st.set=SETS[(k+1)%SETS.length][0]; sichern(); beschriften(); vorladen(); schlag(0); });
+
+
+/* ---------- Neigen (Bewegungssensor iPhone/iPad) ----------
+   Handy nach vorne neigen = oben, nach hinten = unten, links = links, rechts = rechts.
+   Ein Schlag pro Neigung; erst zurück zur Mitte, dann kann dieselbe Fläche wieder spielen. */
+const hinweis=document.getElementById('hinweis');
+function zeige(t,ms){ hinweis.textContent=t; hinweis.hidden=false; clearTimeout(zeige._t); zeige._t=setTimeout(()=>hinweis.hidden=true,ms||2500); }
+const neigKnopf=document.getElementById('neigKnopf'), mitteKnopf=document.getElementById('mitteKnopf'), neigWahl=document.getElementById('neigWahl');
+let neigAn=false, mitte=null, roh=null, aktivNeig=-1, bekommen=false;
+function winkel(){ const a=(screen.orientation&&typeof screen.orientation.angle==='number')?screen.orientation.angle:(window.orientation||0); return ((a%360)+360)%360; }
+function bildschirmNeigung(dx,dy){   // Neigung in Bildschirm-Richtung: x>0 rechts, y<0 vorne/oben
+  switch(winkel()){ case 90: return [dy,-dx]; case 270: return [-dy,dx]; case 180: return [-dx,-dy]; default: return [dx,dy]; }
+}
+function aufOrientierung(e){
+  if(e.beta==null||e.gamma==null) return;
+  bekommen=true; roh=[e.gamma,e.beta];
+  if(!neigAn) return;
+  if(!mitte) mitte=roh.slice();
+  const [x,y]=bildschirmNeigung(roh[0]-mitte[0], roh[1]-mitte[1]);
+  const g=st.neigGrad||25;
+  // Punkt in der Mitte zeigt die Neigung
+  const k=Math.min(1,Math.hypot(x,y)/g), w=Math.atan2(y,x);
+  punkt.setAttribute('transform',`translate(${Math.cos(w)*k*R*0.55} ${Math.sin(w)*k*R*0.55})`);
+  let i=-1;
+  if(Math.max(Math.abs(x),Math.abs(y))>=g) i = Math.abs(x)>Math.abs(y) ? (x<0?0:2) : (y<0?1:3);
+  if(i>=0 && aktivNeig<0){ aktivNeig=i; schlag(i); }
+  else if(aktivNeig>=0 && Math.max(Math.abs(x),Math.abs(y))<g*0.5) aktivNeig=-1;   // zurück zur Mitte = wieder bereit
+}
+window.addEventListener('deviceorientation',aufOrientierung);
+function neigZeigen(){ neigKnopf.textContent='📱 Neigen: '+(neigAn?'an':'aus'); neigKnopf.classList.toggle('an',neigAn);
+  neigKnopf.setAttribute('aria-pressed',neigAn); mitteKnopf.hidden=!neigAn; if(!neigAn) punkt.removeAttribute('transform'); }
+async function neigenEin(){
+  audio();
+  const DOE=window.DeviceOrientationEvent;
+  if(!DOE){ zeige('Dieses Gerät hat keinen Bewegungssensor.'); return; }
+  if(typeof DOE.requestPermission==='function'){   // iPhone/iPad: einmal erlauben
+    try{ if(await DOE.requestPermission()!=='granted'){ zeige('Bewegung nicht erlaubt. Safari neu laden und „Erlauben“ tippen.',4500); return; } }
+    catch(e){ zeige('Bewegung konnte nicht eingeschaltet werden.',3500); return; }
+  }
+  neigAn=true; mitte=null; aktivNeig=-1; neigZeigen();
+  zeige('Handy ruhig halten – das ist jetzt die Mitte. Dann neigen!',3000);
+  setTimeout(()=>{ if(neigAn && !bekommen){ neigAn=false; neigZeigen(); zeige('Kein Bewegungssensor gefunden (geht am iPhone/iPad).',4000); } },1500);
+}
+neigKnopf.addEventListener('click',()=>{ if(neigAn){ neigAn=false; neigZeigen(); } else neigenEin(); });
+mitteKnopf.addEventListener('click',()=>{ mitte=roh?roh.slice():null; aktivNeig=-1; zeige('Neue Mitte gesetzt.',1500); });
+neigWahl.addEventListener('change',()=>{ st.neigGrad=+neigWahl.value; sichern(); });
 
 beschriften(); vorladen();
 })();

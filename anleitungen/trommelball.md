@@ -16,6 +16,25 @@ Am Anfang ist der Ball so eingestellt:
 - **Fläche antippen** – auch mit **mehreren Fingern gleichzeitig**.
 - **Über den Ball streichen** – jede Fläche, über die der Finger gleitet, klingt.
 - **SoundWhacker 1–4** oder **Tasten 1–4** am Computer, ebenso die **Pfeiltasten**.
+- **Handy neigen** – siehe „📱 Handy neigen“.
+
+## 📱 Handy neigen (iPhone/iPad)
+
+Der Ball lässt sich auch mit dem **Bewegungssensor** spielen – ganz ohne Antippen der Flächen.
+
+1. Oben auf **„📱 Neigen: aus“** tippen. Beim ersten Mal fragt das iPhone: **„Bewegung und Ausrichtung“ erlauben** → **Erlauben**.
+2. Das Handy **ruhig halten** – diese Haltung ist jetzt die **Mitte**. Der weiße Punkt in der Mitte des Balls zeigt, wohin du neigst.
+3. Neigen:
+   - **nach vorne** (oberer Rand weg von dir) → Fläche **oben**
+   - **nach hinten** (oberer Rand zu dir) → Fläche **unten**
+   - **nach links** → Fläche **links**
+   - **nach rechts** → Fläche **rechts**
+4. Jede Neigung spielt **einen** Schlag. Für den nächsten Schlag kurz **zurück zur Mitte**.
+
+- **⊕ Mitte** – die jetzige Haltung wird die neue Mitte (z. B. wenn du dich anders hinsetzt).
+- **Wie weit neigen?** Unter „⚙ Flächen einstellen“: **wenig (15°)**, **mittel (25°)** oder **stark (35°)**.
+- **Tipp:** Die **Ausrichtungssperre** im Kontrollzentrum einschalten, sonst dreht sich der Bildschirm beim Neigen.
+- Fragt das iPhone nicht oder wurde „Nicht erlauben“ getippt: Safari ganz schließen, neu öffnen und noch einmal auf „📱 Neigen“ tippen.
 
 ## Flächen einstellen
 

@@ -56,7 +56,7 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
 - **Veröffentlichung:** GitHub Pages direkt aus `main`. Nach dem Push ist die
   Änderung nach 1–2 Minuten online.
 - **Sicherungen:** Stabile Stände liegen als eigene Branches (`stabil-v1` bis `stabil-v9`,
-  `stabil/tischharfe-v1.0`).
+  `stabil/tischharfe-v1.0`, `stabil/trommelball-v1.0`).
   Vor größeren Umbauen einen neuen Stand sichern.
 - **Apps:** Die Liste aller Apps steht in `apps.js` (`window.APPS`).
   - Im Repo selbst (je ein Ordner):
@@ -115,7 +115,9 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
     - `trommelball/` – **Trommelball** (Entwurf aus einem Workshop, 26.11.2026): großer Ball mit 4 Flächen (links rot = SW1/Taste 1, oben orange = 2, rechts gelb = 3, unten grün = 4,
       auch Pfeiltasten). Jede Fläche spielt ein Schlagzeug-Instrument aus `../tischharfe/klaenge/schlag-<set>/55–84.mp3` (30 Instrumente, 6 Sets); Standard links Bassdrum, oben Snare,
       rechts Hi-Hat zu, unten Becken. „⚙ Flächen einstellen“ = je Fläche Instrument wählen, Speicher `trommelball`. Mehrere Finger gleichzeitig, Gleiten über Flächen spielt sie auch.
-      Noch ohne Offline-Speicher (sw.js) und ohne Kachel in `ki-betriebssystem/`.
+      **📱 Neigen** (Bewegungssensor, `deviceorientation`, iOS: `DeviceOrientationEvent.requestPermission()` beim Antippen): vorne = oben, hinten = unten, links, rechts;
+      Mitte = Haltung beim Einschalten (Knopf „⊕ Mitte“), Schwelle `st.neigGrad` 15/25/35°, ein Schlag je Neigung, wieder bereit unter halber Schwelle; Querformat über `screen.orientation.angle` umgerechnet; weißer Punkt zeigt die Neigung.
+      Sicherung vor dem Neigen: Branch `stabil/trommelball-v1.0`. Noch ohne Offline-Speicher (sw.js) und ohne Kachel in `ki-betriebssystem/`.
     - `visitenkarte/` – **Digitale Visitenkarte** (Wunsch Nutzer, eigene Kachel auf der Übersicht, obwohl keine Musik-App): QR-Code enthält nur den Link
       `https://pati2018.github.io/visitenkarte/` (Fehlerkorrektur M, Bibliothek `qrcode.js` von Kazuhiko Arase, MIT, lokal). `?qr` = nur großer QR-Code zum Vorzeigen
       (Home-Bildschirm-Symbol startet dort, `start_url ./?qr`). „📇 Kontakt speichern“ = `patrick-schaefer.vcf` (vCard 3.0, UTF-8, CRLF).

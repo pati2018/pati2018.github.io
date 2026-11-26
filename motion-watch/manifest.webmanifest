@@ -1,6 +1,6 @@
 {
-  "name": "Motion Watch",
-  "short_name": "MotionWatch",
+  "name": "Musikkompass",
+  "short_name": "Musikkompass",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

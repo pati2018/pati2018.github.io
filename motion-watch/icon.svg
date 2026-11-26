@@ -1,15 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 <rect width="512" height="512" rx="110" fill="#141a33"/>
-<rect x="196" y="20" width="120" height="90" rx="20" fill="#3a4470"/><rect x="196" y="402" width="120" height="90" rx="20" fill="#3a4470"/>
-<circle cx="256" cy="256" r="178" fill="#1f2747" stroke="#fff" stroke-width="14"/>
-<g fill="none" stroke-width="34" stroke-linecap="butt">
-<path d="M136 352 A142 142 0 0 1 117 280" stroke="#e5484d"/>
-<path d="M119 252 A142 142 0 0 1 160 158" stroke="#9b5de5"/>
-<path d="M180 141 A142 142 0 0 1 332 141" stroke="#f2cf3a"/>
-<path d="M352 158 A142 142 0 0 1 393 252" stroke="#46b37b"/>
-<path d="M395 280 A142 142 0 0 1 376 352" stroke="#3f8ee8"/>
-</g>
-<line x1="256" y1="256" x2="330" y2="150" stroke="#fff" stroke-width="14" stroke-linecap="round"/>
-<circle cx="256" cy="256" r="20" fill="#fff"/>
-<text x="256" y="345" font-family="Arial,sans-serif" font-weight="800" font-size="62" fill="#fff" text-anchor="middle">♪</text>
+<circle cx="256" cy="256" r="240" fill="#ffffff"/>
+<path d="M256.0 30.0 A226 226 0 0 1 388.8 73.2 L338.3 142.7 A140 140 0 0 0 256.0 116.0 Z" fill="#e5484d" stroke="#141a33" stroke-width="7"/><path d="M388.8 73.2 A226 226 0 0 1 470.9 186.2 L389.1 212.7 A140 140 0 0 0 338.3 142.7 Z" fill="#9b5de5" stroke="#141a33" stroke-width="7"/><path d="M470.9 186.2 A226 226 0 0 1 470.9 325.8 L389.1 299.3 A140 140 0 0 0 389.1 212.7 Z" fill="#f2cf3a" stroke="#141a33" stroke-width="7"/><path d="M470.9 325.8 A226 226 0 0 1 388.8 438.8 L338.3 369.3 A140 140 0 0 0 389.1 299.3 Z" fill="#46b37b" stroke="#141a33" stroke-width="7"/><path d="M388.8 438.8 A226 226 0 0 1 256.0 482.0 L256.0 396.0 A140 140 0 0 0 338.3 369.3 Z" fill="#3f8ee8" stroke="#141a33" stroke-width="7"/><path d="M256.0 482.0 A226 226 0 0 1 123.2 438.8 L173.7 369.3 A140 140 0 0 0 256.0 396.0 Z" fill="#e5484d" stroke="#141a33" stroke-width="7"/><path d="M123.2 438.8 A226 226 0 0 1 41.1 325.8 L122.9 299.3 A140 140 0 0 0 173.7 369.3 Z" fill="#9b5de5" stroke="#141a33" stroke-width="7"/><path d="M41.1 325.8 A226 226 0 0 1 41.1 186.2 L122.9 212.7 A140 140 0 0 0 122.9 299.3 Z" fill="#f2cf3a" stroke="#141a33" stroke-width="7"/><path d="M41.1 186.2 A226 226 0 0 1 123.2 73.2 L173.7 142.7 A140 140 0 0 0 122.9 212.7 Z" fill="#46b37b" stroke="#141a33" stroke-width="7"/><path d="M123.2 73.2 A226 226 0 0 1 256.0 30.0 L256.0 116.0 A140 140 0 0 0 173.7 142.7 Z" fill="#3f8ee8" stroke="#141a33" stroke-width="7"/>
+<circle cx="256" cy="256" r="136" fill="#1f2747"/>
+<line x1="256.0" y1="128.0" x2="256.0" y2="144.0" stroke="#c9d1f0" stroke-width="6" stroke-linecap="round" opacity=".7"/><line x1="320.0" y1="145.1" x2="312.0" y2="159.0" stroke="#c9d1f0" stroke-width="6" stroke-linecap="round" opacity=".7"/><line x1="366.9" y1="192.0" x2="353.0" y2="200.0" stroke="#c9d1f0" stroke-width="6" stroke-linecap="round" opacity=".7"/><line x1="384.0" y1="256.0" x2="368.0" y2="256.0" stroke="#c9d1f0" stroke-width="6" stroke-linecap="round" opacity=".7"/><line x1="366.9" y1="320.0" x2="353.0" y2="312.0" stroke="#c9d1f0" stroke-width="6" stroke-linecap="round" opacity=".7"/><line x1="320.0" y1="366.9" x2="312.0" y2="353.0" stroke="#c9d1f0" stroke-width="6" stroke-linecap="round" opacity=".7"/><line x1="256.0" y1="384.0" x2="256.0" y2="368.0" stroke="#c9d1f0" stroke-width="6" stroke-linecap="round" opacity=".7"/><line x1="192.0" y1="366.9" x2="200.0" y2="353.0" stroke="#c9d1f0" stroke-width="6" stroke-linecap="round" opacity=".7"/><line x1="145.1" y1="320.0" x2="159.0" y2="312.0" stroke="#c9d1f0" stroke-width="6" stroke-linecap="round" opacity=".7"/><line x1="128.0" y1="256.0" x2="144.0" y2="256.0" stroke="#c9d1f0" stroke-width="6" stroke-linecap="round" opacity=".7"/><line x1="145.1" y1="192.0" x2="159.0" y2="200.0" stroke="#c9d1f0" stroke-width="6" stroke-linecap="round" opacity=".7"/><line x1="192.0" y1="145.1" x2="200.0" y2="159.0" stroke="#c9d1f0" stroke-width="6" stroke-linecap="round" opacity=".7"/>
+<g transform="rotate(35 256 256)">
+<path d="M256 138 L286 256 L226 256 Z" fill="#ffffff"/>
+<path d="M256 374 L286 256 L226 256 Z" fill="#8a93b8"/>
+</g><circle cx="256" cy="256" r="20" fill="#141a33" stroke="#fff" stroke-width="7"/>
 </svg>

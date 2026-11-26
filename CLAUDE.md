@@ -112,15 +112,13 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
     danach die übrigen nach Datum
     (neueste oben); Singen ganz unten (`ganzUnten: 1`). Die App **Atemklang** wurde auf Wunsch entfernt (Ordner und Eintrag gelöscht; steckt noch in der Git-Geschichte).
     Die Kacheln auf der Erklärseite `ki-betriebssystem/` stehen in derselben Reihenfolge.
-    - `motion-watch/` – **Motion Watch** (26.11.2026, Idee aus dem Workshop wie Trommelball): Handy wie eine Uhr ans Handgelenk (lange Seite zu den Fingern).
-      Uhr-Ansicht: Bogen mit den Tönen der Skala (SW-Farben reihum), Zeiger folgt der Neigung, großer Tonname in der Mitte, Uhrzeit unten.
-      **Bewegung `st.modus`** (Wunsch Nutzer: Gyro; „Kreise fahren“ = Gerät liegt flach, z. B. auf dem Tisch am **E-Rolli**, und dreht sich mit, wenn der E-Rolli Kreise fährt):
-      **🔄 `dreh`** (Standard, alte Speicherstände werden per `st.v=3` umgestellt) = `alpha` (Gyro) relativ zur Mitte, 1 Umdrehung = alle Töne; **⭕ `kreis`** = flach im Kreis schieben ohne Drehen –
-      `devicemotion`, Richtung der geglätteten Beschleunigung +180°, Schwelle `st.empf` 0,4/0,8/1,5 m/s². Bei beiden Töne rundum (360°, Ton 1 oben, im Uhrzeigersinn aufwärts), Zeiger nur am Rand.
-      Ein Modus **„💪 Arm heben“** (0–180°, Schwerkraft-Winkel) wurde ausprobiert und auf Wunsch wieder entfernt („vorher war besser“) – nicht erneut einbauen, steckt in der Git-Geschichte.
-      **Farben wie in der SoundWhacker Band** (rot #e5484d, lila #9b5de5, gelb #f2cf3a, grün #46b37b, blau #3f8ee8 – Wunsch Nutzer). Sicherung vor diesem Umbau: Branch `stabil/motion-watch-v1.0`.
-      **Neigen** (`vh` vorne ↔ hinten = Richtung Feld 2/4 wie im Trommelball, `beta`; `lr` links ↔ rechts = `gamma`; Bogen statt Kreis): Winkelbereich ± `st.weit` (30/45/60°) wird in `st.anzahl` Felder geteilt,
-      neues Feld = Ton (kleine Schwelle gegen Flattern); vorne = hohe Töne (`st.richt` umkehrbar). Mitte = Haltung beim Einschalten, „⊕ Mitte“. Gerätachsen, nicht Bildschirmachsen (Bildschirm darf sich drehen).
+    - `motion-watch/` – **Musikkompass** (26.11.2026, früher „Motion Watch“ – umbenannt auf Wunsch Nutzer, **Ordner bleibt `motion-watch/`**, GoatCounter-Pfad `/motion-watch/`).
+      Symbol `motion-watch/icon.svg` = runde bunte Scheibe (10 Felder in Band-Farben) mit Kompassnadel; in `apps.js` als `bild`. Ansicht: Scheibe mit den Tönen der Skala, Zeiger am Rand, großer Tonname in der Mitte, Uhrzeit.
+      **Bewegung `st.modus`** – nur noch zwei Arten: **🔄 `dreh`** (Standard) = Gerät liegt flach, z. B. auf dem Tisch am **E-Rolli**, und dreht sich mit, wenn der E-Rolli Kreise fährt –
+      `alpha` (Gyro) relativ zur Mitte, 1 Umdrehung = alle Töne, Töne rundum (Ton 1 oben, im Uhrzeigersinn aufwärts); **↕ `vh`** = Neigen vorne/hinten (Handy wie eine Uhr am Handgelenk, `beta`, Bogen statt Kreis,
+      ± `st.weit` 30/45/60°, Mitte = Haltung beim Einschalten, „⊕ Mitte“). Neues Feld = Ton (kleine Schwelle gegen Flattern), `st.richt` kehrt die Richtung um.
+      **Auf Wunsch entfernt** (nicht wieder einbauen, stecken in der Git-Geschichte): „⭕ Im Kreis schieben“ (devicemotion), „↔ Neigen links/rechts“, „💪 Arm heben“. Alte Speicherstände mit diesen Arten → `dreh`.
+      **Farben wie in der SoundWhacker Band** (rot #e5484d, lila #9b5de5, gelb #f2cf3a, grün #46b37b, blau #3f8ee8 – Wunsch Nutzer). Sicherung der ersten Fassung: Branch `stabil/motion-watch-v1.0`.
       Skalen `SKALEN`: Dur-/Moll-Pentatonik, Blues (Moll), Blues (Dur), Dur, Moll; Grundton C–H, 5–15 Töne, Instrumente aus `../tischharfe/klaenge/` (Samples 54–81 je 3 Halbtöne).
       Standard A-Moll-Pentatonik, 10 Töne, Marimba. Auch antippen/streichen, Tasten/SW 1–9, Pfeile ↑↓. Bildschirm bleibt an (Wake Lock). Speicher `motion-watch`. Noch ohne Offline-Speicher und ohne Kachel in `ki-betriebssystem/`.
     - `trommelball/` – **Trommelball** (Entwurf aus einem Workshop, 26.11.2026): großer Ball mit 4 Flächen (links rot = SW1/Taste 1, oben orange = 2, rechts gelb = 3, unten grün = 4,

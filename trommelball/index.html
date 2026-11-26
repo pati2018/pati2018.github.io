@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Trommelball</title>
+<meta name="description" content="Trommelball: Ein Ball mit vier Flächen – jede Fläche spielt ein Instrument vom Schlagzeug. Frei einstellbar, mit SoundWhackern oder Tasten 1–4.">
+<meta name="theme-color" content="#141a33">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Trommelball">
+<link rel="stylesheet" href="/fonts/fonts.css">
+<script data-goatcounter="https://pati2018.goatcounter.com/count" data-goatcounter-settings='{"path":"/trommelball/"}' async src="//gc.zgo.at/count.js"></script>
+<style>
+  :root{--bg:#141a33;--panel:#1f2747;--ink:#fff;--gold:#f6c83f;
+        --sw1:#e63946;--sw2:#f4892b;--sw3:#f6c83f;--sw4:#3fb950;--sw5:#3f8ee8;
+        --f:"Work Sans","Segoe UI",system-ui,sans-serif;--fd:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  [hidden]{display:none!important}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:var(--f)}
+  body{display:flex;flex-direction:column;min-height:100dvh;overflow:hidden;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:manipulation;
+       padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+  button,select{font:inherit;color:inherit}
+  :focus-visible{outline:4px solid #fff;outline-offset:3px}
+
+  header{display:flex;align-items:center;gap:10px;padding:10px 14px;flex-wrap:wrap}
+  h1{font-family:var(--fd);font-weight:800;font-size:clamp(22px,5vw,32px);margin:0;flex:1;white-space:nowrap}
+  .knopf{min-height:52px;padding:8px 16px;border-radius:16px;border:1.5px solid var(--gold);background:var(--panel);font-weight:700;font-size:18px;cursor:pointer}
+  .knopf.an{background:var(--gold);color:#141a33}
+
+  main{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;padding:8px}
+  #ball{width:min(94vw,calc(100dvh - 120px),720px);height:auto;aspect-ratio:1;touch-action:none;display:block;overflow:visible;
+        transition:transform .08s}
+  #ball.stoss{transform:scale(.97)}
+  .feld{cursor:pointer;transition:filter .25s}
+  .feld path{stroke:var(--bg);stroke-width:6}
+  .feld.hit{filter:brightness(1.7) drop-shadow(0 0 18px #fff);transition:filter 0s}
+  .feld text{font-family:var(--fd);font-weight:800;fill:#141a33;pointer-events:none;text-anchor:middle;dominant-baseline:middle}
+  .feld .nr{font-size:46px;opacity:.55}
+  .feld .name{font-size:30px}
+  #ball .rand{fill:none;stroke:#fff;stroke-width:8;pointer-events:none}
+  #ball .naht{stroke:#fff;stroke-width:3;opacity:.35;fill:none;pointer-events:none}
+
+  /* Handy quer: Kopfzeile links als Spalte, Ball so groß wie möglich */
+  @media (orientation:landscape) and (max-height:540px){
+    body{flex-direction:row}
+    header{flex-direction:column;align-items:stretch;justify-content:center;width:min(32vw,230px);padding:8px}
+    h1{flex:0;font-size:22px}
+    .knopf{font-size:16px;min-height:48px;padding:6px 10px}
+    #ball{width:min(calc(100dvh - 24px),calc(68vw - 24px))}
+  }
+
+  /* Einstellungen */
+  #einst{position:fixed;inset:0;background:rgba(10,13,30,.82);display:flex;align-items:center;justify-content:center;padding:16px;z-index:5}
+  .karte{background:var(--panel);border-radius:22px;padding:18px;width:min(100%,560px);max-height:100%;overflow:auto;border:1.5px solid var(--gold)}
+  .karte h2{margin:0 0 12px;font-family:var(--fd);font-size:24px}
+  .zeile{display:flex;align-items:center;gap:12px;margin:10px 0}
+  .zeile .farbe{flex:0 0 112px;min-height:52px;border-radius:14px;border:none;font-weight:800;color:#141a33;cursor:pointer;font-size:17px}
+  .zeile select{flex:1;min-height:52px;border-radius:14px;background:#141a33;border:1.5px solid var(--gold);padding:0 12px;font-size:18px}
+  .karte .knopf{width:100%;margin-top:14px}
+  .tipp{opacity:.8;font-size:15px;margin:6px 0 0}
+</style>
+</head>
+<body>
+<header>
+  <h1>🥁 Trommelball</h1>
+  <button class="knopf" id="setKnopf" type="button" aria-label="Schlagzeug-Set wählen">Set: Standard</button>
+  <button class="knopf" id="einstKnopf" type="button">⚙ Flächen einstellen</button>
+</header>
+
+<main>
+  <svg id="ball" viewBox="-260 -260 520 520" role="group" aria-label="Trommelball mit vier Flächen"></svg>
+</main>
+
+<div id="einst" hidden role="dialog" aria-modal="true" aria-labelledby="einstTitel">
+  <div class="karte">
+    <h2 id="einstTitel">⚙ Welche Fläche spielt was?</h2>
+    <div id="zeilen"></div>
+    <div class="zeile"><span style="flex:0 0 112px;font-weight:700">Set</span><select id="setWahl" aria-label="Schlagzeug-Set"></select></div>
+    <p class="tipp">Farbknopf antippen = Probe hören. Spielen: Fläche antippen, SoundWhacker 1–4, Tasten 1–4 oder Pfeiltasten.</p>
+    <button class="knopf" id="fertig" type="button">✓ Fertig</button>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+const NAMEN=['Bassdrum','Bassdrum 2','Snare','Snare 2','Rimshot','Klatschen','Hi-Hat zu','Hi-Hat Fuß','Hi-Hat offen','Tom 1 tief','Tom 2','Tom 3','Tom 4','Tom 5','Tom 6 hoch','Becken','Becken 2','Ride','Ride-Glocke','Splash','China','Tamburin','Kuhglocke','Cabasa','Maracas','Claves','Bongo hoch','Bongo tief','Conga hoch','Conga tief'];
+const SETS=[['standard','Standard'],['rock','Rock'],['elektro','Elektro'],['808','808'],['jazz','Jazz'],['besen','Besen']];
+// Flächen: Reihenfolge = SW1..SW4 / Taste 1..4
+const FELDER=[
+  {id:'links', wort:'Links', farbe:'var(--sw1)', a0:135, pfeil:'ArrowLeft'},
+  {id:'oben',  wort:'Oben',  farbe:'var(--sw2)', a0:225, pfeil:'ArrowUp'},
+  {id:'rechts',wort:'Rechts',farbe:'var(--sw3)', a0:315, pfeil:'ArrowRight'},
+  {id:'unten', wort:'Unten', farbe:'var(--sw4)', a0:45,  pfeil:'ArrowDown'}
+];
+const SPEICHER='trommelball';
+let st={set:'standard', inst:[55,57,61,70]};   // links Bassdrum, oben Snare, rechts Hi-Hat, unten Becken
+try{Object.assign(st,JSON.parse(localStorage.getItem(SPEICHER)||'{}'))}catch(e){}
+const sichern=()=>{try{localStorage.setItem(SPEICHER,JSON.stringify(st))}catch(e){}};
+
+/* ---------- Klang ---------- */
+let ctx=null, haupt=null; const puffer={};
+function sitzung(){ try{ if(navigator.audioSession) navigator.audioSession.type='ambient'; }catch(e){} }
+function audio(){
+  if(!ctx){ sitzung(); ctx=new (window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'});
+    const k=ctx.createDynamicsCompressor(); k.threshold.value=-10; k.ratio.value=4; k.connect(ctx.destination);
+    haupt=ctx.createGain(); haupt.gain.value=0.9; haupt.connect(k); }
+  if(ctx.state!=='running') ctx.resume();
+  return ctx;
+}
+const url=(set,m)=>'../tischharfe/klaenge/schlag-'+set+'/'+m+'.mp3';
+function laden(set,m){
+  const k=set+'/'+m; if(puffer[k]) return puffer[k];
+  puffer[k]=fetch(url(set,m)).then(r=>{if(!r.ok)throw 0;return r.arrayBuffer()})
+    .then(b=>new Promise((ok,nein)=>audio().decodeAudioData(b,ok,nein)))
+    .catch(e=>{delete puffer[k]; throw e});
+  return puffer[k];
+}
+function vorladen(){ st.inst.forEach(m=>laden(st.set,m).catch(()=>{})); }
+function spiele(m){
+  audio();
+  laden(st.set,m).then(buf=>{
+    const q=ctx.createBufferSource(); q.buffer=buf; const g=ctx.createGain(); g.gain.value=1;
+    q.connect(g); g.connect(haupt); q.start();
+  }).catch(()=>{});
+}
+
+/* ---------- Ball zeichnen ---------- */
+const R=240, ball=document.getElementById('ball'), NS='http://www.w3.org/2000/svg';
+const el=(n,a)=>{const e=document.createElementNS(NS,n); for(const k in a) e.setAttribute(k,a[k]); return e};
+const pt=(w,r)=>[Math.cos(w*Math.PI/180)*r, Math.sin(w*Math.PI/180)*r];
+const felder=[];
+FELDER.forEach((f,i)=>{
+  const g=el('g',{class:'feld',tabindex:'0',role:'button'}); g.dataset.i=i;
+  const [x1,y1]=pt(f.a0,R),[x2,y2]=pt(f.a0+90,R);
+  const p=el('path',{d:`M0 0 L${x1} ${y1} A${R} ${R} 0 0 1 ${x2} ${y2} Z`}); p.style.fill=f.farbe;
+  const [tx,ty]=pt(f.a0+45,R*0.6);
+  const nr=el('text',{x:tx,y:ty-30,class:'nr'}); nr.textContent=i+1;
+  const nm=el('text',{x:tx,y:ty+18,class:'name'});
+  g.append(p,nr,nm); ball.appendChild(g); felder.push({g,nm});
+});
+// Ballnähte und Rand (Deko)
+ball.appendChild(el('ellipse',{cx:0,cy:0,rx:R*0.38,ry:R,class:'naht'}));
+ball.appendChild(el('ellipse',{cx:0,cy:0,rx:R,ry:R*0.38,class:'naht'}));
+ball.appendChild(el('circle',{cx:0,cy:0,r:R,class:'rand'}));
+ball.appendChild(el('circle',{cx:0,cy:0,r:26,fill:'#fff','pointer-events':'none'}));
+
+function beschriften(){
+  felder.forEach((f,i)=>{ const n=NAMEN[st.inst[i]-55]; f.nm.textContent=n;
+    f.nm.style.fontSize=(n.length>9?24:30)+'px';
+    f.g.setAttribute('aria-label',FELDER[i].wort+': '+n+' (Taste '+(i+1)+')'); });
+  document.getElementById('setKnopf').textContent='Set: '+SETS.find(s=>s[0]===st.set)[1];
+}
+
+function schlag(i){
+  if(i<0||i>3) return;
+  spiele(st.inst[i]);
+  const g=felder[i].g; g.classList.remove('hit'); void g.getBBox(); g.classList.add('hit');
+  clearTimeout(g._t); g._t=setTimeout(()=>g.classList.remove('hit'),110);
+  ball.classList.add('stoss'); clearTimeout(ball._t); ball._t=setTimeout(()=>ball.classList.remove('stoss'),80);
+}
+
+// Berührung: mehrere Finger gleichzeitig; Gleiten auf eine neue Fläche spielt sie auch
+const finger=new Map();
+function feldAn(x,y){ const e=document.elementFromPoint(x,y); const g=e&&e.closest&&e.closest('.feld'); return g?+g.dataset.i:-1; }
+ball.addEventListener('pointerdown',e=>{ e.preventDefault(); const i=feldAn(e.clientX,e.clientY); finger.set(e.pointerId,i); if(i>=0) schlag(i); });
+ball.addEventListener('pointermove',e=>{ if(!finger.has(e.pointerId)) return; const i=feldAn(e.clientX,e.clientY);
+  if(i!==finger.get(e.pointerId)){ finger.set(e.pointerId,i); if(i>=0) schlag(i); } });
+['pointerup','pointercancel','pointerleave'].forEach(t=>ball.addEventListener(t,e=>finger.delete(e.pointerId)));
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('gesturestart',e=>e.preventDefault());
+document.addEventListener('dblclick',e=>e.preventDefault());
+
+// Tasten: 1–4 (SoundWhacker), Pfeiltasten, Enter/Leertaste auf einer Fläche
+const gedrueckt=new Set();
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('einst').hidden) { if(e.key==='Escape') zu(); return; }
+  if(e.target.tagName==='SELECT') return;
+  let i=-1;
+  if(/^[1-4]$/.test(e.key)) i=+e.key-1;
+  else { const k=FELDER.findIndex(f=>f.pfeil===e.key); if(k>=0) i=k;
+    else if((e.key===' '||e.key==='Enter') && e.target.classList && e.target.classList.contains('feld')) i=+e.target.dataset.i; }
+  if(i<0) return;
+  e.preventDefault(); if(gedrueckt.has(e.code)) return; gedrueckt.add(e.code); schlag(i);
+});
+document.addEventListener('keyup',e=>gedrueckt.delete(e.code));
+document.addEventListener('pointerdown',()=>audio(),{once:true});
+
+/* ---------- Einstellungen ---------- */
+const einst=document.getElementById('einst'), zeilen=document.getElementById('zeilen'), setWahl=document.getElementById('setWahl');
+SETS.forEach(([w,n])=>setWahl.add(new Option(n,w)));
+FELDER.forEach((f,i)=>{
+  const z=document.createElement('div'); z.className='zeile';
+  const b=document.createElement('button'); b.type='button'; b.className='farbe'; b.style.background=f.farbe; b.textContent=(i+1)+' · '+f.wort;
+  b.addEventListener('click',()=>schlag(i));
+  const s=document.createElement('select'); s.setAttribute('aria-label','Instrument für '+f.wort);
+  NAMEN.forEach((n,k)=>s.add(new Option(n,55+k)));
+  s.addEventListener('change',()=>{ st.inst[i]=+s.value; sichern(); beschriften(); vorladen(); schlag(i); });
+  z.append(b,s); zeilen.appendChild(z); f.sel=s;
+});
+function auf(){ FELDER.forEach((f,i)=>f.sel.value=st.inst[i]); setWahl.value=st.set; einst.hidden=false; document.getElementById('fertig').focus(); }
+function zu(){ einst.hidden=true; document.getElementById('einstKnopf').focus(); }
+setWahl.addEventListener('change',()=>{ st.set=setWahl.value; sichern(); beschriften(); vorladen(); schlag(0); });
+document.getElementById('einstKnopf').addEventListener('click',auf);
+document.getElementById('fertig').addEventListener('click',zu);
+einst.addEventListener('pointerdown',e=>{ if(e.target===einst) zu(); });
+// Set-Knopf in der Kopfzeile: nächstes Set
+document.getElementById('setKnopf').addEventListener('click',()=>{
+  const k=SETS.findIndex(s=>s[0]===st.set); st.set=SETS[(k+1)%SETS.length][0]; sichern(); beschriften(); vorladen(); schlag(0); });
+
+beschriften(); vorladen();
+})();
+</script>
+</body>
+</html>

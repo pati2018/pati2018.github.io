@@ -41,6 +41,7 @@ Speichern, committen – nach ca. einer Minute ist die App auf der Seite.
 | `fagott/` | Fagott – Klänge in `klang/` (GeneralUser GS, Bassoon); Lieder kommen aus `../tischharfe/lieder.js` |
 | `singen/` | Singen mit SoundWhackern; `stimme.js` ist die künstliche Singstimme (Formant-Synthese) |
 | `ki-os/` | Erklärseite „Mein KI-Betriebssystem“ (allgemein: Gedächtnis, Skills & Plugins, Connectors, Routinen); verlinkt von `ki-betriebssystem/` |
+| `trommelball/` | Trommelball: Ball mit 4 Flächen, jede spielt ein Schlagzeug-Instrument (einstellbar, 6 Sets, Tasten 1–4) |
 | `visitenkarte/` | Digitale Visitenkarte (QR-Code → Karte → „Kontakt speichern“ als vCard), offline nutzbar |
 | `ki-betriebssystem/` | Erklärseite „So entstehen meine Apps“ (Schaubild, verlinkt alle Musik-Apps); keine App, darum nicht in `apps.js` |
 | `tischharfe/` | Tischharfe mit Unterlegnoten; `lieder.js` enthält die Lieder, `kopf.js` die Kopfsteuerung, `aufnahme.js` die Video-Aufnahme |

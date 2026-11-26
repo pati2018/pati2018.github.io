@@ -25,6 +25,17 @@
  */
 window.APPS = [
   {
+    id: "trommelball",
+    zaehler: "/trommelball/",
+    titel: "Trommelball",
+    kurz: "Ein bunter Ball mit vier Flächen – jede Fläche spielt ein Instrument vom Schlagzeug (z. B. links Bassdrum, oben Snare). Frei einstellbar, 6 Schlagzeug-Sets, mehrere Finger gleichzeitig, SoundWhacker/Tasten 1–4. Entwurf aus dem Workshop.",
+    link: "https://pati2018.github.io/trommelball/",
+    repo: "https://github.com/pati2018/pati2018.github.io/tree/main/trommelball",
+    kategorie: "Musik",
+    symbol: "🥁",
+    datum: "2026-11-26"
+  },
+  {
     id: "visitenkarte",
     zaehler: "/visitenkarte/",
     titel: "Visitenkarte",

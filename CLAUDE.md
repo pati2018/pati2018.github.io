@@ -112,6 +112,10 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
     danach die übrigen nach Datum
     (neueste oben); Singen ganz unten (`ganzUnten: 1`). Die App **Atemklang** wurde auf Wunsch entfernt (Ordner und Eintrag gelöscht; steckt noch in der Git-Geschichte).
     Die Kacheln auf der Erklärseite `ki-betriebssystem/` stehen in derselben Reihenfolge.
+    - `trommelball/` – **Trommelball** (Entwurf aus einem Workshop, 26.11.2026): großer Ball mit 4 Flächen (links rot = SW1/Taste 1, oben orange = 2, rechts gelb = 3, unten grün = 4,
+      auch Pfeiltasten). Jede Fläche spielt ein Schlagzeug-Instrument aus `../tischharfe/klaenge/schlag-<set>/55–84.mp3` (30 Instrumente, 6 Sets); Standard links Bassdrum, oben Snare,
+      rechts Hi-Hat zu, unten Becken. „⚙ Flächen einstellen“ = je Fläche Instrument wählen, Speicher `trommelball`. Mehrere Finger gleichzeitig, Gleiten über Flächen spielt sie auch.
+      Noch ohne Offline-Speicher (sw.js) und ohne Kachel in `ki-betriebssystem/`.
     - `visitenkarte/` – **Digitale Visitenkarte** (Wunsch Nutzer, eigene Kachel auf der Übersicht, obwohl keine Musik-App): QR-Code enthält nur den Link
       `https://pati2018.github.io/visitenkarte/` (Fehlerkorrektur M, Bibliothek `qrcode.js` von Kazuhiko Arase, MIT, lokal). `?qr` = nur großer QR-Code zum Vorzeigen
       (Home-Bildschirm-Symbol startet dort, `start_url ./?qr`). „📇 Kontakt speichern“ = `patrick-schaefer.vcf` (vCard 3.0, UTF-8, CRLF).

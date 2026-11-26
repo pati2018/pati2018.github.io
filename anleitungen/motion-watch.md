@@ -26,7 +26,7 @@ Auf dem Bildschirm siehst du eine runde, bunte Scheibe wie bei einem **Kompass**
 | **Grundton** | C bis H |
 | **Skala** | Dur-Pentatonik, **Moll-Pentatonik** (Standard), Blues-Skala (Moll), Blues-Skala (Dur), Dur-Tonleiter, Moll-Tonleiter |
 | **Anzahl Töne** | 5 bis 15 – wenige Töne = große Felder, leicht zu treffen |
-| **Instrument** | Marimba, Klavier, Vibraphon, Kalimba, Gitarre, Flöten, Saxophone und mehr |
+| **Instrument** | 🎹 Instrumente: Marimba, Klavier, Vibraphon, Kalimba, Gitarre, Flöten, Saxophone und mehr – 🎛 **Synthesizer**: Synth-Lead, Trance-Pluck, Synth-Pad (weich), Acid-Synth, 8-Bit Retro, FM-Glocke, Space-Synth (mit Echo), Synth-Orgel |
 | **Bewegung** | 🔄 Kreise fahren / drehen oder ↕ Neigen vorne/hinten |
 | **Hohe Töne** | im / gegen den Uhrzeigersinn – beim Neigen: vorne oder hinten |
 | **Wie weit?** (nur Neigen) | wenig (± 30°), mittel (± 45°), stark (± 60°) |

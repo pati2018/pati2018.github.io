@@ -121,6 +121,7 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
       **Farben wie in der SoundWhacker Band** (rot #e5484d, lila #9b5de5, gelb #f2cf3a, grün #46b37b, blau #3f8ee8 – Wunsch Nutzer). Sicherung der ersten Fassung: Branch `stabil/motion-watch-v1.0`.
       Skalen `SKALEN`: Dur-/Moll-Pentatonik, Blues (Moll), Blues (Dur), Dur, Moll; Grundton C–H, 5–15 Töne, Instrumente aus `../tischharfe/klaenge/` (Samples 54–81 je 3 Halbtöne).
       **🎛 Synthesizer** (`SYNTHS`, Funktion `synth()`: im Browser erzeugt, keine Dateien): Synth-Lead, Trance-Pluck, Synth-Pad, Acid-Synth, 8-Bit Retro, FM-Glocke, Space-Synth (Echo), Synth-Orgel; in der Instrumentauswahl als eigene Gruppe.
+      **„✕ App schließen“** (Wunsch Nutzer): Bewegung/Ton/Wake Lock aus, `ctx.suspend()`, `window.close()` versucht; sonst Endseite `#ende` („▶ Wieder starten“, „Zu meinen Musik-Apps“, Hinweis hochwischen) – echtes Schließen erlaubt Safari Web-Apps nicht.
       Standard A-Moll-Pentatonik, 10 Töne, Marimba. Auch antippen/streichen, Tasten/SW 1–9, Pfeile ↑↓. Bildschirm bleibt an (Wake Lock). Speicher `motion-watch`. Noch ohne Offline-Speicher und ohne Kachel in `ki-betriebssystem/`.
     - `trommelball/` – **Trommelball** (Entwurf aus einem Workshop, 26.11.2026): großer Ball mit 4 Flächen (links rot = SW1/Taste 1, oben orange = 2, rechts gelb = 3, unten grün = 4,
       auch Pfeiltasten). Jede Fläche spielt ein Schlagzeug-Instrument aus `../tischharfe/klaenge/schlag-<set>/55–84.mp3` (30 Instrumente, 6 Sets); Standard links Bassdrum, oben Snare,

@@ -55,6 +55,12 @@
     #uhr{width:min(calc(100dvh - 24px),calc(68vw - 24px))}
   }
 
+  #ende{position:fixed;inset:0;z-index:9;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center}
+  #ende h2{font-family:var(--fd);font-size:28px;margin:6px 0 0}
+  #ende p{margin:0;font-size:18px;max-width:30em}
+  #ende .klein2{opacity:.8;font-size:16px}
+  #ende .knopf{flex:0 0 auto;min-height:56px;min-width:260px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;color:inherit}
+  #ende .knopf.an{color:#141a33}
   #hinweis{position:fixed;left:50%;bottom:max(18px,env(safe-area-inset-bottom));transform:translateX(-50%);background:#243052;border:1.5px solid var(--gold);
            border-radius:14px;padding:10px 16px;font-weight:700;font-size:17px;max-width:92vw;text-align:center;z-index:6;pointer-events:none}
 
@@ -75,6 +81,7 @@
   <button class="knopf" id="bewKnopf" type="button" aria-pressed="false">📱 Bewegung: aus</button>
   <button class="knopf" id="mitteKnopf" type="button" hidden>⊕ Mitte</button>
   <button class="knopf" id="einstKnopf" type="button">⚙ Einstellen</button>
+  <button class="knopf" id="endeKnopf" type="button">✕ App schließen</button>
 </header>
 
 <main>
@@ -82,6 +89,14 @@
 </main>
 
 <div id="hinweis" hidden role="status"></div>
+<div id="ende" hidden role="dialog" aria-modal="true" aria-labelledby="endeTitel">
+  <img src="icon.svg" alt="" width="120" height="120">
+  <h2 id="endeTitel">Musikkompass ist beendet</h2>
+  <p>Kein Ton, keine Bewegung, der Bildschirm darf wieder ausgehen.</p>
+  <p class="klein2">Ganz schließen: vom unteren Rand nach oben wischen (iPhone/iPad) – oder den Tab schließen.</p>
+  <button class="knopf an" id="weiterKnopf" type="button">▶ Wieder starten</button>
+  <a class="knopf" href="../">Zu meinen Musik-Apps</a>
+</div>
 <div id="einst" hidden role="dialog" aria-modal="true" aria-labelledby="einstTitel">
   <div class="karte">
     <h2 id="einstTitel">⚙ Einstellen</h2>
@@ -267,6 +282,7 @@ document.addEventListener('dblclick',e=>e.preventDefault());
 // Tasten: 1–9 (SoundWhacker 1–5), Pfeile ↑ ↓ eine Stufe
 const gedrueckt=new Set();
 document.addEventListener('keydown',e=>{
+  if(!document.getElementById('ende').hidden) return;   // beendet: SW/Tasten spielen nicht
   if(!einst.hidden){ if(e.key==='Escape') zu(); return; }
   let i=-1;
   if(/^[1-9]$/.test(e.key)) i=+e.key-1;
@@ -335,6 +351,14 @@ async function bewegungEin(){
   zeige({dreh:'Flach hinlegen und Kreise fahren oder drehen!'}[st.modus]||'Hand ruhig halten – das ist jetzt die Mitte. Dann neigen!',3000);
   setTimeout(()=>{ if(bewAn && !bekommen){ bewAn=false; bewZeigen(); wachHalten(false); zeige('Kein Bewegungssensor gefunden (geht am iPhone/iPad).',4000); } },1500);
 }
+// App schließen: Bewegung aus, Ton aus, Bildschirm darf aus. Echtes Schließen erlaubt der Browser nur bei selbst geöffneten Fenstern.
+document.getElementById('endeKnopf').addEventListener('click',()=>{
+  bewAn=false; bewZeigen(); wachHalten(false); try{ abklingen(); }catch(e){}
+  if(ctx) ctx.suspend().catch(()=>{});
+  try{ window.close(); }catch(e){}
+  document.getElementById('ende').hidden=false; document.getElementById('weiterKnopf').focus();
+});
+document.getElementById('weiterKnopf').addEventListener('click',()=>{ document.getElementById('ende').hidden=true; audio(); });
 bewKnopf.addEventListener('click',()=>{ if(bewAn){ bewAn=false; bewZeigen(); wachHalten(false); } else bewegungEin(); });
 mitteKnopf.addEventListener('click',()=>{ mitte=roh?roh.slice():null; aktiv=-1; zeige('Neue Mitte gesetzt.',1500); });
 

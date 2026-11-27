@@ -33,6 +33,11 @@ Auf dem Bildschirm siehst du eine runde, bunte Scheibe wie bei einem **Kompass**
 
 Die App merkt sich alle Einstellungen.
 
+## App schließen
+
+Oben auf **„✕ App schließen“** tippen: Bewegung und Ton gehen aus, der Bildschirm darf wieder ausgehen. Es erscheint „Musikkompass ist beendet“ mit **▶ Wieder starten** und **Zu meinen Musik-Apps**.
+Ganz aus dem Speicher schließen geht nur mit dem Gerät selbst: am iPhone/iPad **vom unteren Rand nach oben wischen** und die App wegschieben (am PC den Tab schließen) – das erlaubt der Browser einer Web-App nicht.
+
 ## Ohne Bewegung spielen
 
 - Die **bunten Felder antippen** oder mit dem Finger darüber streichen.

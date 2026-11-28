@@ -2,7 +2,7 @@
 
 Dies ist das Gedächtnis **nur für die privaten Web-Apps**. Es gilt **zusätzlich** zur Haupt-Datei `../CLAUDE.md`
 (dort stehen die gemeinsamen Regeln: Name „Riff“, einfache Sprache, Testen auf iPhone/iPad, GitHub-Zugriff,
-Versionsnummern, Datenschutz, Hell/Dunkel …). **Neues zu die privaten Web-Apps hier eintragen, nicht in der Haupt-Datei.**
+Versionsnummern, Datenschutz, Hell/Dunkel …). **Neues zu den privaten Web-Apps hier eintragen, nicht in der Haupt-Datei.**
 **Nie** Passwörter, Tokens oder Kennwörter eintragen – das Repo ist öffentlich.
 
 ## Private Seite „Meine privaten Web-Apps“ (`privat/`)

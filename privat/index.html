@@ -57,7 +57,7 @@
     </main>
   </div>
 
-  <script src="daten.js?v=2"></script>
+  <script src="daten.js?v=3"></script>
   <script>
   (function(){
     'use strict';
@@ -86,18 +86,10 @@
           <div class="top"><div class="icon" aria-hidden="true">${esc(a.symbol || '🧩')}</div>
             <div><h2>${esc(a.titel)}</h2><div class="meta">${esc(a.kategorie || 'Alltag')}${a.update ? ' · Update ' + esc(new Date(a.update).toLocaleDateString('de-DE')) : ''}${a.version ? ' · Version ' + esc(a.version) : ''}</div></div></div>
           <p>${esc(a.kurz || '')}</p>
-          <div class="actions">${a.html ? `<button class="btn primary" data-i="${i}">App öffnen ↗</button>` : a.link ? `<a class="btn primary" href="${esc(a.link)}" target="_blank" rel="noopener noreferrer">App öffnen ↗</a>` : ''}</div>
+          <div class="actions">${a.html ? `<a class="btn primary" href="app.html?id=${encodeURIComponent(a.id)}">App öffnen →</a>` : a.link ? `<a class="btn primary" href="${esc(a.link)}" target="_blank" rel="noopener noreferrer">App öffnen ↗</a>` : ''}</div>
         </section>`).join('')
         : `<div class="leerkarte"><div style="font-size:42px">🧪</div><p style="margin:8px 0 0"><b>Noch keine privaten Apps.</b><br>Sag Riff, welche Alltags-App du dir wünschst – sie landet dann verschlüsselt hier.</p></div>`;
     }
-    // Private App, die selbst im verschlüsselten Inhalt steckt: im neuen Tab aus dem Speicher öffnen
-    document.getElementById('liste').addEventListener('click', e => {
-      const knopf = e.target.closest('[data-i]'); if (!knopf) return;
-      const a = INHALT.apps[+knopf.dataset.i];
-      const url = URL.createObjectURL(new Blob([a.html], { type:'text/html' }));
-      window.open(url, '_blank') || (location.href = url);
-    });
-
     async function versuch(pw, merken){
       const knopf = document.getElementById('los'), fehler = document.getElementById('fehler');
       knopf.disabled = true; knopf.textContent = '⏳ Öffne …'; fehler.textContent = '';
@@ -108,7 +100,10 @@
       try{ if (merken) localStorage.setItem(MERK, pw); }catch(e){}
       try{ sessionStorage.setItem(MERK, pw); }catch(e){}
       document.getElementById('schloss').hidden = true; document.getElementById('inhalt').hidden = false;
-      zeigen(); return true;
+      zeigen();
+      const weiter=new URLSearchParams(location.search).get('weiter');   // kam von einer privaten App → direkt dorthin zurück
+      if(weiter) location.replace('app.html?id='+encodeURIComponent(weiter));
+      return true;
     }
     document.getElementById('form').addEventListener('submit', e => {
       e.preventDefault(); versuch(document.getElementById('pw').value, document.getElementById('merken').checked);

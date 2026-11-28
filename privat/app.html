@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Privat</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<style>html,body{margin:0;background:#0d1230;color:#fff;font:18px -apple-system,system-ui,sans-serif}p{margin:40vh 16px 0;text-align:center}</style>
+</head>
+<body>
+<p>⏳ Öffne …</p>
+<script src="daten.js?v=3"></script>
+<script>
+// Öffnet eine private App: entschlüsselt den Inhalt mit dem gemerkten Kennwort und schreibt die App in diese Seite.
+// Ohne Kennwort → zurück zum Schloss (danach geht es automatisch hierher weiter).
+(async function(){
+  const MERK='privat-kennwort', id=new URLSearchParams(location.search).get('id')||'';
+  let pw=null; try{ pw=sessionStorage.getItem(MERK)||localStorage.getItem(MERK); }catch(e){}
+  const zumSchloss=()=>location.replace('./?weiter='+encodeURIComponent(id));
+  if(!pw) return zumSchloss();
+  const b=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+  let daten=null;
+  for(const bl of window.PRIVAT.bloecke){
+    try{
+      const k0=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);
+      const k=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b(bl.s),iterations:window.PRIVAT.runden,hash:'SHA-256'},k0,{name:'AES-GCM',length:256},false,['decrypt']);
+      daten=JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:b(bl.i)},k,b(bl.d)))); break;
+    }catch(e){}
+  }
+  if(!daten) return zumSchloss();
+  const app=(daten.apps||[]).find(a=>a.id===id);
+  if(!app||!app.html){ document.querySelector('p').textContent='App nicht gefunden.'; return; }
+  document.open(); document.write(app.html); document.close();
+})();
+</script>
+</body>
+</html>

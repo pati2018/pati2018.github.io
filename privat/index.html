@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Meine privaten Web-Apps</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <link rel="icon" type="image/png" sizes="32x32" href="../icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+  <meta name="theme-color" content="#2f5bd3">
+  <meta name="apple-mobile-web-app-title" content="Privat">
+  <link rel="stylesheet" href="../style.css">
+  <script src="../theme.js"></script>
+  <style>
+    [hidden]{display:none!important}
+    .schloss{max-width:420px;margin:12vh auto 0;padding:0 16px;text-align:center}
+    .schloss .gross{font-size:64px;line-height:1}
+    .schloss h1{margin:10px 0 6px;font-size:26px}
+    .schloss p{color:var(--muted);margin:0 0 18px}
+    .schloss input{width:100%;font:inherit;font-size:22px;padding:14px 16px;border-radius:14px;border:2px solid var(--line);background:transparent;color:var(--text);text-align:center;letter-spacing:.12em}
+    .schloss input:focus{outline:none;border-color:var(--accent)}
+    .schloss .btn{width:100%;justify-content:center;min-height:56px;font-size:19px;margin-top:12px}
+    .schloss label{display:flex;gap:10px;align-items:center;justify-content:center;margin-top:14px;color:var(--muted);font-size:15px}
+    .schloss label input{width:22px;height:22px;padding:0}
+    .fehler{color:#d33;font-weight:700;margin-top:12px;min-height:1.4em}
+    .leerkarte{border:2px dashed var(--line);border-radius:16px;padding:22px;text-align:center;color:var(--muted)}
+    .zu{margin-left:auto}
+  </style>
+</head>
+<body>
+  <!-- Schloss: der Inhalt steht verschlüsselt in daten.js und wird erst mit dem Kennwort auf dem Gerät lesbar -->
+  <section class="schloss" id="schloss">
+    <div class="gross" aria-hidden="true">🔒</div>
+    <h1>Meine privaten Web-Apps</h1>
+    <p>Bitte Kennwort eingeben.</p>
+    <form id="form" autocomplete="off">
+      <input id="pw" type="password" inputmode="text" autocomplete="current-password" aria-label="Kennwort" required>
+      <button class="btn primary" type="submit" id="los">🔓 Öffnen</button>
+      <label><input type="checkbox" id="merken"> Auf diesem Gerät angemeldet bleiben</label>
+      <div class="fehler" id="fehler" role="alert"></div>
+    </form>
+  </section>
+
+  <div id="inhalt" hidden>
+    <header class="site wrap">
+      <h1 class="brand"><span style="font-size:44px;margin-right:10px" aria-hidden="true">🗝️</span>Meine privaten Web-Apps</h1>
+      <p>Meine Experimente und Alltags-Apps – nur für mich. Sie laufen direkt im Browser.</p>
+      <p style="margin-top:6px;display:flex;gap:14px;flex-wrap:wrap">
+        <a href="../" style="color:var(--accent);font-weight:700;text-decoration:none">Zu meinen Musik-Apps →</a>
+        <a href="../schule/" style="color:var(--accent);font-weight:700;text-decoration:none">Zu meinen Apps Schule →</a>
+        <button class="btn zu" id="abmelden" type="button">🔒 Abmelden</button>
+      </p>
+    </header>
+    <main class="wrap">
+      <div class="grid" id="liste"></div>
+    </main>
+  </div>
+
+  <script src="daten.js?v=1"></script>
+  <script>
+  (function(){
+    'use strict';
+    const MERK = 'privat-kennwort';
+    const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+    const b = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+
+    async function oeffnen(pw){
+      const P = window.PRIVAT;
+      for (const bl of P.bloecke){
+        try{
+          const k0 = await crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey']);
+          const k = await crypto.subtle.deriveKey({ name:'PBKDF2', salt:b(bl.s), iterations:P.runden, hash:'SHA-256' }, k0, { name:'AES-GCM', length:256 }, false, ['decrypt']);
+          const t = await crypto.subtle.decrypt({ name:'AES-GCM', iv:b(bl.i) }, k, b(bl.d));
+          return JSON.parse(new TextDecoder().decode(t));
+        }catch(e){}
+      }
+      return null;
+    }
+
+    let INHALT = null;
+    function zeigen(){
+      const apps = INHALT.apps || [];
+      document.getElementById('liste').innerHTML = apps.length ? apps.map((a, i) => `
+        <section class="card">
+          <div class="top"><div class="icon" aria-hidden="true">${esc(a.symbol || '🧩')}</div>
+            <div><h2>${esc(a.titel)}</h2><div class="meta">${esc(a.kategorie || 'Alltag')}${a.update ? ' · Update ' + esc(new Date(a.update).toLocaleDateString('de-DE')) : ''}${a.version ? ' · Version ' + esc(a.version) : ''}</div></div></div>
+          <p>${esc(a.kurz || '')}</p>
+          <div class="actions">${a.html ? `<button class="btn primary" data-i="${i}">App öffnen ↗</button>` : a.link ? `<a class="btn primary" href="${esc(a.link)}" target="_blank" rel="noopener noreferrer">App öffnen ↗</a>` : ''}</div>
+        </section>`).join('')
+        : `<div class="leerkarte"><div style="font-size:42px">🧪</div><p style="margin:8px 0 0"><b>Noch keine privaten Apps.</b><br>Sag Riff, welche Alltags-App du dir wünschst – sie landet dann verschlüsselt hier.</p></div>`;
+    }
+    // Private App, die selbst im verschlüsselten Inhalt steckt: im neuen Tab aus dem Speicher öffnen
+    document.getElementById('liste').addEventListener('click', e => {
+      const knopf = e.target.closest('[data-i]'); if (!knopf) return;
+      const a = INHALT.apps[+knopf.dataset.i];
+      const url = URL.createObjectURL(new Blob([a.html], { type:'text/html' }));
+      window.open(url, '_blank') || (location.href = url);
+    });
+
+    async function versuch(pw, merken){
+      const knopf = document.getElementById('los'), fehler = document.getElementById('fehler');
+      knopf.disabled = true; knopf.textContent = '⏳ Öffne …'; fehler.textContent = '';
+      const daten = await oeffnen(pw);
+      knopf.disabled = false; knopf.textContent = '🔓 Öffnen';
+      if (!daten){ fehler.textContent = 'Kennwort falsch. Bitte noch einmal.'; try{ localStorage.removeItem(MERK); }catch(e){} return false; }
+      INHALT = daten;
+      try{ if (merken) localStorage.setItem(MERK, pw); }catch(e){}
+      try{ sessionStorage.setItem(MERK, pw); }catch(e){}
+      document.getElementById('schloss').hidden = true; document.getElementById('inhalt').hidden = false;
+      zeigen(); return true;
+    }
+    document.getElementById('form').addEventListener('submit', e => {
+      e.preventDefault(); versuch(document.getElementById('pw').value, document.getElementById('merken').checked);
+    });
+    document.getElementById('abmelden').addEventListener('click', () => {
+      try{ localStorage.removeItem(MERK); sessionStorage.removeItem(MERK); }catch(e){}
+      location.reload();
+    });
+    // Schon angemeldet (dieser Tab oder „angemeldet bleiben“)?
+    let alt = null; try{ alt = sessionStorage.getItem(MERK) || localStorage.getItem(MERK); }catch(e){}
+    if (alt) versuch(alt, false); else document.getElementById('pw').focus();
+  })();
+  </script>
+</body>
+</html>

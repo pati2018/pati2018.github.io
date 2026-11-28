@@ -41,6 +41,11 @@ Versionsnummern, Datenschutz, Hell/Dunkel …). **Neues zu den privaten Web-Apps
   Apps auf pati2018.github.io öffnen sich in einem **Rahmen (iframe) über Luna** – Luna bleibt wach: im Modus „Immer aktiv“ hört sie weiter zu
   („Luna, zurück“ / „zurück zu Luna“ schließt), im Knopf-Modus über die **runde Luna-Taste** unten rechts (gedrückt halten), dazu Knopf „✕ Zurück zu Luna“.
   Fremde Seiten (z. B. Audioguide) öffnen sich direkt – dort kann Luna nicht zuhören. Installierte iOS-Apps (GarageBand) kann eine Web-App nicht starten.
+- **Agent-Werkzeuge (Tool-Use, 28.11.2026):** Mit API-Schlüssel bekommt Claude die Werkzeuge **`app_oeffnen`** (`app_id` als `enum` aus dem Katalog, `strict`, `eager_input_streaming`)
+  und **`app_schliessen`**; die App-Liste mit Kurzbeschreibung steht im System-Prompt (`systemText()`), Claude entscheidet selbst (versteht auch „ich will trommeln“).
+  Schleife in `antworte()`: bis 4 Runden, bei `stop_reason: tool_use` → `werkzeugAusfuehren()` → `tool_result` zurück; Eingaben werden geprüft (unbekannte id → `is_error`).
+  Verlauf nur an Nutzer-Fragen gekürzt (`verlaufKuerzen`), bei Fehler auf den Stand vor der Frage zurück. „Luna, zurück“ geht weiter sofort ohne Gehirn;
+  ohne Schlüssel bleibt die Wort-Erkennung („öffne …“). Fremde Seiten öffnen sich erst, wenn Luna fertig gesprochen hat (`zielNachSprechen`).
 - **Start mit „👋 Luna wecken“** (Fix 28.11.2026): iOS gibt die Gerätestimme erst frei, wenn ein **echter Satz während einer Berührung** gesprochen wird
   (vorher kam keine Sprache, bis man in ⚙ „Probe hören“ tippte). Darum zuerst Wecken-Schirm → Tipp spricht die Begrüßung und startet erst dann das Zuhören.
   `entsperren()` versucht es bei jedem Tippen erneut, bis eine Äußerung wirklich startet (`onstart`), unterbricht aber nie laufende Sprache.

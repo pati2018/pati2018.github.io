@@ -22,8 +22,13 @@ Versionsnummern, Datenschutz, Hell/Dunkel …). **Neues zu den privaten Web-Apps
 ## Apps
 
 ### 🤖 Luna (`id: luna`, seit 28.11.2026)
-- Sprechender Roboterkopf (SVG): blinzelt, schaut umher, lächelt, Mund bewegt sich beim Sprechen (Silben-Takt + `onboundary`), Ohr-/Stirnlichter je Zustand
-  (ruhe cyan, hören grün, denken lila, sprechen pink). Name/Weckwort „Luna“.
+- **Gesicht = Foto des Nutzers** (selbst erstellt, Wunsch Nutzer; Vorlage zeigte „SERA-741“ → im Bild auf **„LUNA“** / „LUNA - 741“ geändert), 524 × 572, als JPEG-Base64 in der HTML.
+  Wird auf einem **Canvas lebendig gemacht** (Weg A, kostenlos; Weg B = bezahlter Live-Avatar wie D-ID/HeyGen wurde besprochen, nicht gebaut):
+  Iris wandert (aus dem Foto ausgeschnitten, Augenweiß nachgemalt), Lider blinzeln (manchmal doppelt), Augenbrauen per Dreiecks-Gitter verformt,
+  **Unterkiefer per Gitter abgesenkt** (Trennlinie zwischen den Zahnreihen, dunkle Mundhöhle in der Lücke, untere Zähne/Kinn wandern mit), Kopf atmet/neigt sich/nickt beim Zuhören,
+  Lichter an Ohrhörern und Jacke je Zustand (ruhe cyan, hören grün, denken lila, sprechen pink). Messpunkte (`AUGEN`, `MUND`, `LICHT`) in Bildkoordinaten.
+  Erste Fassung war eine gezeichnete SVG-Figur – auf Wunsch ersetzt („kein Strichmännchen“). Gestik mit Händen geht nicht (Bild zeigt nur Kopf/Schultern).
+  Bauordner im Scratchpad: `luna-build/` (`luna.html` mit Platzhaltern `/*BILD*/` und `/*SDK*/`, `bild/luna.jpg`, `sdk.js`).
 - **Zuhören:** Web Speech API (`webkitSpeechRecognition`, de-DE). Modus **🎤 Knopf** = gedrückt halten (auch Leertaste), **👂 Immer aktiv** = läuft dauernd und startet sich neu,
   Weckwort „Luna …“ (abschaltbar), „Luna“ allein → „Ja?“ und 8 s auf den Befehl warten. Während Luna denkt/spricht, hört sie nicht zu. Dazu Tippfeld.
 - **Sprechen:** `speechSynthesis`, deutsche Stimme wählbar (bevorzugt Anna/Petra/Helena …), ganze Sätze werden schon beim Streamen vorgelesen; Sicherheitsnetz, falls `onend` fehlt.

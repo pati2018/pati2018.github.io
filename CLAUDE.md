@@ -273,7 +273,7 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
 
 ## Private Seite „Meine privaten Web-Apps“ (`privat/`)
 
-- **Adresse:** https://pati2018.github.io/privat/ – **nirgends verlinkt** (Wunsch Nutzer), `noindex`. Für private Experimente / Alltags-Apps (nicht Musik, nicht Schule).
+- **Adresse:** https://pati2018.github.io/privat/ – verlinkt **nur von „Meine Apps Schule“** („🔒 Privat →“ oben, Wunsch Nutzer), nicht von der Musik-Übersicht; `noindex`. Für private Experimente / Alltags-Apps (nicht Musik, nicht Schule).
 - **Mit Kennwort verschlüsselt** (nicht nur versteckt): Inhalt (Liste + kleine Apps als HTML im Feld `html`) steht nur verschlüsselt in `privat/daten.js`
   (PBKDF2-SHA256 600 000 Runden → AES-GCM 256, WebCrypto). Mehrere Kennwörter möglich (je ein Block). **Das Kennwort kennt nur der Nutzer – nie hier oder im Repo notieren;
   für Änderungen den Nutzer danach fragen.** Klartext-Inhalt nie ins Repo.

@@ -36,4 +36,9 @@ Versionsnummern, Datenschutz, Hell/Dunkel …). **Neues zu den privaten Web-Apps
   (kein CDN). `messages.stream`, `output_config.effort: "low"`, kurze gesprochene Antworten (System-Prompt). Modell wählbar: Opus 5.5 (Standard), Sonnet 5.5, Haiku 5.5;
   bei Opus/Sonnet server-seitige Fallbacks (`betas: ["server-side-fallback-2026-07-01"]`, `fallbacks: "default"`), `stop_reason: refusal` wird abgefangen.
 - **API-Schlüssel** gibt der Nutzer in ⚙ ein → nur `localStorage` `luna-schluessel` auf dem Gerät, **nie** ins Repo/in den Inhalt. Ohne Schlüssel **Übungsmodus** (feste Antworten).
+- **Apps öffnen per Sprache** (Wunsch Nutzer): „Luna, öffne/starte/zeig … die Band / Harfe / Kompass / Trommel …“ → Funktion `befehl()` vor dem Gehirn (geht auch im Übungsmodus).
+  Katalog = alle Apps aus `/apps.js` und `/schule/apps.js` (zur Laufzeit geladen, Namen aus Titel + Zusatznamen in `EXTRA`). „Welche Apps hast du?“ zählt sie auf.
+  Apps auf pati2018.github.io öffnen sich in einem **Rahmen (iframe) über Luna** – Luna bleibt wach: im Modus „Immer aktiv“ hört sie weiter zu
+  („Luna, zurück“ / „zurück zu Luna“ schließt), im Knopf-Modus über die **runde Luna-Taste** unten rechts (gedrückt halten), dazu Knopf „✕ Zurück zu Luna“.
+  Fremde Seiten (z. B. Audioguide) öffnen sich direkt – dort kann Luna nicht zuhören. Installierte iOS-Apps (GarageBand) kann eine Web-App nicht starten.
 - Gesprächsverlauf nur im Speicher (letzte 30 Nachrichten), „↺ Neu“ leert ihn. Grenzen: „Immer aktiv“ nur bei offener App/Bildschirm an (iOS).

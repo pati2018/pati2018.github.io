@@ -155,7 +155,7 @@ const tonName=m=>TONNAME[m%12];
 /* ---------- Klang ---------- */
 let ctx=null, haupt=null; const puffer={}; let letzte=null;
 function audio(){
-  if(!ctx){ try{ if(navigator.audioSession) navigator.audioSession.type='ambient'; }catch(e){}
+  if(!ctx){ try{ if(navigator.audioSession) navigator.audioSession.type=(/iPhone|iPod/.test(navigator.userAgent)?'playback':'ambient')   /* iPhone: immer hörbar, auch bei Stumm; iPad: mit GarageBand mischen */; }catch(e){}
     ctx=new (window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'});
     const k=ctx.createDynamicsCompressor(); k.threshold.value=-10; k.ratio.value=4; k.connect(ctx.destination);
     haupt=ctx.createGain(); haupt.gain.value=0.9; haupt.connect(k); }

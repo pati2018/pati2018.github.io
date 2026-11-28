@@ -119,7 +119,7 @@ const sichern=()=>{try{localStorage.setItem(SPEICHER,JSON.stringify(st))}catch(e
 
 /* ---------- Klang ---------- */
 let ctx=null, haupt=null; const puffer={};
-function sitzung(){ try{ if(navigator.audioSession) navigator.audioSession.type='ambient'; }catch(e){} }
+function sitzung(){ try{ if(navigator.audioSession) navigator.audioSession.type=(/iPhone|iPod/.test(navigator.userAgent)?'playback':'ambient')   /* iPhone: immer hörbar, auch bei Stumm; iPad: mit GarageBand mischen */; }catch(e){} }
 function audio(){
   if(!ctx){ sitzung(); ctx=new (window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'});
     const k=ctx.createDynamicsCompressor(); k.threshold.value=-10; k.ratio.value=4; k.connect(ctx.destination);

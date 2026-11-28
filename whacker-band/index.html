@@ -304,8 +304,8 @@ let ctx=null, master, dry, wet; const hallWert=()=>Math.pow(st.hall/100,1.3)*1.1
    z. B. einem Backing-Track aus GarageBand, der im Hintergrund läuft (Schalter „Mit GarageBand“) */
 /* Immer „mit anderer Musik mischen“ (Wunsch Nutzer): GarageBand, Spotify … laufen weiter, die Band spielt mit.
    Folge: bei „Stumm“ (Glocke im Kontrollzentrum / Schalter am iPhone) ist die Band nicht zu hören → einmaliger Hinweis */
-function sitzung(){ try{ if(navigator.audioSession) navigator.audioSession.type='ambient'; }catch(e){} }
-function stummHinweis(){ const ios=navigator.maxTouchPoints>0||/iPad|iPhone|iPod/.test(navigator.userAgent); if(!ios) return;
+function sitzung(){ try{ if(navigator.audioSession) navigator.audioSession.type=(/iPhone|iPod/.test(navigator.userAgent)?'playback':'ambient')   /* iPhone: immer hörbar, auch bei Stumm; iPad: mit GarageBand mischen */; }catch(e){} }
+function stummHinweis(){ const ios=navigator.maxTouchPoints>0||/iPad|iPhone|iPod/.test(navigator.userAgent); if(!ios||/iPhone|iPod/.test(navigator.userAgent)) return;
   try{ if(localStorage.getItem('whacker-band-stummhinweis')) return; localStorage.setItem('whacker-band-stummhinweis','1'); }catch(e){}
   setTimeout(()=>toast(L('🔔 Kein Ton? Stummschalter / Glocke im Kontrollzentrum am iPad bzw. iPhone ausschalten.','🔔 No sound? Turn off silent mode / the bell in Control Center on the iPad or iPhone.'),7000),600); }
 function audio(){

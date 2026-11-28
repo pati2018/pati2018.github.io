@@ -58,6 +58,11 @@ Versionsnummern, Datenschutz, Hell/Dunkel …). **Neues zu den privaten Web-Apps
   (vorher kam keine Sprache, bis man in ⚙ „Probe hören“ tippte). Darum zuerst Wecken-Schirm → Tipp spricht die Begrüßung und startet erst dann das Zuhören.
   `entsperren()` versucht es bei jedem Tippen erneut, bis eine Äußerung wirklich startet (`onstart`), unterbricht aber nie laufende Sprache.
 - **Ansicht aufgeräumt** (Wunsch Nutzer): Gesprächstext (`#verlauf`) und Tippfeld sind **ausgeblendet**, Gesicht größer; zuschaltbar in ⚙ „Gesprochenen Text und Tippfeld anzeigen“ (`body.mitText`, Speicher `luna-text`).
+- **Sprache + ElevenLabs** (28.11.2026): ⚙ „Sprache“ (`SPRACHEN`: de, en, fr, es, it, nl, pl, tr, pt, uk, ru, ar) gilt für Spracherkennung (`bcp()`), Gerätestimmen-Filter
+  und Antwortsprache (Zusatz im System-Prompt). ⚙ „Stimme von …“: Gerät oder **ElevenLabs** (Schlüssel in `localStorage` `luna-elf-schluessel`, nur auf dem Gerät;
+  „Stimmen laden“ = `GET /v1/voices`, Stimmen der gewählten Sprache zuerst; Qualität Flash v2.5 mit `language_code` oder Multilingual v2). Jeder Satz wird als MP3 geholt
+  (`POST /v1/text-to-speech/<id>`), vorab geladen und über Web Audio der Reihe nach gespielt; **Mund folgt der echten Lautstärke** (Analyser). Bei Fehlern (401/402/429/Netz)
+  spricht Luna den Satz mit der Gerätestimme und meldet es. ElevenLabs erlaubt Aufrufe direkt aus dem Browser (CORS `*`) – getestet mit echtem Schlüssel.
 - Gesprächsverlauf nur im Speicher (letzte 30 Nachrichten), „↺ Neu“ leert ihn. Grenzen: „Immer aktiv“ nur bei offener App/Bildschirm an (iOS).
 
 ## Offene Ideen (Privat)

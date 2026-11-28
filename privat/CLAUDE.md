@@ -63,6 +63,9 @@ Versionsnummern, Datenschutz, Hell/Dunkel …). **Neues zu den privaten Web-Apps
   „Stimmen laden“ = `GET /v1/voices`, Stimmen der gewählten Sprache zuerst; Qualität Flash v2.5 mit `language_code` oder Multilingual v2). Jeder Satz wird als MP3 geholt
   (`POST /v1/text-to-speech/<id>`), vorab geladen und über Web Audio der Reihe nach gespielt; **Mund folgt der echten Lautstärke** (Analyser). Bei Fehlern (401/402/429/Netz)
   spricht Luna den Satz mit der Gerätestimme und meldet es. ElevenLabs erlaubt Aufrufe direkt aus dem Browser (CORS `*`) – getestet mit echtem Schlüssel.
+- **Vollbild** (Wunsch Nutzer): Tipp auf Luna (`#gesicht`) schaltet `body.vollbild` um – nur Luna (Hochformat füllt den Bildschirm, Seiten abgeschnitten; quer ganz sichtbar),
+  Kopf/Knöpfe weg, Statuszeile nur, wenn Luna hört/denkt/spricht. Erneut tippen (oder Esc) = zurück. Echtes Vollbild nur am PC (iPad/iPhone: nur Ansicht), Bildschirm bleibt an (Wake Lock).
+  Hinweis beim Einschalten im Knopf-Modus: im Vollbild hört Luna nur bei „Immer aktiv“.
 - Gesprächsverlauf nur im Speicher (letzte 30 Nachrichten), „↺ Neu“ leert ihn. Grenzen: „Immer aktiv“ nur bei offener App/Bildschirm an (iOS).
 
 ## Offene Ideen (Privat)

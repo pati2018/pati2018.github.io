@@ -57,6 +57,7 @@ Versionsnummern, Datenschutz, Hell/Dunkel …). **Neues zu den privaten Web-Apps
 - **Start mit „👋 Luna wecken“** (Fix 28.11.2026): iOS gibt die Gerätestimme erst frei, wenn ein **echter Satz während einer Berührung** gesprochen wird
   (vorher kam keine Sprache, bis man in ⚙ „Probe hören“ tippte). Darum zuerst Wecken-Schirm → Tipp spricht die Begrüßung und startet erst dann das Zuhören.
   `entsperren()` versucht es bei jedem Tippen erneut, bis eine Äußerung wirklich startet (`onstart`), unterbricht aber nie laufende Sprache.
+- **Ansicht aufgeräumt** (Wunsch Nutzer): Gesprächstext (`#verlauf`) und Tippfeld sind **ausgeblendet**, Gesicht größer; zuschaltbar in ⚙ „Gesprochenen Text und Tippfeld anzeigen“ (`body.mitText`, Speicher `luna-text`).
 - Gesprächsverlauf nur im Speicher (letzte 30 Nachrichten), „↺ Neu“ leert ihn. Grenzen: „Immer aktiv“ nur bei offener App/Bildschirm an (iOS).
 
 ## Offene Ideen (Privat)

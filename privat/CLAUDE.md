@@ -45,3 +45,10 @@ Versionsnummern, Datenschutz, Hell/Dunkel …). **Neues zu den privaten Web-Apps
   (vorher kam keine Sprache, bis man in ⚙ „Probe hören“ tippte). Darum zuerst Wecken-Schirm → Tipp spricht die Begrüßung und startet erst dann das Zuhören.
   `entsperren()` versucht es bei jedem Tippen erneut, bis eine Äußerung wirklich startet (`onstart`), unterbricht aber nie laufende Sprache.
 - Gesprächsverlauf nur im Speicher (letzte 30 Nachrichten), „↺ Neu“ leert ihn. Grenzen: „Immer aktiv“ nur bei offener App/Bildschirm an (iOS).
+
+## Offene Ideen (Privat)
+
+- **Luna mit Google-Kalender und Gmail verbinden** (besprochen 28.11.2026, Nutzer: „später“): Google Identity Services im Browser (OAuth, Token ~1 h nur im Speicher),
+  Nutzer legt Google-Cloud-Projekt + OAuth-Client-ID (Ursprung `https://pati2018.github.io`) an, sich selbst als Testnutzer; Calendar/Gmail-API → Claude per Tool-Use.
+  Vorschlag: zuerst nur lesen (Termine/Mails vorlesen, zusammenfassen), später Termine eintragen und Mails nur als Entwurf. Hinweis an Nutzer: Mailtext geht an Anthropic.
+  Voraussetzung: eigener Anthropic-API-Schlüssel in Luna.

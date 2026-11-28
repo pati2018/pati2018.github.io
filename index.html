@@ -40,6 +40,8 @@
     const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
     const rang = a => a.ganzOben ? Number(a.ganzOben) - 1000 : Number(a.ganzUnten || 0);
     const apps = [...(window.APPS || [])].sort((a, b) => rang(a) - rang(b) || String(b.datum).localeCompare(String(a.datum)));
+    const kurzDatum = d => { const t = new Date(d); return isNaN(t) ? "" : t.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" }); };
+    const frisch = d => (Date.now() - new Date(d)) < 7 * 864e5;   // Update in den letzten 7 Tagen → hervorgehoben
     const fmt = d => { const t = new Date(d); return isNaN(t) ? "" : t.toLocaleDateString("de-DE", { day: "numeric", month: "long", year: "numeric" }); };
 
     let aktiv = "Alle";
@@ -69,9 +71,11 @@
             ${a.bild ? `<div class="icon" aria-hidden="true" style="background:none;overflow:hidden"><img src="${esc(a.bild)}" alt="" style="width:100%;height:100%;border-radius:inherit"></div>` : `<div class="icon" aria-hidden="true"${[...(a.symbol || "")].length > 1 ? ' style="font-size:18px;letter-spacing:-2px"' : ""}>${esc(a.symbol || "🧩")}</div>`}
             <div>
               <h2>${esc(a.titel)}</h2>
+              ${a.update ? `<div class="upd${frisch(a.update) ? " frisch" : ""}" title="${esc(a.neu ? "Neu: " + a.neu : "")}">${frisch(a.update) ? "🆕 " : "🔄 "}Update ${esc(kurzDatum(a.update))}${a.version ? ` · Version ${esc(a.version)}` : ""}</div>` : ""}
               <div class="meta">${esc(a.kategorie || "")}${a.kategorie && a.datum ? " · " : ""}${esc(fmt(a.datum))}${a.zaehler ? `<span class="zaehler" data-pfad="${esc(a.zaehler)}" hidden> · 👁 <b></b> Aufrufe</span>` : ""}</div>
             </div>
           </div>
+          ${a.neu ? `<p class="neu"><b>Neu:</b> ${esc(a.neu)}</p>` : ""}
           <p>${esc(a.kurz)}</p>
           <div class="actions">
             ${(a.links || [{ label: "App öffnen", url: a.link }]).map(l => `<a class="btn primary" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>`).join("")}

@@ -15,6 +15,7 @@
     .appvideo video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; border-radius: 14px; background: #0b0f14; }
     .appvideo .actions { align-items: center; }
     .appvideo .hint { color: var(--muted); font-size: 15px; }
+    .upd { margin: 4px 0 0; font-size: 15px; color: var(--muted); }
     .appvideo .vtitel { margin: 0; font-size: 20px; }
   </style>
   <script src="theme.js"></script>
@@ -52,6 +53,7 @@
           ${app.bild ? `<div class="icon" aria-hidden="true" style="background:none;overflow:hidden"><img src="${esc(app.bild)}" alt="" style="width:100%;height:100%;border-radius:inherit"></div>` : `<div class="icon" aria-hidden="true"${[...(app.symbol || "")].length > 1 ? ' style="font-size:24px;letter-spacing:-2px"' : ""}>${esc(app.symbol || "🧩")}</div>`}
           <h1>${esc(app.titel)}</h1>
         </div>
+        ${app.update ? `<p class="upd">${EN ? "Last update" : "Letztes Update"}: <b>${esc(new Date(app.update).toLocaleDateString(EN ? "en-GB" : "de-DE", { day: "numeric", month: "long", year: "numeric" }))}</b>${app.version ? ` · Version <b>${esc(app.version)}</b>` : ""}${app.neu && !EN ? ` · Neu: ${esc(app.neu)}` : ""}</p>` : ""}
         <p class="lead">${esc(EN ? app.en.kurz : app.kurz)}</p>
         <div class="actions">
           ${(app.links || [{ label: T.open, url: app.link }]).map(l => `<a class="btn primary" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>`).join("")}

@@ -206,9 +206,13 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
   kleinen Punkt; Body Touch = beide Ringe halten (auch im Kreis mit mehreren Menschen). Verbindet sich per Bluetooth direkt mit
   iPad/PC, wirkt wie eine Bluetooth-Tastatur (SW1 = Taste 1). Hub/Master-Slave nicht erwähnen – zu technisch.
   **Offen:** Shop-Link für die SoundWhacker in der YouTube-Beschreibung (Nutzer liefert ihn später).
+- **Update-Anzeige (Wunsch Nutzer, 28.11.2026):** Jede App hat in `apps.js` `version` (Zahl), `update` (Datum JJJJ-MM-TT) und `neu` (kurz, was neu ist).
+  Die Karte auf der Übersicht zeigt oben „🔄 Update TT.MM.JJJJ · Version N“ (in den letzten 7 Tagen gelb mit 🆕) und darunter „Neu: …“; die Anleitungsseite zeigt „Letztes Update …“.
+  **Feste Regel: Bei jedem Update einer App `version` um 1 erhöhen, `update` auf das heutige Datum und `neu` neu schreiben** – auch für Apps aus anderen Repos (Smart Control, MIGA, Smart Instruments).
+  Startwerte = Anzahl der bisherigen Änderungen in der Git-Geschichte.
 - **Neue App hinzufügen (2 Schritte):**
   1. In `apps.js` einen neuen Block in `window.APPS` eintragen
-     (`id`, `titel`, `kurz`, `link`, `repo`, `kategorie`, `symbol`, `datum`).
+     (`id`, `titel`, `kurz`, `link`, `repo`, `kategorie`, `symbol`, `datum`, dazu `version: 1`, `update`, `neu: "Erste Version"`).
   2. `anleitungen/_vorlage.md` kopieren nach `anleitungen/<id>.md` und ausfüllen.
   Dazu den Ordner in der Tabelle in der `README.md` ergänzen.
 - **Inhaltlich:** Auf die Übersicht gehören **nur Musik-Apps**. Andere Apps

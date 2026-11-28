@@ -15,6 +15,7 @@
  *  symbol       – ein Emoji als Bild für die Karte
  *  bild         – (optional) Bilddatei statt Emoji, z. B. das App-Symbol
  *  datum        – Veröffentlichungsdatum, Format JJJJ-MM-TT
+ *  version / update / neu – Versionsnummer (bei jedem Update +1), Datum des letzten Updates, kurz was neu ist (auf der Karte oben)
  *  zaehler      – (optional) Pfad, unter dem GoatCounter die Aufrufe der App zählt (wird auf der Karte angezeigt)
  *  ganzOben     – (optional) Zahl: feste Position oben, 1 = ganz oben, 2 = danach …
  *  ganzUnten    – (optional) Zahl: App steht am Ende der Liste, größere Zahl = weiter unten (1 = vorletzter Block, 2 = ganz unten)
@@ -26,6 +27,7 @@
 window.APPS = [
   {
     id: "motion-watch",
+    version: 8, update: "2026-11-27", neu: "Synthesizer-Klänge und Knopf „App schließen“",   // bei jedem Update: version +1, update = Datum, neu = kurz was neu ist
     zaehler: "/motion-watch/",
     titel: "Musikkompass",
     kurz: "Eine runde, bunte Klangscheibe: iPad oder Handy flach hinlegen und Kreise fahren (z. B. am E-Rolli) oder drehen – eine Runde spielt alle Töne einer Skala. Oder wie eine Uhr am Handgelenk nach vorne/hinten neigen. Dur-/Moll-Pentatonik, Blues, Dur, Moll; Grundton, Anzahl Töne und Instrument einstellbar – auch coole Synthesizer-Klänge.",
@@ -38,6 +40,7 @@ window.APPS = [
   },
   {
     id: "trommelball",
+    version: 2, update: "2026-11-26", neu: "Spielen durch Neigen des Handys",   // bei jedem Update: version +1, update = Datum, neu = kurz was neu ist
     zaehler: "/trommelball/",
     titel: "Trommelball",
     kurz: "Ein bunter Ball mit vier Flächen – jede Fläche spielt ein Instrument vom Schlagzeug (z. B. links Bassdrum, oben Snare). Frei einstellbar, 6 Schlagzeug-Sets, mehrere Finger gleichzeitig, SoundWhacker/Tasten 1–4 – oder einfach das iPhone neigen. Entwurf aus dem Workshop.",
@@ -49,6 +52,7 @@ window.APPS = [
   },
   {
     id: "visitenkarte",
+    version: 1, update: "2026-11-26", neu: "Erste Version",   // bei jedem Update: version +1, update = Datum, neu = kurz was neu ist
     zaehler: "/visitenkarte/",
     titel: "Visitenkarte",
     kurz: "Meine digitale Visitenkarte für Workshops: QR-Code zeigen, das Gegenüber scannt mit der Handykamera und speichert meinen Kontakt mit einem Tipp – ohne App. Mit soundwhackers.de, Handy, E-Mail und Band-Seite.",
@@ -60,6 +64,7 @@ window.APPS = [
   },
   {
     id: "whacker-band",
+    version: 65, update: "2026-11-24", neu: "Englische Anleitung, Sprachwechsel Deutsch/English",   // bei jedem Update: version +1, update = Datum, neu = kurz was neu ist
     en: { titel: "SoundWhacker Band", kurz: "Five animated figures with SoundWhackers play a song for you – then everyone plays along live: melody, chords, fixed notes or improvisation. With full screen, 30+ sounds, drums and noises, your own songs, English and German." },   // englische Anleitung: anleitungen/whacker-band-en.md
     zaehler: "/whacker-band/",
     titel: "SoundWhacker Band",
@@ -76,6 +81,7 @@ window.APPS = [
   },
   {
     id: "fagott",
+    version: 3, update: "2026-11-19", neu: "Aufrufzähler",   // bei jedem Update: version +1, update = Datum, neu = kurz was neu ist
     zaehler: "/fagott/",
     titel: "Fagott",
     kurz: "Ein echtes Fagott zum Antippen: frei spielen in jeder Tonart (Dur/Moll, tief/mittel/hoch) – der Ton klingt, solange man hält. Oder Lieder Ton für Ton: jeder Schlag spielt den nächsten Ton. Auch mit den SoundWhackern 1–5.",
@@ -88,6 +94,7 @@ window.APPS = [
   },
   {
     id: "singen",
+    version: 13, update: "2026-11-19", neu: "Aufrufzähler",   // bei jedem Update: version +1, update = Datum, neu = kurz was neu ist
     zaehler: "/singen/",
     titel: "Singen mit SoundWhackern",
     kurz: "Jeder SoundWhacker singt einen Ton auf „la“ – mit der eigenen Stimme (einmal „laaaa“ ins Mikrofon singen), einem echten Chor „Aah“ oder einer künstlichen Frauen- oder Männerstimme. Jeder Schlag singt einen Ton, der natürlich ausklingt. Die Töne passen immer zusammen.",
@@ -101,6 +108,7 @@ window.APPS = [
   },
   {
     id: "tischharfe",
+    version: 41, update: "2026-11-20", neu: "Neue Klänge: Geräusche & Effekte",   // bei jedem Update: version +1, update = Datum, neu = kurz was neu ist
     zaehler: "/tischharfe/",
     titel: "Tischharfe",
     kurz: "Eine Tischharfe im Browser: Das Notenblatt liegt unter den Saiten, man zupft einfach der Punktlinie nach – ganz ohne Notenkenntnisse. Mit echtem Harfenklang und zehn weiteren Instrumenten (Klavier, E-Piano, Marimba …), Übe- und Vorspielmodus, 18 oder 25 Saiten und Video-Aufnahme – spielbar auch mit den SoundWhackern oder mit dem Kopf.",
@@ -117,6 +125,7 @@ window.APPS = [
   },
   {
     id: "smart-instruments",
+    version: 76, update: "2026-11-19", neu: "Aufrufzähler",   // bei jedem Update: version +1, update = Datum, neu = kurz was neu ist
     zaehler: "/Gitarre/",
     titel: "Smart Instruments",
     kurz: "Gitarre und Smart-Klavier in einer App: frei spielen oder Akkorde und Töne antippen – mit Mustern, Kreis, Säulen, Boomwhacker-Farben, Kopfsteuerung, SoundWhacker und vielen Klängen (Schlagzeug, Flöte, Streicher, Chor, verzerrte E-Gitarre …).",
@@ -134,6 +143,7 @@ window.APPS = [
   },
   {
     id: "soundwhacker-spielen",
+    version: 103, update: "2026-11-22", neu: "Sprachschalter Deutsch / English",   // bei jedem Update: version +1, update = Datum, neu = kurz was neu ist
     en: { titel: "SoundWhacker Smart Control", kurz: "Turns the SoundWhackers into a musical instrument: chords, notes, melodies, arpeggios, improvisation, shared melody, looper and arpeggio maker – for inclusive music making on iPad and PC. English and German." },   // englische Anleitung: anleitungen/soundwhacker-spielen-en.md
     video: [
       { src: "videos/soundwhacker-smart-control.mp4", bild: "videos/soundwhacker-smart-control.jpg", titel: "Die App: SoundWhacker Smart Control", datei: "SoundWhacker-Smart-Control.mp4" },
@@ -153,6 +163,7 @@ window.APPS = [
   },
   {
     id: "miga",
+    version: 79, update: "2026-11-21", neu: "Als App installierbar (Manifest)",   // bei jedem Update: version +1, update = Datum, neu = kurz was neu ist
     video: { src: "videos/miga.mp4", bild: "videos/miga.jpg", titel: "MIGA im Video", datei: "MIGA-Mimik-Gestik-Augensteuerung.mp4" },
     zaehler: "/soundwhacker-looper/SoundWhacker_Kamera.html",
     titel: "MIGA – Mimik, Gestik, Augensteuerung",

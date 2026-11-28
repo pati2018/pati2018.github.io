@@ -84,6 +84,10 @@ header.site p { margin: 0; color: var(--muted); max-width: 60ch; font-size: 17px
 }
 .card h2 { font-size: 19px; margin: 0; line-height: 1.25; }
 .card .meta { font-size: 13px; color: var(--muted); }
+.card .upd { display: inline-block; font-size: 12.5px; font-weight: 700; padding: 2px 9px; border-radius: 99px; margin: 0 0 3px;
+  background: var(--accent-soft); color: var(--text); }
+.card .upd.frisch { background: #f2cf3a; color: #1a1033; }
+.card p.neu { flex: 0; font-size: 14px; color: var(--text); margin: 0; }
 .card p { margin: 0; color: var(--muted); flex: 1; }
 .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
 .btn {

@@ -27,7 +27,7 @@
 window.APPS = [
   {
     id: "motion-watch",
-    version: 9, update: "2026-11-28", neu: "Am iPhone immer hörbar, auch bei Stummschalter",   // bei jedem Update: version +1, update = Datum, neu = kurz was neu ist
+    version: 10, update: "2026-11-28", neu: "Auch am iPhone mit GarageBand im Hintergrund (Stummschalter aus)",   // bei jedem Update: version +1, update = Datum, neu = kurz was neu ist
     zaehler: "/motion-watch/",
     titel: "Musikkompass",
     kurz: "Eine runde, bunte Klangscheibe: iPad oder Handy flach hinlegen und Kreise fahren (z. B. am E-Rolli) oder drehen – eine Runde spielt alle Töne einer Skala. Oder wie eine Uhr am Handgelenk nach vorne/hinten neigen. Dur-/Moll-Pentatonik, Blues, Dur, Moll; Grundton, Anzahl Töne und Instrument einstellbar – auch coole Synthesizer-Klänge.",
@@ -40,7 +40,7 @@ window.APPS = [
   },
   {
     id: "trommelball",
-    version: 3, update: "2026-11-28", neu: "Am iPhone immer hörbar, auch bei Stummschalter",   // bei jedem Update: version +1, update = Datum, neu = kurz was neu ist
+    version: 4, update: "2026-11-28", neu: "Auch am iPhone mit GarageBand im Hintergrund (Stummschalter aus)",   // bei jedem Update: version +1, update = Datum, neu = kurz was neu ist
     zaehler: "/trommelball/",
     titel: "Trommelball",
     kurz: "Ein bunter Ball mit vier Flächen – jede Fläche spielt ein Instrument vom Schlagzeug (z. B. links Bassdrum, oben Snare). Frei einstellbar, 6 Schlagzeug-Sets, mehrere Finger gleichzeitig, SoundWhacker/Tasten 1–4 – oder einfach das iPhone neigen. Entwurf aus dem Workshop.",
@@ -64,7 +64,7 @@ window.APPS = [
   },
   {
     id: "whacker-band",
-    version: 66, update: "2026-11-28", neu: "Am iPhone immer hörbar, auch bei Stummschalter",   // bei jedem Update: version +1, update = Datum, neu = kurz was neu ist
+    version: 67, update: "2026-11-28", neu: "Auch am iPhone mit GarageBand im Hintergrund (Stummschalter aus)",   // bei jedem Update: version +1, update = Datum, neu = kurz was neu ist
     en: { titel: "SoundWhacker Band", kurz: "Five animated figures with SoundWhackers play a song for you – then everyone plays along live: melody, chords, fixed notes or improvisation. With full screen, 30+ sounds, drums and noises, your own songs, English and German." },   // englische Anleitung: anleitungen/whacker-band-en.md
     zaehler: "/whacker-band/",
     titel: "SoundWhacker Band",

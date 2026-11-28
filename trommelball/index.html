@@ -119,9 +119,9 @@ const sichern=()=>{try{localStorage.setItem(SPEICHER,JSON.stringify(st))}catch(e
 
 /* ---------- Klang ---------- */
 let ctx=null, haupt=null; const puffer={};
-function sitzung(){ try{ if(navigator.audioSession) navigator.audioSession.type=(/iPhone|iPod/.test(navigator.userAgent)?'playback':'ambient')   /* iPhone: immer hörbar, auch bei Stumm; iPad: mit GarageBand mischen */; }catch(e){} }
+function sitzung(){ try{ if(navigator.audioSession) navigator.audioSession.type='ambient'   /* mischt mit GarageBand – dafür muss der Stummschalter aus sein */; }catch(e){} }
 function audio(){
-  if(!ctx){ sitzung(); ctx=new (window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'});
+  if(!ctx){ sitzung(); if(/iPhone|iPod/.test(navigator.userAgent)) setTimeout(()=>zeige('🔔 Kein Ton? Am iPhone den Stummschalter ausschalten (kein Orange zu sehen) – dann klingt die App und GarageBand läuft weiter.',7000),400); ctx=new (window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'});
     const k=ctx.createDynamicsCompressor(); k.threshold.value=-10; k.ratio.value=4; k.connect(ctx.destination);
     haupt=ctx.createGain(); haupt.gain.value=0.9; haupt.connect(k); }
   if(ctx.state!=='running') ctx.resume();

@@ -46,6 +46,14 @@ Versionsnummern, Datenschutz, Hell/Dunkel …). **Neues zu den privaten Web-Apps
   Schleife in `antworte()`: bis 4 Runden, bei `stop_reason: tool_use` → `werkzeugAusfuehren()` → `tool_result` zurück; Eingaben werden geprüft (unbekannte id → `is_error`).
   Verlauf nur an Nutzer-Fragen gekürzt (`verlaufKuerzen`), bei Fehler auf den Stand vor der Frage zurück. „Luna, zurück“ geht weiter sofort ohne Gehirn;
   ohne Schlüssel bleibt die Wort-Erkennung („öffne …“). Fremde Seiten öffnen sich erst, wenn Luna fertig gesprochen hat (`zielNachSprechen`).
+- **Smart Control fernsteuern** (28.11.2026): Werkzeuge `sc_akkord` (SW 1–5, Grundton C…H deutsch, dur/moll/sept), `sc_vorspielen`, `sc_instrument`, `sc_lautstaerke` (0–100 %),
+  `sc_impro` (Grundton, dur / dur_pentatonik / moll_pentatonik / phrygisch_dur). Funktioniert, wenn Luna Smart Control **in ihrem Rahmen** geöffnet hat (gleiche Herkunft):
+  `smartControl()` wartet, bis `setMode`/`loadMel` im Rahmen da sind, dann `contentWindow.eval(...)` mit der eingebauten „virtueller HUB“-Schnittstelle
+  (`/chord?id&root=60–71&qual=maj|min|dom7`, `/impro_set?id&root=0–11&scale`, `/instr_set?id&p&m&l`, `/volume_set?id&val=0–127`, `/chord_preview`, `/impro_play`),
+  SW-Auswahl über Klick auf `#melid<N>`, Modus über Smart Controls eigenes `setMode('akkord'|'impro')`, danach `loadMel()` usw. zum Auffrischen.
+  Instrument: zuerst Smart Controls `/instr_list`, sonst Ersatz über General-MIDI-Nummern (`GM`-Tabelle, deutsche + englische Namen).
+  Claude kann mehrere Schritte verketten (erst `app_oeffnen` soundwhacker-spielen, dann Einstellungen; bis 8 Runden). An Smart Control selbst wurde nichts geändert.
+  **Achtung:** Ändern sich in `soundwhacker-looper/SoundWhacker_Spielen.html` die Namen `setMode`, `loadMel`, `melid<N>`, `akkordOffState`, `improEnaState` oder die HUB-Befehle, Luna anpassen.
 - **Start mit „👋 Luna wecken“** (Fix 28.11.2026): iOS gibt die Gerätestimme erst frei, wenn ein **echter Satz während einer Berührung** gesprochen wird
   (vorher kam keine Sprache, bis man in ⚙ „Probe hören“ tippte). Darum zuerst Wecken-Schirm → Tipp spricht die Begrüßung und startet erst dann das Zuhören.
   `entsperren()` versucht es bei jedem Tippen erneut, bis eine Äußerung wirklich startet (`onstart`), unterbricht aber nie laufende Sprache.

@@ -4,6 +4,18 @@ Diese Datei liest jeder neue Chat zuerst. Sie beschreibt, wie wir zusammenarbeit
 und welche Projekte es gibt. **Wenn sich etwas Wichtiges ändert (neue App, neues
 Repo, neue Regel), diese Datei mit aktualisieren.**
 
+## Drei Gedächtnisse (Wegweiser)
+
+| Bereich | Gedächtnis | Online |
+|---|---|---|
+| 🎵 **Musik-Apps** + gemeinsame Regeln | **diese Datei** (Hauptverzeichnis – die Musik-Apps liegen direkt hier) | https://pati2018.github.io/ |
+| 🏫 **Schule** („Meine Apps Schule“) | **`schule/CLAUDE.md`** | https://pati2018.github.io/schule/ |
+| 🔒 **Privat** („Meine privaten Web-Apps“, verschlüsselt) | **`privat/CLAUDE.md`** | https://pati2018.github.io/privat/ |
+
+- Arbeit an Schul-Apps → **zuerst `schule/CLAUDE.md` lesen**; Arbeit an privaten Apps → **zuerst `privat/CLAUDE.md` lesen**.
+- **Neues immer in die Datei des passenden Bereichs** eintragen. Gemeinsame Regeln (für alle Bereiche) bleiben hier.
+- Aufgeteilt am 28.11.2026 (Wunsch Nutzer). Alle drei Dateien sind öffentlich – keine Kennwörter.
+
 ## So arbeiten wir
 
 - **Name:** Du heißt **Riff**. Antworten beginnen mit „Riff hier:“.
@@ -218,69 +230,7 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
   Dazu den Ordner in der Tabelle in der `README.md` ergänzen.
 - **Inhaltlich:** Auf die Übersicht gehören **nur Musik-Apps**. Andere Apps
   (z. B. das wieder gelöschte Quiz Taubenschutz) kommen woanders hin.
-  Schul-Apps und Lernseiten kommen nach **„Meine Apps Schule“** (siehe unten).
-
-## Unterseite „Meine Apps Schule“ (`schule/`)
-
-- **Adresse:** https://pati2018.github.io/schule/, gleicher Aufbau wie die Hauptseite:
-  `schule/index.html` (Übersicht), `schule/app.html` (Anleitung), `schule/apps.js`
-  (**Liste der Schul-Apps**), `schule/anleitungen/<id>.md`, eigenes `schule/manifest.webmanifest`.
-  Nutzt `../style.css`, `../theme.js`, `../lib/` und `../icons/` der Hauptseite mit.
-- **Artefakt von claude.ai hier hosten:** Ordner `schule/<name>/index.html` anlegen. Die Artefakt-Datei
-  braucht einen vollständigen Rahmen (`<!doctype html>`, `<html lang="de">`, `<head>` mit charset und
-  `viewport … viewport-fit=cover`), dazu `body{margin:0}`, `[hidden]{display:none!important}` und
-  `<script src="../../theme.js">` (Hell/Dunkel-Schalter; bei eigenem Kopf unten links platzieren).
-  Dann in `schule/apps.js` eintragen und `schule/anleitungen/<id>.md` schreiben.
-- **Lernseiten:**
-  - `schule/datenschutz-tom/` – TOM-Rundgang: 14 Kontrollziele (§ 64 Abs. 3 BDSG / Art. 32 DSGVO)
-    mit Beispielen aus Arzt- und Tierarztpraxis (Azubis Lena und Jonas), Präsentationsmodus, Übersicht, Quiz.
-    Sprungmarken `#station-1` … `#station-14`, `#uebersicht`, `#quiz`. Gleiche Seite auch als claude.ai-Artefakt:
-    https://claude.ai/artifact/B5WHTm5WpCgsVAJSuLsvei
-  - `schule/serienbrief/` – Serienbrief in 8 Schritten (Word, Hauptdokument + Datenquelle = 120 Briefe),
-    Animation mit eingebetteter Sprachausgabe (MP3 als Base64, Datei ca. 900 KB). Artefakt:
-    https://claude.ai/artifact/JCjRSYdx3gcXEeeM3cHtL9
-  - `schule/herzlich-willkommen/` – Lesemodus „Herzlich willkommen im Reisebüro“ (Markieren in 3 Farben,
-    Schriftgröße, Fragen zum Text). **Markierstift-Leiste unten** (Farbe wählen, waagerecht mit dem Finger
-    streichen, Radierer), weil auf dem iPad das Systemmenü die Farbknöpfe bei normaler Textauswahl verdeckt. **Eigener Text** mit erfundenen Personen, nach dem Vorbild des Artefakts
-    https://claude.ai/artifact/3v58hSx3jKPgMsf7swshpW – das Artefakt selbst enthält einen fremden Fachartikel (fvw)
-    und darf **nicht** öffentlich auf github.io.
-  - `schule/ki-agent-quiz/` – Zuordnungsquiz „KI-Agent zuordnen“: 8 KI-Begriffe (Sprachmodell, CLAUDE.md, Prompt,
-    Skills & Plugins, Connectors, Routinen, Artefakt, Harness) den nummerierten Stellen der Menschenfigur aus
-    `ki-mensch/` zuordnen (antippen statt ziehen, Prüfen-Knopf, Erklärung bei richtigen Antworten). Von `ki-mensch/` verlinkt.
-  - `schule/netzwerke-internet/` – Präsentation „Netzwerke & Internet“ für Kaufleute im Dialogmarketing (18 Fragen zur Technik,
-    Buch S. 328–332): 28 Folien, Antworten erscheinen per Klick („Aufdecken ▶“), Tasten → / Leertaste / 2–5 = weiter, ← / 1 = zurück, Wischen,
-    Folienauswahl, `#folie-N`. **Nach jedem Block eine Quiz-Folie** (4 Runden, je 5–6 Aufgaben: Multiple Choice, Wahr/Falsch,
-    Zuordnen, Reihenfolge; Ton an/aus, Sterne am Ende, auf Quiz-Folien wählen Tasten/SW 1–5 die Antwort).
-    **Quelle im Repo:** `schule/netzwerke-internet/quelle/` – Folien (`slides/`, `deck.css`, `deck.json` aus dem claude.ai-Artefakt
-    https://claude.ai/artifact/6rAVAjr3bYrkPYBfaqy7Y6, dort ohne Quiz), Quizfragen `quiz-daten.js`, Seitenrahmen + Quiz-Logik `seite.html`.
-    Neu bauen: `node schule/netzwerke-internet/quelle/build.js schule/netzwerke-internet/quelle schule/netzwerke-internet/index.html`.
-  - `schule/netzwerke-internet/` – Präsentation „Netzwerke & Internet“ (Dialogmarketing, 28 Folien, Antworten auf Klick, 4 Quiz-Folien).
-    **PDF** `schule/netzwerke-internet/Netzwerke-und-Internet.pdf` (alle Antworten aufgedeckt, Quiz als Lösungsseiten), in der Anleitung verlinkt.
-    Neu bauen nach Änderungen: Playwright-Skript (Folien 1920×1080 einzeln aufnehmen, `.fragment` sichtbar, Quiz aus `window.QUIZ` als Lösungsseite) + Bilder zu PDF.
-  - Das **Azubi-Recruiting Dashboard** (`schule/azubi-recruiting/`) wurde auf Wunsch wieder entfernt (Ordner, Eintrag, Anleitung gelöscht; steckt noch in der Git-Geschichte). Projekt pausiert.
-  - Eintrag `audioguide` (kein eigener Ordner): **OMIVARO Audioguide** – eigene Web-App des Nutzers unter https://guide.gueck.eu
-    – Zielgruppe: Tourist-Informationen/Tourismuszentralen und Gemeinden sowie deren Gäste
-    (PHP-Server, Gemeinden `saarbruecken`, `castell-platja-daro`, `paula`; Vorführ-Code **123456** für Saarbrücken und Platja d'Aro,
-    darf öffentlich sein – Wunsch Nutzer). Links in `schule/apps.js` mit `?community=…&code=123456`.
-    **Werbevideo** `videos/audioguide.mp4` (1:51, Vorschaubild `audioguide.jpg`): zeigt die echte App im Handy-Rahmen (Playwright-Bildschirmaufnahme
-    per CDP-Screencast, GPS-Spaziergang mit `setGeolocation` → Station startet von selbst), Stimme „Alexander“, Untertitel im Bild,
-    Original-Hörstücke der App (Friedenskirche, Spanisch Playa de Aro), Hinweistöne nachgebaut, Musik C–Am–F–G leise und aus, wenn die App klingt.
-    Zweite Fassung für Anbieter (Sie-Form, „Machen Sie Ihre Orte hörbar.“): `videos/audioguide-anbieter.mp4` (1:54), Bauordner im Scratchpad `guide2/`.
-    `schule/app.html` kann dafür jetzt auch `video` aus `schule/apps.js` zeigen (wie die Hauptseite).
-    Netz in der Cloud-Umgebung „MP3“: `guide.gueck.eu` und `tile.openstreetmap.org` freigegeben.
-- **Urheberrecht:** Artefakte mit fremden Texten (Zeitungs-/Fachartikel, Schulbuchseiten) nicht öffentlich hosten.
-  Stattdessen eigenen Text schreiben oder nur geschlossen (Moodle/OSS) teilen.
-
-## Private Seite „Meine privaten Web-Apps“ (`privat/`)
-
-- **Adresse:** https://pati2018.github.io/privat/ – verlinkt **nur von „Meine Apps Schule“** („🔒 Privat →“ oben, Wunsch Nutzer), nicht von der Musik-Übersicht; `noindex`. Für private Experimente / Alltags-Apps (nicht Musik, nicht Schule).
-- **Mit Kennwort verschlüsselt** (nicht nur versteckt): Inhalt (Liste + kleine Apps als HTML im Feld `html`) steht nur verschlüsselt in `privat/daten.js`
-  (PBKDF2-SHA256 600 000 Runden → AES-GCM 256, WebCrypto). Mehrere Kennwörter möglich (je ein Block). **Das Kennwort kennt nur der Nutzer – nie hier oder im Repo notieren;
-  für Änderungen den Nutzer danach fragen.** Klartext-Inhalt nie ins Repo.
-- **Ändern:** `KENNWORT="…" node privat/bauen.js entschluesseln privat/daten.js > /tmp/…/inhalt.json` → JSON bearbeiten (`{"apps":[{titel,kurz,symbol,kategorie,version,update,html|link}]}`)
-  → `KENNWORT="…|…" node privat/bauen.js verschluesseln inhalt.json privat/daten.js`, dann `daten.js?v=` in `privat/index.html` erhöhen.
-- Apps mit `html` öffnen sich aus dem entschlüsselten Inhalt im neuen Tab (bleiben so geschützt). Apps mit `link` sind nur versteckt, nicht geschützt.
-- „Auf diesem Gerät angemeldet bleiben“ speichert das Kennwort im Browser (`localStorage` `privat-kennwort`), „🔒 Abmelden“ löscht es.
+  Schul-Apps und Lernseiten kommen nach **„Meine Apps Schule“** (Details in `schule/CLAUDE.md`), private Alltags-Apps nach **`privat/`** (Details in `privat/CLAUDE.md`).
 
 ## Repo `soundwhacker-looper`
 
@@ -309,6 +259,6 @@ Braucht ein Chat ein Repo, das nicht in der Sitzung ist, holt er es sich dazu
 
 ## Diese Datei ist das zentrale Gedächtnis
 
-Dies ist die **einzige vollständige Fassung**. Andere Repos (z. B. `midi-player`)
-haben nur eine kurze `CLAUDE.md` mit einem Verweis hierher. Neues immer **hier**
-eintragen, nicht in den anderen Repos.
+Dies ist die **Haupt-Fassung** (gemeinsame Regeln + Musik-Apps). Dazu gehören `schule/CLAUDE.md` und `privat/CLAUDE.md` (siehe Wegweiser oben).
+Andere Repos (z. B. `midi-player`) haben nur eine kurze `CLAUDE.md` mit einem Verweis hierher.
+Neues zu Musik und Allgemeinem **hier** eintragen, Schul- und Privat-Themen in ihre eigenen Dateien – nicht in den anderen Repos.
